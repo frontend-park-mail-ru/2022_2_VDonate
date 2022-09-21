@@ -3,6 +3,7 @@
 Фронтенд для итогового проекта 2 семестра проекта "VK образование" команды ВДонате.
 
 ### [Бэкенд](https://github.com/go-park-mail-ru/2022_2_VDonate)
+### [Trello](https://trello.com/b/BZHoJsHP/vdonate)
 
 ### Состав команды:
 - [Иван Гапоян](https://github.com/Loen15)
