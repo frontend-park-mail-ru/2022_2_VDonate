@@ -62,13 +62,14 @@
 
 #root {
   display: grid;
+  min-height: 100vh;
   gap: 20px;
   grid-template-areas:
     "left header right"
     "left main right"
     "left footer right";
-  grid-template-columns: 20% auto 20%;
-  grid-template-rows: auto max-content min-content;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-rows: auto 1fr auto;
 }
 
 #left {
@@ -114,9 +115,9 @@
 #footer {
   grid-area: footer;
 
-  position: static;
-  left: 0;
-  bottom: 0;
+  /* position: static; */
+  /* left: 0;
+  bottom: 0; */
   width: 100%;
 
   display: flex;
