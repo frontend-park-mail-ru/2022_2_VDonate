@@ -1,143 +1,158 @@
+radius = 10px
 /* Color */
-.second-bg
-  background: rgba(0, 76, 76, 0.06)
-
-.main-bg
-  background: white
-
-.main-color
-  color: #008C8C
-
-.content-light-color
-  color: black
-
-.content-dark-color
-  color: black
-
-.content-sub-color
-  color: #606060
+bg-second-color = rgba(0, 76, 76, 0.06)
+bg-main-color = white
+main-color = #008C8C
+content-light-color = white
+content-dark-color = black
+content-sub-color = #606060
 
 /* Font */
-.logo
+logo-text()
   font-family: 'Rogalik'
   font-style: normal
   font-weight: 400
   font-size: 48px
-  line-height: 58px
+  line-height: 110%
+  color: main-color
+  text-align: center
 
-.header-text
+header-text()
   font-family: 'Manrope', sans-serif
   font-style: normal
   font-weight: 700
   font-size: 24px
   line-height: 33px
+  color: content-dark-color
+  text-align: center
 
-.main-text
+main-text()
   font-family: 'Circe'
   font-style: normal
   font-weight: 400
   font-size: 20px
   line-height: 29px
+  color: content-dark-color
+  text-align: center
 
-.sub-text
+sub-text()
   font-family: 'Circe'
   font-style: normal
   font-weight: 350
   font-size: 20px
   line-height: 29px
+  color: content-sub-color
 
-/* ID */
-#root
-  display: grid
-  min-height: 100vh
-  gap: 20px
-  grid-template-areas:  "left header right"\
-                        "left main right"\
-                        "left footer right"
-  grid-template-columns: 1fr auto 1fr
-  grid-template-rows: auto 1fr auto
-
-#left
-  grid-area: left
-
-#right
-  grid-area: right
-
-#header
-  grid-area: header
-  border: 2px solid #008C8C
-  border-radius: 10px
+flex-all-width()
   display: flex
   flex-direction: row
   justify-content: space-between
   align-items: center
-  padding: 0px 10px
-  gap: 20px
-  isolation: isolate
 
-#main
+/* Class */
+.root
+  background: bg-second-color
+  display: grid
+  min-height: 100vh
+  gap: 20px
+  grid-template-areas:  "sub-header main up"\
+                        "footer footer footer"
+  grid-template-columns: 1fr 80% 1fr
+  grid-template-rows: 1fr min-content 
+  margin-top: 80px 
+
+.header
+  flex-all-width()
+  position: fixed 
+  top: 0
+  left: 0
+  right: 0
+  margin: 0% 20%
+  background: bg-main-color
+  border: 2px solid #008C8C
+  border-radius: radius
+  padding: 0px 10px
+  gap: 10px
+  &__logo
+    logo-text()
+  &__button-link
+    main-text()
+    padding: 5px 10px
+    border-radius: radius
+    &:hover
+      background: bg-second-color 
+
+
+.main
   grid-area: main
   display: flex
   flex-direction: column
   align-items: center
   padding: 0px
-  gap: 10px
+  gap: 30px
 
-#subscribers
+.profile
+  &__info
+    &_size
+      &_small
+        display: flex
+        flex-direction: row
+        align-items: center
+        padding: 0px
+        gap: 10px
+      &_big
+        display: flex
+        flex-direction: column
+        align-items: center
+        gap: 5px
+  &__link
+    flex-all-width()
+    padding: 0px 15px
+    gap: 10px
+    // BUG Size must be flexible
+    width: 700px
+    height: 50px
+    background: #FFFFFF
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)
+    border-radius: 10px
+  &__image
+    &_circle
+      clip-path: circle()
+    &_size
+      &_big
+        height: 200px
+        width: 200px
+      &_small
+        height: 50px
+        width: 50px
+      &_very-small
+        height: 25px
+        width: 25px
+  &__text
+    &_align-right
+      text-align: right  
+    &_type
+      &_header
+        header-text()
+      &_main
+        main-text()
+      &_sub
+        sub-text()
+
+.content 
   display: flex
   flex-direction: column
   align-items: flex-start
   padding: 0px
   gap: 10px
 
-#footer
+.footer
   grid-area: footer
-  /* position: static; */
-  /* left: 0;
-  bottom: 0; */
   width: 100%
   display: flex
   flex-direction: row
   justify-content: center
   align-items: center
-  padding: 20px 10px
-
-/* Class */
-.button-link
-  padding: 10px
-  opacity: 0.8
-  border-radius: 10px
-
-.button-link:hover
-  background: rgba(0, 76, 76, 0.06)
-
-.author-in-subscribers-long
-  display: flex
-  flex-direction: row
-  justify-content: space-between
-  align-items: center
-  padding: 0px 15px
-  gap: 10px
-  width: 700px
-  height: 50px
-  background: #FFFFFF
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)
-  border-radius: 10px
-
-.subcribe-level
-  text-align: right
-
-.mini-profile
-  display: flex
-  flex-direction: row
-  align-items: center
-  padding: 0px
-  gap: 10px
-
-.small-profile-image
-  width: 25px
-  height: 25px
-
-.circle-image
-  clip-path: circle()
-
+  padding: padding
+  &__text
+    sub-text()
