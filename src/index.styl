@@ -43,11 +43,32 @@ sub-text()
   line-height: 29px
   color: content-sub-color
 
-flex-all-width()
+flex-row-center-space()
   display: flex
   flex-direction: row
-  justify-content: space-between
   align-items: center
+  justify-content: space-between
+
+flex-row-center-center()
+  display: flex
+  flex-direction: row
+  justify-content: center
+  align-items: center
+
+flex-column-center()
+  display: flex
+  flex-direction: column
+  align-items: center
+
+flex-row-center()
+  display: flex
+  flex-direction: row
+  align-items: center
+
+flex-column-start()
+  display: flex
+  flex-direction: column
+  align-items: flex-start
 
 /* Class */
 .root
@@ -57,12 +78,12 @@ flex-all-width()
   gap: 20px
   grid-template-areas:  "sub-header main up"\
                         "footer footer footer"
-  grid-template-columns: 1fr 80% 1fr
+  grid-template-columns: 1fr 60% 1fr
   grid-template-rows: 1fr min-content 
   margin-top: 80px 
 
 .header
-  flex-all-width()
+  flex-row-center-space()
   position: fixed 
   top: 0
   left: 0
@@ -82,12 +103,9 @@ flex-all-width()
     &:hover
       background: bg-second-color 
 
-
 .main
   grid-area: main
-  display: flex
-  flex-direction: column
-  align-items: center
+  flex-column-center()
   padding: 0px
   gap: 30px
 
@@ -95,24 +113,20 @@ flex-all-width()
   &__info
     &_size
       &_small
-        display: flex
-        flex-direction: row
-        align-items: center
+        flex-row-center()
         padding: 0px
         gap: 10px
       &_big
-        display: flex
-        flex-direction: column
-        align-items: center
+        flex-column-center()
         gap: 5px
   &__link
-    flex-all-width()
+    flex-row-center-space()
     padding: 0px 15px
     gap: 10px
     // BUG Size must be flexible
     width: 700px
     height: 50px
-    background: #FFFFFF
+    background: bg-main-color
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)
     border-radius: 10px
   &__image
@@ -130,7 +144,7 @@ flex-all-width()
         width: 25px
   &__text
     &_align-right
-      text-align: right  
+      text-align: right 
     &_type
       &_header
         header-text()
@@ -140,19 +154,13 @@ flex-all-width()
         sub-text()
 
 .content 
-  display: flex
-  flex-direction: column
-  align-items: flex-start
+  flex-column-start()
   padding: 0px
   gap: 10px
 
 .footer
+  flex-row-center-center()
   grid-area: footer
-  width: 100%
-  display: flex
-  flex-direction: row
-  justify-content: center
-  align-items: center
-  padding: padding
+  padding: 10px
   &__text
     sub-text()
