@@ -1,0 +1,23 @@
+{
+  "name": "vdonate",
+  "version": "1.0.0",
+  "description": "Фронтенд для итогового проекта 2 семестра проекта \"VK образование\" команды ВДонате.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frontend-park-mail-ru/2022_2_VDonate.git"
+  },
+  "author": "VDonate Team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/frontend-park-mail-ru/2022_2_VDonate/issues"
+  },
+  "homepage": "https://github.com/frontend-park-mail-ru/2022_2_VDonate#readme",
+  "dependencies": {
+    "handlebars": "^4.7.7",
+    "stylus": "^0.59.0"
+  }
+}
