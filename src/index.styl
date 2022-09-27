@@ -3,6 +3,7 @@ radius = 10px
 bg-second-color = rgba(0, 76, 76, 0.06)
 bg-main-color = white
 main-color = #008C8C
+main-color-hover = #006C6C
 content-light-color = white
 content-dark-color = black
 content-sub-color = #606060
@@ -159,6 +160,41 @@ flex-column-start()
   flex-column-start()
   padding: 0px
   gap: 10px
+
+.levels
+  flex-row-center()
+  gap: 10px
+
+.level-block
+  flex-column-center()
+  background: bg-main-color
+  padding: 10px
+  border-radius: radius
+  &__image
+    height: 150px
+    width: 150px
+  &__button
+    main-text()
+    color: content-light-color
+    background: main-color
+    padding: 5px 10px
+    border-radius: radius
+    &:hover
+      background: main-color-hover
+  &__text
+    &_type
+      &_header
+        header-text()
+      &_main
+        main-text()
+      &_sub
+        sub-text()
+
+.level-describtion
+  flex-column-start()
+  &__text
+    main-text()
+    text-align: left 
 
 .footer
   flex-row-center-center()

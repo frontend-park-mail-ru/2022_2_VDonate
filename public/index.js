@@ -1,30 +1,77 @@
+'use_strict'
 var source = document.getElementById("entry-template").innerHTML;
 var template = Handlebars.compile(source);
 
-var context = {
+const bigText = 'Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста!'
+
+var contextDonater = {
+  notAuthorTag: 'Донатер',
   owner: {
-    name: 'The Best Subscriber',
+    nickname: 'The Best Subscriber',
     tags: 'Донатер',
-    image: "../static/img/0.jpg",
+    avatar: "../static/img/0.jpg",
+    isAuthor: false
   },
   subscriptions: [
     {
-      name: 'Кодзима Гений',
+      nickname: 'Кодзима Гений',
       level: 'Уровень 1',
-      image: "../static/img/1.jpg",
+      avatar: "../static/img/1.jpg",
     },
     {
-      name: 'ЯМогучий',
+      nickname: 'ЯМогучий',
       level: 'Уровень 5',
-      image: "../static/img/2.jpg",
+      avatar: "../static/img/2.jpg",
     },
     {
-      name: 'Красная Шапочка',
+      nickname: 'Красная Шапочка',
       level: 'Уровень 1 000 000',
-      image: "../static/img/3.jpg",
+      avatar: "../static/img/3.jpg",
     },
   ]
 };
-var html = template(context);
+
+var contextAuthor = {
+  owner: {
+    nickname: 'Кодзима Гений',
+    tags: 'Искусство',
+    avatar: "../static/img/1.jpg",
+    isAuthor: true
+  },
+  levels: [
+    {
+      title: 'Уровень 1',
+      image: "../static/img/4.jpg",
+      price: '₽500',
+      priceDescribtion: 'за неделю',
+      text: [
+        '- мотивация',
+        '- очень сильная мотивация'
+      ],
+    },
+    {
+      title: 'Уровень 2',
+      image: "../static/img/4.jpg",
+      price: '₽2000',
+      priceDescribtion: 'за неделю',
+      text: [
+        '- мотивация',
+        '- очень сильная мотивация'
+      ],
+    },
+    {
+      title: 'Уровень 300',
+      image: "../static/img/4.jpg",
+      price: '₽1 000 000',
+      priceDescribtion: 'за неделю',
+      text: [
+        '- мотивация',
+        '- очень сильная мотивация'
+      ],
+    },
+  ],
+};
+
+var html = template(contextAuthor);
 
 document.getElementById("entry").innerHTML += html
