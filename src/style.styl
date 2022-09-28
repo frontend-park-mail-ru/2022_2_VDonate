@@ -16,7 +16,6 @@ logo-text()
   font-size: 48px
   line-height: 110%
   color: main-color
-  text-align: center
 
 header-text()
   font-family: 'Manrope', sans-serif
@@ -25,7 +24,6 @@ header-text()
   font-size: 24px
   line-height: 33px
   color: content-dark-color
-  text-align: center
 
 main-text()
   font-family: 'Circe'
@@ -34,7 +32,6 @@ main-text()
   font-size: 20px
   line-height: 29px
   color: content-dark-color
-  text-align: center
 
 sub-text()
   font-family: 'Circe'
@@ -53,8 +50,8 @@ flex-row-center-space()
 flex-row-center-center()
   display: flex
   flex-direction: row
-  justify-content: center
   align-items: center
+  justify-content: center
 
 flex-column-center()
   display: flex
@@ -99,6 +96,7 @@ flex-column-start()
     logo-text()
   &__button-link
     main-text()
+    text-align: center
     padding: 5px 10px
     border-radius: radius
     &:hover
@@ -157,23 +155,26 @@ flex-column-start()
         sub-text()
 
 .content 
-  flex-column-start()
+  flex-column-center()
+  width: 80%
   padding: 0px
   gap: 10px
+  &__title
+    header-text()
+    margin-top: 20px
 
 .levels
   flex-row-center()
   gap: 10px
 
-.level-block
+.block
   flex-column-center()
   background: bg-main-color
-  padding: 10px
+  padding: 20px
   border-radius: radius
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)
   &__image
-    height: 150px
-    width: 150px
+    width: 50%
   &__button
     main-text()
     color: content-light-color
@@ -183,6 +184,9 @@ flex-column-start()
     &:hover
       background: main-color-hover
   &__text
+    &_align
+      &_left
+        text-align: left 
     &_type
       &_header
         header-text()
@@ -190,6 +194,23 @@ flex-column-start()
         main-text()
       &_sub
         sub-text()
+
+.button
+  flex-row-center()
+  padding: 5px 10px
+  border-radius: radius
+  gap: 5px
+  &&:hover
+    background: bg-second-color
+  &__text
+    sub-text()
+  &__image
+    max-height: 20px
+
+.sub-block
+  width: 100%
+  flex-row-center()
+  gap: 20px
 
 .level-describtion
   flex-column-start()

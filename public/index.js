@@ -69,6 +69,24 @@ var contextAuthor = {
       ],
     },
   ],
+  describtion: {
+    image: '../static/img/4.jpg',
+    text: bigText,
+  },
+  posts: [
+    {
+      image: '../static/img/4.jpg',
+      text: bigText + bigText,
+      likesCount: 5,
+      commentsCount: 15,
+    },
+    {
+      image: '../static/img/2.jpg',
+      text: bigText,
+      likesCount: 10,
+      commentsCount: 3,
+    },
+  ],
 };
 
 var html = template(contextAuthor);
