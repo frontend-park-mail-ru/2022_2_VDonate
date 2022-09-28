@@ -6,64 +6,68 @@
   <meta http-equiv='X-UA-Compatible' content='IE=edge'>
   <title>Page</title>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <link rel='stylesheet' type='text/css' media='screen' href='index.css'>
-  <!-- <script src='index.js'></script> -->
+  <link rel='stylesheet' type='text/css' media='screen' href='style.css'>
+  <script src='../node_modules/handlebars/dist/handlebars.js'></script>
 </head>
 
-<body class="root">
-  <header class="header">
-    <span class="header__logo">VD</span>
-    <span class="header__button-link">Лента</span>
-    <span class="header__button-link">Поиск авторов</span>
-    <span class="header__button-link">Подписки</span>
-    <span class="header__button-link">Мой профиль</span>
-  </header>
-  <div class="main">
-    <div class="profile">
-      <div class="profile__info_size_big">
-        <img class="profile__image_size_big"
-          src="https://i.pinimg.com/originals/6a/02/3b/6a023b92e829f36eb594a1d13d6880ff.jpg" alt="иван васильевич">
-        <span class="profile__text_type_header">Иван Васильевич</span>
-        <span class="profile__text_type_sub">Донатер</span>
-      </div>
-    </div>
-    <div class="content">
-      <div class="profile">
-        <div class="profile__link">
-          <div class="profile__info_size_small">
-            <img class="profile__image_size_very-small profile__image_circle"
-              src="https://i2.wp.com/metro.co.uk/wp-content/uploads/2020/02/Bf2Yij9b-404e.jpg" alt="кодзима">
-            <span class="profile__text_type_main">Кодзима Гений</span>
+<body id="entry" class="root">
+  <script id="entry-template" type="text/x-handlebars-template">
+      <header class="header">
+        <span class="header__logo">VD</span>
+        <span class="header__button-link">Лента</span>
+        <span class="header__button-link">Поиск авторов</span>
+        <span class="header__button-link">Подписки</span>
+        <span class="header__button-link">Мой профиль</span>
+      </header>
+      <div class="main">
+        {{#with owner}}
+          <div class="profile">
+            <div class="profile__info_size_big">
+              <img class="profile__image_size_big"
+                src="{{avatar}}" alt="{{nickname}}">
+              <span class="profile__text_type_header">{{nickname}}</span>
+              <span class="profile__text_type_sub">{{tags}}</span>
+            </div>
           </div>
-          <span class="profile__text_type_main profile__text_align-right">Уровень 1</span>
+        {{/with}}
+        <div class="content">
+          {{#if owner.isAuthor}}
+            <div class="levels">
+              {{#each levels}}
+                <div class="level-block">
+                  <span class="level-block__text_type_main">{{title}}</span>
+                  <img class="level-block__image" src="{{image}}" alt="{{title}}">
+                  <span class="level-block__text_type_header">{{price}}</span>
+                  <span class="level-block__text_type_sub">{{priceDescribtion}}</span>
+                  <span class="level-block__button">Задонатить</span>
+                  <div class="level-describtion">
+                    {{#each text}}
+                      <span class="level-describtion__text">{{this}}</span>
+                    {{/each}}
+                  </div>
+                </div>
+              {{/each}}
+            </div>
+          {{else}}
+            {{#each subscriptions}}
+              <div class="profile">
+                <div class="profile__link">
+                  <div class="profile__info_size_small">
+                    <img class="profile__image_size_very-small profile__image_circle" src="{{avatar}}" alt="{{nickname}}">
+                    <span class="profile__text_type_main">{{nickname}}</span>
+                  </div>
+                  <span class="profile__text_type_main profile__text_align-right">{{level}}</span>
+                </div>
+              </div>
+            {{/each}}
+          {{/if}}
         </div>
       </div>
-      <div class="profile">
-        <div class="profile__link">
-          <div class="profile__info_size_small">
-            <img class="profile__image_size_very-small profile__image_circle"
-              src="https://www.allianceplast.com/wp-content/uploads/no-image-1024x1024.png" alt="нет">
-            <span class="profile__text_type_main">ЯМогучий</span>
-          </div>
-          <span class="profile__text_type_main profile__text_align-right">Уровень 5</span>
-        </div>
-      </div>
-      <div class="profile">
-        <div class="profile__link">
-          <div class="profile__info_size_small">
-            <img class="profile__image_size_very-small profile__image_circle"
-              src="https://4dog.su/upload/shop_1/3/1/8/item_31895/item_31895.jpg" alt="красная шапочка">
-            <span class="profile__text_type_main">Красная Шапочка</span>
-          </div>
-          <span class="profile__text_type_main profile__text_align-right">Уровень 1 000 000</span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div id="right"></div>
-  <footer class="footer">
-    <span class="footer__text">Created by VDonate Team</span>
-  </footer>
+      <footer class="footer">
+        <span class="footer__text">Created by VDonate Team</span>
+      </footer>
+  </script>
+  <script src="index.js"></script>
 </body>
 
 </html>

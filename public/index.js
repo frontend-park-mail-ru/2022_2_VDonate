@@ -5,7 +5,6 @@ var template = Handlebars.compile(source);
 const bigText = 'Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста!'
 
 var contextDonater = {
-  notAuthorTag: 'Донатер',
   owner: {
     nickname: 'The Best Subscriber',
     tags: 'Донатер',
