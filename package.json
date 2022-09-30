@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx stylus -c -o public src",
+    "build": "./build.bash",
     "stylus": "npx stylus -c -w src -o public"
   },
   "repository": {

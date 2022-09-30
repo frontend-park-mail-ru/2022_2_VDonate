@@ -1,6 +1,4 @@
 'use_strict'
-const source = document.getElementById("entry-template").innerHTML;
-const template = Handlebars.compile(source);
 
 const bigText = 'Прежде всего, синтетическое тестирование не оставляет шанса \
                 для дальнейших направлений развития. Идейные соображения \
@@ -99,6 +97,6 @@ const contextAuthor = {
   ],
 };
 
-const html = template(contextAuthor);
+const template = Handlebars.templates.example;
 
-document.getElementById("entry").innerHTML += html;
+document.getElementById("entry").innerHTML = template(contextAuthor);
