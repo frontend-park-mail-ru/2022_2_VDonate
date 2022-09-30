@@ -4,7 +4,9 @@
   "description": "Фронтенд для итогового проекта 2 семестра проекта \"VK образование\" команды ВДонате.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx stylus -c -o public src",
+    "stylus": "npx stylus -c -w src -o public"
   },
   "repository": {
     "type": "git",
