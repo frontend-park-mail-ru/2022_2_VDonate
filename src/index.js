@@ -79,7 +79,7 @@ const contextAuthor = {
       ],
     },
   ],
-  describtion: {
+  description: {
     image: '../static/img/4.jpg',
     text: bigText,
   },

@@ -39,9 +39,9 @@
             <span class="block__text_type_header">{{price}}</span>
             <span class="block__text_type_sub">{{priceDescribtion}}</span>
             <span class="block__button">Задонатить</span>
-            <div class="level-describtion">
+            <div class="level-description ">
               {{#each text}}
-              <span class="level-describtion__text">{{this}}</span>
+              <span class="level-description __text">{{this}}</span>
               {{/each}}
             </div>
           </div>
@@ -50,15 +50,15 @@
         <div class="content">
           <span class="content__title">Про {{owner.nickname}}</span>
           <div class="block">
-            {{#with describtion}}
-            <img class="block__image" src="{{image}}" alt="describtion-image">
+            {{#with description }}
+            <img class="block__image" src="{{image}}" alt="description -image">
             <span class="block__text_type_main block__text_align_left">{{text}}</span>
             {{/with}}
           </div>
           <span class="content__title">Последние посты от {{owner.nickname}}</span>
           {{#each posts}}
           <div class="block">
-            <img class="block__image" src="{{image}}" alt="describtion-image">
+            <img class="block__image" src="{{image}}" alt="description -image">
             <span class="block__text_type_main block__text_align_left">{{text}}</span>
             <div class="sub-block">
               <div class="button">
