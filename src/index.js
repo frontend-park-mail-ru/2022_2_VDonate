@@ -1,10 +1,10 @@
 'use_strict'
-var source = document.getElementById("entry-template").innerHTML;
-var template = Handlebars.compile(source);
+const source = document.getElementById("entry-template").innerHTML;
+const template = Handlebars.compile(source);
 
-const bigText = 'Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста!'
+const bigText = 'Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста! Много текста!';
 
-var contextDonater = {
+const contextDonater = {
   owner: {
     nickname: 'The Best Subscriber',
     tags: 'Донатер',
@@ -30,7 +30,7 @@ var contextDonater = {
   ]
 };
 
-var contextAuthor = {
+const contextAuthor = {
   owner: {
     nickname: 'Кодзима Гений',
     tags: 'Искусство',
@@ -89,6 +89,6 @@ var contextAuthor = {
   ],
 };
 
-var html = template(contextAuthor);
+const html = template(contextAuthor);
 
-document.getElementById("entry").innerHTML += html
+document.getElementById("entry").innerHTML += html;
