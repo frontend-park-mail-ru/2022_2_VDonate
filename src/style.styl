@@ -99,26 +99,18 @@
     margin-top: 20px
 
 .levels
-  flex-row-center()
+  display: grid
+  grid-template-columns: repeat(3, 1fr)
   gap: 10px
 
-.block
+.level-block
+.post-block
   flex-column-center()
   background: bg-main-color
   padding: 20px
   border-radius: radius
   box-shadow: 0px 4px 4px #00000040
-  &__image
-    width: 50%
-  &__button
-    main-text()
-    color: content-light-color
-    background: main-color
-    padding: 5px 10px
-    border-radius: radius
-    cursor: pointer
-    &:hover
-      background: main-color-hover
+  gap: 5px
   &__text
     &_align
       &_left
@@ -130,6 +122,25 @@
         main-text()
       &_sub
         sub-text()
+
+.level-block
+  &__image
+    height: 100px
+    object-fit: cover
+  &__button
+    main-text()
+    color: content-light-color
+    background: main-color
+    padding: 5px 10px
+    border-radius: radius
+    cursor: pointer
+    &:hover
+      background: main-color-hover
+
+.post-block
+  &__image
+    height: 200px
+    object-fit: cover
 
 .button
   flex-row-center()

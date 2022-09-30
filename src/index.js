@@ -58,7 +58,7 @@ const contextAuthor = {
     },
     {
       title: 'Уровень 2',
-      image: "../static/img/4.jpg",
+      image: "../static/img/5.jpg",
       price: '₽2000',
       priceDescribtion: 'за неделю',
       text: [
@@ -68,7 +68,7 @@ const contextAuthor = {
     },
     {
       title: 'Уровень 300',
-      image: "../static/img/4.jpg",
+      image: "../static/img/6.jpg",
       price: '₽1 000 000',
       priceDescribtion: 'за неделю',
       text: [
