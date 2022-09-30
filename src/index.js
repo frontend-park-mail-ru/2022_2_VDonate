@@ -97,6 +97,8 @@ const contextAuthor = {
   ],
 };
 
-const template = Handlebars.templates.example;
+const header = Handlebars.templates.header;
+document.getElementById("entry").innerHTML += header();
 
-document.getElementById("entry").innerHTML = template(contextAuthor);
+const main = Handlebars.templates.main;
+document.getElementById("entry").innerHTML += main(contextAuthor);
