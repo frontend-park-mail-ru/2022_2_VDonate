@@ -1,4 +1,4 @@
-<form class="form" action="index.html">
+<form class="form" action="index.html" method="get">
   <span class="form__text_type_logo form__text_align_center">ВДонате</span>
   <span class="form__text_type_header form__text_align_center">{{formTitle}}</span>
   {{#each inputs}}
@@ -10,7 +10,7 @@
   <input class="form__text_type_main" type="submit" value="{{buttonTittle}}">
   {{#with orButton}}
     <span>или</span>
-    <a href="">
+    <a href="{{link}}" data-link>
       <button>
         {{title}}
       </button>

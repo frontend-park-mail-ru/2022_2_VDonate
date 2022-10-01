@@ -24,16 +24,19 @@ const contextDonater = {
       nickname: 'Кодзима Гений',
       level: 'Уровень 1',
       avatar: "../static/img/1.jpg",
+      link: '/profile?id=1',
     },
     {
       nickname: 'ЯМогучий',
       level: 'Уровень 5',
       avatar: "../static/img/2.jpg",
+      link: '/profile?id=2',
     },
     {
       nickname: 'Красная Шапочка',
       level: 'Уровень 1 000 000',
       avatar: "../static/img/3.jpg",
+      link: '/profile?id=3',
     },
   ]
 };
@@ -114,6 +117,7 @@ const contextAuth = {
   buttonTittle: 'Войти',
   orButton: {
     title: 'Зарегистрироваться',
+    link: '/auth/sign',
   }
 };
 
@@ -144,14 +148,15 @@ const contextReg = {
   buttonTittle: 'Зарегистрироваться',
   orButton: {
     title: 'Войти',
+    link: '/auth/login',
   }
 };
 
 const header = Handlebars.templates.header;
-document.getElementById("main").innerHTML += header();
+document.getElementById("main").innerHTML += header({ link: '/profile?id=0' });
 
 const main = Handlebars.templates.main;
-document.getElementById("main").innerHTML += main(contextAuthor);
+document.getElementById("main").innerHTML += main(contextDonater);
 
 // const form = Handlebars.templates.form;
 // document.getElementById("main").innerHTML += form(contextAuth);
