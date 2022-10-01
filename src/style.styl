@@ -89,6 +89,36 @@
       &_sub
         sub-text()
 
+.form
+  box-sizing: border-box;
+  width: 400px
+  background: bg-main-color
+  flex-column-center()
+  align-items: stretch
+  padding: 40px;
+  gap: 20px;
+  border: 2px solid #008C8C
+  border-radius: radius
+  &__text
+    &_align
+      &_center
+        text-align: center
+    &_type
+      &_logo
+        logo-text()
+      &_header
+        header-text()
+      &_main
+        main-text()
+      &_sub
+        sub-text()
+
+.form-input
+  flex-column-center()
+  align-items: stretch
+  &__text
+    sub-text()
+
 .content 
   flex-column-center()
   width: 80%

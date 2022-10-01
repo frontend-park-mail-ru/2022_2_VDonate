@@ -97,8 +97,64 @@ const contextAuthor = {
   ],
 };
 
+const contextAuth = {
+  formTitle: 'Вход',
+  inputs: [
+    {
+      title: 'Почта',
+      name: 'email',
+      type: 'email',
+    },
+    {
+      title: 'Пароль',
+      name: 'password',
+      type: 'password',
+    },
+  ],
+  buttonTittle: 'Войти',
+  orButton: {
+    title: 'Зарегистрироваться',
+  }
+};
+
+const contextReg = {
+  formTitle: 'Регистрация',
+  inputs: [
+    {
+      title: 'Почта',
+      name: 'email',
+      type: 'email',
+    },
+    {
+      title: 'Никнейм',
+      name: 'nickname',
+      type: 'text',
+    },
+    {
+      title: 'Пароль',
+      name: 'password',
+      type: 'password',
+    },
+    {
+      title: 'Повторите пароль',
+      name: 'password',
+      type: 'password',
+    },
+  ],
+  buttonTittle: 'Зарегистрироваться',
+  orButton: {
+    title: 'Войти',
+  }
+};
+
 const header = Handlebars.templates.header;
-document.getElementById("entry").innerHTML += header();
+document.getElementById("main").innerHTML += header();
 
 const main = Handlebars.templates.main;
-document.getElementById("entry").innerHTML += main(contextAuthor);
+document.getElementById("main").innerHTML += main(contextAuthor);
+
+// const form = Handlebars.templates.form;
+// document.getElementById("main").innerHTML += form(contextAuth);
+
+const footer = Handlebars.templates.footer;
+document.getElementById("entry").innerHTML += footer();

@@ -1,72 +1,67 @@
-<div class="main">
-  {{#with owner}}
-    <div class="profile">
-      <div class="profile__info_size_big">
-        <img class="profile__image_size_big" src="{{avatar}}" alt="{{nickname}}">
-        <span class="profile__text_type_header">{{nickname}}</span>
-        <span class="profile__text_type_sub">{{tags}}</span>
-      </div>
+{{#with owner}}
+  <div class="profile">
+    <div class="profile__info_size_big">
+      <img class="profile__image_size_big" src="{{avatar}}" alt="{{nickname}}">
+      <span class="profile__text_type_header">{{nickname}}</span>
+      <span class="profile__text_type_sub">{{tags}}</span>
     </div>
-  {{/with}}
-  {{#if owner.isAuthor}}
-    <div class="levels">
-      {{#each levels}}
-        <div class="level-block">
-          <span class="level-block__text_type_main">{{title}}</span>
-          <img class="level-block__image" src="{{image}}" alt="{{title}}">
-          <span class="level-block__text_type_header">{{price}}</span>
-          <span class="level-block__text_type_sub">{{priceDescribtion}}</span>
-          <span class="level-block__button">Задонатить</span>
-          <div class="level-description ">
-            {{#each text}}
-              <span class="level-description__text">{{this}}</span>
-            {{/each}}
-          </div>
+  </div>
+{{/with}}
+{{#if owner.isAuthor}}
+  <div class="levels">
+    {{#each levels}}
+      <div class="level-block">
+        <span class="level-block__text_type_main">{{title}}</span>
+        <img class="level-block__image" src="{{image}}" alt="{{title}}">
+        <span class="level-block__text_type_header">{{price}}</span>
+        <span class="level-block__text_type_sub">{{priceDescribtion}}</span>
+        <span class="level-block__button">Задонатить</span>
+        <div class="level-description ">
+          {{#each text}}
+            <span class="level-description__text">{{this}}</span>
+          {{/each}}
         </div>
-      {{/each}}
+      </div>
+    {{/each}}
+  </div>
+  <div class="content">
+    <span class="content__title">Про {{owner.nickname}}</span>
+    <div class="post-block">
+      {{#with description }}
+        <img class="post-block__image" src="{{image}}" alt="description -image">
+        <span class="post-block__text_type_main block__text_align_left">{{text}}</span>
+      {{/with}}
     </div>
-    <div class="content">
-      <span class="content__title">Про {{owner.nickname}}</span>
+    <span class="content__title">Последние посты от {{owner.nickname}}</span>
+    {{#each posts}}
       <div class="post-block">
-        {{#with description }}
-          <img class="post-block__image" src="{{image}}" alt="description -image">
-          <span class="post-block__text_type_main block__text_align_left">{{text}}</span>
-        {{/with}}
+        <img class="post-block__image" src="{{image}}" alt="description -image">
+        <span class="post-block__text_type_main block__text_align_left">{{text}}</span>
+        <div class="sub-block">
+          <div class="button">
+            <img class="button__image" src="../static/icon/like.svg" alt="like">
+            <span class="button__text">{{likesCount}}</span>
+          </div>
+          <div class="button">
+            <img class="button__image" src="../static/icon/comment.svg" alt="comment">
+            <span class="button__text">{{commentsCount}}</span>
+          </div>
+        </div>
       </div>
-      <span class="content__title">Последние посты от {{owner.nickname}}</span>
-      {{#each posts}}
-        <div class="post-block">
-          <img class="post-block__image" src="{{image}}" alt="description -image">
-          <span class="post-block__text_type_main block__text_align_left">{{text}}</span>
-          <div class="sub-block">
-            <div class="button">
-              <img class="button__image" src="../static/icon/like.svg" alt="like">
-              <span class="button__text">{{likesCount}}</span>
-            </div>
-            <div class="button">
-              <img class="button__image" src="../static/icon/comment.svg" alt="comment">
-              <span class="button__text">{{commentsCount}}</span>
-            </div>
+    {{/each}}
+  </div>
+{{else}}
+  <div class="content">
+    {{#each subscriptions}}
+      <div class="profile">
+        <div class="profile__link">
+          <div class="profile__info_size_small">
+            <img class="profile__image_size_very-small profile__image_circle" src="{{avatar}}" alt="{{nickname}}">
+            <span class="profile__text_type_main">{{nickname}}</span>
           </div>
+          <span class="profile__text_type_main profile__text_align-right">{{level}}</span>
         </div>
-      {{/each}}
-    </div>
-  {{else}}
-    <div class="content">
-      {{#each subscriptions}}
-        <div class="profile">
-          <div class="profile__link">
-            <div class="profile__info_size_small">
-              <img class="profile__image_size_very-small profile__image_circle" src="{{avatar}}" alt="{{nickname}}">
-              <span class="profile__text_type_main">{{nickname}}</span>
-            </div>
-            <span class="profile__text_type_main profile__text_align-right">{{level}}</span>
-          </div>
-        </div>
-      {{/each}}
-    </div>
-  {{/if}}
-</div>
-<footer class="footer">
-  <span class="footer__text">Created by VDonate Team</span>
-</footer>
+      </div>
+    {{/each}}
+  </div>
+{{/if}}
