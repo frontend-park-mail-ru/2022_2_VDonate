@@ -15,3 +15,20 @@
 - [Олег Реуцкий](https://github.com/astlok) - backend
 - [Сергей Тяпкин](https://github.com/SergTyapkin) - frontend
 - [Ксения Самойлова](https://github.com/somebody-kseny) - frontend
+
+
+## Основные команды для работы
+#### Инициализация проекта:
+```
+npm i
+```
+
+#### Сборка проекта:
+```
+npm run build
+```
+
+#### Запуск stylus в фоновом режиме:
+```
+npm run stylus
+```

@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap')
+@require 'style/*'
+
+.root
+  background: bg-second-color
+  display: grid
+  min-height: 100vh
+  gap: 20px
+  grid-template-areas:  "sub-header main up"\
+                        "footer footer footer"
+  grid-template-columns: 1fr 60% 1fr
+  grid-template-rows: 1fr min-content 
+  margin-top: 80px 
+
+.header
+  flex-row-center-space()
+  position: fixed 
+  top: 0
+  left: 0
+  right: 0
+  margin: 0% 20%
+  background: bg-main-color
+  border: 2px solid #008C8C
+  border-top-style: none
+  border-radius: 0 0 radius radius
+  padding: 0px 10px
+  gap: 10px
+  &__logo
+    logo-text()
+  &__button-link
+    main-text()
+    text-align: center
+    padding: 5px 10px
+    border-radius: radius
+    cursor: pointer
+    &:hover
+      background: bg-second-color 
+
+.main
+  grid-area: main
+  flex-column-center()
+  padding: 0px
+  gap: 30px
+
+.profile
+  &__info
+    &_size
+      &_small
+        flex-row-center()
+        padding: 0px
+        gap: 10px
+      &_big
+        flex-column-center()
+        gap: 5px
+  &__link
+    flex-row-center-space()
+    padding: 0px 15px
+    gap: 10px
+    // BUG Size must be flexible
+    width: 700px
+    height: 50px
+    background: bg-main-color
+    box-shadow: 0px 4px 4px #00000040
+    border-radius: 10px
+    cursor: pointer
+    &:hover
+      background: bg-second-color
+  &__image
+    &_circle
+      clip-path: circle()
+    &_size
+      &_big
+        height: 200px
+        width: 200px
+      &_small
+        height: 50px
+        width: 50px
+      &_very-small
+        height: 25px
+        width: 25px
+  &__text
+    &_align-right
+      text-align: right 
+    &_type
+      &_header
+        header-text()
+      &_main
+        main-text()
+      &_sub
+        sub-text()
+
+.content 
+  flex-column-center()
+  width: 80%
+  padding: 0px
+  gap: 10px
+  &__title
+    header-text()
+    margin-top: 20px
+
+.levels
+  display: grid
+  grid-template-columns: repeat(3, 1fr)
+  gap: 10px
+
+.level-block
+.post-block
+  flex-column-center()
+  background: bg-main-color
+  padding: 20px
+  border-radius: radius
+  box-shadow: 0px 4px 4px #00000040
+  gap: 5px
+  &__text
+    &_align
+      &_left
+        text-align: left 
+    &_type
+      &_header
+        header-text()
+      &_main
+        main-text()
+      &_sub
+        sub-text()
+
+.level-block
+  &__image
+    height: 100px
+    object-fit: cover
+  &__button
+    main-text()
+    color: content-light-color
+    background: main-color
+    padding: 5px 10px
+    border-radius: radius
+    cursor: pointer
+    &:hover
+      background: main-color-hover
+
+.post-block
+  &__image
+    height: 200px
+    object-fit: cover
+
+.button
+  flex-row-center()
+  padding: 5px 10px
+  border-radius: radius
+  gap: 5px
+  cursor: pointer
+  &&:hover
+    background: bg-second-color
+  &__text
+    sub-text()
+  &__image
+    max-height: 20px
+
+.sub-block
+  width: 100%
+  flex-row-center()
+  gap: 20px
+
+.level-description 
+  flex-column-start()
+  &__text
+    main-text()
+    text-align: left 
+
+.footer
+  flex-row-center-center()
+  grid-area: footer
+  padding: 10px
+  &__text
+    sub-text()
