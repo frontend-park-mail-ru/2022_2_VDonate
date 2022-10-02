@@ -8,7 +8,8 @@ import sign from "../views/sign.js";
 import render404 from "../views/404.js";
 
 /**
- * @const {Object[]} routes Массив объектов с путем и функцией рендера страницы
+ * Массив объектов с путем и функцией рендера страницы
+ * @const {Array<Object>} routes
  */
 const routes = [
     {
@@ -34,7 +35,7 @@ export default class Router {
      * и при входе на сайт запускает процесс аутенфикации
      * @constructor
      * @param {Element} root корень HTML файла, куда будет рендериться страница 
-     * @param {*} api API связи с сервером
+     * @param {Api} api API связи с сервером
      */
     constructor(root, api) {
         this.api = api;
@@ -67,7 +68,7 @@ export default class Router {
 
     /**
      * Функция, которая вызывает рендер страницы по переданому пути
-     * @param {*} loc путь страницы
+     * @param {string} loc путь страницы
      */
     goTo(loc) { 
         console.log(loc);

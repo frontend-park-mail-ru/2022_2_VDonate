@@ -40,7 +40,7 @@ async function createAuthorJSON(router, id) {
   const res = await router.api.getUser(id);
   let author = {
     owner: {
-      nickname: res.body.user,
+      nickname: res.body.username,
       tags: res.body.tag, //'Искусство',
       avatar: res.body.avatar, // "../static/img/0.jpg",
       isAuthor: true
@@ -77,6 +77,7 @@ async function createAuthorJSON(router, id) {
 
 /** 
  * Функция, которая рендерит страницу профиля
+ * @param {Router} router Класс маршрутизации по страницам сайта
  */
 export default async (router) => {
   const params = new URL(location.href).searchParams;

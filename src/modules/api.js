@@ -12,13 +12,13 @@ export default class Api extends Ajax {
      * Интерфейс авторизации пользователя
      * @param {string} username логин пользователя 
      * @param {string} password пароль пользователя
-     * @returns {Object} обьект респонса с полями ок, статус и тело с данными е пользователе 
+     * @returns {Object} объект респонса с полями ок, статус и тело с данными о пользователе 
      */
     loginUser = (username, password) => this.post('/login', { username, password });
 
     /**
      * Интерфейс аутенфикации пользователя
-     * @returns {Object} обьект респонса с полями ок, статус и тело с данными о пользователе 
+     * @returns {Object} объект респонса с полями ок, статус и тело с данными о пользователе 
      */
     authUser = () => this.get('/auth');
 
@@ -30,7 +30,7 @@ export default class Api extends Ajax {
      * @param {string} email почта (необязательный параметр)
      * @param {string} password пароль
      * @param {string} phone телефон (необязательный параметр)
-     * @returns {Object} обьект респонса с полями ок, статус и тело с данными о пользователе
+     * @returns {Object} объект респонса с полями ок, статус и тело с данными о пользователе
      */
     signupUser = (username,
         firstName = '',
@@ -57,9 +57,9 @@ export default class Api extends Ajax {
 
     /**
      * интерфейс для получения постов автора с id
-     * @param {*} from первый необходимый пост
-     * @param {*} count количество постов
-     * @param {*} id id автора
+     * @param {Number} from первый необходимый пост
+     * @param {Number} count количество постов
+     * @param {string} id id автора
      * @returns {Object} обьект респонса с полями ок, статус и тело с данными о пользователе
      */
     getAllPosts = (from, count, id) => this.get('/posts', { from, count, id });
