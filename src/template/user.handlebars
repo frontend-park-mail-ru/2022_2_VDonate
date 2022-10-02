@@ -12,7 +12,7 @@
     <div class="levels">
       {{#each levels}}
         <div class="level-block">
-          <span class="level-block__text_type_main">{{name}}</span>
+          <span class="level-block__text_type_main">{{levelName}}</span>
           <img class="level-block__image" src="{{image}}" alt="image">
           <span class="level-block__text_type_header">{{price}}</span>
           <span class="level-block__text_type_sub">{{priceDescribtion}}</span>
@@ -59,10 +59,10 @@
         <div class="profile">
           <a class="profile__link" href="/users/{{id}}" data-link>
             <div class="profile__info_size_small">
-              <img class="profile__image_size_very-small profile__image_circle" src="{{avatar}}" alt="{{nickname}}">
+              <img class="profile__image_size_very-small profile__image_circle" src="{{avatar}}" alt="{{username}}">
               <span class="profile__text_type_main">{{username}}</span>
             </div>
-            <span class="profile__text_type_main profile__text_align-right">{{name}}</span>
+            <span class="profile__text_type_main profile__text_align-right">{{levelName}}</span>
           </a>
         </div>
       {{/each}}

@@ -171,7 +171,9 @@ body
     border-radius radius
     border 1px solid content-sub-color
 
-
+.error
+  color error-color
+  display none
 
 .content 
   flex-column-center()
@@ -232,7 +234,7 @@ body
   border-radius radius
   gap 5px
   cursor pointer
-  &&:hover
+  &:hover
     background bg-second-color
   &__text
     sub-text()

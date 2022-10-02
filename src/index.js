@@ -14,27 +14,27 @@ const bigText = 'Прежде всего, синтетическое тести�
 
 const contextDonater = {
   owner: {
-    nickname: 'The Best Subscriber',
+    username: 'The Best Subscriber',
     tags: 'Донатер',
     avatar: "../static/img/0.jpg",
     isAuthor: false
   },
   subscriptions: [
     {
-      nickname: 'Кодзима Гений',
-      level: 'Уровень 1',
+      username: 'Кодзима Гений',
+      levelName: 'Уровень 1',
       avatar: "../static/img/1.jpg",
       link: '/profile?id=1',
     },
     {
-      nickname: 'ЯМогучий',
-      level: 'Уровень 5',
+      username: 'ЯМогучий',
+      levelName: 'Уровень 5',
       avatar: "../static/img/2.jpg",
       link: '/profile?id=2',
     },
     {
-      nickname: 'Красная Шапочка',
-      level: 'Уровень 1 000 000',
+      username: 'Красная Шапочка',
+      levelName: 'Уровень 1 000 000',
       avatar: "../static/img/3.jpg",
       link: '/profile?id=3',
     },
@@ -43,47 +43,47 @@ const contextDonater = {
 
 const contextAuthor = {
   owner: {
-    nickname: 'Кодзима Гений',
+    username: 'Кодзима Гений',
     tags: 'Искусство',
     avatar: "../static/img/1.jpg",
-    isAuthor: true
+    isAuthor: true,
+    about: {
+      image: '../static/img/4.jpg',
+      text: bigText,
+    },
   },
   levels: [
     {
-      title: 'Уровень 1',
+      levelName: 'Уровень 1',
       image: "../static/img/4.jpg",
       price: '₽500',
       priceDescribtion: 'за неделю',
-      text: [
+      descriptions: [
         '- мотивация',
         '- очень сильная мотивация'
       ],
     },
     {
-      title: 'Уровень 2',
+      levelName: 'Уровень 2',
       image: "../static/img/5.jpg",
       price: '₽2000',
       priceDescribtion: 'за неделю',
-      text: [
+      descriptions: [
         '- мотивация',
         '- очень сильная мотивация'
       ],
     },
     {
-      title: 'Уровень 300',
+      levelName: 'Уровень 300',
       image: "../static/img/6.jpg",
       price: '₽1 000 000',
       priceDescribtion: 'за неделю',
-      text: [
+      descriptions: [
         '- мотивация',
         '- очень сильная мотивация'
       ],
     },
   ],
-  description: {
-    image: '../static/img/4.jpg',
-    text: bigText,
-  },
   posts: [
     {
       image: '../static/img/4.jpg',
@@ -102,11 +102,12 @@ const contextAuthor = {
 
 const contextLogIn = {
   formTitle: 'Вход',
+  formName: 'login',
   inputs: [
     {
       title: 'Почта',
       name: 'email',
-      type: 'email',
+      type: 'text',
     },
     {
       title: 'Пароль',
@@ -123,11 +124,12 @@ const contextLogIn = {
 
 const contextSignUp = {
   formTitle: 'Регистрация',
+  formName: 'signup',
   inputs: [
     {
       title: 'Почта',
       name: 'email',
-      type: 'email',
+      type: 'text',
     },
     {
       title: 'Никнейм',
@@ -141,7 +143,7 @@ const contextSignUp = {
     },
     {
       title: 'Повторите пароль',
-      name: 'password',
+      name: 'passwordRepeat',
       type: 'password',
     },
   ],
@@ -162,8 +164,8 @@ const contextNav = {
 // const navbar = Handlebars.templates.navbar;
 // document.getElementById("entry").innerHTML += navbar(contextNav);
 
-// const main = Handlebars.templates.main;
-// document.getElementById("entry").innerHTML += main(contextDonater);
+// const main = Handlebars.templates.user;
+// document.getElementById("entry").innerHTML += main(contextAuthor);
 
 const signlog = Handlebars.templates.signlog;
 document.getElementById("entry").innerHTML += signlog(contextSignUp);
