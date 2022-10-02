@@ -31,6 +31,14 @@ export default class Router {
                 this.goTo(target.getAttribute('href'));
             }
         });
+
+        window.addEventListener('popstate', (e)=> {
+            const route = routes.find(obj => window.location.pathname.match(obj.path));
+            if (route != undefined) {
+                route.render(this);
+            }
+        })
+
         const res = api.authUser();
         if (res.status === "200") {
             this.id = res.body.id;
@@ -39,10 +47,7 @@ export default class Router {
             this.id = null;
             this.goTo('/auth/login');
         }
-
     }
-
-    _
 
     goTo(loc) { 
         console.log(loc);
