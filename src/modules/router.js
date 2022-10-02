@@ -1,6 +1,7 @@
 import profile from "../views/profile.js";
 import auth from "../views/auth.js";
 import sign from "../views/sign.js";
+import render404 from "../views/404.js";
 const routes = [
     {
         path: /^\/profile(\?id=\d+)?$/,
@@ -13,7 +14,8 @@ const routes = [
     {
         path: /^\/auth\/signup$/,
         render: sign
-    }
+    },
+
 ]
 
 export default class Router {
@@ -29,20 +31,30 @@ export default class Router {
                 this.goTo(target.getAttribute('href'));
             }
         });
-        this.goTo('/profile');
+        const res = api.authUser();
+        if (res.status === "200") {
+            this.id = res.body.id;
+            this.goTo('/profile');    
+        } else {
+            this.id = null;
+            this.goTo('/auth/login');
+        }
+
     }
-    goTo(loc) {
+
+    _
+
+    goTo(loc) { 
         console.log(loc);
         const route = routes.find(obj => loc.match(obj.path));
         console.log(route);
         if (route === undefined) {
             // может не сработать
             // document.location.href = href;
-
+            render404();
             return;
         }
         window.history.pushState(null, null, loc);
-        // console.log(route);
         route.render(this);
     }
 }
