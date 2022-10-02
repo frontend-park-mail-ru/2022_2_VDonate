@@ -2,8 +2,8 @@
   {{#with owner}}
     <div class="profile">
       <div class="profile__info_size_big">
-        <img class="profile__image_size_big" src="{{avatar}}" alt="{{nickname}}">
-        <span class="profile__text_type_header">{{nickname}}</span>
+        <img class="profile__image_size_big" src="{{avatar}}" alt="{{username}}">
+        <span class="profile__text_type_header">{{username}}</span>
         <span class="profile__text_type_sub">{{tags}}</span>
       </div>
     </div>
@@ -12,13 +12,13 @@
     <div class="levels">
       {{#each levels}}
         <div class="level-block">
-          <span class="level-block__text_type_main">{{title}}</span>
-          <img class="level-block__image" src="{{image}}" alt="{{title}}">
+          <span class="level-block__text_type_main">{{name}}</span>
+          <img class="level-block__image" src="{{image}}" alt="image">
           <span class="level-block__text_type_header">{{price}}</span>
           <span class="level-block__text_type_sub">{{priceDescribtion}}</span>
           <span class="level-block__button">Задонатить</span>
           <div class="level-description ">
-            {{#each text}}
+            {{#each descriptions}}
               <span class="level-description__text">{{this}}</span>
             {{/each}}
           </div>
@@ -26,14 +26,16 @@
       {{/each}}
     </div>
     <div class="content">
-      <span class="content__title">Про {{owner.nickname}}</span>
-      <div class="post-block">
-        {{#with description }}
-          <img class="post-block__image" src="{{image}}" alt="description -image">
-          <span class="post-block__text_type_main block__text_align_left">{{text}}</span>
-        {{/with}}
-      </div>
-      <span class="content__title">Последние посты от {{owner.nickname}}</span>
+      {{#with owner}}
+        <span class="content__title">Про {{username}}</span>
+        <div class="post-block">
+          {{#with about}}
+            <img class="post-block__image" src="{{image}}" alt="description -image">
+            <span class="post-block__text_type_main block__text_align_left">{{text}}</span>
+          {{/with}}
+        </div>
+      {{/with}}
+      <span class="content__title">Последние посты от {{owner.username}}</span>
       {{#each posts}}
         <div class="post-block">
           <img class="post-block__image" src="{{image}}" alt="description -image">
@@ -55,12 +57,12 @@
     <div class="content">
       {{#each subscriptions}}
         <div class="profile">
-          <a class="profile__link" href="{{link}}" data-link>
+          <a class="profile__link" href="/users/{{id}}" data-link>
             <div class="profile__info_size_small">
               <img class="profile__image_size_very-small profile__image_circle" src="{{avatar}}" alt="{{nickname}}">
-              <span class="profile__text_type_main">{{nickname}}</span>
+              <span class="profile__text_type_main">{{username}}</span>
             </div>
-            <span class="profile__text_type_main profile__text_align-right">{{level}}</span>
+            <span class="profile__text_type_main profile__text_align-right">{{name}}</span>
           </a>
         </div>
       {{/each}}

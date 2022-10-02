@@ -159,14 +159,14 @@ const contextNav = {
   },
 }
 
-// const navbar = Handlebars.templates.navbar;
-// document.getElementById("entry").innerHTML += navbar(contextNav);
+const navbar = Handlebars.templates.navbar;
+document.getElementById("entry").innerHTML += navbar(contextNav);
 
-// const main = Handlebars.templates.main;
-// document.getElementById("entry").innerHTML += main(contextDonater);
+const main = Handlebars.templates.main;
+document.getElementById("entry").innerHTML += main(contextDonater);
 
-const signform = Handlebars.templates.signform;
-document.getElementById("entry").innerHTML += signform(contextSignUp);
+// const signlog = Handlebars.templates.signlog;
+// document.getElementById("entry").innerHTML += signlog(contextSignUp);
 
 const footer = Handlebars.templates.footer;
 document.getElementById("entry").innerHTML += footer();

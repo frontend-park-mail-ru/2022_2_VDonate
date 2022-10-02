@@ -6,12 +6,12 @@
       <a class="navbar__link" href="/search" data-link>Поиск авторов</a>
       <a class="navbar__link" href="/subscriptions" data-link>Подписки</a>
       <div class="navbar__profile">
-        <a class="navbar__link profile" href="/users&id={{id}}" data-link>
-          {{#with user}}
+        {{#with user}}
+          <a class="navbar__link profile" href="/users/{{id}}" data-link>
             <img class="profile__image" src="{{image}}" alt="image">
             <span class="profile__text">Мой профиль</span>
-          {{/with}}
-        </a>
+          </a>
+        {{/with}}
         <div class="navbar__menu dropdown-menu">
           <button class="dropdown-menu__button">
             <img class="dropdown-menu__icon" src="../static/icon/menu.svg" alt="menu">
