@@ -1,3 +1,13 @@
+/**
+ * Модуль рендера страницы профиля
+ * @module profile
+ */
+
+/**
+ * Функция, создающая контекст для страницы профиля донатера
+ * @param {*} router класс маршрутизации
+ * @returns {Object} объект с контекстом
+ */
 async function createDonaterJSON(router) {
   const res = await router.api.getUser(router.id);
   let donater = {
@@ -18,8 +28,14 @@ async function createDonaterJSON(router) {
     };
     donater.subscriptions.push(tmp);
   });
+  return donater;
 }
-
+/**
+ * Функция, создающая контекст для страницы профиля автора
+ * @param {*} router класс маршрутизации
+ * @param {string} id id автора
+ * @returns {Object} объект с контекстом
+ */
 async function createAuthorJSON(router, id) {
   const res = await router.api.getUser(id);
   let author = {
@@ -59,6 +75,9 @@ async function createAuthorJSON(router, id) {
   return author;
 }
 
+/** 
+ * Функция, которая рендерит страницу профиля
+ */
 export default async (router) => {
   const params = new URL(location.href).searchParams;
   const id = params.get('id');
