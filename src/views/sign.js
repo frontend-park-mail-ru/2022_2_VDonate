@@ -7,17 +7,18 @@
 /**
  * @const {Object} contextReg объект с контекстом страницы регистрации
  */
-const contextReg = {
+const contextSignUp = {
   formTitle: 'Регистрация',
+  formName: 'signup',
   inputs: [
     {
       title: 'Почта',
       name: 'email',
-      type: 'email',
+      type: 'text',
     },
     {
       title: 'Никнейм',
-      name: 'nickname',
+      name: 'username',
       type: 'text',
     },
     {
@@ -27,35 +28,38 @@ const contextReg = {
     },
     {
       title: 'Повторите пароль',
-      name: 'password',
+      name: 'passwordRepeat',
       type: 'password',
     },
   ],
   buttonTittle: 'Зарегистрироваться',
   orButton: {
     title: 'Войти',
-    link: '/auth/login',
+    link: '/signin',
   }
 };
 
+import { validationForm, formType } from '../modules/validationForm.js';
 
 /**
  * Функция, которая рендерит страницу регистрации
  * @param {Router} router Класс маршрутизации по страницам сайта
  */
 export default async (router) => {
-  const params = new URL(location.href).searchParams;
-  const id = params.get('id');
-  const header = Handlebars.templates.header;
   router.root.innerHTML = '';
 
-  const form = Handlebars.templates.form;
   const el = document.createElement('div');
-  el.id = 'main';
   el.className = 'main';
-  el.innerHTML += form(contextReg);
+  const fr = document.createElement('form');
+  fr.className = 'form';
+  fr.onsubmit = function () {
+    validationForm(formType.signup);
+  };
+  fr.setAttribute("name", formType.signup);
+  const signlog = Handlebars.templates.signlog;
+  fr.innerHTML = signlog(contextSignUp);
+  el.appendChild(fr);
   router.root.appendChild(el);
-
   const footer = Handlebars.templates.footer;
   router.root.innerHTML += footer();
 }

@@ -37,5 +37,5 @@ const contextDonater = {
  */
 const api = new Api('http://192.168.137.17:8080/api/v1');
 
-const footer = Handlebars.templates.footer;
-document.getElementById("entry").innerHTML += footer();
+const root = document.getElementById('entry');
+const router = new Router(root, api);

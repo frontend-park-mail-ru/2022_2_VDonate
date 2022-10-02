@@ -1,4 +1,4 @@
-const formType = {
+export const formType = {
   signup: 'signup',
   login: 'login',
 }
@@ -31,7 +31,7 @@ const usernameValidation = username => {
 }
 
 const repeatPasswordCheck = (origin, repeat) => {
-  if (origin.value !== repeat.value) {
+  if (origin.value === repeat.value) {
     repeat.style = '';
     return true;
   }
@@ -65,7 +65,8 @@ function signupValidation(form) {
   return false;
 }
 
-function validationForm(type) {
+export function validationForm(type) {
+  alert();
   const form = document.forms[type];
   switch (type) {
     case formType.login:

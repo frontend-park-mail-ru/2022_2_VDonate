@@ -49,7 +49,7 @@ export default class Router {
             }
         });
 
-        window.addEventListener('popstate', (e)=> {
+        window.addEventListener('popstate', (e) => {
             const route = routes.find(obj => window.location.pathname.match(obj.path));
             if (route != undefined) {
                 route.render(this);
@@ -64,14 +64,14 @@ export default class Router {
         //     this.id = null;
         //     this.goTo('/auth/login');
         // }
-        this.goTo('/profile?id=1');
+        this.goTo('/auth/signup');
     }
 
     /**
      * Функция, которая вызывает рендер страницы по переданому пути
      * @param {string} loc путь страницы
      */
-    goTo(loc) { 
+    goTo(loc) {
         console.log(loc);
         const route = routes.find(obj => loc.match(obj.path));
         console.log(route);
