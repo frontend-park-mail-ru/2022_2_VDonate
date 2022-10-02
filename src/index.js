@@ -100,7 +100,7 @@ const contextAuthor = {
   ],
 };
 
-const contextAuth = {
+const contextSignIn = {
   formTitle: 'Вход',
   inputs: [
     {
@@ -117,11 +117,11 @@ const contextAuth = {
   buttonTittle: 'Войти',
   orButton: {
     title: 'Зарегистрироваться',
-    link: '/auth/sign',
+    link: '/signup',
   }
 };
 
-const contextReg = {
+const contextSignUp = {
   formTitle: 'Регистрация',
   inputs: [
     {
@@ -148,7 +148,7 @@ const contextReg = {
   buttonTittle: 'Зарегистрироваться',
   orButton: {
     title: 'Войти',
-    link: '/auth/login',
+    link: '/signin',
   }
 };
 
@@ -165,8 +165,8 @@ const contextNav = {
 // const main = Handlebars.templates.main;
 // document.getElementById("entry").innerHTML += main(contextDonater);
 
-const form = Handlebars.templates.form;
-document.getElementById("entry").innerHTML += form(contextReg);
+const signform = Handlebars.templates.signform;
+document.getElementById("entry").innerHTML += signform(contextSignUp);
 
 const footer = Handlebars.templates.footer;
 document.getElementById("entry").innerHTML += footer();
