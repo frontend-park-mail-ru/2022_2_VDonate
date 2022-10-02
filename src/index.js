@@ -100,7 +100,7 @@ const contextAuthor = {
   ],
 };
 
-const contextSignIn = {
+const contextLogIn = {
   formTitle: 'Вход',
   inputs: [
     {
@@ -131,7 +131,7 @@ const contextSignUp = {
     },
     {
       title: 'Никнейм',
-      name: 'nickname',
+      name: 'username',
       type: 'text',
     },
     {
@@ -159,14 +159,14 @@ const contextNav = {
   },
 }
 
-const navbar = Handlebars.templates.navbar;
-document.getElementById("entry").innerHTML += navbar(contextNav);
+// const navbar = Handlebars.templates.navbar;
+// document.getElementById("entry").innerHTML += navbar(contextNav);
 
-const main = Handlebars.templates.main;
-document.getElementById("entry").innerHTML += main(contextDonater);
+// const main = Handlebars.templates.main;
+// document.getElementById("entry").innerHTML += main(contextDonater);
 
-// const signlog = Handlebars.templates.signlog;
-// document.getElementById("entry").innerHTML += signlog(contextSignUp);
+const signlog = Handlebars.templates.signlog;
+document.getElementById("entry").innerHTML += signlog(contextSignUp);
 
 const footer = Handlebars.templates.footer;
 document.getElementById("entry").innerHTML += footer();
