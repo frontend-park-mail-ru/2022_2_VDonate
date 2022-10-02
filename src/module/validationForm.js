@@ -42,10 +42,11 @@ const repeatPasswordCheck = (origin, repeat) => {
 function loginValidation(form) {
   const emailCheck = emailValidation(form.email);
   const passwordCheck = passwordValidation(form.password);
+  const errText = form.querySelector('#error-text');
   if (emailCheck && passwordCheck) {
+    errText.style = '';
     return true;
   }
-  const errText = form.querySelector('#error-text');
   errText.style.display = 'unset';
   return false;
 }
@@ -55,10 +56,11 @@ function signupValidation(form) {
   const passwordCheck = passwordValidation(form.password);
   const usernameCheck = usernameValidation(form.username);
   const repeatCheck = repeatPasswordCheck(form.password, form.passwordRepeat);
+  const errText = form.querySelector('#error-text');
   if (emailCheck && passwordCheck && usernameCheck && repeatCheck) {
+    errText.style = '';
     return true;
   }
-  const errText = form.querySelector('#error-text');
   errText.style.display = 'unset';
   return false;
 }
