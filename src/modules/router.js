@@ -57,13 +57,14 @@ export default class Router {
         })
 
         const res = api.authUser();
-        if (res.status === "200") {
-            this.id = res.body.id;
-            this.goTo('/profile');    
-        } else {
-            this.id = null;
-            this.goTo('/auth/login');
-        }
+        // if (res.status === "200") {
+        //     this.id = res.body.id;
+        //     this.goTo('/profile');    
+        // } else {
+        //     this.id = null;
+        //     this.goTo('/auth/login');
+        // }
+        this.goTo('/profile?id=1');
     }
 
     /**

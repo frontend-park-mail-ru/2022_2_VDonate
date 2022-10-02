@@ -5,7 +5,7 @@
 
 /**
  * Функция, создающая контекст для страницы профиля донатера
- * @param {*} router класс маршрутизации
+ * @param {Router} router класс маршрутизации
  * @returns {Object} объект с контекстом
  */
 async function createDonaterJSON(router) {
@@ -14,25 +14,25 @@ async function createDonaterJSON(router) {
     owner: {
       nickname: res.body.username,
       tags: 'Донатер',
-      avatar: res.body.avatar, // "../static/img/0.jpg",
+      avatar: "../static/img/0.jpg", //res.body.avatar,
       isAuthor: false
     },
     subscriptions: []
   }
-  res.body.userSubscriptions.forEach((sub) => {
-    const tmp = {
-      nickname: sub.name,
-      level: `Уровень ${sub.level}`,
-      avatar: sub.avatar, //"../static/img/1.jpg",
-      link: `/profile?id=${sub.id}`
-    };
-    donater.subscriptions.push(tmp);
-  });
+  // res.body.userSubscriptions.forEach((sub) => {
+  //   const tmp = {
+  //     nickname: sub.name,
+  //     level: `Уровень ${sub.level}`,
+  //     avatar: sub.avatar, //"../static/img/1.jpg",
+  //     link: `/profile?id=${sub.id}`
+  //   };
+  //   donater.subscriptions.push(tmp);
+  // });
   return donater;
 }
 /**
  * Функция, создающая контекст для страницы профиля автора
- * @param {*} router класс маршрутизации
+ * @param {Router} router класс маршрутизации
  * @param {string} id id автора
  * @returns {Object} объект с контекстом
  */
@@ -41,37 +41,37 @@ async function createAuthorJSON(router, id) {
   let author = {
     owner: {
       nickname: res.body.username,
-      tags: res.body.tag, //'Искусство',
-      avatar: res.body.avatar, // "../static/img/0.jpg",
+      tags: 'Искусство',//res.body.tag,
+      avatar: "../static/img/0.jpg",// res.body.avatar, 
       isAuthor: true
     },
     levels: [],
     description: {
-      image: res.body.descriptionImage,//'../static/img/4.jpg',
+      image: '../static/img/4.jpg', // res.body.descriptionImage,
       text: res.body.about,
     },
     posts: []
   };
-  res.body.authorSubscriptions.forEach((sub) => {
-    const tmp = {
-      title: `Уровень ${sub.level}`,
-      image: sub.image, //"../static/img/4.jpg",
-      price: sub.price, //'₽500',
-      priceDescribtion: sub.priceDescribtion, //'за неделю',
-      text: sub.text // ['- мотивация', '- очень сильная мотивация'],
-    };
-    author.levels.push(tmp);
-  });
-  const recievedPosts = await router.api.getAllPosts(1, 20, id); //обсудить сколько постов нам нужно
-  recievedPosts.body.posts.forEach((post) => {
-    const tmp = {
-      image: post.workOfArt, //'../static/img/4.jpg',
-      text: post.about,
-      likesCount: post.likes, //5,
-      commentsCount: post.comments //15,
-    };
-    author.posts.push(tmp);
-  });
+  // res.body.authorSubscriptions.forEach((sub) => {
+  //   const tmp = {
+  //     title: `Уровень ${sub.level}`,
+  //     image: sub.image, //"../static/img/4.jpg",
+  //     price: sub.price, //'₽500',
+  //     priceDescribtion: sub.priceDescribtion, //'за неделю',
+  //     text: sub.text // ['- мотивация', '- очень сильная мотивация'],
+  //   };
+  //   author.levels.push(tmp);
+  // });
+  // const recievedPosts = await router.api.getAllPosts(1, 20, id); //обсудить сколько постов нам нужно
+  // recievedPosts.body.posts.forEach((post) => {
+  //   const tmp = {
+  //     image: post.workOfArt, //'../static/img/4.jpg',
+  //     text: post.about,
+  //     likesCount: post.likes, //5,
+  //     commentsCount: post.comments //15,
+  //   };
+  //   author.posts.push(tmp);
+  // });
   return author;
 }
 
