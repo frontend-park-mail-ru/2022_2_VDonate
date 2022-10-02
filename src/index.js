@@ -152,11 +152,18 @@ const contextReg = {
   }
 };
 
-const header = Handlebars.templates.header;
-document.getElementById("main").innerHTML += header({ link: '/profile?id=0' });
+const contextNav = {
+  user: {
+    image: '../static/img/0.jpg',
+    id: 0,
+  },
+}
+
+const navbar = Handlebars.templates.navbar;
+document.getElementById("entry").innerHTML += navbar(contextNav);
 
 const main = Handlebars.templates.main;
-document.getElementById("main").innerHTML += main(contextDonater);
+document.getElementById("entry").innerHTML += main(contextDonater);
 
 // const form = Handlebars.templates.form;
 // document.getElementById("main").innerHTML += form(contextAuth);
