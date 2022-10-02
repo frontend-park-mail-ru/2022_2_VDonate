@@ -159,14 +159,14 @@ const contextNav = {
   },
 }
 
-const navbar = Handlebars.templates.navbar;
-document.getElementById("entry").innerHTML += navbar(contextNav);
+// const navbar = Handlebars.templates.navbar;
+// document.getElementById("entry").innerHTML += navbar(contextNav);
 
-const main = Handlebars.templates.main;
-document.getElementById("entry").innerHTML += main(contextDonater);
+// const main = Handlebars.templates.main;
+// document.getElementById("entry").innerHTML += main(contextDonater);
 
-// const form = Handlebars.templates.form;
-// document.getElementById("main").innerHTML += form(contextAuth);
+const form = Handlebars.templates.form;
+document.getElementById("entry").innerHTML += form(contextReg);
 
 const footer = Handlebars.templates.footer;
 document.getElementById("entry").innerHTML += footer();
