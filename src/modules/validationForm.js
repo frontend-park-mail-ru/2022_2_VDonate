@@ -3,6 +3,11 @@ const formType = {
   login: 'login',
 }
 
+/**
+ * Проверка поля ввода почты на верный формат
+ * @param {Element} email элемент ввода почты
+ * @returns {bool} результат проверки
+ */
 const emailCheck = email => {
   if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value)) {
     email.style = '';
@@ -12,6 +17,11 @@ const emailCheck = email => {
   return false;
 }
 
+/**
+ * Проверка поля ввода псевдонима на верный формат
+ * @param {Element} username элемент ввода псевдонима
+ * @returns {bool} результат проверки
+ */
 const usernameCheck = username => {
   if (username.value !== '') {
     username.style = '';
@@ -21,6 +31,11 @@ const usernameCheck = username => {
   return false;
 }
 
+/**
+ * Проверка поля ввода пароля на верный формат
+ * @param {Element} password элемент ввода пароля
+ * @returns {bool} результат проверки
+ */
 const passwordCheck = password => {
   if (/^[\S]+$/.test(password.value)) {
     password.style = '';
@@ -30,6 +45,12 @@ const passwordCheck = password => {
   return false;
 }
 
+/**
+ * Проверка поля повторного ввода пароля совподение с полем ввода пароля
+ * @param {Element} origin элемент ввода пароля
+ * @param {Element} repeat элемент повторного ввода пароля
+ * @returns {bool} результат проверки
+ */
 const repeatPasswordCheck = (origin, repeat) => {
   if (repeat.value != '' && origin.value === repeat.value) {
     repeat.style = '';
@@ -39,6 +60,11 @@ const repeatPasswordCheck = (origin, repeat) => {
   return false;
 }
 
+/**
+ * Проверка проверка формы входа на верный формат входных полей
+ * @param {HTMLFormElement} form элемент формы входа для валидации
+ * @returns {bool} результат проверки
+ */
 function loginValidation(form) {
   const emailChecked = emailCheck(form.email);
   const passwordChecked = passwordCheck(form.password);
@@ -51,6 +77,11 @@ function loginValidation(form) {
   return false;
 }
 
+/**
+ * Проверка проверка формы регистрации на верный формат входных полей
+ * @param {HTMLFormElement} form элемент формы регистрации для валидации
+ * @returns {bool} результат проверки
+ */
 function signupValidation(form) {
   const emailChecked = emailCheck(form.email);
   const passwordChecked = passwordCheck(form.password);
@@ -65,6 +96,11 @@ function signupValidation(form) {
   return false;
 }
 
+/**
+ * Валидация формы
+ * @param {HTMLFormElement} form элемент формы регистрации для валидации
+ * @returns {bool} результат проверки
+ */
 function validationForm(form) {
   switch (form.name) {
     case formType.login:
@@ -77,10 +113,8 @@ function validationForm(form) {
 }
 
 // HACK Пока как заглушка
-
 function processForm(form) {
   if (validationForm(form)) {
     form.reset();
   }
-
 }
