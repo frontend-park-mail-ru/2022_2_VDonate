@@ -127,22 +127,26 @@ const contextSignUp = {
   formName: 'signup',
   inputs: [
     {
-      title: 'Почта',
+      title: 'Логин',
+      placeholder: 'example@example.ru',
       name: 'email',
       type: 'text',
     },
     {
-      title: 'Никнейм',
+      title: 'Псевдоним',
+      placeholder: 'My username',
       name: 'username',
       type: 'text',
     },
     {
       title: 'Пароль',
+      placeholder: 'Любые символы, кроме пробелов',
       name: 'password',
       type: 'password',
     },
     {
       title: 'Повторите пароль',
+      placeholder: 'Любые символы, кроме пробелов',
       name: 'passwordRepeat',
       type: 'password',
     },
