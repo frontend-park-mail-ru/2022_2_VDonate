@@ -13,7 +13,7 @@ const emailValidation = email => {
 }
 
 const passwordValidation = password => {
-  if (/^[\S+]$/.test(password.value)) {
+  if (/^[\S]+$/.test(password.value)) {
     password.style = '';
     return true;
   }
