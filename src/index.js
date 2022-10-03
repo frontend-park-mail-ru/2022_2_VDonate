@@ -105,12 +105,14 @@ const contextLogIn = {
   formName: 'login',
   inputs: [
     {
-      title: 'Почта',
+      title: 'Логин',
+      placeholder: 'example@example.ru',
       name: 'email',
       type: 'text',
     },
     {
       title: 'Пароль',
+      placeholder: 'Любые символы, кроме пробелов',
       name: 'password',
       type: 'password',
     },
