@@ -13,7 +13,7 @@ const emailValidation = email => {
 }
 
 const passwordValidation = password => {
-  if (/^\S+\w+\S+$/.test(password.value)) {
+  if (/^[\S+]$/.test(password.value)) {
     password.style = '';
     return true;
   }
@@ -31,7 +31,7 @@ const usernameValidation = username => {
 }
 
 const repeatPasswordCheck = (origin, repeat) => {
-  if (origin.value !== repeat.value) {
+  if (repeat.value != '' && origin.value === repeat.value) {
     repeat.style = '';
     return true;
   }
@@ -65,9 +65,8 @@ function signupValidation(form) {
   return false;
 }
 
-function validationForm(type) {
-  const form = document.forms[type];
-  switch (type) {
+function validationForm(form) {
+  switch (form.name) {
     case formType.login:
       return loginValidation(form);
     case formType.signup:
