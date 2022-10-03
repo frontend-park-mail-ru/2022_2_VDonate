@@ -5,10 +5,9 @@
       <span class="form__text form__text_type_header">{{formTitle}}</span>
       <span id="error-text" class="form__text form__text_type_main error">Неверно введены данные!</span>
       {{#each inputs}}
-        <div class="form__input input">
-          <span class="input__text">{{title}}</span>
+        <lable class="form__input input input__lable">{{title}}
           <input class="input__input" type="{{type}}" name="{{name}}" placeholder="{{placeholder}}">
-        </div>
+        </lable>
       {{/each}}
       <input class="form__button form__text_type_main" type="submit" value="{{buttonTittle}}">
       {{#with orButton}}
