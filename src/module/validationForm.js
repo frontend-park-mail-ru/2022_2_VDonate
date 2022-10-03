@@ -3,7 +3,7 @@ const formType = {
   login: 'login',
 }
 
-const emailValidation = email => {
+const emailCheck = email => {
   if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value)) {
     email.style = '';
     return true;
@@ -12,7 +12,7 @@ const emailValidation = email => {
   return false;
 }
 
-const usernameValidation = username => {
+const usernameCheck = username => {
   if (username.value !== '') {
     username.style = '';
     return true;
@@ -21,7 +21,7 @@ const usernameValidation = username => {
   return false;
 }
 
-const passwordValidation = password => {
+const passwordCheck = password => {
   if (/^[\S]+$/.test(password.value)) {
     password.style = '';
     return true;
@@ -40,10 +40,10 @@ const repeatPasswordCheck = (origin, repeat) => {
 }
 
 function loginValidation(form) {
-  const emailCheck = emailValidation(form.email);
-  const passwordCheck = passwordValidation(form.password);
+  const emailChecked = emailCheck(form.email);
+  const passwordChecked = passwordCheck(form.password);
   const errText = form.querySelector('#error-text');
-  if (emailCheck && passwordCheck) {
+  if (emailChecked && passwordChecked) {
     errText.style = '';
     return true;
   }
@@ -52,12 +52,12 @@ function loginValidation(form) {
 }
 
 function signupValidation(form) {
-  const emailCheck = emailValidation(form.email);
-  const passwordCheck = passwordValidation(form.password);
-  const usernameCheck = usernameValidation(form.username);
-  const repeatCheck = repeatPasswordCheck(form.password, form.passwordRepeat);
+  const emailChecked = emailCheck(form.email);
+  const passwordChecked = passwordCheck(form.password);
+  const usernameChecked = usernameCheck(form.username);
+  const repeatChecked = repeatPasswordCheck(form.password, form.passwordRepeat);
   const errText = form.querySelector('#error-text');
-  if (emailCheck && passwordCheck && usernameCheck && repeatCheck) {
+  if (emailChecked && passwordChecked && usernameChecked && repeatChecked) {
     errText.style = '';
     return true;
   }
@@ -74,4 +74,13 @@ function validationForm(form) {
     default:
       return false;
   }
+}
+
+// HACK Пока как заглушка
+
+function processForm(form) {
+  if (validationForm(form)) {
+    form.reset();
+  }
+
 }
