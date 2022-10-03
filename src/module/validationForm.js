@@ -12,21 +12,21 @@ const emailValidation = email => {
   return false;
 }
 
-const passwordValidation = password => {
-  if (/^[\S]+$/.test(password.value)) {
-    password.style = '';
-    return true;
-  }
-  password.style.borderColor = 'red';
-  return false;
-}
-
 const usernameValidation = username => {
   if (username.value !== '') {
     username.style = '';
     return true;
   }
   username.style.borderColor = 'red';
+  return false;
+}
+
+const passwordValidation = password => {
+  if (/^[\S]+$/.test(password.value)) {
+    password.style = '';
+    return true;
+  }
+  password.style.borderColor = 'red';
   return false;
 }
 
