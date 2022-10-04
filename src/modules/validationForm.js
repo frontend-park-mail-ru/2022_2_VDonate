@@ -1,15 +1,25 @@
+/**
+ * Виды форм
+ * @enum {string}
+ */
 const formType = {
   signup: 'signup',
   login: 'login',
 }
 
+/**
+ * Максимальные длины частей почтового адреса
+ * @type {object}
+ * @property {int} local длина локальной части
+ * @property {int} domainLable длина одного уровня доменной части
+ */
 const emailSize = {
   local: 64,
   domainLable: 63,
 }
 
 /**
- * Проверяет на допустипую длину локальную и доменную часть почтового адреса
+ * Проверка на допустимую длину локальную и доменную часть почтового адреса
  * @param {string} email валидный почтовый адрес 
  * @returns {bool}
  */
@@ -17,8 +27,10 @@ const emailLengthCheck = email => {
   const tmpSplit = email.split('@');
   const local = tmpSplit[0];
   const domain = tmpSplit[1].split('.');
-  if (local.length <= 4
-    && domain.reduce((prev, current) => prev && current.length <= 3, true)) {
+  if (local.length <= emailSize.local
+    && domain.reduce((prev, current) => {
+      return prev && current.length <= emailSize.domainLable
+    }, true)) {
     return true
   }
   return false;
