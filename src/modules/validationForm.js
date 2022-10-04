@@ -87,7 +87,9 @@ const usernameCheck = username => {
  * @returns {bool} результат проверки
  */
 const passwordCheck = password => {
-  if (/^[\S]+$/.test(password.value)) {
+  if (password.value.length >= sizes.password.min
+    && password.value.length <= sizes.password.max
+    && /^.+$/.test(password.value)) {
     password.style = '';
     return true;
   }
