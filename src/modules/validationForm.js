@@ -165,7 +165,7 @@ function validationForm(form) {
  * Заглушка
  * @param {HTMLFormElement} form 
  */
-function processForm(form) {
+export default function processForm(form) {
   const errorMessage = form.querySelector('#error-msg');
   if (validationForm(form)) {
     errorMessage.className = 'form__error-msg form__error-msg_disable';
