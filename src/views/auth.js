@@ -4,18 +4,21 @@
  */
 
 /**
- * @const {Object} contextAuth обьект с контекстом страницы авторизации
+ * @const {Object} contextLogIn обьект с контекстом страницы авторизации
  */
-const contextAuth = {
+const contextLogIn = {
   formTitle: 'Вход',
+  formName: 'login',
   inputs: [
     {
-      title: 'Почта',
+      title: 'Логин',
+      placeholder: 'example@example.ru',
       name: 'email',
-      type: 'email',
+      type: 'text',
     },
     {
       title: 'Пароль',
+      placeholder: 'Любые символы, кроме пробелов',
       name: 'password',
       type: 'password',
     },
@@ -23,7 +26,7 @@ const contextAuth = {
   buttonTittle: 'Войти',
   orButton: {
     title: 'Зарегистрироваться',
-    link: '/auth/sign',
+    link: '/signup',
   }
 };
 
@@ -35,7 +38,7 @@ export default async (router) => {
   router.root.innerHTML = '';
 
   const signlog = Handlebars.templates.signlog;
-  router.root.innerHTML += signlog(contextAuth);
+  router.root.innerHTML += signlog(contextLogIn);
 
   const footer = Handlebars.templates.footer;
   router.root.innerHTML += footer();

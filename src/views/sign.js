@@ -5,36 +5,41 @@
 
 
 /**
- * @const {Object} contextReg объект с контекстом страницы регистрации
+ * @const {Object} contextSignUp объект с контекстом страницы регистрации
  */
-const contextReg = {
+const contextSignUp = {
   formTitle: 'Регистрация',
+  formName: 'signup',
   inputs: [
     {
-      title: 'Почта',
+      title: 'Логин',
+      placeholder: 'example@example.ru',
       name: 'email',
-      type: 'email',
+      type: 'text',
     },
     {
-      title: 'Никнейм',
-      name: 'nickname',
+      title: 'Псевдоним',
+      placeholder: 'My username',
+      name: 'username',
       type: 'text',
     },
     {
       title: 'Пароль',
+      placeholder: 'Любые символы, кроме пробелов',
       name: 'password',
       type: 'password',
     },
     {
       title: 'Повторите пароль',
-      name: 'password',
+      placeholder: 'Любые символы, кроме пробелов',
+      name: 'passwordRepeat',
       type: 'password',
     },
   ],
   buttonTittle: 'Зарегистрироваться',
   orButton: {
     title: 'Войти',
-    link: '/auth/login',
+    link: '/signin',
   }
 };
 
@@ -44,17 +49,10 @@ const contextReg = {
  * @param {Router} router Класс маршрутизации по страницам сайта
  */
 export default async (router) => {
-  const params = new URL(location.href).searchParams;
-  const id = params.get('id');
-  const header = Handlebars.templates.header;
   router.root.innerHTML = '';
 
-  const form = Handlebars.templates.form;
-  const el = document.createElement('div');
-  el.id = 'main';
-  el.className = 'main';
-  el.innerHTML += form(contextReg);
-  router.root.appendChild(el);
+  const signlog = Handlebars.templates.signlog;
+  router.root.innerHTML += signlog(contextSignUp);
 
   const footer = Handlebars.templates.footer;
   router.root.innerHTML += footer();
