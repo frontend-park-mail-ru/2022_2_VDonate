@@ -11,7 +11,7 @@ const root = document.getElementById('entry');
 /**
  * @const {Api} api класс интерфейса для связи с сервером
  */
-const api = new Api('vdonate.ml/api/v1');
+const api = new Api('/api/v1');
 
 /**
  * @const {Router} router класс маршрутизации по страницам сайта
