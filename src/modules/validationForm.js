@@ -4,7 +4,7 @@ import Router from "./router";
  * Виды форм
  * @enum {string}
  */
-const formType = {
+export const formType = {
   signup: 'signup',
   login: 'login',
 }
@@ -165,7 +165,7 @@ function validationForm(form) {
  * Заглушка
  * @param {HTMLFormElement} form 
  */
-export default function processForm(form, router) {
+export function processForm(form, router) {
   const errorMessage = form.querySelector('#error-msg');
   if (validationForm(form)) {
     errorMessage.className = 'form__error-msg form__error-msg_disable';
