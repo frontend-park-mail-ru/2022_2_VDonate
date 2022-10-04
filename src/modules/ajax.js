@@ -21,7 +21,7 @@ export default class Ajax {
      * @param {Object} data данные для query-параметров
      * @returns {Object} объект ответа с полями { ok, status, body}
      */
-    get(url, data={}) {
+    get(url, data = {}) {
         let urlWithParams = url + this._dataToQuery(data);
         return this._responseToJson(this._request(urlWithParams, 'GET', {}));
     }
@@ -69,7 +69,7 @@ export default class Ajax {
         Object
             .entries(data)
             .map((key, value) => {
-                queryString += key + '='+ value;
+                queryString += key + '=' + value;
             })
         return queryString;
     }
@@ -108,10 +108,10 @@ export default class Ajax {
     async _responseToJson(fetchPromise) {
         const response = await fetchPromise;
         const jsoned = {};
-        jsoned.body = JSON.parse(await response.text()) || {};
+        jsoned.body = JSON.parse(await response.json()) || {};
         jsoned.ok = response.ok;
         jsoned.status = response.status;
         return jsoned;
     }
-    
+
 }
