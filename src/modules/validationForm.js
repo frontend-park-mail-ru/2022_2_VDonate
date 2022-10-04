@@ -127,9 +127,9 @@ const repeatPasswordCheck = (origin, repeat) => {
  * @returns {bool} результат проверки
  */
 const loginValidation = form => {
-  const emailChecked = emailCheck(form.email);
+  const usernameChecked = usernameCheck(form.username);
   const passwordChecked = passwordCheck(form.password);
-  return emailChecked && passwordChecked;
+  return usernameChecked && passwordChecked;
 }
 
 /**

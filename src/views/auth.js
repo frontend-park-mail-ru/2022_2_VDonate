@@ -12,9 +12,9 @@ const contextLogIn = {
   formTitle: 'Вход',
   inputs: [
     {
-      title: 'Логин',
-      placeholder: 'example@example.ru',
-      name: 'email',
+      title: 'Псевдоним',
+      placeholder: 'Username',
+      name: 'username',
       type: 'text',
     },
     {
