@@ -8,10 +8,17 @@ const formType = {
 }
 
 /**
- * Длины полей
- * @type {object}
- * @property {int} local длина локальной части почты
- * @property {int} domainLable длина одного уровня доменной части почты
+ * Ограничения длин полей
+ * @namespace
+ * @property {int} localMax максимальная длина локальной части почты
+ * @property {int} domainLableMax максимальная длина одного уровня доменной 
+ * части почты
+ * @property {object} username значения длин псевдонима
+ * @property {int} username.max значение максимальной длины псевдонима
+ * @property {int} username.min значение минимальной длины псевдонима
+ * @property {object} password значения длин пароля
+ * @property {int} password.max значение максимальной длины пароля
+ * @property {int} password.min значение минимальной длины пароля
  */
 const sizes = {
   localMax: 64,
@@ -22,8 +29,8 @@ const sizes = {
   },
   password: {
     min: 6,
-    max: 30
-  }
+    max: 30,
+  },
 }
 
 /**
