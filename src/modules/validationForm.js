@@ -159,13 +159,16 @@ function validationForm(form) {
   }
 }
 
-// HACK Пока как заглушка
+/**
+ * Заглушка
+ * @param {HTMLFormElement} form 
+ */
 function processForm(form) {
   const errorMessage = form.querySelector('#error-msg');
   if (validationForm(form)) {
-    errorMessage.innerHTML = '';
+    errorMessage.className = 'form__error-msg form__error-msg_disable';
     form.reset();
   } else {
-    errorMessage.innerHTML = 'Неверно введены данные!';
+    errorMessage.className = 'form__error-msg form__error-msg_enable';
   }
 }

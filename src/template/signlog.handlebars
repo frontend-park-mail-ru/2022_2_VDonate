@@ -3,9 +3,7 @@
     <div class="form__back">
       <span class="form__text logo">ВДонате</span>
       <span class="form__text form__text_type_header">{{formTitle}}</span>
-      <div class="form__text form__text_type_main error">
-        <span id="error-msg" class="error__message"></span>
-      </div>
+      <span id="error-msg" class="form__error-msg form__error-msg_disable">Неверно введены данные!</span>
       {{#each inputs}}
         <lable class="form__input input input__lable">{{title}}
           <input class="input__input" type="{{type}}" name="{{name}}" placeholder="{{placeholder}}">
