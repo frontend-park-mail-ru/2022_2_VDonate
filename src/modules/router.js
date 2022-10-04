@@ -38,8 +38,6 @@ class Router {
      * @param {Api} api API связи с сервером
      */
     constructor() {
-        this.api = api;
-        this.root = root;
         window.addEventListener('click', (e) => {
             const target = e.target.closest("a[data-link]");
             if (target != null) {
