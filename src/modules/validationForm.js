@@ -14,8 +14,8 @@ const formType = {
  * @property {int} domainLable длина одного уровня доменной части почты
  */
 const sizes = {
-  local: 64,
-  domainLable: 63,
+  localMax: 64,
+  domainLableMax: 63,
   username: {
     min: 1,
     max: 20,
@@ -28,16 +28,16 @@ const sizes = {
 
 /**
  * Проверка на допустимую длину локальную и доменную часть почтового адреса
- * @param {string} email валидный почтовый адрес 
+ * @param {string} email валидный по формату почтовый адрес 
  * @returns {bool}
  */
 const emailLengthCheck = email => {
   const tmpSplit = email.split('@');
   const local = tmpSplit[0];
   const domain = tmpSplit[1].split('.');
-  if (local.length <= sizes.local
+  if (local.length <= sizes.localMax
     && domain.reduce((prev, current) => {
-      return prev && current.length <= sizes.domainLable
+      return prev && current.length <= sizes.domainLableMax
     }, true)) {
     return true
   }
@@ -52,7 +52,7 @@ const emailLengthCheck = email => {
 const emailCheck = email => {
   const localSyms = /[a-zA-Z0-9!#\$&%_+-]/;
   const localReg = new RegExp(`^${localSyms.source}+(\\.?${localSyms.source}+)*`);
-  const domainReg = /[0-9a-zA-Z]+([\.-]?[0-9a-zA-Z]+)*(\.?[0-9a-zA-Z]+)$/;
+  const domainReg = /[0-9a-zA-Z]([\.-]?[0-9a-zA-Z]+)*$/;
   const emailReg = new RegExp(localReg.source + '@' + domainReg.source);
   if (emailReg.test(email.value) && emailLengthCheck(email.value)) {
     email.style = '';
