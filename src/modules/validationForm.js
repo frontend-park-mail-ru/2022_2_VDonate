@@ -8,14 +8,22 @@ const formType = {
 }
 
 /**
- * Максимальные длины частей почтового адреса
+ * Длины полей
  * @type {object}
- * @property {int} local длина локальной части
- * @property {int} domainLable длина одного уровня доменной части
+ * @property {int} local длина локальной части почты
+ * @property {int} domainLable длина одного уровня доменной части почты
  */
-const emailSize = {
+const sizes = {
   local: 64,
   domainLable: 63,
+  username: {
+    min: 1,
+    max: 20,
+  },
+  password: {
+    min: 6,
+    max: 30
+  }
 }
 
 /**
@@ -27,9 +35,9 @@ const emailLengthCheck = email => {
   const tmpSplit = email.split('@');
   const local = tmpSplit[0];
   const domain = tmpSplit[1].split('.');
-  if (local.length <= emailSize.local
+  if (local.length <= sizes.local
     && domain.reduce((prev, current) => {
-      return prev && current.length <= emailSize.domainLable
+      return prev && current.length <= sizes.domainLable
     }, true)) {
     return true
   }
@@ -60,7 +68,12 @@ const emailCheck = email => {
  * @returns {bool} результат проверки
  */
 const usernameCheck = username => {
-  if (username.value !== '') {
+  const usernameSyms = /[\d\wа-яёА-ЯЁ]/;
+  const usernameReg =
+    new RegExp(`^${usernameSyms.source}( ?${usernameSyms.source})*$`);
+  if (usernameReg.test(username.value)
+    && username.value.length >= sizes.standardMin
+    && username.value.length <= sizes.username) {
     username.style = '';
     return true;
   }
