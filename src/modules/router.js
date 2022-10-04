@@ -54,14 +54,20 @@ class Router {
         });
     }
 
-    setRoot(root) {
-        this.root = root;
-        return this;
+    get root() {
+        return this._root;
     }
 
-    setApi(api) {
-        this.api = api;
-        return this;
+    set root(value) {
+        this._root = value;
+    }
+
+    get api() {
+        return this._api;
+    }
+
+    set api(value) {
+        this._api = value;
     }
 
     userAuth() {

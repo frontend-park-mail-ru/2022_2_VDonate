@@ -16,4 +16,7 @@ const api = new Api('/api/v1');
 /**
  * @const {Router} router класс маршрутизации по страницам сайта
  */
-routerSingleton.setRoot(root).setApi(api).userAuth();
+routerSingleton.root = root;
+routerSingleton.api = api;
+routerSingleton.userAuth();
+
