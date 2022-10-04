@@ -76,7 +76,7 @@ export default class Router {
     }
 
     userAuth() {
-        const res = api.authUser();
+        const res = this.api.authUser();
         if (res.status === "200") {
             this.id = res.body.id;
             this.goTo('/profile');
