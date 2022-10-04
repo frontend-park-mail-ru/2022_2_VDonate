@@ -9,11 +9,11 @@ import Api from './modules/api.js';
 const root = document.getElementById('entry');
 
 /**
- * @const {*} api класс интерфейса для связи с сервером
+ * @const {Api} api класс интерфейса для связи с сервером
  */
-const api = new Api('http://192.168.137.17:8080/api/v1');
+const api = new Api('vdonate.');
 
 /**
- * @const {*} router класс маршрутизации по страницам сайта
+ * @const {Router} router класс маршрутизации по страницам сайта
  */
 const router = new Router(root, api);

@@ -34,7 +34,7 @@ export default class Router {
      * Конструктор, добавляющий обработку 2 событий: переход между страницами и переход вперед/назад
      * и при входе на сайт запускает процесс аутенфикации
      * @constructor
-     * @param {Element} root корень HTML файла, куда будет рендериться страница 
+     * @param {Element} root указатель на блок, куда будет рендериться страница 
      * @param {Api} api API связи с сервером
      */
     constructor(root, api) {
@@ -44,7 +44,6 @@ export default class Router {
             const target = e.target.closest("a[data-link]");
             if (target != null) {
                 e.preventDefault();
-                console.log(target);
                 this.goTo(target.getAttribute('href'));
             }
         });
@@ -54,17 +53,17 @@ export default class Router {
             if (route != undefined) {
                 route.render(this);
             }
-        })
+        });
 
         const res = api.authUser();
-        // if (res.status === "200") {
-        //     this.id = res.body.id;
-        //     this.goTo('/profile');    
-        // } else {
-        //     this.id = null;
-        //     this.goTo('/auth/login');
-        // }
-        this.goTo('/profile?id=1');
+        if (res.status === "200") {
+            this.id = res.body.id;
+            this.goTo('/profile');    
+        } else {
+            this.id = null;
+            this.goTo('/auth/login');
+        }
+        // this.goTo('/profile?id=1');
     }
 
     /**
@@ -76,8 +75,6 @@ export default class Router {
         const route = routes.find(obj => loc.match(obj.path));
         console.log(route);
         if (route === undefined) {
-            // может не сработать
-            // document.location.href = href;
             render404();
             return;
         }

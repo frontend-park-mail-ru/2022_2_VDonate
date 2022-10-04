@@ -12,13 +12,13 @@ export default class Api extends Ajax {
      * Интерфейс авторизации пользователя
      * @param {string} username логин пользователя 
      * @param {string} password пароль пользователя
-     * @returns {Object} объект респонса с полями ок, статус и тело с данными о пользователе 
+     * @returns {Object} объект ответа с полями {ok, status, body} 
      */
     loginUser = (username, password) => this.post('/login', { username, password });
 
     /**
      * Интерфейс аутенфикации пользователя
-     * @returns {Object} объект респонса с полями ок, статус и тело с данными о пользователе 
+     * @returns {Object} объект ответа с полями {ok, status, body}
      */
     authUser = () => this.get('/auth');
 
@@ -30,7 +30,7 @@ export default class Api extends Ajax {
      * @param {string} email почта (необязательный параметр)
      * @param {string} password пароль
      * @param {string} phone телефон (необязательный параметр)
-     * @returns {Object} объект респонса с полями ок, статус и тело с данными о пользователе
+     * @returns {Object} объект ответа с полями {ok, status, body}
      */
     signupUser = (username,
         firstName = '',
@@ -51,7 +51,7 @@ export default class Api extends Ajax {
     /**
      * интерфейс получения данных о пользователе с данным id
      * @param {string} id id пользователя
-     * @returns {Object} обьект респонса с полями ок, статус и тело с данными о пользователе
+     * @returns {Object} объект ответа с полями {ok, status, body}
      */
     getUser = (id) => this.get(`/users/${id}`);
 
@@ -60,7 +60,7 @@ export default class Api extends Ajax {
      * @param {Number} from первый необходимый пост
      * @param {Number} count количество постов
      * @param {string} id id автора
-     * @returns {Object} обьект респонса с полями ок, статус и тело с данными о пользователе
+     * @returns {Object} объект ответа с полями {ok, status, body}
      */
     getAllPosts = (from, count, id) => this.get('/posts', { from, count, id });
 }

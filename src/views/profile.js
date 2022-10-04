@@ -10,7 +10,7 @@
  */
 async function createDonaterJSON(router) {
   const res = await router.api.getUser(router.id);
-  let donater = {
+  const donater = {
     owner: {
       nickname: res.body.username,
       tags: 'Донатер',
@@ -38,7 +38,7 @@ async function createDonaterJSON(router) {
  */
 async function createAuthorJSON(router, id) {
   const res = await router.api.getUser(id);
-  let author = {
+  const author = {
     owner: {
       nickname: res.body.username,
       tags: 'Искусство',//res.body.tag,

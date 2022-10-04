@@ -1,25 +1,25 @@
 /**
- * Модуль, связывающийся с сервером
+ * Модуль для отправки запросов на сервер через REST API
  * @module Ajax 
  */
 
-/** Класс, связывающийся с сервером */
+/** Класс для отправки запросов на сервер через REST API*/
 export default class Ajax {
 
     /**
-     * запоминает адрес сайта
+     * запоминает базовый адрес для обращения на API
      * @constructor
-     * @param {string} baseUrl baseUrl - адрес сайта 
+     * @param {string} baseUrl baseUrl - базовый адрес
      */
     constructor(baseUrl) {
         this.baseUrl = baseUrl;
     }
 
     /**
-     * создает GET запрос, возвращает  объект респонса с полями ок, статус и тело
+     * отправляет GET запрос, возвращает  объект респонса с полями ок, статус и тело
      * @param {string} url имя пути
      * @param {Object} data данные для query-параметров
-     * @returns {Object} объект респонса с полями ок, статус и тело
+     * @returns {Object} объект ответа с полями { ok, status, body}
      */
     get(url, data={}) {
         let urlWithParams = url + this._dataToQuery(data);
@@ -27,30 +27,30 @@ export default class Ajax {
     }
 
     /**
-     * создает POST запрос, возвращает  объект респонса с полями ок, статус и тело
+     * отправляет POST запрос, возвращает  объект респонса с полями ок, статус и тело
      * @param {string} url имя пути
-     * @param {Object} data данные для query-параметров
-     * @returns {Object} объект респонса с полями ок, статус и тело
+     * @param {Object} data данные для составления тела запроса
+     * @returns {Object} объект ответа с полями { ok, status, body}
      */
     post(url, data = {}) {
         return this._responseToJson(this._request(url, 'POST', data));
     }
 
     /**
-     * создает PUT запрос, возвращает  объект респонса с полями ок, статус и тело
+     * отправляет PUT запрос, возвращает  объект респонса с полями ок, статус и тело
      * @param {string} url имя пути
-     * @param {Object} data данные для query-параметров
-     * @returns {Object} объект респонса с полями ок, статус и тело
+     * @param {Object} data данные для составления тела запроса
+     * @returns {Object} объект ответа с полями { ok, status, body}
      */
     put(url, data = {}) {
         return this._responseToJson(this._request(url, 'PUT', data));
     }
 
     /**
-     * создает DELETE запрос, возвращает  объект респонса с полями ок, статус и тело
+     * отправляет DELETE запрос, возвращает  объект респонса с полями ок, статус и тело
      * @param {string} url имя пути
-     * @param {Object} data данные для query-параметров
-     * @returns {Object} объект респонса с полями ок, статус и тело
+     * @param {Object} data данные для составления тела запроса
+     * @returns {Object} объект ответа с полями { ok, status, body}
      */
     delete(url, data = {}) {
         return this._responseToJson(this._request(url, 'DELETE', data));
@@ -75,8 +75,8 @@ export default class Ajax {
     }
 
     /**
-     * формирует Request, возвращает Response
-     * @param {string} url 
+     * отправляет Request-запрос на заданный url, возвращает promise<Response>
+     * @param {string} url  
      * @param {string} method 
      * @param {Object} data 
      * @returns {Promise<Response>}
@@ -87,7 +87,7 @@ export default class Ajax {
             mode: 'cors',
             credentials: 'include',
             headers: {
-                'Content-Type': 'aplication/json',
+                'Content-Type': 'application/json',
             },
         };
 
@@ -101,7 +101,7 @@ export default class Ajax {
     }
 
     /**
-     * конвертирует Response в объект с полями ок, статус и тело 
+     * конвертирует promise<Response> в объект с полями { ok, status, body}
      * @param {Promise<Response>} fetchPromise 
      * @returns {Object}
      */

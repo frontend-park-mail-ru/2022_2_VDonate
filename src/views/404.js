@@ -13,6 +13,7 @@ export default () => {
         <form class="form" action="index.html" method="get">
             <span class="form__text_type_logo form__text_align_center">404</span>
             <span class="form__text_type_header form__text_align_center">Страница не найдена</span>
+            <a data-link href="/profile">Вернуться в профиль</a>
         </form>
     </div>`;
 }
