@@ -71,9 +71,9 @@ const usernameCheck = username => {
   const usernameSyms = /[\d\wа-яёА-ЯЁ]/;
   const usernameReg =
     new RegExp(`^${usernameSyms.source}( ?${usernameSyms.source})*$`);
-  if (usernameReg.test(username.value)
-    && username.value.length >= sizes.standardMin
-    && username.value.length <= sizes.username) {
+  if (username.value.length >= sizes.username.min
+    && username.value.length <= sizes.username.max
+    && usernameReg.test(username.value)) {
     username.style = '';
     return true;
   }
