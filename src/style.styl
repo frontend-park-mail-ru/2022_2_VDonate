@@ -169,10 +169,12 @@ body
     height 30px
     border-radius radius
     border 1px solid content-sub-color
+    &_error
+      border-color error-color
 
 .error
-  color error-color
-  display none
+  &__message
+    color error-color
 
 .content 
   flex-column-center()

@@ -62,10 +62,10 @@ const emailCheck = email => {
   const domainReg = /[0-9a-zA-Z]([\.-]?[0-9a-zA-Z]+)*$/;
   const emailReg = new RegExp(localReg.source + '@' + domainReg.source);
   if (emailReg.test(email.value) && emailLengthCheck(email.value)) {
-    email.style = '';
+    email.className = 'input__input';
     return true;
   }
-  email.style.borderColor = 'red';
+  email.className = 'input__input input__input_error';
   return false;
 }
 
@@ -81,10 +81,10 @@ const usernameCheck = username => {
   if (username.value.length >= sizes.username.min
     && username.value.length <= sizes.username.max
     && usernameReg.test(username.value)) {
-    username.style = '';
+    username.className = 'input__input';
     return true;
   }
-  username.style.borderColor = 'red';
+  username.className = 'input__input input__input_error';
   return false;
 }
 
@@ -97,10 +97,10 @@ const passwordCheck = password => {
   if (password.value.length >= sizes.password.min
     && password.value.length <= sizes.password.max
     && /^.+$/.test(password.value)) {
-    password.style = '';
+    password.className = 'input__input';
     return true;
   }
-  password.style.borderColor = 'red';
+  password.className = 'input__input input__input_error';
   return false;
 }
 
@@ -127,12 +127,9 @@ const repeatPasswordCheck = (origin, repeat) => {
 function loginValidation(form) {
   const emailChecked = emailCheck(form.email);
   const passwordChecked = passwordCheck(form.password);
-  const errText = form.querySelector('#error-text');
   if (emailChecked && passwordChecked) {
-    errText.style = '';
     return true;
   }
-  errText.style.display = 'unset';
   return false;
 }
 
@@ -146,12 +143,9 @@ function signupValidation(form) {
   const passwordChecked = passwordCheck(form.password);
   const usernameChecked = usernameCheck(form.username);
   const repeatChecked = repeatPasswordCheck(form.password, form.passwordRepeat);
-  const errText = form.querySelector('#error-text');
   if (emailChecked && passwordChecked && usernameChecked && repeatChecked) {
-    errText.style = '';
     return true;
   }
-  errText.style.display = 'unset';
   return false;
 }
 
@@ -173,7 +167,11 @@ function validationForm(form) {
 
 // HACK Пока как заглушка
 function processForm(form) {
+  const errorMessage = form.querySelector('#error-msg');
   if (validationForm(form)) {
+    errorMessage.innerHTML = '';
     form.reset();
+  } else {
+    errorMessage.innerHTML = 'Неверно введены данные!';
   }
 }

@@ -174,7 +174,7 @@ const contextNav = {
 // document.getElementById("entry").innerHTML += main(contextAuthor);
 
 const signlog = Handlebars.templates.signlog;
-document.getElementById("entry").innerHTML += signlog(contextSignUp);
+document.getElementById("entry").innerHTML += signlog(contextLogIn);
 
 const footer = Handlebars.templates.footer;
 document.getElementById("entry").innerHTML += footer();
