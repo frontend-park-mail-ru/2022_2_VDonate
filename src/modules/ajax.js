@@ -108,7 +108,7 @@ export default class Ajax {
     async _responseToJson(fetchPromise) {
         const response = await fetchPromise;
         const jsoned = {};
-        jsoned.body = JSON.parse(await response.json()) || {};
+        jsoned.body = await response.json() || {};
         jsoned.ok = response.ok;
         jsoned.status = response.status;
         return jsoned;
