@@ -44,10 +44,14 @@ export default async (router) => {
   const frm = document.createElement('form');
   frm.className = 'form';
   frm.name = formType.login;
-  frm.onsubmit = () => {
+  // frm.onsubmit = () => {
+  //   processForm(frm, router);
+  //   return false;
+  // };
+  frm.addEventListener('submit', () => {
     processForm(frm, router);
     return false;
-  };
+  });
   frm.innerHTML += signlog(contextLogIn);
   main.appendChild(frm)
   router.root.appendChild(main);
