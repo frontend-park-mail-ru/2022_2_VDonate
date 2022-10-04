@@ -28,7 +28,7 @@ const routes = [
 ]
 
 /**Класс маршрутизации по страницам сайта */
-export default class Router {
+class Router {
 
     /**
      * Конструктор, добавляющий обработку 2 событий: переход между страницами и переход вперед/назад
@@ -37,7 +37,7 @@ export default class Router {
      * @param {Element} root указатель на блок, куда будет рендериться страница 
      * @param {Api} api API связи с сервером
      */
-    constructor(root, api) {
+    constructor() {
         this.api = api;
         this.root = root;
         window.addEventListener('click', (e) => {
@@ -54,7 +54,19 @@ export default class Router {
                 route.render(this);
             }
         });
+    }
 
+    setRoot(root) {
+        this.root = root;
+        return this;
+    }
+
+    setApi(api) {
+        this.api = api;
+        return this;
+    }
+
+    userAuth() {
         const res = api.authUser();
         if (res.status === "200") {
             this.id = res.body.id;
@@ -64,20 +76,6 @@ export default class Router {
             this.goTo('/auth/login');
         }
     }
-
-    createInstance(root, api) {
-        instance = new Router(root, api);
-        return instance;
-    }
-
-
-    static getInstance(root, api) {
-        if (!this.instance) {
-            this.instance = createInstance(root, api);
-        }
-        return this.instance;
-    }
-
 
     /**
      * Функция, которая вызывает рендер страницы по переданому пути
@@ -95,3 +93,7 @@ export default class Router {
         route.render(this);
     }
 }
+
+const singletonInstance = new Router();
+Object.freeze(singletonInstance);
+export default singletonInstance;
