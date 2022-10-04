@@ -48,7 +48,7 @@ export default class Router {
             }
         });
 
-        window.addEventListener('popstate', (e)=> {
+        window.addEventListener('popstate', (e) => {
             const route = routes.find(obj => window.location.pathname.match(obj.path));
             if (route != undefined) {
                 route.render(this);
@@ -58,19 +58,19 @@ export default class Router {
         const res = api.authUser();
         if (res.status === "200") {
             this.id = res.body.id;
-            this.goTo('/profile');    
+            this.goTo('/profile');
         } else {
             this.id = null;
             this.goTo('/auth/login');
         }
-        // this.goTo('/profile?id=1');
+        this.goTo('/profile?id=1');
     }
 
     /**
      * Функция, которая вызывает рендер страницы по переданому пути
      * @param {string} loc путь страницы
      */
-    goTo(loc) { 
+    goTo(loc) {
         console.log(loc);
         const route = routes.find(obj => loc.match(obj.path));
         console.log(route);
