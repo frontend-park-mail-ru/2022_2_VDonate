@@ -63,7 +63,6 @@ export default class Router {
             this.id = null;
             this.goTo('/auth/login');
         }
-        // this.goTo('/profile?id=1');
     }
 
     /**

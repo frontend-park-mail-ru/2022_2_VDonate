@@ -25,18 +25,18 @@ export default class Api extends Ajax {
     /**
      * Интерфейс регистрации пользователя
      * @param {string} username логин
-     * @param {string} firstName имя (необязательный параметр)
-     * @param {string} lastName фамилия (необязательный параметр)
      * @param {string} email почта (необязательный параметр)
      * @param {string} password пароль
+     * @param {string} firstName имя (необязательный параметр)
+     * @param {string} lastName фамилия (необязательный параметр)
      * @param {string} phone телефон (необязательный параметр)
      * @returns {Object} объект ответа с полями {ok, status, body}
      */
     signupUser = (username,
-        firstName = '',
-        lastName = '',
         email,
         password,
+        firstName = '',
+        lastName = '',
         phone = ''
     ) =>
         this.post('/users', {

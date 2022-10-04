@@ -6,16 +6,19 @@
 /**
  * @const {Object} contextAuth обьект с контекстом страницы авторизации
  */
-const contextAuth = {
+ const contextLogIn = {
   formTitle: 'Вход',
+  formName: 'login',
   inputs: [
     {
-      title: 'Почта',
+      title: 'Логин',
+      placeholder: 'example@example.ru',
       name: 'email',
-      type: 'email',
+      type: 'text',
     },
     {
       title: 'Пароль',
+      placeholder: 'Любые символы, кроме пробелов',
       name: 'password',
       type: 'password',
     },
@@ -23,7 +26,7 @@ const contextAuth = {
   buttonTittle: 'Войти',
   orButton: {
     title: 'Зарегистрироваться',
-    link: '/auth/sign',
+    link: '/signup',
   }
 };
 
@@ -32,16 +35,21 @@ const contextAuth = {
  * @param {Router} router Класс маршрутизации по страницам сайта
  */
 export default async (router) => {
-  const params = new URL(location.href).searchParams;
-  const id = params.get('id');
-  const header = Handlebars.templates.header;
   router.root.innerHTML = '';
 
   const form = Handlebars.templates.form;
   const el = document.createElement('div');
   el.id = 'main';
   el.className = 'main';
-  el.innerHTML += form(contextAuth);
+  const frm = document.createElement('form');
+  frm.className = 'form';
+  frm.name = formName;
+  frm.onsubmit =() => {
+    processForm(frm, router); 
+    return false;
+  };
+  frm.innerHTML += form(contextLogIn);
+  el.appendChild(frm)
   router.root.appendChild(el);
 
   const footer = Handlebars.templates.footer;
