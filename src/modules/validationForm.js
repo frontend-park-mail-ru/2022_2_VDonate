@@ -4,7 +4,7 @@ import Router from "./router.js";
  * Виды форм
  * @enum {string}
  */
-export const formType = {
+const formType = {
   signup: 'signup',
   login: 'login',
 }
@@ -165,11 +165,11 @@ function validationForm(form) {
  * Заглушка
  * @param {HTMLFormElement} form 
  */
-export function processForm(form, router) {
+function processForm(form) {
   const errorMessage = form.querySelector('#error-msg');
   if (validationForm(form)) {
     errorMessage.className = 'form__error-msg form__error-msg_disable';
-    sendRequest(form, router);
+    sendRequest(form, Router.getInstance(_, _));
   } else {
     errorMessage.className = 'form__error-msg form__error-msg_enable';
     errorMessage.textContent = 'Неверно введены данные!';

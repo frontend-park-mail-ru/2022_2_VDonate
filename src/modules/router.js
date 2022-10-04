@@ -65,6 +65,20 @@ export default class Router {
         }
     }
 
+    createInstance(root, api) {
+        instance = new Router(root, api);
+        return instance;
+    }
+
+
+    static getInstance(root, api) {
+        if (!this.instance) {
+            this.instance = createInstance(root, api);
+        }
+        return this.instance;
+    }
+
+
     /**
      * Функция, которая вызывает рендер страницы по переданому пути
      * @param {string} loc путь страницы

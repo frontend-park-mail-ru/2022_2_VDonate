@@ -16,4 +16,4 @@ const api = new Api('/api/v1');
 /**
  * @const {Router} router класс маршрутизации по страницам сайта
  */
-const router = new Router(root, api);
+const router = Router.getInstance(root, api);
