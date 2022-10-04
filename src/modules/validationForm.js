@@ -3,13 +3,38 @@ const formType = {
   login: 'login',
 }
 
+const emailSize = {
+  local: 64,
+  domainLable: 63,
+}
+
+/**
+ * Проверяет на допустипую длину локальную и доменную часть почтового адреса
+ * @param {string} email валидный почтовый адрес 
+ * @returns {bool}
+ */
+const emailLengthCheck = email => {
+  const tmpSplit = email.split('@');
+  const local = tmpSplit[0];
+  const domain = tmpSplit[1].split('.');
+  if (local.length <= 4
+    && domain.reduce((prev, current) => prev && current.length <= 3, true)) {
+    return true
+  }
+  return false;
+}
+
 /**
  * Проверка поля ввода почты на верный формат
  * @param {Element} email элемент ввода почты
  * @returns {bool} результат проверки
  */
 const emailCheck = email => {
-  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value)) {
+  const localSyms = /[a-zA-Z0-9!#\$&%_+-]/;
+  const localReg = new RegExp(`^${localSyms.source}+(\\.?${localSyms.source}+)*`);
+  const domainReg = /[0-9a-zA-Z]+([\.-]?[0-9a-zA-Z]+)*(\.?[0-9a-zA-Z]+)$/;
+  const emailReg = new RegExp(localReg.source + '@' + domainReg.source);
+  if (emailReg.test(email.value) && emailLengthCheck(email.value)) {
     email.style = '';
     return true;
   }
