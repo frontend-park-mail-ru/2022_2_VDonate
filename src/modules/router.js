@@ -28,8 +28,8 @@ const routes = [
 ]
 
 /**Класс маршрутизации по страницам сайта */
-class Router {
-
+export default class Router {
+    static _instance = null;
     /**
      * Конструктор, добавляющий обработку 2 событий: переход между страницами и переход вперед/назад
      * и при входе на сайт запускает процесс аутенфикации
@@ -38,22 +38,25 @@ class Router {
      * @param {Api} api API связи с сервером
      */
     constructor() {
-        this.root = undefined;
-        this.api = undefined;
-        window.addEventListener('click', (e) => {
-            const target = e.target.closest("a[data-link]");
-            if (target != null) {
-                e.preventDefault();
-                this.goTo(target.getAttribute('href'));
-            }
-        });
+        if (Router._instance === null) {
+            Router._instance = this;
+            window.addEventListener('click', (e) => {
+                const target = e.target.closest("a[data-link]");
+                if (target != null) {
+                    e.preventDefault();
+                    this.goTo(target.getAttribute('href'));
+                }
+            });
 
-        window.addEventListener('popstate', (e) => {
-            const route = routes.find(obj => window.location.pathname.match(obj.path));
-            if (route != undefined) {
-                route.render(this);
-            }
-        });
+            window.addEventListener('popstate', (e) => {
+                const route = routes.find(obj => window.location.pathname.match(obj.path));
+                if (route != undefined) {
+                    route.render(this);
+                }
+            });
+            return this;
+        }
+        return Router._instance;
     }
 
     get root() {
@@ -99,7 +102,3 @@ class Router {
         route.render(this);
     }
 }
-
-const singletonInstance = new Router();
-Object.freeze(singletonInstance);
-export default singletonInstance;

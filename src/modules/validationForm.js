@@ -1,4 +1,4 @@
-import routerSingleton from "./router.js";
+import Router from "./router.js";
 
 /**
  * Виды форм
@@ -169,7 +169,7 @@ function processForm(form) {
   const errorMessage = form.querySelector('#error-msg');
   if (validationForm(form)) {
     errorMessage.className = 'form__error-msg form__error-msg_disable';
-    sendRequest(form, routerSingleton);
+    sendRequest(form, new Router());
   } else {
     errorMessage.className = 'form__error-msg form__error-msg_enable';
     errorMessage.textContent = 'Неверно введены данные!';

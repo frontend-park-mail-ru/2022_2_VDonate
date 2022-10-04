@@ -1,6 +1,6 @@
 'use_strict'
 
-import routerSingleton from './modules/router.js';
+import Router from './modules/router.js';
 import Api from './modules/api.js';
 
 /**
@@ -16,7 +16,8 @@ const api = new Api('/api/v1');
 /**
  * @const {Router} router класс маршрутизации по страницам сайта
  */
-routerSingleton.root = root;
-routerSingleton.api = api;
-routerSingleton.userAuth();
+const router = new Router();
+router.root = root;
+router.api = api;
+router.userAuth();
 
