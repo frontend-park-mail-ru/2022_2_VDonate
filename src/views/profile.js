@@ -82,9 +82,9 @@ async function createAuthorJSON(router, id) {
 export default async (router) => {
   const params = new URL(location.href).searchParams;
   const id = params.get('id');
-  const header = Handlebars.templates.header;
+  const navbar = Handlebars.templates.navbar;
   router.root.innerHTML = '';
-  router.root.innerHTML += header();
+  router.root.innerHTML += navbar();
 
   const user = Handlebars.templates.user;
 
