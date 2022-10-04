@@ -3,14 +3,13 @@
  * @module sign
  */
 
-import processForm from "../modules/validationForm.js";
+import { processForm, formType } from "../modules/validationForm.js";
 
 /**
  * @const {Object} contextSignUp объект с контекстом страницы регистрации
  */
 const contextSignUp = {
   formTitle: 'Регистрация',
-  formName: 'signup',
   inputs: [
     {
       title: 'Логин',
@@ -52,20 +51,19 @@ const contextSignUp = {
 export default async (router) => {
   router.root.innerHTML = '';
 
-  const form = Handlebars.templates.form;
-  const el = document.createElement('div');
-  el.id = 'main';
-  el.className = 'main';
+  const signlog = Handlebars.templates.signlog;
+  const main = document.createElement('div');
+  main.className = 'main';
   const frm = document.createElement('form');
   frm.className = 'form';
-  frm.name = formName;
-  frm.onsubmit =() => {
-    processForm(frm, router); 
+  frm.name = formType.signup;
+  frm.onsubmit = () => {
+    processForm(frm, router);
     return false;
   };
-  frm.innerHTML += form(contextSignUp);
-  el.appendChild(frm)
-  router.root.appendChild(el);
+  frm.innerHTML += signlog(contextSignUp);
+  main.appendChild(frm)
+  router.root.appendChild(main);
 
   const footer = Handlebars.templates.footer;
   router.root.innerHTML += footer();
