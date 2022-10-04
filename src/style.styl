@@ -138,6 +138,7 @@ body
       &_sub
         sub-text()
   &__button
+    cursor pointer
     align-self stretch
     border-radius radius
     border none
@@ -155,6 +156,14 @@ body
     cursor pointer
     &:hover
       background bg-second-color 
+  &__error-msg
+    main-text()
+    text-align center
+    color error-color
+    &_enable
+      display: block
+    &_disable
+      display: none
 
 .input
   flex-column-start()
@@ -171,10 +180,6 @@ body
     border 1px solid content-sub-color
     &_error
       border-color error-color
-
-.error
-  &__message
-    color error-color
 
 .content 
   flex-column-center()
