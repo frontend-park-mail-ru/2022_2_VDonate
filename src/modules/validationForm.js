@@ -1,3 +1,5 @@
+import Router from "./router";
+
 /**
  * Виды форм
  * @enum {string}
@@ -163,12 +165,67 @@ function validationForm(form) {
  * Заглушка
  * @param {HTMLFormElement} form 
  */
-function processForm(form) {
+export default function processForm(form, router) {
   const errorMessage = form.querySelector('#error-msg');
   if (validationForm(form)) {
     errorMessage.className = 'form__error-msg form__error-msg_disable';
-    form.reset();
+    sendRequest(form, router);
   } else {
     errorMessage.className = 'form__error-msg form__error-msg_enable';
+    errorMessage.textContent = 'Неверно введены данные!';
+  }
+}
+
+/**
+ * отправляет запрос на авторизацию/регистрацию
+ * @param {HTMLFormElement} form 
+ * @param {Router} router 
+ */
+function sendRequest(form, router) {
+  switch (form.name) {
+    case formType.login:
+      const login = document.getElementsByName('email')[0].value;
+      const pass = document.getElementsByName('password')[0].value;
+      const res = router.api.loginUser(login, pass);
+      switch (res.status) {
+        case '200':
+          router.id = res.body.id;
+          router.goTo('/profile');
+        case '400':
+          errorMessage.className = 'form__error-msg form__error-msg_enable';
+          errorMessage.textContent = 'Неверно введен пароль!';
+        case '404':
+          errorMessage.className = 'form__error-msg form__error-msg_enable';
+          errorMessage.textContent = 'Пользователь не найден!';
+        case '500':
+          errorMessage.className = 'form__error-msg form__error-msg_enable';
+          errorMessage.textContent = 'Внутренняя ошибка сервера!';
+        default:
+          errorMessage.className = 'form__error-msg form__error-msg_enable';
+          errorMessage.textContent = 'Ошибка!';
+      }
+    case formType.signup:
+      router.api.signupUser();
+      const email = document.getElementsByName('email')[0].value;
+      const username = document.getElementsByName('username')[0].value;
+      const password = document.getElementsByName('password')[0].value;
+      const response = router.api.signupUser(username, email, password);
+      switch (response.status) {
+        case '200':
+          router.id = response.body.id;
+          router.goTo('/profile');
+        case '400':
+          errorMessage.className = 'form__error-msg form__error-msg_enable';
+          errorMessage.textContent = 'Неверно введен пароль!';
+        case '404':
+          errorMessage.className = 'form__error-msg form__error-msg_enable';
+          errorMessage.textContent = 'Пользователь не найден!';
+        case '500':
+          errorMessage.className = 'form__error-msg form__error-msg_enable';
+          errorMessage.textContent = 'Внутренняя ошибка сервера!';
+        default:
+          errorMessage.className = 'form__error-msg form__error-msg_enable';
+          errorMessage.textContent = 'ошибка!';
+      }
   }
 }
