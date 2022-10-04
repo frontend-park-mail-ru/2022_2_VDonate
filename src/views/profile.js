@@ -12,7 +12,7 @@ async function createDonaterJSON(router) {
   const res = await router.api.getUser(router.id);
   const donater = {
     owner: {
-      nickname: res.body.username,
+      username: res.body.username,
       tags: 'Донатер',
       avatar: "../static/img/0.jpg", //res.body.avatar,
       isAuthor: false
@@ -40,16 +40,16 @@ async function createAuthorJSON(router, id) {
   const res = await router.api.getUser(id);
   const author = {
     owner: {
-      nickname: res.body.username,
+      username: res.body.username,
       tags: 'Искусство',//res.body.tag,
       avatar: "../static/img/0.jpg",// res.body.avatar, 
-      isAuthor: true
+      isAuthor: true,
+      about: {
+        image: '../static/img/4.jpg', // res.body.descriptionImage
+        text: res.body.about,
+      },
     },
     levels: [],
-    description: {
-      image: '../static/img/4.jpg', // res.body.descriptionImage,
-      text: res.body.about,
-    },
     posts: []
   };
   // res.body.authorSubscriptions.forEach((sub) => {
@@ -82,23 +82,19 @@ async function createAuthorJSON(router, id) {
 export default async (router) => {
   const params = new URL(location.href).searchParams;
   const id = params.get('id');
-  const header = Handlebars.templates.header;
+  const navbar = Handlebars.templates.navbar;
   router.root.innerHTML = '';
-  router.root.innerHTML += header({ link: '/profile' });
+  router.root.innerHTML += navbar();
 
-  const main = Handlebars.templates.main;
-  const el = document.createElement('div');
-  el.id = 'main';
-  el.className = 'main';
+  const user = Handlebars.templates.user;
 
   if (id === null) {
     const donater = createDonaterJSON(router);
-    el.innerHTML += main(donater);
+    router.root.innerHTML += user(donater);
   } else {
     const author = createAuthorJSON(router, id);
-    el.innerHTML += main(author);
+    router.root.innerHTML += user(author);
   }
-  router.root.appendChild(el);
 
   const footer = Handlebars.templates.footer;
   router.root.innerHTML += footer();

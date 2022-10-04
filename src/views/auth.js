@@ -4,9 +4,9 @@
  */
 
 /**
- * @const {Object} contextAuth обьект с контекстом страницы авторизации
+ * @const {Object} contextLogIn обьект с контекстом страницы авторизации
  */
- const contextLogIn = {
+const contextLogIn = {
   formTitle: 'Вход',
   formName: 'login',
   inputs: [

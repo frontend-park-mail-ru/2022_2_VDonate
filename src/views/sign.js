@@ -8,7 +8,7 @@ import processForm from "../modules/validationForm.js";
 /**
  * @const {Object} contextSignUp объект с контекстом страницы регистрации
  */
- const contextSignUp = {
+const contextSignUp = {
   formTitle: 'Регистрация',
   formName: 'signup',
   inputs: [
