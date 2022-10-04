@@ -112,10 +112,10 @@ const passwordCheck = password => {
  */
 const repeatPasswordCheck = (origin, repeat) => {
   if (repeat.value != '' && origin.value === repeat.value) {
-    repeat.style = '';
+    repeat.className = 'input__input';
     return true;
   }
-  repeat.style.borderColor = 'red';
+  repeat.className = 'input__input input__input_error';
   return false;
 }
 
@@ -124,13 +124,10 @@ const repeatPasswordCheck = (origin, repeat) => {
  * @param {HTMLFormElement} form элемент формы входа для валидации
  * @returns {bool} результат проверки
  */
-function loginValidation(form) {
+const loginValidation = form => {
   const emailChecked = emailCheck(form.email);
   const passwordChecked = passwordCheck(form.password);
-  if (emailChecked && passwordChecked) {
-    return true;
-  }
-  return false;
+  return emailChecked && passwordChecked;
 }
 
 /**
@@ -138,15 +135,12 @@ function loginValidation(form) {
  * @param {HTMLFormElement} form элемент формы регистрации для валидации
  * @returns {bool} результат проверки
  */
-function signupValidation(form) {
+const signupValidation = form => {
   const emailChecked = emailCheck(form.email);
   const passwordChecked = passwordCheck(form.password);
   const usernameChecked = usernameCheck(form.username);
   const repeatChecked = repeatPasswordCheck(form.password, form.passwordRepeat);
-  if (emailChecked && passwordChecked && usernameChecked && repeatChecked) {
-    return true;
-  }
-  return false;
+  return emailChecked && passwordChecked && usernameChecked && repeatChecked;
 }
 
 /**
