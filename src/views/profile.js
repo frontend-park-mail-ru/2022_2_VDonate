@@ -109,8 +109,8 @@ export default async (router) => {
     return;
   }
 
-  const navbar = Handlebars.templates.navbar;
-  router.root.innerHTML += navbar({
+  const navbarEl = Handlebars.templates.navbar;
+  router.root.innerHTML += navbarEl({
     user: {
       id: router.id,
       image: '../static/img/0.jpg',
@@ -119,10 +119,10 @@ export default async (router) => {
 
   const userEl = Handlebars.templates.user;
 
-  router.root.innerHTML += user.body.is_author
+  router.root.innerHTML += userEl(user.body.is_author
     ? createAuthorJSON(user.body)
-    : createDonaterJSON(user.body);
+    : createDonaterJSON(user.body));
 
-  const footer = Handlebars.templates.footer;
-  router.root.innerHTML += footer();
+  const footerEl = Handlebars.templates.footer;
+  router.root.innerHTML += footerEl();
 }
