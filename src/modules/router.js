@@ -76,14 +76,14 @@ export default class Router {
     }
 
     userAuth() {
-        const res = this.api.authUser();
-        if (res.status === "200") {
-            this.id = res.body.id;
-            this.goTo('/profile');
-        } else {
-            this.id = null;
-            this.goTo('/auth/login');
-        }
+        this.api.authUser()
+            .then(({ body, status }) => {
+                if (status === "200") {
+                    this.goTo(`/profile?${body.id}`);
+                } else {
+                    this.goTo('/auth/login');
+                }
+            });
     }
 
     /**
