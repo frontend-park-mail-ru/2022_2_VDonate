@@ -8,18 +8,17 @@
  * @param {Router} router класс маршрутизации
  * @returns {Object} объект с контекстом
  */
-async function createDonaterJSON(router) {
-  const res = await router.api.getUser(router.id);
+function createDonaterJSON(body) {
   const donater = {
     owner: {
-      username: res.body.username,
+      username: body.username,
       tags: 'Донатер',
-      avatar: "../static/img/0.jpg", //res.body.avatar,
+      avatar: "../static/img/0.jpg", //body.avatar,
       isAuthor: false
     },
     subscriptions: []
   }
-  // res.body.userSubscriptions.forEach((sub) => {
+  // body.userSubscriptions.forEach((sub) => {
   //   const tmp = {
   //     nickname: sub.name,
   //     level: `Уровень ${sub.level}`,
@@ -36,23 +35,22 @@ async function createDonaterJSON(router) {
  * @param {string} id id автора
  * @returns {Object} объект с контекстом
  */
-async function createAuthorJSON(router, id) {
-  const res = await router.api.getUser(id);
+function createAuthorJSON(body) {
   const author = {
     owner: {
-      username: res.body.username,
-      tags: 'Искусство',//res.body.tag,
-      avatar: "../static/img/0.jpg",// res.body.avatar, 
+      username: body.username,
+      tags: 'Искусство', // body.tag,
+      avatar: "../static/img/0.jpg", // body.avatar, 
       isAuthor: true,
       about: {
-        image: '../static/img/4.jpg', // res.body.descriptionImage
-        text: res.body.about,
+        image: '../static/img/4.jpg', // body.descriptionImage
+        text: body.about,
       },
     },
     levels: [],
     posts: []
   };
-  // res.body.authorSubscriptions.forEach((sub) => {
+  // body.authorSubscriptions.forEach((sub) => {
   //   const tmp = {
   //     title: `Уровень ${sub.level}`,
   //     image: sub.image, //"../static/img/4.jpg",
@@ -75,6 +73,20 @@ async function createAuthorJSON(router, id) {
   return author;
 }
 
+/**
+ * 
+ * @param {int} id 
+ * @param {Router} router 
+ */
+async function createUserContext(id, router) {
+  const user = await router.api.getUser(id);
+  if (user.body.isAuthor) {
+    return createAuthorJSON(user.body);
+  }
+  return createDonaterJSON(user.body);
+}
+
+
 /** 
  * Функция, которая рендерит страницу профиля
  * @param {Router} router Класс маршрутизации по страницам сайта
@@ -88,13 +100,17 @@ export default async (router) => {
 
   const user = Handlebars.templates.user;
 
-  if (id === null) {
-    const donater = createDonaterJSON(router);
-    router.root.innerHTML += user(donater);
-  } else {
-    const author = createAuthorJSON(router, id);
-    router.root.innerHTML += user(author);
-  }
+  // if (id === null) {
+  //   const donater = createDonaterJSON(router);
+  //   router.root.innerHTML += user(donater);
+  // } else {
+  //   const author = createAuthorJSON(router, id);
+  //   router.root.innerHTML += user(author);
+  // }
+
+  createUserContext(id, router).then(context => {
+    router.root.innerHTML += user(context);
+  })
 
   const footer = Handlebars.templates.footer;
   router.root.innerHTML += footer();
