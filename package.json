@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx stylus -c -o public src/style.styl && npx handlebars src/template/ -f public/all.precompiled.js",
-    "stylus": "npx stylus -c -w src -o public"
+    "stylus": "npx stylus -c -w src -o public",
+    "lint": "npx eslint src/"
   },
   "repository": {
     "type": "git",
