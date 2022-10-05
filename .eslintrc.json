@@ -4,6 +4,9 @@
         "es2021": true
     },
     "extends": "eslint:recommended",
+    "globals": {
+        "Handlebars": true
+    },
     "overrides": [
     ],
     "parserOptions": {
