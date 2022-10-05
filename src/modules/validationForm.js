@@ -30,7 +30,7 @@ const sizes = {
     max: 20,
   },
   password: {
-    min: 6,
+    min: 1,
     max: 30,
   },
 }
