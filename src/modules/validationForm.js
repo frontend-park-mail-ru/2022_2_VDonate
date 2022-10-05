@@ -205,6 +205,7 @@ function validateOrLogin(router, form, status, id) {
   const errorMessage = form.querySelector('#error-msg');
   switch (status) {
     case 200:
+      router.id = id;
       router.goTo(`/profile?id=${id}`);
       break;
     case 400:
@@ -232,6 +233,7 @@ function validateOrSignup(router, form, status, id) {
   const errorMessage = form.querySelector('#error-msg');
   switch (status) {
     case 200:
+      router.id = id;
       router.goTo(`/profile?id=${id}`);
       break;
     case 409:

@@ -79,6 +79,7 @@ export default class Router {
         this.api.authUser()
             .then(({ status, body }) => {
                 if (status === 200) {
+                    this.id = body.id;
                     this.goTo(`/profile?id=${body.id}`);
                 } else {
                     this.goTo('/login');
