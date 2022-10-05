@@ -105,6 +105,7 @@ export default async (router) => {
     router.root.innerHTML += errorEl({
       status: user.status,
       description: 'Ошибка',
+      id: router.id,
     })
     return;
   }
