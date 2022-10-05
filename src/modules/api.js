@@ -69,4 +69,10 @@ export default class Api extends Ajax {
      * @returns {Promise<ParsedResponse>} объект ответа с полями {status, body}
      */
     getAllPosts = (id) => this.get(`/users/${id}/posts`);
+
+    /**
+     * Функция выхода из учетной записи
+     * @returns {Promise<ParsedResponse>} объект ответа с полями {status, body}
+     */
+    logout = () => this.delete('/logout');
 }
