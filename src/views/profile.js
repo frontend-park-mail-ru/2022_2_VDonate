@@ -84,7 +84,7 @@ const createAuthorJSON = body => {
  */
 async function createUserContext(id, router) {
   const user = await router.api.getUser(id);
-  if (user.body.isAuthor) {
+  if (user.body.is_author) {
     return createAuthorJSON(user.body);
   }
   return createDonaterJSON(user.body);
