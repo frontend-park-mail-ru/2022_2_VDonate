@@ -192,19 +192,25 @@ function sendRequest(form, router) {
         case '200':
           router.id = res.body.id;
           router.goTo('/profile');
+          break;
         case '400':
           errorMessage.className = 'form__error-msg form__error-msg_enable';
           errorMessage.innerHTML = 'Неверно введен пароль!';
+          break;
         case '404':
           errorMessage.className = 'form__error-msg form__error-msg_enable';
           errorMessage.innerHTML = 'Пользователь не найден!';
+          break;
         case '500':
           errorMessage.className = 'form__error-msg form__error-msg_enable';
           errorMessage.innerHTML = 'Внутренняя ошибка сервера!';
+          break;
         default:
           errorMessage.className = 'form__error-msg form__error-msg_enable';
           errorMessage.innerHTML = 'Ошибка!';
+          break;
       }
+      break;
     case formType.signup:
       router.api.signupUser();
       const email = form.email.value;
@@ -215,18 +221,23 @@ function sendRequest(form, router) {
         case '200':
           router.id = response.body.id;
           router.goTo('/profile');
+          break;
         case '400':
           errorMessage.className = 'form__error-msg form__error-msg_enable';
           errorMessage.innerHTML = 'Неверно введен пароль!';
         case '404':
           errorMessage.className = 'form__error-msg form__error-msg_enable';
           errorMessage.innerHTML = 'Пользователь не найден!';
+          break;
         case '500':
           errorMessage.className = 'form__error-msg form__error-msg_enable';
           errorMessage.innerHTML = 'Внутренняя ошибка сервера!';
+          break;
         default:
           errorMessage.className = 'form__error-msg form__error-msg_enable';
           errorMessage.innerHTML = 'ошибка!';
+          break;
       }
+      break;
   }
 }
