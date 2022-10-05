@@ -110,7 +110,7 @@ export default async (router) => {
   const userEl = Handlebars.templates.user;
 
 
-
+  let context;
   if (user.body.is_author) {
     const posts = await router.api.getAllPosts(user.body.id);
     if (posts.status >= 400) {
@@ -122,7 +122,7 @@ export default async (router) => {
       })
       return;
     }
-    const context = createAuthorJSON(user.body);
+    context = createAuthorJSON(user.body);
     posts.body.forEach(
       post => {
         const tmp = {
@@ -136,7 +136,7 @@ export default async (router) => {
     )
 
   } else {
-    const context = createDonaterJSON(user.body);
+    context = createDonaterJSON(user.body);
   }
 
   router.root.innerHTML += userEl(context);
