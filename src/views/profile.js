@@ -101,8 +101,10 @@ export default async (router) => {
   const navbar = Handlebars.templates.navbar;
   router.root.innerHTML = '';
   router.root.innerHTML += navbar({
-    id: router.id,
-    image: '../static/img/0.jpg',
+    user: {
+      id: router.id,
+      image: '../static/img/0.jpg',
+    }
   });
 
   const user = Handlebars.templates.user;
