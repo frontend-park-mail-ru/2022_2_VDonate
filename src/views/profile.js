@@ -73,10 +73,10 @@ const createAuthorJSON = (router, body) => {
           author.posts.push(tmp);
         })
       }
-}
+    }
   ) //обсудить сколько постов нам нужно
 
-return author;
+  return author;
 }
 
 /** 
