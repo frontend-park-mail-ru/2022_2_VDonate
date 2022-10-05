@@ -10,6 +10,7 @@
  */
 const contextLogIn = {
   formTitle: 'Вход',
+  formName: 'login',
   inputs: [
     {
       title: 'Псевдоним',

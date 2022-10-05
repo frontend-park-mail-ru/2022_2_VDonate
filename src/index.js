@@ -22,3 +22,5 @@ router.root = root;
 router.api = api;
 router.userAuth();
 
+window.processForm = processForm;
+
