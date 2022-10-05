@@ -23,7 +23,7 @@ export default class Ajax {
      */
     get(url, data = {}) {
         let urlWithParams = url + this._dataToQuery(data);
-        return this._responseToJson(this._request(urlWithParams, 'GET', {}));
+        return this._request(urlWithParams, 'GET', {});
     }
 
     /**
@@ -33,28 +33,28 @@ export default class Ajax {
      * @returns {Object} объект ответа с полями { ok, status, body}
      */
     post(url, data = {}) {
-        return this._responseToJson(this._request(url, 'POST', data));
+        return this._request(url, 'POST', data);
     }
 
-    /**
-     * отправляет PUT запрос, возвращает  объект респонса с полями ок, статус и тело
-     * @param {string} url имя пути
-     * @param {Object} data данные для составления тела запроса
-     * @returns {Object} объект ответа с полями { ok, status, body}
-     */
-    put(url, data = {}) {
-        return this._responseToJson(this._request(url, 'PUT', data));
-    }
+    // /**
+    //  * отправляет PUT запрос, возвращает  объект респонса с полями ок, статус и тело
+    //  * @param {string} url имя пути
+    //  * @param {Object} data данные для составления тела запроса
+    //  * @returns {Object} объект ответа с полями { ok, status, body}
+    //  */
+    // put(url, data = {}) {
+    //     return this._responseToJson(this._request(url, 'PUT', data));
+    // }
 
-    /**
-     * отправляет DELETE запрос, возвращает  объект респонса с полями ок, статус и тело
-     * @param {string} url имя пути
-     * @param {Object} data данные для составления тела запроса
-     * @returns {Object} объект ответа с полями { ok, status, body}
-     */
-    delete(url, data = {}) {
-        return this._responseToJson(this._request(url, 'DELETE', data));
-    }
+    // /**
+    //  * отправляет DELETE запрос, возвращает  объект респонса с полями ок, статус и тело
+    //  * @param {string} url имя пути
+    //  * @param {Object} data данные для составления тела запроса
+    //  * @returns {Object} объект ответа с полями { ok, status, body}
+    //  */
+    // delete(url, data = {}) {
+    //     return this._responseToJson(this._request(url, 'DELETE', data));
+    // }
 
     /**
      * Формирует из входных данных query-параметры
@@ -82,6 +82,7 @@ export default class Ajax {
      * @returns {Promise<Response>}
      */
     _request(url, method, data) {
+        let statusCode;
         const options = {
             method,
             mode: 'cors',
@@ -97,21 +98,26 @@ export default class Ajax {
         return fetch(
             this.baseUrl + url,
             options
-        )
+        ).then((response) => {
+            statusCode = response.status;
+            return response.json();
+        }).then((body) => {
+            return {
+                statusCode,
+                body,
+            }
+        })
     }
 
-    /**
-     * конвертирует promise<Response> в объект с полями { ok, status, body}
-     * @param {Promise<Response>} fetchPromise 
-     * @returns {Object}
-     */
-    async _responseToJson(fetchPromise) {
-        const response = await fetchPromise;
-        const jsoned = {};
-        jsoned.body = await response.json() || {};
-        jsoned.ok = response.ok;
-        jsoned.status = response.status;
-        return jsoned;
-    }
+    // /**
+    //  * конвертирует promise<Response> в объект с полями { ok, status, body}
+    //  * @param {Promise<Response>} fetchPromise 
+    //  * @returns {Object}
+    //  */
+    // async _responseToJson(fetchPromise) {
+    //     jsoned.ok = response.ok;
+    //     jsoned.status = response.status;
+    //     return jsoned;
+    // }
 
 }

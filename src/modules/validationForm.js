@@ -187,57 +187,58 @@ function sendRequest(form, router) {
     case formType.login:
       const login = form.username.value;
       const pass = form.password.value;
-      const res = router.api.loginUser(login, pass);
-      switch (res.status) {
-        case 200:
-          router.id = res.body.id;
-          router.goTo('/profile');
-          break;
-        case 400:
-          errorMessage.className = 'form__error-msg form__error-msg_enable';
-          errorMessage.innerHTML = 'Неверно введен пароль!';
-          break;
-        case 404:
-          errorMessage.className = 'form__error-msg form__error-msg_enable';
-          errorMessage.innerHTML = 'Пользователь не найден!';
-          break;
-        case 500:
-          errorMessage.className = 'form__error-msg form__error-msg_enable';
-          errorMessage.innerHTML = 'Внутренняя ошибка сервера!';
-          break;
-        default:
-          errorMessage.className = 'form__error-msg form__error-msg_enable';
-          errorMessage.innerHTML = 'Ошибка!';
-          break;
-      }
+      router.api.loginUser(login, pass)
+        .then(({ body, status }) => {
+          switch (status) {
+            case 200:
+              router.goTo(`/profile?id=${body.id}`);
+              break;
+            case 400:
+              errorMessage.className = 'form__error-msg form__error-msg_enable';
+              errorMessage.innerHTML = 'Неверно введен пароль!';
+              break;
+            case 404:
+              errorMessage.className = 'form__error-msg form__error-msg_enable';
+              errorMessage.innerHTML = 'Пользователь не найден!';
+              break;
+            case 500:
+              errorMessage.className = 'form__error-msg form__error-msg_enable';
+              errorMessage.innerHTML = 'Внутренняя ошибка сервера!';
+              break;
+            default:
+              errorMessage.className = 'form__error-msg form__error-msg_enable';
+              errorMessage.innerHTML = 'Ошибка!';
+              break;
+          }
+        })
       break;
     case formType.signup:
-      router.api.signupUser();
-      const email = form.email.value;
-      const username = form.username.value;
-      const password = form.password.value;
-      const response = router.api.signupUser(username, email, password);
-      switch (response.status) {
-        case 200:
-          router.id = response.body.id;
-          router.goTo('/profile');
-          break;
-        case 400:
-          errorMessage.className = 'form__error-msg form__error-msg_enable';
-          errorMessage.innerHTML = 'Неверно введен пароль!';
-        case 404:
-          errorMessage.className = 'form__error-msg form__error-msg_enable';
-          errorMessage.innerHTML = 'Пользователь не найден!';
-          break;
-        case 500:
-          errorMessage.className = 'form__error-msg form__error-msg_enable';
-          errorMessage.innerHTML = 'Внутренняя ошибка сервера!';
-          break;
-        default:
-          errorMessage.className = 'form__error-msg form__error-msg_enable';
-          errorMessage.innerHTML = 'ошибка!';
-          break;
-      }
-      break;
+    // router.api.signupUser();
+    // const email = form.email.value;
+    // const username = form.username.value;
+    // const password = form.password.value;
+    // const response = router.api.signupUser(username, email, password);
+    // switch (response.status) {
+    //   case 200:
+    //     router.id = response.body.id;
+    //     router.goTo('/profile');
+    //     break;
+    //   case 400:
+    //     errorMessage.className = 'form__error-msg form__error-msg_enable';
+    //     errorMessage.innerHTML = 'Неверно введен пароль!';
+    //   case 404:
+    //     errorMessage.className = 'form__error-msg form__error-msg_enable';
+    //     errorMessage.innerHTML = 'Пользователь не найден!';
+    //     break;
+    //   case 500:
+    //     errorMessage.className = 'form__error-msg form__error-msg_enable';
+    //     errorMessage.innerHTML = 'Внутренняя ошибка сервера!';
+    //     break;
+    //   default:
+    //     errorMessage.className = 'form__error-msg form__error-msg_enable';
+    //     errorMessage.innerHTML = 'ошибка!';
+    //     break;
+    // }
+    // break;
   }
 }
