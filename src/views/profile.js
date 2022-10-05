@@ -82,8 +82,7 @@ const createAuthorJSON = body => {
  * @param {int} id 
  * @param {Router} router 
  */
-async function createUserContext(id, router) {
-  const user = await router.api.getUser(id);
+function createUserContext(user) {
   if (user.body.is_author) {
     return createAuthorJSON(user.body);
   }
@@ -96,10 +95,21 @@ async function createUserContext(id, router) {
  * @param {Router} router Класс маршрутизации по страницам сайта
  */
 export default async (router) => {
+  router.root.innerHTML = '';
   const params = new URL(location.href).searchParams;
   const id = params.get('id');
+  const user = await router.api.getUser(id);
+
+  if (user.status >= 400) {
+    const errorEl = Handlebars.templates.error;
+    router.root.innerHTML += errorEl({
+      status: user.status,
+      description: 'Ошибка',
+    })
+    return;
+  }
+
   const navbar = Handlebars.templates.navbar;
-  router.root.innerHTML = '';
   router.root.innerHTML += navbar({
     user: {
       id: router.id,
@@ -107,11 +117,11 @@ export default async (router) => {
     }
   });
 
-  const user = Handlebars.templates.user;
+  const userEl = Handlebars.templates.user;
 
-  createUserContext(id, router).then(context => {
-    router.root.innerHTML += user(context);
-  })
+  router.root.innerHTML += user.body.is_author
+    ? createAuthorJSON(user.body)
+    : createDonaterJSON(user.body);
 
   const footer = Handlebars.templates.footer;
   router.root.innerHTML += footer();

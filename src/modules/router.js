@@ -84,9 +84,6 @@ export default class Router {
                 } else {
                     this.goTo('/login');
                 }
-            })
-            .catch(({ status, body }) => {
-                this.goTo('/login');
             });
     }
 

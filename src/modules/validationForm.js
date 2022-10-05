@@ -172,7 +172,7 @@ export default function processForm(form) {
     sendRequest(form);
   } else {
     errorMessage.className = 'form__error-msg form__error-msg_enable';
-    errorMessage.textContent = 'Неверно введены данные!';
+    errorMessage.innerHTML = 'Неверно введены данные!';
   }
 }
 

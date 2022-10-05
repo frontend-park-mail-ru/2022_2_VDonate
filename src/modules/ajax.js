@@ -7,6 +7,13 @@
 export default class Ajax {
 
     /**
+     * Ответ на запрос
+     * @typedef {Object} ParsedResponse 
+     * @property {int} status код ответа
+     * @property {Object} body тело ответа
+     */
+
+    /**
      * запоминает базовый адрес для обращения на API
      * @constructor
      * @param {string} baseUrl baseUrl - базовый адрес
@@ -19,7 +26,7 @@ export default class Ajax {
      * отправляет GET запрос, возвращает  объект респонса с полями ок, статус и тело
      * @param {string} url имя пути
      * @param {Object} data данные для query-параметров
-     * @returns {Object} объект ответа с полями { ok, status, body}
+     * @returns {Promise<ParsedResponse>} объект ответа с полями {status, body}
      */
     get(url, data = {}) {
         let urlWithParams = url + this._dataToQuery(data);
@@ -30,7 +37,7 @@ export default class Ajax {
      * отправляет POST запрос, возвращает  объект респонса с полями ок, статус и тело
      * @param {string} url имя пути
      * @param {Object} data данные для составления тела запроса
-     * @returns {Object} объект ответа с полями { ok, status, body}
+     * @returns {Promise<ParsedResponse>} объект ответа с полями {status, body}
      */
     post(url, data = {}) {
         return this._request(url, 'POST', data);
@@ -75,14 +82,14 @@ export default class Ajax {
     }
 
     /**
-     * отправляет Request-запрос на заданный url, возвращает promise<Response>
+     * отправляет Request-запрос на заданный url, 
+     * возвращает promise<ParsedResponse>
      * @param {string} url  
      * @param {string} method 
      * @param {Object} data 
-     * @returns {Promise<Response>}
+     * @returns {Promise<ParsedResponse>}
      */
-    _request(url, method, data) {
-        let status;
+    async _request(url, method, data) {
         const options = {
             method,
             mode: 'cors',
@@ -95,17 +102,16 @@ export default class Ajax {
         if (!['GET', 'HEAD'].includes(method))
             options.body = JSON.stringify(data);
 
-        return fetch(
+        const response = await fetch(
             this.baseUrl + url,
             options
-        ).then((response) => {
-            status = response.status;
-            return response.json();
-        }).then((body) => {
-            return {
-                status,
-                body,
-            }
-        })
+        );
+
+        const jsonBody = response.ok ? await response.json() : {};
+
+        return {
+            status: response.status,
+            body: jsonBody,
+        };
     }
 }
