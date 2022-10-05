@@ -5,10 +5,10 @@
 
 /**
  * Функция, создающая контекст для страницы профиля донатера
- * @param {Router} router класс маршрутизации
+ * @param {Object} body объект ответа согласно API
  * @returns {Object} объект с контекстом
  */
-function createDonaterJSON(body) {
+const createDonaterJSON = body => {
   const donater = {
     owner: {
       username: body.username,
@@ -29,13 +29,13 @@ function createDonaterJSON(body) {
   // });
   return donater;
 }
+
 /**
  * Функция, создающая контекст для страницы профиля автора
- * @param {Router} router класс маршрутизации
- * @param {string} id id автора
+ * @param {Object} body объект ответа согласно API
  * @returns {Object} объект с контекстом
  */
-function createAuthorJSON(body) {
+const createAuthorJSON = body => {
   const author = {
     owner: {
       username: body.username,
@@ -60,21 +60,25 @@ function createAuthorJSON(body) {
   //   };
   //   author.levels.push(tmp);
   // });
-  // const recievedPosts = await router.api.getAllPosts(1, 20, id); //обсудить сколько постов нам нужно
-  // recievedPosts.body.posts.forEach((post) => {
-  //   const tmp = {
-  //     image: post.workOfArt, //'../static/img/4.jpg',
-  //     text: post.about,
-  //     likesCount: post.likes, //5,
-  //     commentsCount: post.comments //15,
-  //   };
-  //   author.posts.push(tmp);
-  // });
+  // router.api.getAllPosts(1, 20, id).then(
+  //   (body, status) => {
+  //     body.posts.forEach((post) => {
+  //       const tmp = {
+  //         image: post.workOfArt, //'../static/img/4.jpg',
+  //         text: post.about,
+  //         likesCount: post.likes, //5,
+  //         commentsCount: post.comments //15,
+  //       };
+  //       author.posts.push(tmp);
+  //     });
+  //   }
+  // ) //обсудить сколько постов нам нужно
+
   return author;
 }
 
 /**
- * 
+ * Функция, создающая контекст пользователя
  * @param {int} id 
  * @param {Router} router 
  */
@@ -99,14 +103,6 @@ export default async (router) => {
   router.root.innerHTML += navbar();
 
   const user = Handlebars.templates.user;
-
-  // if (id === null) {
-  //   const donater = createDonaterJSON(router);
-  //   router.root.innerHTML += user(donater);
-  // } else {
-  //   const author = createAuthorJSON(router, id);
-  //   router.root.innerHTML += user(author);
-  // }
 
   createUserContext(id, router).then(context => {
     router.root.innerHTML += user(context);
