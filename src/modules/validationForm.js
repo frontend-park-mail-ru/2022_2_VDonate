@@ -189,15 +189,17 @@ function sendRequest(form) {
   const router = new Router();
   switch (form.name) {
     case formType.login:
-      const login = form.username.value;
-      const pass = form.password.value;
-      router.api.loginUser(login, pass)
+      router.api.loginUser(form.username.value, form.password.value)
         .then(({ status, body }) => {
           validateOrLogin(router, form, status, body.id);
         });
       break;
     case formType.signup:
-      router.api.signupUser(form.username.value, form.email.value, form.password.value)
+      router.api.signupUser(
+        form.username.value,
+        form.email.value,
+        form.password.value
+      )
         .then(({ status, body }) => {
           validateOrSignup(router, form, status, body.id);
         });
@@ -259,6 +261,7 @@ function validateOrSignup(router, form, status, id) {
       errorMessage.innerHTML = 'Пользователь с данной почтой или псевдонимом уже существует!';
       form.email.className = 'form__error-msg form__error-msg_enable';
       form.username.className = 'form__error-msg form__error-msg_enable';
+      break;
     case 500:
       errorMessage.className = 'form__error-msg form__error-msg_enable';
       errorMessage.innerHTML = 'Внутренняя ошибка сервера!';

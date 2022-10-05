@@ -50,7 +50,7 @@ export default class Router {
                 }
             });
 
-            window.addEventListener('popstate', (e) => {
+            window.addEventListener('popstate', () => {
                 const route = routes.find(obj => window.location.pathname.match(obj.path));
                 if (route != undefined) {
                     route.render(this);
