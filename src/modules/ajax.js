@@ -103,8 +103,8 @@ export default class Ajax {
             return response.json();
         }).then((body) => {
             return {
-                body,
                 status,
+                body,
             }
         })
     }

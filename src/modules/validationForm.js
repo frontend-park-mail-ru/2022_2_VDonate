@@ -188,13 +188,13 @@ function sendRequest(form) {
       const login = form.username.value;
       const pass = form.password.value;
       router.api.loginUser(login, pass)
-        .then(({ body, status }) => {
+        .then(({ status, body }) => {
           validateOrLogin(router, form, status, body.id);
         });
       break;
     case formType.signup:
       router.api.signupUser(form.username.value, form.email.value, form.password.value)
-        .then(({ body, status }) => {
+        .then(({ status, body }) => {
           validateOrSignup(router, form, status, body.id);
         });
       break;
@@ -202,48 +202,50 @@ function sendRequest(form) {
 }
 
 function validateOrLogin(router, form, status, id) {
+  const errorMessage = form.querySelector('#error-msg');
   switch (status) {
     case 200:
       router.goTo(`/profile?id=${id}`);
       break;
     case 400:
-      form.errorMessage.className = 'form__error-msg form__error-msg_enable';
-      form.errorMessage.innerHTML = 'Неверно введен пароль!';
+      errorMessage.className = 'form__error-msg form__error-msg_enable';
+      errorMessage.innerHTML = 'Неверно введен пароль!';
       form.password.className = 'input__input input__input_error';
       break;
     case 404:
-      form.errorMessage.className = 'form__error-msg form__error-msg_enable';
-      form.errorMessage.innerHTML = 'Пользователь не найден!';
+      errorMessage.className = 'form__error-msg form__error-msg_enable';
+      errorMessage.innerHTML = 'Пользователь не найден!';
       form.username.className = 'input__input input__input_error';
       break;
     case 500:
-      form.errorMessage.className = 'form__error-msg form__error-msg_enable';
-      form.errorMessage.innerHTML = 'Внутренняя ошибка сервера!';
+      errorMessage.className = 'form__error-msg form__error-msg_enable';
+      errorMessage.innerHTML = 'Внутренняя ошибка сервера!';
       break;
     default:
-      form.errorMessage.className = 'form__error-msg form__error-msg_enable';
-      form.errorMessage.innerHTML = 'Ошибка, повторите попытку еще раз!';
+      errorMessage.className = 'form__error-msg form__error-msg_enable';
+      errorMessage.innerHTML = 'Ошибка, повторите попытку еще раз!';
       break;
   }
 }
 
 function validateOrSignup(router, form, status, id) {
+  const errorMessage = form.querySelector('#error-msg');
   switch (status) {
     case 200:
       router.goTo(`/profile?id=${id}`);
       break;
     case 409:
-      form.errorMessage.className = 'form__error-msg form__error-msg_enable';
-      form.errorMessage.innerHTML = 'Пользователь с данной почтой или псевдонимом уже существует!';
+      errorMessage.className = 'form__error-msg form__error-msg_enable';
+      errorMessage.innerHTML = 'Пользователь с данной почтой или псевдонимом уже существует!';
       form.email.className = 'form__error-msg form__error-msg_enable';
       form.username.className = 'form__error-msg form__error-msg_enable';
     case 500:
-      form.errorMessage.className = 'form__error-msg form__error-msg_enable';
-      form.errorMessage.innerHTML = 'Внутренняя ошибка сервера!';
+      errorMessage.className = 'form__error-msg form__error-msg_enable';
+      errorMessage.innerHTML = 'Внутренняя ошибка сервера!';
       break;
     default:
-      form.errorMessage.className = 'form__error-msg form__error-msg_enable';
-      form.errorMessage.innerHTML = 'Ошибка, повторите попытку еще раз!';
+      errorMessage.className = 'form__error-msg form__error-msg_enable';
+      errorMessage.innerHTML = 'Ошибка, повторите попытку еще раз!';
       break;
   }
 }
