@@ -3,8 +3,8 @@
  * @module Router
  */
 import profile from "../views/profile.js";
-import auth from "../views/auth.js";
-import sign from "../views/sign.js";
+import login from "../views/login.js";
+import signup from "../views/signup.js";
 import render404 from "../views/404.js";
 
 /**
@@ -17,12 +17,12 @@ const routes = [
         render: profile,
     },
     {
-        path: /^\/auth\/login$/,
-        render: auth
+        path: /^\/login$/,
+        render: login
     },
     {
-        path: /^\/auth\/signup$/,
-        render: sign
+        path: /^\/signup$/,
+        render: signup
     },
 
 ]
@@ -81,11 +81,11 @@ export default class Router {
                 if (status === 200) {
                     this.goTo(`/profile?id=${body.id}`);
                 } else {
-                    this.goTo('/auth/login');
+                    this.goTo('/login');
                 }
             })
             .catch(({ status, body }) => {
-                this.goTo('/auth/login');
+                this.goTo('/login');
             });
     }
 

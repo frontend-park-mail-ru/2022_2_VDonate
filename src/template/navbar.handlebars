@@ -7,7 +7,7 @@
       <a class="navbar__link" href="/subscriptions" data-link>Подписки</a>
       <div class="navbar__profile">
         {{#with user}}
-          <a class="navbar__link profile" href="/users/{{id}}" data-link>
+          <a class="navbar__link profile" href="/profile?id={{id}}" data-link>
             <img class="profile__image" src="{{image}}" alt="image">
             <span class="profile__text">Мой профиль</span>
           </a>

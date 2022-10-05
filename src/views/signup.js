@@ -38,7 +38,7 @@ const contextSignUp = {
   buttonTittle: 'Зарегистрироваться',
   orButton: {
     title: 'Войти',
-    link: '/signin',
+    link: '/login',
   }
 };
 
