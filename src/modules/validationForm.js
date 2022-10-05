@@ -64,8 +64,10 @@ const emailLengthCheck = email => {
  * @returns {bool} результат проверки
  */
 const emailCheck = email => {
+  //eslint-disable-next-line
   const localSyms = /[a-zA-Z0-9!#\$&%_+-]/;
   const localReg = new RegExp(`^${localSyms.source}+(\\.?${localSyms.source}+)*`);
+  //eslint-disable-next-line
   const domainReg = /[0-9a-zA-Z]([\.-]?[0-9a-zA-Z]+)*$/;
   const emailReg = new RegExp(localReg.source + '@' + domainReg.source);
   if (emailReg.test(email.value) && emailLengthCheck(email.value)) {
