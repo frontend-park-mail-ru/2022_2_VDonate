@@ -108,16 +108,4 @@ export default class Ajax {
             }
         })
     }
-
-    // /**
-    //  * конвертирует promise<Response> в объект с полями { ok, status, body}
-    //  * @param {Promise<Response>} fetchPromise 
-    //  * @returns {Object}
-    //  */
-    // async _responseToJson(fetchPromise) {
-    //     jsoned.ok = response.ok;
-    //     jsoned.status = response.status;
-    //     return jsoned;
-    // }
-
 }
