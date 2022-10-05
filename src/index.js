@@ -20,7 +20,7 @@ const api = new Api('/api/v1');
 const router = new Router();
 router.root = root;
 router.api = api;
-router.userAuth();
+router.authUser();
 
 window.processForm = processForm;
 

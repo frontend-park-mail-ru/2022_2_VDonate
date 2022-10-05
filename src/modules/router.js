@@ -27,15 +27,17 @@ const routes = [
 
 ]
 
-/**Класс маршрутизации по страницам сайта */
+/**
+ * Класс маршрутизации по страницам сайта
+ * @property {Element} root указатель на блок, куда будет рендериться страница
+ * @property {Api} api API связи с сервером
+ */
 export default class Router {
     static _instance = null;
     /**
      * Конструктор, добавляющий обработку 2 событий: переход между страницами и переход вперед/назад
      * и при входе на сайт запускает процесс аутенфикации
      * @constructor
-     * @param {Element} root указатель на блок, куда будет рендериться страница 
-     * @param {Api} api API связи с сервером
      */
     constructor() {
         if (Router._instance === null) {
@@ -75,7 +77,10 @@ export default class Router {
         this._api = value;
     }
 
-    userAuth() {
+    /**
+     * Функция аутификации пользователя
+     */
+    authUser() {
         this.api.authUser()
             .then(({ status, body }) => {
                 if (status === 200) {
@@ -92,9 +97,7 @@ export default class Router {
      * @param {string} loc путь страницы
      */
     goTo(loc) {
-        console.log(loc);
         const route = routes.find(obj => loc.match(obj.path));
-        console.log(route);
         if (route === undefined) {
             render404(this);
             return;

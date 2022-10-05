@@ -43,25 +43,25 @@ export default class Ajax {
         return this._request(url, 'POST', data);
     }
 
-    // /**
-    //  * отправляет PUT запрос, возвращает  объект респонса с полями ок, статус и тело
-    //  * @param {string} url имя пути
-    //  * @param {Object} data данные для составления тела запроса
-    //  * @returns {Object} объект ответа с полями { ok, status, body}
-    //  */
-    // put(url, data = {}) {
-    //     return this._responseToJson(this._request(url, 'PUT', data));
-    // }
+    /**
+     * отправляет PUT запрос, возвращает  объект респонса с полями ок, статус и тело
+     * @param {string} url имя пути
+     * @param {Object} data данные для составления тела запроса
+     * @returns {Promise<ParsedResponse>} объект ответа с полями {status, body}
+     */
+    put(url, data = {}) {
+        return this._request(url, 'PUT', data);
+    }
 
-    // /**
-    //  * отправляет DELETE запрос, возвращает  объект респонса с полями ок, статус и тело
-    //  * @param {string} url имя пути
-    //  * @param {Object} data данные для составления тела запроса
-    //  * @returns {Object} объект ответа с полями { ok, status, body}
-    //  */
-    // delete(url, data = {}) {
-    //     return this._responseToJson(this._request(url, 'DELETE', data));
-    // }
+    /**
+     * отправляет DELETE запрос, возвращает  объект респонса с полями ок, статус и тело
+     * @param {string} url имя пути
+     * @param {Object} data данные для составления тела запроса
+     * @returns {Promise<ParsedResponse>} объект ответа с полями {status, body}
+     */
+    delete(url, data = {}) {
+        return this._request(url, 'DELETE', data);
+    }
 
     /**
      * Формирует из входных данных query-параметры

@@ -7,18 +7,24 @@ import Ajax from "./ajax.js";
 
 /**Класс интерфейса для связи с сервером */
 export default class Api extends Ajax {
+    /**
+     * Ответ на запрос
+     * @typedef {Object} ParsedResponse 
+     * @property {int} status код ответа
+     * @property {Object} body тело ответа
+     */
 
     /**
      * Интерфейс авторизации пользователя
      * @param {string} username логин пользователя 
      * @param {string} password пароль пользователя
-     * @returns {Object} объект ответа с полями {ok, status, body} 
+     * @returns {Promise<ParsedResponse>} объект ответа с полями {status, body}
      */
     loginUser = (username, password) => this.post('/login', { username, password });
 
     /**
      * Интерфейс аутенфикации пользователя
-     * @returns {Object} объект ответа с полями {ok, status, body}
+     * @returns {Promise<ParsedResponse>} объект ответа с полями {status, body}
      */
     authUser = () => this.get('/auth');
 
@@ -30,7 +36,7 @@ export default class Api extends Ajax {
      * @param {string} firstName имя (необязательный параметр)
      * @param {string} lastName фамилия (необязательный параметр)
      * @param {string} phone телефон (необязательный параметр)
-     * @returns {Object} объект ответа с полями {ok, status, body}
+     * @returns {Promise<ParsedResponse>} объект ответа с полями {status, body}
      */
     signupUser = (username,
         email,
@@ -51,7 +57,7 @@ export default class Api extends Ajax {
     /**
      * интерфейс получения данных о пользователе с данным id
      * @param {string} id id пользователя
-     * @returns {Object} объект ответа с полями {ok, status, body}
+     * @returns {Promise<ParsedResponse>} объект ответа с полями {status, body}
      */
     getUser = (id) => this.get(`/users/${id}`);
 
@@ -60,7 +66,7 @@ export default class Api extends Ajax {
      * @param {Number} from первый необходимый пост
      * @param {Number} count количество постов
      * @param {string} id id автора
-     * @returns {Object} объект ответа с полями {ok, status, body}
+     * @returns {Promise<ParsedResponse>} объект ответа с полями {status, body}
      */
     getAllPosts = (from, count, id) => this.get('/posts', { from, count, id });
 }

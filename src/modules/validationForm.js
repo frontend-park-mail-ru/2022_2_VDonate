@@ -1,3 +1,8 @@
+/**
+ * Модуль валидации и обработки формы
+ * @module processForm
+ */
+
 import Router from "./router.js";
 
 /**
@@ -150,7 +155,7 @@ const signupValidation = form => {
  * @param {HTMLFormElement} form элемент формы регистрации для валидации
  * @returns {bool} результат проверки
  */
-function validationForm(form) {
+const validationForm = form => {
   switch (form.name) {
     case formType.login:
       return loginValidation(form);
@@ -162,7 +167,7 @@ function validationForm(form) {
 }
 
 /**
- * Заглушка
+ * Обработка формы
  * @param {HTMLFormElement} form 
  */
 export default function processForm(form) {
@@ -177,9 +182,8 @@ export default function processForm(form) {
 }
 
 /**
- * отправляет запрос на авторизацию/регистрацию
+ * Отправка запрос на авторизацию/регистрацию
  * @param {HTMLFormElement} form 
- * @param {Router} router 
  */
 function sendRequest(form) {
   const router = new Router();
@@ -201,6 +205,13 @@ function sendRequest(form) {
   }
 }
 
+/**
+ * Валидация результата запроса формы на вход
+ * @param {Router} router 
+ * @param {HTMLFormElement} form форма, которая отправила запрос
+ * @param {int} status код ответа
+ * @param {int} id ID пользователя из результата отправки формы
+ */
 function validateOrLogin(router, form, status, id) {
   const errorMessage = form.querySelector('#error-msg');
   switch (status) {
@@ -229,6 +240,13 @@ function validateOrLogin(router, form, status, id) {
   }
 }
 
+/**
+ * Валидация результата запроса формы на регистрацию
+ * @param {Router} router 
+ * @param {HTMLFormElement} form форма, которая отправила запрос
+ * @param {int} status код ответа
+ * @param {int} id ID пользователя из результата отправки формы
+ */
 function validateOrSignup(router, form, status, id) {
   const errorMessage = form.querySelector('#error-msg');
   switch (status) {

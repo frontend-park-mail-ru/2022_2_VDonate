@@ -77,19 +77,6 @@ const createAuthorJSON = body => {
   return author;
 }
 
-/**
- * Функция, создающая контекст пользователя
- * @param {int} id 
- * @param {Router} router 
- */
-function createUserContext(user) {
-  if (user.body.is_author) {
-    return createAuthorJSON(user.body);
-  }
-  return createDonaterJSON(user.body);
-}
-
-
 /** 
  * Функция, которая рендерит страницу профиля
  * @param {Router} router Класс маршрутизации по страницам сайта
