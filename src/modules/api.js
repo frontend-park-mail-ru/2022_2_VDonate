@@ -68,5 +68,5 @@ export default class Api extends Ajax {
      * @param {string} id id автора
      * @returns {Promise<ParsedResponse>} объект ответа с полями {status, body}
      */
-    getAllPosts = (from, count, id) => this.get('/posts', { from, count, id });
+    getAllPosts = (id) => this.get('/posts', { id });
 }

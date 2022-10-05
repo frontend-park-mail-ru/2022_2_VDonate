@@ -35,7 +35,7 @@ const createDonaterJSON = body => {
  * @param {Object} body объект ответа согласно API
  * @returns {Object} объект с контекстом
  */
-const createAuthorJSON = body => {
+const createAuthorJSON = (router, body) => {
   const author = {
     owner: {
       username: body.username,
@@ -60,21 +60,23 @@ const createAuthorJSON = body => {
   //   };
   //   author.levels.push(tmp);
   // });
-  // router.api.getAllPosts(1, 20, id).then(
-  //   (body, status) => {
-  //     body.posts.forEach((post) => {
-  //       const tmp = {
-  //         image: post.workOfArt, //'../static/img/4.jpg',
-  //         text: post.about,
-  //         likesCount: post.likes, //5,
-  //         commentsCount: post.comments //15,
-  //       };
-  //       author.posts.push(tmp);
-  //     });
-  //   }
-  // ) //обсудить сколько постов нам нужно
+  router.api.getAllPosts(body.id).then(
+    (body, status) => {
+      if (status === 200) {
+        body.posts.forEach((post) => {
+          const tmp = {
+            image: '../static/img/4.jpg', //post.workOfArt
+            text: post.about,
+            likesCount: post.likes, //5,
+            commentsCount: post.comments //15,
+          };
+          author.posts.push(tmp);
+        })
+      }
+}
+  ) //обсудить сколько постов нам нужно
 
-  return author;
+return author;
 }
 
 /** 
@@ -108,7 +110,7 @@ export default async (router) => {
   const userEl = Handlebars.templates.user;
 
   router.root.innerHTML += userEl(user.body.is_author
-    ? createAuthorJSON(user.body)
+    ? createAuthorJSON(router, user.body)
     : createDonaterJSON(user.body));
 
   const footerEl = Handlebars.templates.footer;
