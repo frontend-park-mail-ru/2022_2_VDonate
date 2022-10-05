@@ -35,7 +35,7 @@ const createDonaterJSON = body => {
  * @param {Object} body объект ответа согласно API
  * @returns {Object} объект с контекстом
  */
-const createAuthorJSON = (router, body) => {
+const createAuthorJSON = (body) => {
   const author = {
     owner: {
       username: body.username,
@@ -60,21 +60,21 @@ const createAuthorJSON = (router, body) => {
   //   };
   //   author.levels.push(tmp);
   // });
-  router.api.getAllPosts(body.id).then(
-    (body, status) => {
-      if (status === 200) {
-        body.forEach((post) => {
-          const tmp = {
-            image: '../static/img/4.jpg', //post.workOfArt
-            text: post.title,
-            likesCount: 5, //5,
-            commentsCount: 15 //15,
-          };
-          author.posts.push(tmp);
-        })
-      }
-    }
-  ) //обсудить сколько постов нам нужно
+  // router.api.getAllPosts(body.id).then(
+  //   (body, status) => {
+  //     if (status === 200) {
+  //       body.forEach((post) => {
+  //         const tmp = {
+  //           image: '../static/img/4.jpg', //post.workOfArt
+  //           text: post.title,
+  //           likesCount: 5, //5,
+  //           commentsCount: 15 //15,
+  //         };
+  //         author.posts.push(tmp);
+  //       })
+  //     }
+  //   }
+  // ) //обсудить сколько постов нам нужно
 
   return author;
 }
@@ -109,9 +109,37 @@ export default async (router) => {
 
   const userEl = Handlebars.templates.user;
 
-  router.root.innerHTML += userEl(user.body.is_author
-    ? createAuthorJSON(router, user.body)
-    : createDonaterJSON(user.body));
+
+
+  if (user.body.is_author) {
+    const posts = await router.api.getAllPosts(user.body.id);
+    if (posts.status >= 400) {
+      const errorEl = Handlebars.templates.error;
+      router.root.innerHTML += errorEl({
+        status: posts.status,
+        description: 'Ошибка',
+        id: router.id,
+      })
+      return;
+    }
+    const context = createAuthorJSON(user.body);
+    posts.body.forEach(
+      post => {
+        const tmp = {
+          image: '../static/img/4.jpg', //post.workOfArt
+          text: post.title,
+          likesCount: 5, //5,
+          commentsCount: 15 //15,
+        };
+        context.posts.push(tmp);
+      }
+    )
+
+  } else {
+    const context = createDonaterJSON(user.body);
+  }
+
+  router.root.innerHTML += userEl(context);
 
   const footerEl = Handlebars.templates.footer;
   router.root.innerHTML += footerEl();
