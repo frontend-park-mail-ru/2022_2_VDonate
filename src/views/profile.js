@@ -63,7 +63,7 @@ const createAuthorJSON = (router, body) => {
   router.api.getAllPosts(body.id).then(
     (body, status) => {
       if (status === 200) {
-        body.posts.forEach((post) => {
+        body.forEach((post) => {
           const tmp = {
             image: '../static/img/4.jpg', //post.workOfArt
             text: post.title,
