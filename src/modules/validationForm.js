@@ -189,19 +189,19 @@ function sendRequest(form, router) {
       const pass = form.password.value;
       const res = router.api.loginUser(login, pass);
       switch (res.status) {
-        case '200':
+        case 200:
           router.id = res.body.id;
           router.goTo('/profile');
           break;
-        case '400':
+        case 400:
           errorMessage.className = 'form__error-msg form__error-msg_enable';
           errorMessage.innerHTML = 'Неверно введен пароль!';
           break;
-        case '404':
+        case 404:
           errorMessage.className = 'form__error-msg form__error-msg_enable';
           errorMessage.innerHTML = 'Пользователь не найден!';
           break;
-        case '500':
+        case 500:
           errorMessage.className = 'form__error-msg form__error-msg_enable';
           errorMessage.innerHTML = 'Внутренняя ошибка сервера!';
           break;
@@ -218,18 +218,18 @@ function sendRequest(form, router) {
       const password = form.password.value;
       const response = router.api.signupUser(username, email, password);
       switch (response.status) {
-        case '200':
+        case 200:
           router.id = response.body.id;
           router.goTo('/profile');
           break;
-        case '400':
+        case 400:
           errorMessage.className = 'form__error-msg form__error-msg_enable';
           errorMessage.innerHTML = 'Неверно введен пароль!';
-        case '404':
+        case 404:
           errorMessage.className = 'form__error-msg form__error-msg_enable';
           errorMessage.innerHTML = 'Пользователь не найден!';
           break;
-        case '500':
+        case 500:
           errorMessage.className = 'form__error-msg form__error-msg_enable';
           errorMessage.innerHTML = 'Внутренняя ошибка сервера!';
           break;
