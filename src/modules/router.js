@@ -78,7 +78,7 @@ export default class Router {
     userAuth() {
         this.api.authUser()
             .then(({ status, body }) => {
-                if (status === "200") {
+                if (status === 200) {
                     this.goTo(`/profile?id=${body.id}`);
                 } else {
                     this.goTo('/auth/login');
