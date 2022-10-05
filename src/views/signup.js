@@ -18,19 +18,19 @@ const contextSignUp = {
     },
     {
       title: 'Псевдоним',
-      placeholder: 'My username',
+      placeholder: 'До 20 символов',
       name: 'username',
       type: 'text',
     },
     {
       title: 'Пароль',
-      placeholder: 'Любые символы, кроме пробелов',
+      placeholder: 'До 30 символов',
       name: 'password',
       type: 'password',
     },
     {
       title: 'Повторите пароль',
-      placeholder: 'Любые символы, кроме пробелов',
+      placeholder: 'До 30 символов',
       name: 'passwordRepeat',
       type: 'password',
     },

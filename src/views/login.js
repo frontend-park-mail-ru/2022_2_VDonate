@@ -12,13 +12,13 @@ const contextLogIn = {
   inputs: [
     {
       title: 'Псевдоним',
-      placeholder: 'Username',
+      placeholder: 'До 20 символов',
       name: 'username',
       type: 'text',
     },
     {
       title: 'Пароль',
-      placeholder: 'Любые символы, кроме пробелов',
+      placeholder: 'До 30 символов',
       name: 'password',
       type: 'password',
     },
