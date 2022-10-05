@@ -82,7 +82,7 @@ export default class Ajax {
      * @returns {Promise<Response>}
      */
     _request(url, method, data) {
-        let statusCode;
+        let status;
         const options = {
             method,
             mode: 'cors',
@@ -99,12 +99,12 @@ export default class Ajax {
             this.baseUrl + url,
             options
         ).then((response) => {
-            statusCode = response.status;
+            status = response.status;
             return response.json();
         }).then((body) => {
             return {
-                statusCode,
                 body,
+                status,
             }
         })
     }
