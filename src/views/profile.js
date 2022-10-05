@@ -66,9 +66,9 @@ const createAuthorJSON = (router, body) => {
         body.posts.forEach((post) => {
           const tmp = {
             image: '../static/img/4.jpg', //post.workOfArt
-            text: post.about,
-            likesCount: post.likes, //5,
-            commentsCount: post.comments //15,
+            text: post.title,
+            likesCount: 5, //5,
+            commentsCount: 15 //15,
           };
           author.posts.push(tmp);
         })
