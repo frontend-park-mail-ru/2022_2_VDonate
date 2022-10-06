@@ -107,11 +107,25 @@ export default class Ajax {
             options
         );
 
-        const jsonBody = response.ok ? await response.json() : {};
-
-        return {
-            status: response.status,
-            body: jsonBody,
-        };
+        if (response.ok) {
+            return await response.json()
+                .then(json => {
+                    return {
+                        status: response.status,
+                        body: json,
+                    };
+                })
+                .catch(() => {
+                    return {
+                        status: 515,
+                        body: {},
+                    }
+                })
+        } else {
+            return {
+                status: response.status,
+                body: {},
+            }
+        }
     }
 }
