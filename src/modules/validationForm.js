@@ -31,11 +31,11 @@ const sizes = {
   localMax: 64,
   domainLableMax: 63,
   username: {
-    min: 1,
+    min: 5,
     max: 20,
   },
   password: {
-    min: 1,
+    min: 5,
     max: 30,
   },
 };
@@ -217,8 +217,8 @@ function validateOrSignup(router, form, status, id) {
     case 409:
       errorMessage.className = 'form__error-msg form__error-msg_enable';
       errorMessage.innerHTML = 'Пользователь с данной почтой или псевдонимом уже существует!';
-      form.email.className = 'form__error-msg form__error-msg_enable';
-      form.username.className = 'form__error-msg form__error-msg_enable';
+      form.email.className = 'input__input input__input_error';
+      form.username.className = 'input__input input__input_error';
       break;
     case 500:
       errorMessage.className = 'form__error-msg form__error-msg_enable';

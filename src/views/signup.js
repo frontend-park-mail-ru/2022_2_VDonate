@@ -11,7 +11,7 @@ const contextSignUp = {
   formName: 'signup',
   inputs: [
     {
-      title: 'Логин',
+      title: 'Почта',
       placeholder: 'example@example.ru',
       name: 'email',
       type: 'text',
