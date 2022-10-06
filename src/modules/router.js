@@ -98,11 +98,7 @@ export default class Router {
      */
     goTo(loc) {
         const route = routes.find(obj => loc.match(obj.path));
-        if (route === undefined) {
-            render404(this);
-            return;
-        }
         window.history.pushState(null, null, loc);
-        route.render(this);
+        route === undefined ? render404(this) : route.render(this);
     }
 }
