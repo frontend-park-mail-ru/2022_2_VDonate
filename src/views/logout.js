@@ -11,8 +11,8 @@ import login from './login.js';
  */
 export default (router) => {
   router.api.logout()
-    .then(({ status }) => {
-      if (status === 200) {
+    .then((response) => {
+      if (response.status === 200) {
         login(router);
       }
     });
