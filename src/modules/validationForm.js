@@ -120,7 +120,7 @@ const passwordCheck = password => {
  * @returns {bool} результат проверки
  */
 const repeatPasswordCheck = (origin, repeat) => {
-  if (repeat.value != '' && origin.value === repeat.value) {
+  if (repeat.value.length !== 0 && origin.value === repeat.value) {
     repeat.className = 'input__input';
     return true;
   }
