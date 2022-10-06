@@ -15,5 +15,7 @@ export default (router) => {
     description: 'Страница не найдена',
   });
   const link = document.getElementById('post-block-link');
-  link.onclick(() => { router.authUser(); });
+  link.onclick = () => {
+    router.authUser();
+  };
 };
