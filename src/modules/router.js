@@ -48,7 +48,7 @@ export default class Router {
             Router._instance = this;
             window.addEventListener('click', (e) => {
                 const target = e.target.closest("a[data-link]");
-                if (target != null) {
+                if (target !== null) {
                     e.preventDefault();
                     this.goTo(target.getAttribute('href'));
                 }
@@ -56,7 +56,7 @@ export default class Router {
 
             window.addEventListener('popstate', () => {
                 const route = routes.find(obj => window.location.pathname.match(obj.path));
-                if (route != undefined) {
+                if (route !== undefined) {
                     route.render(this);
                 }
             });
@@ -102,11 +102,7 @@ export default class Router {
      */
     goTo(loc) {
         const route = routes.find(obj => loc.match(obj.path));
-        if (route === undefined) {
-            render404(this);
-            return;
-        }
         window.history.pushState(null, null, loc);
-        route.render(this);
+        route === undefined ? render404(this) : route.render(this);
     }
 }

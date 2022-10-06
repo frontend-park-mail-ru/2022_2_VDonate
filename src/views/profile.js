@@ -13,20 +13,11 @@ const createDonaterJSON = body => {
     owner: {
       username: body.username,
       tags: 'Донатер',
-      avatar: "../static/img/0.jpg", //body.avatar,
+      avatar: "../static/img/0.jpg",
       isAuthor: false
     },
     subscriptions: []
-  }
-  // body.userSubscriptions.forEach((sub) => {
-  //   const tmp = {
-  //     nickname: sub.name,
-  //     level: `Уровень ${sub.level}`,
-  //     avatar: sub.avatar, //"../static/img/1.jpg",
-  //     link: `/profile?id=${sub.id}`
-  //   };
-  //   donater.subscriptions.push(tmp);
-  // });
+  };
   return donater;
 }
 
@@ -39,43 +30,16 @@ const createAuthorJSON = (body) => {
   const author = {
     owner: {
       username: body.username,
-      tags: 'Искусство', // body.tag,
-      avatar: "../static/img/0.jpg", // body.avatar, 
-      isAuthor: true,
+      tags: 'Искусство',
+      avatar: "../static/img/0.jpg",
       about: {
-        image: '../static/img/4.jpg', // body.descriptionImage
+        image: '../static/img/4.jpg',
         text: body.about,
       },
     },
     levels: [],
     posts: []
   };
-  // body.authorSubscriptions.forEach((sub) => {
-  //   const tmp = {
-  //     title: `Уровень ${sub.level}`,
-  //     image: sub.image, //"../static/img/4.jpg",
-  //     price: sub.price, //'₽500',
-  //     priceDescribtion: sub.priceDescribtion, //'за неделю',
-  //     text: sub.text // ['- мотивация', '- очень сильная мотивация'],
-  //   };
-  //   author.levels.push(tmp);
-  // });
-  // router.api.getAllPosts(body.id).then(
-  //   (body, status) => {
-  //     if (status === 200) {
-  //       body.forEach((post) => {
-  //         const tmp = {
-  //           image: '../static/img/4.jpg', //post.workOfArt
-  //           text: post.title,
-  //           likesCount: 5, //5,
-  //           commentsCount: 15 //15,
-  //         };
-  //         author.posts.push(tmp);
-  //       })
-  //     }
-  //   }
-  // ) //обсудить сколько постов нам нужно
-
   return author;
 }
 
@@ -126,15 +90,14 @@ export default async (router) => {
     posts.body.forEach(
       post => {
         const tmp = {
-          image: '../static/img/4.jpg', //post.workOfArt
+          image: '../static/img/4.jpg',
           text: post.title,
-          likesCount: 5, //5,
-          commentsCount: 15 //15,
+          likesCount: 5,
+          commentsCount: 15,
         };
         context.posts.push(tmp);
       }
     )
-
   } else {
     context = createDonaterJSON(user.body);
   }
