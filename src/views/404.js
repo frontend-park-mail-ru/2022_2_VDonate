@@ -13,6 +13,6 @@ export default (router) => {
   router.root.innerHTML += errorEl({
     status: 404,
     description: 'Страница не найдена',
-    id: router.id,
   });
+  document.getElementById('post-block-link').onclick(router.authUser());
 };
