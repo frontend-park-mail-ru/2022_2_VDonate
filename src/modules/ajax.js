@@ -9,7 +9,7 @@ export default class Ajax {
     /**
      * Ответ на запрос
      * @typedef {Object} ParsedResponse 
-     * @property {int} status код ответа
+     * @property {number} status код ответа
      * @property {Object} body тело ответа
      */
 

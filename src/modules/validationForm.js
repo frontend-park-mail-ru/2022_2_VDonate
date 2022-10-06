@@ -17,15 +17,15 @@ const formType = {
 /**
  * Ограничения длин полей
  * @namespace
- * @property {int} localMax максимальная длина локальной части почты
- * @property {int} domainLableMax максимальная длина одного уровня доменной 
+ * @property {number} localMax максимальная длина локальной части почты
+ * @property {number} domainLableMax максимальная длина одного уровня доменной 
  * части почты
  * @property {object} username значения длин псевдонима
- * @property {int} username.max значение максимальной длины псевдонима
- * @property {int} username.min значение минимальной длины псевдонима
+ * @property {number} username.max значение максимальной длины псевдонима
+ * @property {number} username.min значение минимальной длины псевдонима
  * @property {object} password значения длин пароля
- * @property {int} password.max значение максимальной длины пароля
- * @property {int} password.min значение минимальной длины пароля
+ * @property {number} password.max значение максимальной длины пароля
+ * @property {number} password.min значение минимальной длины пароля
  */
 const sizes = {
   localMax: 64,
@@ -213,8 +213,8 @@ function sendRequest(form) {
  * Валидация результата запроса формы на вход
  * @param {Router} router 
  * @param {HTMLFormElement} form форма, которая отправила запрос
- * @param {int} status код ответа
- * @param {int} id ID пользователя из результата отправки формы
+ * @param {number} status код ответа
+ * @param {number} id ID пользователя из результата отправки формы
  */
 function validateOrLogin(router, form, status, id) {
   const errorMessage = form.querySelector('#error-msg');
@@ -248,8 +248,8 @@ function validateOrLogin(router, form, status, id) {
  * Валидация результата запроса формы на регистрацию
  * @param {Router} router 
  * @param {HTMLFormElement} form форма, которая отправила запрос
- * @param {int} status код ответа
- * @param {int} id ID пользователя из результата отправки формы
+ * @param {number} status код ответа
+ * @param {number} id ID пользователя из результата отправки формы
  */
 function validateOrSignup(router, form, status, id) {
   const errorMessage = form.querySelector('#error-msg');

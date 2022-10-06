@@ -10,7 +10,7 @@ export default class Api extends Ajax {
     /**
      * Ответ на запрос
      * @typedef {Object} ParsedResponse 
-     * @property {int} status код ответа
+     * @property {number} status код ответа
      * @property {Object} body тело ответа
      */
 
