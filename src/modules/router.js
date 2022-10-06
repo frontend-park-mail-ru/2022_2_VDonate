@@ -25,7 +25,7 @@ const routes = [
     render: signup,
   },
   {
-    path: /^\/logout&/,
+    path: /^\/logout$/,
     render: logout,
   },
 
