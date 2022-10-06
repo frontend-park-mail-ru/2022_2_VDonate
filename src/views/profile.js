@@ -36,6 +36,7 @@ const createAuthorJSON = (body) => {
         image: '../static/img/4.jpg',
         text: body.about,
       },
+      isAuthor: true,
     },
     levels: [],
     posts: [],
