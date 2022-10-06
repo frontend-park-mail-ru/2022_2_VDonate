@@ -27,7 +27,7 @@ const contextLogIn = {
   orButton: {
     title: 'Зарегистрироваться',
     link: '/signup',
-  }
+  },
 };
 
 /**
@@ -37,9 +37,9 @@ const contextLogIn = {
 export default async (router) => {
   router.root.innerHTML = '';
 
-  const signlog = Handlebars.templates.signlog;
+  const { signlog } = Handlebars.templates;
   router.root.innerHTML += signlog(contextLogIn);
 
-  const footer = Handlebars.templates.footer;
+  const { footer } = Handlebars.templates;
   router.root.innerHTML += footer();
-}
+};

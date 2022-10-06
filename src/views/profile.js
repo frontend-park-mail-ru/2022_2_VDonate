@@ -8,18 +8,18 @@
  * @param {Object} body объект ответа согласно API
  * @returns {Object} объект с контекстом
  */
-const createDonaterJSON = body => {
+const createDonaterJSON = (body) => {
   const donater = {
     owner: {
       username: body.username,
       tags: 'Донатер',
-      avatar: "../static/img/0.jpg",
-      isAuthor: false
+      avatar: '../static/img/0.jpg',
+      isAuthor: false,
     },
-    subscriptions: []
+    subscriptions: [],
   };
   return donater;
-}
+};
 
 /**
  * Функция, создающая контекст для страницы профиля автора
@@ -31,25 +31,25 @@ const createAuthorJSON = (body) => {
     owner: {
       username: body.username,
       tags: 'Искусство',
-      avatar: "../static/img/0.jpg",
+      avatar: '../static/img/0.jpg',
       about: {
         image: '../static/img/4.jpg',
         text: body.about,
       },
     },
     levels: [],
-    posts: []
+    posts: [],
   };
   return author;
-}
+};
 
-/** 
+/**
  * Функция, которая рендерит страницу профиля
  * @param {Router} router Класс маршрутизации по страницам сайта
  */
 export default async (router) => {
   router.root.innerHTML = '';
-  const params = new URL(location.href).searchParams;
+  const params = new URL(window.location.href).searchParams;
   const id = params.get('id');
   const user = await router.api.getUser(id);
 
@@ -59,7 +59,7 @@ export default async (router) => {
       status: user.status,
       description: 'Ошибка',
       id: router.id,
-    })
+    });
     return;
   }
 
@@ -68,11 +68,10 @@ export default async (router) => {
     user: {
       id: router.id,
       image: '../static/img/0.jpg',
-    }
+    },
   });
 
   const userEl = Handlebars.templates.user;
-
 
   let context;
   if (user.body.is_author) {
@@ -83,12 +82,12 @@ export default async (router) => {
         status: posts.status,
         description: 'Ошибка',
         id: router.id,
-      })
+      });
       return;
     }
     context = createAuthorJSON(user.body);
     posts.body.forEach(
-      post => {
+      (post) => {
         const tmp = {
           image: '../static/img/4.jpg',
           text: post.title,
@@ -96,8 +95,8 @@ export default async (router) => {
           commentsCount: 15,
         };
         context.posts.push(tmp);
-      }
-    )
+      },
+    );
   } else {
     context = createDonaterJSON(user.body);
   }
@@ -106,4 +105,4 @@ export default async (router) => {
 
   const footerEl = Handlebars.templates.footer;
   router.root.innerHTML += footerEl();
-}
+};

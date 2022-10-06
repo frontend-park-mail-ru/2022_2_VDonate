@@ -1,9 +1,9 @@
 /**
- * Модуль логики выхода из учетной записи 
+ * Модуль логики выхода из учетной записи
  * @module logout
  */
 
-import login from "./login.js";
+import login from './login.js';
 
 /**
  * Функция логики выхода из учетной записи
@@ -16,4 +16,4 @@ export default (router) => {
         login(router);
       }
     });
-}
+};

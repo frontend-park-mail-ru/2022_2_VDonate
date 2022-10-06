@@ -3,7 +3,7 @@
  * @module processForm
  */
 
-import Router from "./router.js";
+import Router from './router.js';
 
 /**
  * Виды форм
@@ -12,13 +12,13 @@ import Router from "./router.js";
 const formType = {
   signup: 'signup',
   login: 'login',
-}
+};
 
 /**
  * Ограничения длин полей
  * @namespace
  * @property {number} localMax максимальная длина локальной части почты
- * @property {number} domainLableMax максимальная длина одного уровня доменной 
+ * @property {number} domainLableMax максимальная длина одного уровня доменной
  * части почты
  * @property {object} username значения длин псевдонима
  * @property {number} username.max значение максимальной длины псевдонима
@@ -38,55 +38,52 @@ const sizes = {
     min: 1,
     max: 30,
   },
-}
+};
 
 /**
  * Проверка на допустимую длину локальную и доменную часть почтового адреса
- * @param {string} email валидный по формату почтовый адрес 
+ * @param {string} email валидный по формату почтовый адрес
  * @returns {bool}
  */
-const emailLengthCheck = email => {
+const emailLengthCheck = (email) => {
   const tmpSplit = email.split('@');
   const local = tmpSplit[0];
   const domain = tmpSplit[1].split('.');
   if (local.length <= sizes.localMax
-    && domain.reduce((prev, current) => {
-      return prev && current.length <= sizes.domainLableMax
-    }, true)) {
-    return true
+    && domain.reduce((prev, current) => prev && current.length <= sizes.domainLableMax, true)) {
+    return true;
   }
   return false;
-}
+};
 
 /**
  * Проверка поля ввода почты на верный формат
  * @param {Element} email элемент ввода почты
  * @returns {bool} результат проверки
  */
-const emailCheck = email => {
-  //eslint-disable-next-line
+const emailCheck = (email) => {
+  // eslint-disable-next-line
   const localSyms = /[a-zA-Z0-9!#\$&%_+-]/;
   const localReg = new RegExp(`^${localSyms.source}+(\\.?${localSyms.source}+)*`);
-  //eslint-disable-next-line
+  // eslint-disable-next-line
   const domainReg = /[0-9a-zA-Z]([\.-]?[0-9a-zA-Z]+)*$/;
-  const emailReg = new RegExp(localReg.source + '@' + domainReg.source);
+  const emailReg = new RegExp(`${localReg.source}@${domainReg.source}`);
   if (emailReg.test(email.value) && emailLengthCheck(email.value)) {
     email.className = 'input__input';
     return true;
   }
   email.className = 'input__input input__input_error';
   return false;
-}
+};
 
 /**
  * Проверка поля ввода псевдонима на верный формат
  * @param {Element} username элемент ввода псевдонима
  * @returns {bool} результат проверки
  */
-const usernameCheck = username => {
+const usernameCheck = (username) => {
   const usernameSyms = /[\d\wа-яёА-ЯЁ]/;
-  const usernameReg =
-    new RegExp(`^${usernameSyms.source}( ?${usernameSyms.source})*$`);
+  const usernameReg = new RegExp(`^${usernameSyms.source}( ?${usernameSyms.source})*$`);
   if (username.value.length >= sizes.username.min
     && username.value.length <= sizes.username.max
     && usernameReg.test(username.value)) {
@@ -95,14 +92,14 @@ const usernameCheck = username => {
   }
   username.className = 'input__input input__input_error';
   return false;
-}
+};
 
 /**
  * Проверка поля ввода пароля на верный формат
  * @param {Element} password элемент ввода пароля
  * @returns {bool} результат проверки
  */
-const passwordCheck = password => {
+const passwordCheck = (password) => {
   if (password.value.length >= sizes.password.min
     && password.value.length <= sizes.password.max
     && /^.+$/.test(password.value)) {
@@ -111,7 +108,7 @@ const passwordCheck = password => {
   }
   password.className = 'input__input input__input_error';
   return false;
-}
+};
 
 /**
  * Проверка поля повторного ввода пароля совподение с полем ввода пароля
@@ -126,38 +123,38 @@ const repeatPasswordCheck = (origin, repeat) => {
   }
   repeat.className = 'input__input input__input_error';
   return false;
-}
+};
 
 /**
  * Проверка проверка формы входа на верный формат входных полей
  * @param {HTMLFormElement} form элемент формы входа для валидации
  * @returns {bool} результат проверки
  */
-const loginValidation = form => {
+const loginValidation = (form) => {
   const usernameChecked = usernameCheck(form.username);
   const passwordChecked = passwordCheck(form.password);
   return usernameChecked && passwordChecked;
-}
+};
 
 /**
  * Проверка проверка формы регистрации на верный формат входных полей
  * @param {HTMLFormElement} form элемент формы регистрации для валидации
  * @returns {bool} результат проверки
  */
-const signupValidation = form => {
+const signupValidation = (form) => {
   const emailChecked = emailCheck(form.email);
   const passwordChecked = passwordCheck(form.password);
   const usernameChecked = usernameCheck(form.username);
   const repeatChecked = repeatPasswordCheck(form.password, form.passwordRepeat);
   return emailChecked && passwordChecked && usernameChecked && repeatChecked;
-}
+};
 
 /**
  * Валидация формы
  * @param {HTMLFormElement} form элемент формы регистрации для валидации
  * @returns {bool} результат проверки
  */
-const validationForm = form => {
+const validationForm = (form) => {
   switch (form.name) {
     case formType.login:
       return loginValidation(form);
@@ -166,52 +163,11 @@ const validationForm = form => {
     default:
       return false;
   }
-}
-
-/**
- * Обработка формы
- * @param {HTMLFormElement} form 
- */
-export default function processForm(form) {
-  const errorMessage = form.querySelector('#error-msg');
-  if (validationForm(form)) {
-    errorMessage.className = 'form__error-msg form__error-msg_disable';
-    sendRequest(form);
-  } else {
-    errorMessage.className = 'form__error-msg form__error-msg_enable';
-    errorMessage.innerHTML = 'Неверно введены данные!';
-  }
-}
-
-/**
- * Отправка запрос на авторизацию/регистрацию
- * @param {HTMLFormElement} form 
- */
-function sendRequest(form) {
-  const router = new Router();
-  switch (form.name) {
-    case formType.login:
-      router.api.loginUser(form.username.value, form.password.value)
-        .then(({ status, body }) => {
-          validateOrLogin(router, form, status, body.id);
-        });
-      break;
-    case formType.signup:
-      router.api.signupUser(
-        form.username.value,
-        form.email.value,
-        form.password.value
-      )
-        .then(({ status, body }) => {
-          validateOrSignup(router, form, status, body.id);
-        });
-      break;
-  }
-}
+};
 
 /**
  * Валидация результата запроса формы на вход
- * @param {Router} router 
+ * @param {Router} router
  * @param {HTMLFormElement} form форма, которая отправила запрос
  * @param {number} status код ответа
  * @param {number} id ID пользователя из результата отправки формы
@@ -246,7 +202,7 @@ function validateOrLogin(router, form, status, id) {
 
 /**
  * Валидация результата запроса формы на регистрацию
- * @param {Router} router 
+ * @param {Router} router
  * @param {HTMLFormElement} form форма, которая отправила запрос
  * @param {number} status код ответа
  * @param {number} id ID пользователя из результата отправки формы
@@ -272,5 +228,48 @@ function validateOrSignup(router, form, status, id) {
       errorMessage.className = 'form__error-msg form__error-msg_enable';
       errorMessage.innerHTML = 'Ошибка, повторите попытку еще раз!';
       break;
+  }
+}
+
+/**
+ * Отправка запрос на авторизацию/регистрацию
+ * @param {HTMLFormElement} form
+ */
+function sendRequest(form) {
+  const router = new Router();
+  switch (form.name) {
+    case formType.login:
+      router.api.loginUser(form.username.value, form.password.value)
+        .then(({ status, body }) => {
+          validateOrLogin(router, form, status, body.id);
+        });
+      break;
+    case formType.signup:
+      router.api.signupUser(
+        form.username.value,
+        form.email.value,
+        form.password.value,
+      )
+        .then(({ status, body }) => {
+          validateOrSignup(router, form, status, body.id);
+        });
+      break;
+    default:
+      break;
+  }
+}
+
+/**
+ * Обработка формы
+ * @param {HTMLFormElement} form
+ */
+export default function processForm(form) {
+  const errorMessage = form.querySelector('#error-msg');
+  if (validationForm(form)) {
+    errorMessage.className = 'form__error-msg form__error-msg_disable';
+    sendRequest(form);
+  } else {
+    errorMessage.className = 'form__error-msg form__error-msg_enable';
+    errorMessage.innerHTML = 'Неверно введены данные!';
   }
 }
