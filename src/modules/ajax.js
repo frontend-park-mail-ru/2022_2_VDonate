@@ -6,7 +6,7 @@
 /**
  * Формирует из входных данных query-параметры
  * @param {Object} data данные для преобразования в query-параметры
- * @returns {string} строка query-параметров
+ * @return {string} строка query-параметров
  */
 function dataToQuery(data) {
   if (Object.entries(data).length === 0) {
@@ -14,10 +14,10 @@ function dataToQuery(data) {
   }
   let queryString = '?';
   Object
-    .entries(data)
-    .forEach((key, value) => {
-      queryString += `${key}=${value}`;
-    });
+      .entries(data)
+      .forEach((key, value) => {
+        queryString += `${key}=${value}`;
+      });
   return queryString;
 }
 
@@ -26,6 +26,7 @@ export default class Ajax {
   /**
      * Ответ на запрос
      * @typedef {Object} ParsedResponse
+     * @property {boolean} ok указывает, что запрос выполнен успешно
      * @property {number} status код ответа
      * @property {Object} body тело ответа
      */
@@ -40,10 +41,11 @@ export default class Ajax {
   }
 
   /**
-     * отправляет GET запрос, возвращает  объект респонса с полями ок, статус и тело
+     * отправляет GET запрос, возвращает
+     * объект респонса с полями {ok,status,body}
      * @param {string} url имя пути
      * @param {Object} data данные для query-параметров
-     * @returns {Promise<ParsedResponse>} объект ответа с полями {status, body}
+     * @return {Object} объект ответа с полями {ok,status,body}
      */
   get(url, data = {}) {
     const urlWithParams = url + dataToQuery(data);
@@ -51,30 +53,33 @@ export default class Ajax {
   }
 
   /**
-     * отправляет POST запрос, возвращает  объект респонса с полями ок, статус и тело
+     * отправляет POST запрос, возвращает
+     * объект респонса с полями {ok,status,body}
      * @param {string} url имя пути
      * @param {Object} data данные для составления тела запроса
-     * @returns {Promise<ParsedResponse>} объект ответа с полями {status, body}
+     * @return {Object} объект ответа с полями {ok,status,body}
      */
   post(url, data = {}) {
     return this._request(url, 'POST', data);
   }
 
   /**
-     * отправляет PUT запрос, возвращает  объект респонса с полями ок, статус и тело
+     * отправляет PUT запрос, возвращает
+     * объект респонса с полями {ok,status,body}
      * @param {string} url имя пути
      * @param {Object} data данные для составления тела запроса
-     * @returns {Promise<ParsedResponse>} объект ответа с полями {status, body}
+     * @return {Object} объект ответа с полями {ok,status,body}
      */
   put(url, data = {}) {
     return this._request(url, 'PUT', data);
   }
 
   /**
-     * отправляет DELETE запрос, возвращает  объект респонса с полями ок, статус и тело
+     * отправляет DELETE запрос, возвращает
+     * объект респонса с полями {ok,status,body}
      * @param {string} url имя пути
      * @param {Object} data данные для составления тела запроса
-     * @returns {Promise<ParsedResponse>} объект ответа с полями {status, body}
+     * @return {Object} объект ответа с полями {ok,status,body}
      */
   delete(url, data = {}) {
     return this._request(url, 'DELETE', data);
@@ -82,11 +87,11 @@ export default class Ajax {
 
   /**
      * отправляет Request-запрос на заданный url,
-     * возвращает promise<ParsedResponse>
-     * @param {string} url
-     * @param {string} method
-     * @param {Object} data
-     * @returns {Promise<ParsedResponse>}
+     * возвращает объект ответа с полями {ok,status,body}
+     * @param {string} url имя пути
+     * @param {string} method метод запроса
+     * @param {Object} data данные для составления тела запроса
+     * @return {Object} объект ответа с полями {ok,status,body}
      */
   async _request(url, method, data) {
     const options = {
@@ -98,27 +103,30 @@ export default class Ajax {
       },
     };
 
-    if (!['GET', 'HEAD'].includes(method)) { options.body = JSON.stringify(data); }
+    if (!['GET', 'HEAD'].includes(method)) {
+      options.body = JSON.stringify(data);
+    }
 
     const response = await fetch(
-      this.baseUrl + url,
-      options,
+        this.baseUrl + url,
+        options,
     );
 
-    if (response.ok) {
-      return response.json()
-        .then((json) => ({
-          status: response.status,
-          body: json,
-        }))
-        .catch(() => ({
-          status: 515,
-          body: {},
-        }));
+    try {
+      const body = await response.json();
+      return {
+        ok: true,
+        status: response.status,
+        body: body,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        status: response.status,
+        body: {
+          error: error,
+        },
+      };
     }
-    return {
-      status: response.status,
-      body: {},
-    };
   }
 }

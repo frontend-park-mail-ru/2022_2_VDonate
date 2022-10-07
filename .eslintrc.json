@@ -5,7 +5,7 @@
     },
     "extends": [
         "eslint:recommended",
-        "airbnb/base"
+        "google"
     ],
     "globals": {
         "Handlebars": true
@@ -16,9 +16,5 @@
         "sourceType": "module"
     },
     "rules": {
-        "no-underscore-dangle": 0,
-        "no-param-reassign": 0,
-        "import/extensions": 0,
-        "no-constructor-return": 0
     }
 }

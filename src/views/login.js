@@ -43,10 +43,11 @@ const formFields = [
  * страницам сайта
  */
 export default async (router) => {
-  router.root.innerHTML = '';
+  router.header.innerHTML = '';
+  router.main.innerHTML = '';
 
   const { signlog } = Handlebars.templates;
-  router.root.innerHTML += signlog(contextLogIn);
+  router.main.innerHTML += signlog(contextLogIn);
 
   /**
    * @type {import("../modules/validationForm.js").sendFormRequest}
@@ -83,8 +84,4 @@ export default async (router) => {
       processingForm(this, sendFormRequest, formFields)
     }, false);
   }, 10);
-
-  const { footer } = Handlebars.templates;
-  router.root.innerHTML += footer();
-
 };

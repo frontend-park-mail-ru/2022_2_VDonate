@@ -48,14 +48,14 @@ const sizes = {
 /**
  * Проверка на допустимую длину локальную и доменную часть почтового адреса
  * @param {string} email валидный по формату почтовый адрес
- * @returns {bool}
+ * @return {bool}
  */
 const emailLengthCheck = (email) => {
   const tmpSplit = email.split('@');
   const local = tmpSplit[0];
   const domain = tmpSplit[1].split('.');
-  if (local.length <= sizes.localMax
-    && domain.reduce((prev, current) => prev && current.length <= sizes.domainLableMax, true)) {
+  if (local.length <= sizes.localMax &&
+    domain.reduce((prev, current) => prev && current.length <= sizes.domainLableMax, true)) {
     return true;
   }
   return false;
@@ -64,7 +64,7 @@ const emailLengthCheck = (email) => {
 /**
  * Проверка поля ввода почты на верный формат
  * @param {Element} email элемент ввода почты
- * @returns {bool} результат проверки
+ * @return {bool} результат проверки
  */
 const emailCheck = (email) => {
   const localSyms = /[a-zA-Z0-9!#$&%_+-]/;
@@ -109,7 +109,7 @@ const usernameCheck = (username) => {
 /**
  * Проверка поля ввода пароля на верный формат
  * @param {Element} password элемент ввода пароля
- * @returns {bool} результат проверки
+ * @return {bool} результат проверки
  */
 const passwordCheck = (password) => {
   password.className = 'input__input input__input_error';
@@ -130,7 +130,7 @@ const passwordCheck = (password) => {
  * Проверка поля повторного ввода пароля совподение с полем ввода пароля
  * @param {Element} origin элемент ввода пароля
  * @param {Element} repeat элемент повторного ввода пароля
- * @returns {bool} результат проверки
+ * @return {bool} результат проверки
  */
 const repeatPasswordCheck = (origin, repeat) => {
   repeat.className = 'input__input input__input_error';

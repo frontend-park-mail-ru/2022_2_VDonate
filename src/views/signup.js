@@ -56,10 +56,11 @@ const formFields = [
  * @param {Router} router Класс маршрутизации по страницам сайта
  */
 export default async (router) => {
-  router.root.innerHTML = '';
+  router.header.innerHTML = '';
+  router.main.innerHTML = '';
 
   const { signlog } = Handlebars.templates;
-  router.root.innerHTML += signlog(contextSignUp);
+  router.main.innerHTML += signlog(contextSignUp);
 
   /**
  * @type {import("../modules/validationForm.js").sendFormRequest}
@@ -101,7 +102,4 @@ export default async (router) => {
       processingForm(this, sendFormRequest, formFields)
     }, false);
   }, 10);
-
-  const { footer } = Handlebars.templates;
-  router.root.innerHTML += footer();
 };
