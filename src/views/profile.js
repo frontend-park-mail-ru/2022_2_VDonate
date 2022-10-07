@@ -49,14 +49,15 @@ const createAuthorJSON = (body) => {
  * @param {Router} router Класс маршрутизации по страницам сайта
  */
 export default async (router) => {
-  router.root.innerHTML = '';
+  router.header.innerHTML = '';
+  router.main.innerHTML = '';
   const params = new URL(window.location.href).searchParams;
   const id = params.get('id');
   const user = await router.api.getUser(id);
 
   if (user.status >= 400) {
     const errorEl = Handlebars.templates.error;
-    router.root.innerHTML += errorEl({
+    router.main.innerHTML += errorEl({
       status: user.status,
       description: 'Ошибка',
       id: router.id,
@@ -65,7 +66,7 @@ export default async (router) => {
   }
 
   const navbarEl = Handlebars.templates.navbar;
-  router.root.innerHTML += navbarEl({
+  router.header.innerHTML += navbarEl({
     user: {
       id: router.id,
       image: '../static/img/0.jpg',
@@ -102,8 +103,5 @@ export default async (router) => {
     context = createDonaterJSON(user.body);
   }
 
-  router.root.innerHTML += userEl(context);
-
-  const footerEl = Handlebars.templates.footer;
-  router.root.innerHTML += footerEl();
+  router.main.innerHTML += userEl(context);
 };

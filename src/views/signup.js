@@ -47,11 +47,9 @@ const contextSignUp = {
  * @param {Router} router Класс маршрутизации по страницам сайта
  */
 export default async (router) => {
-  router.root.innerHTML = '';
+  router.header.innerHTML = '';
+  router.main.innerHTML = '';
 
   const {signlog} = Handlebars.templates;
-  router.root.innerHTML += signlog(contextSignUp);
-
-  const {footer} = Handlebars.templates;
-  router.root.innerHTML += footer();
+  router.main.innerHTML += signlog(contextSignUp);
 };
