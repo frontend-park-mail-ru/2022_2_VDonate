@@ -2,7 +2,6 @@
 
 import Router from './modules/router.js';
 import Api from './modules/api.js';
-import processForm from './modules/validationForm.js';
 
 /**
  * класс маршрутизации по страницам сайта
@@ -24,5 +23,3 @@ const footerEl = Handlebars.templates.footer;
 router.footer.innerHTML = footerEl();
 
 router.authUser();
-
-window.processForm = processForm;
