@@ -10,7 +10,6 @@ import Api from './modules/api.js';
 const router = new Router();
 
 router.root = document.getElementById('entry');
-router.header = document.getElementById('header');
 router.main = document.getElementById('main');
 router.footer = document.getElementById('footer');
 router.api = new Api('/api/v1');

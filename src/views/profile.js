@@ -49,7 +49,6 @@ const createAuthorJSON = (body) => {
  * @param {Router} router Класс маршрутизации по страницам сайта
  */
 export default async (router) => {
-  router.header.innerHTML = '';
   router.main.innerHTML = '';
   const params = new URL(window.location.href).searchParams;
   let id = params.get('id');
@@ -69,7 +68,7 @@ export default async (router) => {
   }
 
   const navbarEl = Handlebars.templates.navbar;
-  router.header.innerHTML += navbarEl({
+  router.main.innerHTML += navbarEl({
     user: {
       id: router.id,
       image: '../static/img/0.jpg',
