@@ -53,7 +53,7 @@ export default async (router) => {
   router.main.innerHTML = '';
   const params = new URL(window.location.href).searchParams;
   let id = params.get('id');
-  if (id === undefined) {
+  if (id === null) {
     id = router.id;
   }
   const user = await router.api.getUser(id);

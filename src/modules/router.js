@@ -79,7 +79,7 @@ export default class Router {
             this.id = body.id;
             this.goTo(location.pathname + location.search);
           } else {
-            this.id = undefined;
+            this.id = null;
             this.goTo('/login');
           }
         });
