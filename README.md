@@ -4,6 +4,8 @@
 
 ### [Бэкенд](https://github.com/go-park-mail-ru/2022_2_VDonate)
 ### [Trello](https://trello.com/b/BZHoJsHP/vdonate)
+### [Swagger](https://app.swaggerhub.com/apis-docs/zeronethunter/v-donate_api/1.0)
+### [Деплой](https://vdonate.ml/)
 
 ### Состав команды:
 - [Иван Гапоян](https://github.com/Loen15)
@@ -15,7 +17,6 @@
 - [Олег Реуцкий](https://github.com/astlok) - backend
 - [Сергей Тяпкин](https://github.com/SergTyapkin) - frontend
 - [Ксения Самойлова](https://github.com/somebody-kseny) - frontend
-
 
 ## Основные команды для работы
 #### Инициализация проекта:
