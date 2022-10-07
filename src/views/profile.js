@@ -55,7 +55,7 @@ export default async (router) => {
   const id = params.get('id');
   const user = await router.api.getUser(id);
 
-  if (user.status >= 400) {
+  if (!user.ok) {
     const errorEl = Handlebars.templates.error;
     router.main.innerHTML += errorEl({
       status: user.status,
@@ -78,7 +78,7 @@ export default async (router) => {
   let context;
   if (user.body.is_author) {
     const posts = await router.api.getAllPosts(user.body.id);
-    if (posts.status >= 400) {
+    if (!posts.ok) {
       const errorEl = Handlebars.templates.error;
       router.root.innerHTML += errorEl({
         status: posts.status,

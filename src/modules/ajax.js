@@ -111,20 +111,21 @@ export default class Ajax {
         options,
     );
 
-    if (response.ok) {
-      return response.json()
-          .then((json) => ({
-            status: response.status,
-            body: json,
-          }))
-          .catch(() => ({
-            status: 515,
-            body: {},
-          }));
+    try {
+      const body = await response.json();
+      return {
+        ok: true,
+        status: response.status,
+        body: body,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        status: response.status,
+        body: {
+          error: error,
+        },
+      };
     }
-    return {
-      status: response.status,
-      body: {},
-    };
   }
 }
