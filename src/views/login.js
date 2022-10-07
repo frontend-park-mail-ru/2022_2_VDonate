@@ -71,6 +71,7 @@ export default async (router) => {
         errors.set(1, 'АХТУНГ! Нас тут быть не должно!');
         break;
     }
+    return;
   };
 
   setTimeout(() => {
