@@ -154,21 +154,25 @@ const validationForm = (form, formFields) => {
   const inputs = form.querySelectorAll('.input__input');
   const errors = new Map();
   inputs.forEach((input, idx, arr) => {
+    let err;
     switch (formFields[idx]) {
       case inputType.username:
-        errors.set(idx, usernameCheck(input));
+        err = usernameCheck(input);
         break;
       case inputType.email:
-        errors.set(idx, emailCheck(input));
+        err = emailCheck(input)
         break;
       case inputType.password:
-        errors.set(idx, passwordCheck(input));
+        err = passwordCheck(input);
         break;
       case inputType.repeatPassword:
-        errors.set(idx, repeatPasswordCheck(arr[idx - 1], input));
+        err = repeatPasswordCheck(arr[idx - 1], input);
         break;
       default:
         break;
+    }
+    if (err !== undefined) {
+      errors.set(idx, err);
     }
   })
   return errors;
