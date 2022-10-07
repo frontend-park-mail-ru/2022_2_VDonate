@@ -14,8 +14,4 @@ export default (router) => {
     status: 404,
     description: 'Страница не найдена',
   });
-  const link = document.getElementById('post-block-link');
-  link.onclick = () => {
-    router.authUser();
-  };
 };
