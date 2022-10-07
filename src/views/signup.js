@@ -89,6 +89,7 @@ export default async (router) => {
         errors.set(3, 'АХТУНГ! Нас тут быть не должно!');
         break;
     }
+    return;
   };
 
   setTimeout(() => {
