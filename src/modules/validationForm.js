@@ -225,9 +225,9 @@ const displayErrors = (form, errorMsgs) => {
  * на сервер
  */
 export function processingForm(form, formRequest, formFields) {
-  let errors = validationForm(form, formFields);
+  const errors = validationForm(form, formFields);
   if (errors.size === 0) {
-    errors = formRequest(form, errors);
+    formRequest(form, errors);
   }
   displayErrors(form, errors);
 }
