@@ -13,7 +13,7 @@ import logout from '../views/logout.js';
  */
 const routes = [
   {
-    path: /^\/(profile(\?id=\d+)?)?$/,
+    path: /^(\/profile(\?id=\d+)?)?$/,
     render: profile,
   },
   {
