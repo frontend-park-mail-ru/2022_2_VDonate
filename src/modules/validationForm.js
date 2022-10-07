@@ -214,7 +214,7 @@ const displayErrors = (form, errorMsgs) => {
  * @callback sendFormRequest
  * @param {HTMLFormElement} responseCode
  * @param {errorMessage} errors
- * @returns {errorMessage[]}
+ * @returns {Promise}
  */
 
 /**
@@ -224,10 +224,10 @@ const displayErrors = (form, errorMsgs) => {
  * @param {inputType[]} formFields список входных полей формы
  * на сервер
  */
-export function processingForm(form, formRequest, formFields) {
+export async function processingForm(form, formRequest, formFields) {
   const errors = validationForm(form, formFields);
   if (errors.size === 0) {
-    formRequest(form, errors);
+    await formRequest(form, errors);
   }
   displayErrors(form, errors);
 }
