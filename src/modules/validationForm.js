@@ -8,7 +8,7 @@
  * @readonly
  * @enum {string}
  */
-const inputType = {
+export const inputType = {
   username: 'username',
   password: 'password',
   repeatPassword: 'repeatPassword',
@@ -16,9 +16,7 @@ const inputType = {
 };
 
 /**
- * @typedef {Object} errorMessage
- * @property {inputType} input
- * @property {string} message
+ * @typedef {Map<number, string>} errorMessage
  */
 
 /**
@@ -71,32 +69,41 @@ const emailLengthCheck = (email) => {
 const emailCheck = (email) => {
   const localSyms = /[a-zA-Z0-9!#$&%_+-]/;
   const localReg = new RegExp(`^${localSyms.source}+(\\.?${localSyms.source}+)*`);
-  const domainReg = /[0-9a-zA-Z]([\.-]?[0-9a-zA-Z]+)*$/;
+  const domainReg = /[0-9a-zA-Z]+([\.-]?[0-9a-zA-Z]+)*(\.[0-9a-zA-Z]+)$/;
   const emailReg = new RegExp(`${localReg.source}@${domainReg.source}`);
-  if (emailReg.test(email.value) && emailLengthCheck(email.value)) {
-    email.className = 'input__input';
-    return true;
-  }
+
   email.className = 'input__input input__input_error';
-  return false;
+  if (!emailReg.test(email.value)) {
+    return `Неверный формат`;
+  }
+
+  if (!emailLengthCheck(email.value)) {
+    return `Неверная длина`;
+  }
+  email.className = 'input__input';
+  return undefined;
 };
 
 /**
  * Проверка поля ввода псевдонима на верный формат
  * @param {Element} username элемент ввода псевдонима
- * @returns {bool} результат проверки
+ * @returns {errorMessage} результат проверки
  */
 const usernameCheck = (username) => {
   const usernameSyms = /[\d\wа-яёА-ЯЁ]/;
   const usernameReg = new RegExp(`^${usernameSyms.source}( ?${usernameSyms.source})*$`);
-  if (username.value.length >= sizes.username.min
-    && username.value.length <= sizes.username.max
-    && usernameReg.test(username.value)) {
-    username.className = 'input__input';
-    return true;
-  }
   username.className = 'input__input input__input_error';
-  return false;
+  if (username.value.length < sizes.username.min) {
+    return `Минимальная длина ${sizes.username.min}`;
+  }
+  if (username.value.length > sizes.username.max) {
+    return `Максимальная длина ${sizes.username.max}`;
+  }
+  if (!usernameReg.test(username.value)) {
+    return `Недопустимый псевдоним`;
+  }
+  username.className = 'input__input';
+  return undefined;
 };
 
 /**
@@ -105,14 +112,18 @@ const usernameCheck = (username) => {
  * @returns {bool} результат проверки
  */
 const passwordCheck = (password) => {
-  if (password.value.length >= sizes.password.min
-    && password.value.length <= sizes.password.max
-    && /^.+$/.test(password.value)) {
-    password.className = 'input__input';
-    return true;
-  }
   password.className = 'input__input input__input_error';
-  return false;
+  if (password.value.length < sizes.password.min) {
+    return `Минимальная длина ${sizes.password.min}`;
+  }
+  if (password.value.length > sizes.password.max) {
+    return `Максимальная длина ${sizes.password.max}`;
+  }
+  if (!/^.+$/.test(password.value)) {
+    return 'Недопустимый псевдоним';
+  }
+  password.className = 'input__input';
+  return undefined;
 };
 
 /**
@@ -122,36 +133,39 @@ const passwordCheck = (password) => {
  * @returns {bool} результат проверки
  */
 const repeatPasswordCheck = (origin, repeat) => {
-  if (repeat.value.length !== 0 && origin.value === repeat.value) {
-    repeat.className = 'input__input';
-    return true;
-  }
   repeat.className = 'input__input input__input_error';
-  return false;
+  if (repeat.value.length === 0) {
+    return 'Поле не может быть пустым';
+  }
+  if (origin.value !== repeat.value) {
+    return 'Не совпадает';
+  }
+  repeat.className = 'input__input';
+  return undefined;
 };
 
 /**
  * Валидация формы
  * @param {HTMLFormElement} form элемент формы регистрации для валидации
- * @param {...inputType} formFields список входных полей формы
+ * @param {inputType[]} formFields список входных полей формы
  * @returns {errorMessage[] | undefined} результат проверки
  */
-const validationForm = (form, ...formFields) => {
+const validationForm = (form, formFields) => {
   const inputs = form.querySelectorAll('.input__input');
-  let errors;
-  inputs.forEach((input, idx) => {
+  const errors = new Map();
+  inputs.forEach((input, idx, arr) => {
     switch (formFields[idx]) {
       case inputType.username:
-        errors.push(usernameCheck(input));
+        errors.set(idx, usernameCheck(input));
         break;
       case inputType.email:
-        errors.push(emailCheck(input));
+        errors.set(idx, emailCheck(input));
         break;
       case inputType.password:
-        errors.push(passwordCheck(input));
+        errors.set(idx, passwordCheck(input));
         break;
       case inputType.repeatPassword:
-        errors.push(repeatPasswordCheck(input));
+        errors.set(idx, repeatPasswordCheck(arr[idx - 1], input));
         break;
       default:
         break;
@@ -163,10 +177,10 @@ const validationForm = (form, ...formFields) => {
 /**
  * Отображение ошибок валидации
  * @param {HTMLFormElement} form
- * @param {...errorMessage} errors 
+ * @param {errorMessage} errorMsgs 
  */
-const displayErrors = (form, ...errors) => {
-  if (errors.length == 0) {
+const displayErrors = (form, errorMsgs) => {
+  if (errorMsgs.size === 0) {
     const errorMsgs = form.querySelectorAll('.input__error');
     errorMsgs.forEach((inputErr) => {
       inputErr.className = 'input__error input__error_disable';
@@ -175,13 +189,24 @@ const displayErrors = (form, ...errors) => {
     inputs.forEach((input) => {
       input.className = 'input__input';
     })
+    return;
   }
+  const errors = form.querySelectorAll('.input__error');
+  errors.forEach((err, idx) => {
+    if (errorMsgs.has(idx)) {
+      err.className = 'input__error input__error_enable';
+      err.textContent = errorMsgs.get(idx);
+    } else {
+      err.className = 'input__error input__error_disable';
+    }
+  })
 }
 
 /**
  * Функция отправки запроса по форме
  * @callback sendFormRequest
  * @param {HTMLFormElement} responseCode
+ * @param {errorMessage} errors 
  * @returns {errorMessage[]} 
  */
 
@@ -189,14 +214,13 @@ const displayErrors = (form, ...errors) => {
  * Обработка формы
  * @param {HTMLFormElement} form
  * @param {sendFormRequest} formRequest функция обработки запроса формы 
- * @param {...inputType} formFields список входных полей формы
+ * @param {inputType[]} formFields список входных полей формы
  * на сервер
  */
-export default function processForm(form, formRequest, ...formFields) {
-  alert();
+export function processingForm(form, formRequest, formFields) {
   let errors = validationForm(form, formFields);
   if (errors === undefined) {
-    errors = formRequest(form);
+    // errors = formRequest(form, errors);
   }
-  displayErrors(errors);
+  displayErrors(form, errors);
 }

@@ -2,7 +2,6 @@
 
 import Router from './modules/router.js';
 import Api from './modules/api.js';
-import processForm from './modules/validationForm.js';
 
 /**
  * @const {Element} root корень HTML файла, куда будет рендериться страница
@@ -21,5 +20,3 @@ const router = new Router();
 router.root = root;
 router.api = api;
 router.authUser();
-
-window.processForm = processForm;
