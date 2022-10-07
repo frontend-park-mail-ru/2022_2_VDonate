@@ -83,7 +83,7 @@ export default async (router) => {
     const posts = await router.api.getAllPosts(user.body.id);
     if (!posts.ok) {
       const errorEl = Handlebars.templates.error;
-      router.root.innerHTML += errorEl({
+      router.main.innerHTML += errorEl({
         status: posts.status,
         description: 'Ошибка',
         id: router.id,
@@ -92,15 +92,15 @@ export default async (router) => {
     }
     context = createAuthorJSON(user.body);
     posts.body.forEach(
-        (post) => {
-          const tmp = {
-            image: '../static/img/4.jpg',
-            text: post.title,
-            likesCount: 5,
-            commentsCount: 15,
-          };
-          context.posts.push(tmp);
-        },
+      (post) => {
+        const tmp = {
+          image: '../static/img/4.jpg',
+          text: post.title,
+          likesCount: 5,
+          commentsCount: 15,
+        };
+        context.posts.push(tmp);
+      },
     );
   } else {
     context = createDonaterJSON(user.body);
