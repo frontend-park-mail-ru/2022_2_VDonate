@@ -3,13 +3,12 @@
  * @module logout
  */
 
-import login from './login.js';
-
 /**
  * Функция логики выхода из учетной записи
  * @param {Router} router Класс маршрутизации по страницам сайта
  */
 export default (router) => {
+  router.id = undefined;
   router.api.logout()
-    .then(login(router));
+      .then(router.goTo('/login'));
 };

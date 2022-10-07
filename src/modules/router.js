@@ -13,7 +13,7 @@ import logout from '../views/logout.js';
  */
 const routes = [
   {
-    path: /^\/profile(\?id=\d+)?$/,
+    path: /^\/(profile(\?id=\d+)?)?$/,
     render: profile,
   },
   {
@@ -40,7 +40,8 @@ export default class Router {
   static _instance = null;
 
   /**
-     * Конструктор, добавляющий обработку 2 событий: переход между страницами и переход вперед/назад
+     * Конструктор, добавляющий обработку 2 событий:
+     * переход между страницами и переход вперед/назад
      * и при входе на сайт запускает процесс аутенфикации
      * @constructor
      */
@@ -56,7 +57,9 @@ export default class Router {
       });
 
       window.addEventListener('popstate', () => {
-        const route = routes.find((obj) => window.location.pathname.match(obj.path));
+        const route = routes.find(
+            (obj) => window.location.pathname.match(obj.path),
+        );
         if (route !== undefined) {
           route.render(this);
         }
@@ -66,35 +69,20 @@ export default class Router {
     return Router._instance;
   }
 
-  get root() {
-    return this._root;
-  }
-
-  set root(value) {
-    this._root = value;
-  }
-
-  get api() {
-    return this._api;
-  }
-
-  set api(value) {
-    this._api = value;
-  }
-
   /**
      * Функция аутификации пользователя
      */
   authUser() {
     this.api.authUser()
-      .then(({ status, body }) => {
-        if (status === 200) {
-          this.id = body.id;
-          this.goTo(`/profile?id=${body.id}`);
-        } else {
-          this.goTo('/login');
-        }
-      });
+        .then(({status, body}) => {
+          if (status === 200) {
+            this.id = body.id;
+            this.goTo(location.pathname + location.search);
+          } else {
+            this.id = undefined;
+            this.goTo('/login');
+          }
+        });
   }
 
   /**

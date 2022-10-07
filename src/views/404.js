@@ -8,9 +8,10 @@
  * @param {Router} router Класс маршрутизации по страницам сайта
  */
 export default (router) => {
-  router.root.innerHTML = '';
+  router.header.innerHTML = '';
+  router.main.innerHTML = '';
   const errorEl = Handlebars.templates.error;
-  router.root.innerHTML += errorEl({
+  router.main.innerHTML += errorEl({
     status: 404,
     description: 'Страница не найдена',
   });

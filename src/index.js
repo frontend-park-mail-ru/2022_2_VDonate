@@ -5,21 +5,24 @@ import Api from './modules/api.js';
 import processForm from './modules/validationForm.js';
 
 /**
- * @const {Element} root корень HTML файла, куда будет рендериться страница
- */
-const root = document.getElementById('entry');
-
-/**
- * @const {Api} api класс интерфейса для связи с сервером
- */
-const api = new Api('/api/v1');
-
-/**
- * @const {Router} router класс маршрутизации по страницам сайта
+ * класс маршрутизации по страницам сайта
+ * @const {Router} router
  */
 const router = new Router();
-router.root = root;
-router.api = api;
+
+router.root = document.getElementById('entry');
+router.header = document.getElementById('header');
+router.main = document.getElementById('main');
+router.footer = document.getElementById('footer');
+router.api = new Api('/api/v1');
+
+/**
+ * шаблон футера
+ * @const {HandlebarsTemplateDelegate} footerEl
+ */
+const footerEl = Handlebars.templates.footer;
+router.footer.innerHTML = footerEl();
+
 router.authUser();
 
 window.processForm = processForm;
