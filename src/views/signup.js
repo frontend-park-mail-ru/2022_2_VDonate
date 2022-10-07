@@ -93,9 +93,9 @@ export default async (router) => {
 
   setTimeout(() => {
     const form = router.main.querySelector('.form');
-    form.addEventListener('submit', function(formEl, e) {
+    form.addEventListener('submit', function(e) {
       e.preventDefault();
-      processingForm(formEl, sendFormRequest, formFields);
+      processingForm(form, sendFormRequest, formFields);
     }, false);
   }, 10);
 };
