@@ -26,6 +26,7 @@ export default class Ajax {
   /**
      * Ответ на запрос
      * @typedef {Object} ParsedResponse
+     * @property {boolean} ok указывает, что запрос выполнен успешно
      * @property {number} status код ответа
      * @property {Object} body тело ответа
      */
@@ -41,10 +42,10 @@ export default class Ajax {
 
   /**
      * отправляет GET запрос, возвращает
-     * объект респонса с полями {status, body}
+     * объект респонса с полями {ok,status,body}
      * @param {string} url имя пути
      * @param {Object} data данные для query-параметров
-     * @return {Promise<ParsedResponse>} объект ответа с полями {status, body}
+     * @return {Object} объект ответа с полями {ok,status,body}
      */
   get(url, data = {}) {
     const urlWithParams = url + dataToQuery(data);
@@ -53,10 +54,10 @@ export default class Ajax {
 
   /**
      * отправляет POST запрос, возвращает
-     * объект респонса с полями {status, body}
+     * объект респонса с полями {ok,status,body}
      * @param {string} url имя пути
      * @param {Object} data данные для составления тела запроса
-     * @return {Promise<ParsedResponse>} объект ответа с полями {status, body}
+     * @return {Object} объект ответа с полями {ok,status,body}
      */
   post(url, data = {}) {
     return this._request(url, 'POST', data);
@@ -64,10 +65,10 @@ export default class Ajax {
 
   /**
      * отправляет PUT запрос, возвращает
-     * объект респонса с полями {status, body}
+     * объект респонса с полями {ok,status,body}
      * @param {string} url имя пути
      * @param {Object} data данные для составления тела запроса
-     * @return {Promise<ParsedResponse>} объект ответа с полями {status, body}
+     * @return {Object} объект ответа с полями {ok,status,body}
      */
   put(url, data = {}) {
     return this._request(url, 'PUT', data);
@@ -75,10 +76,10 @@ export default class Ajax {
 
   /**
      * отправляет DELETE запрос, возвращает
-     * объект респонса с полями {status, body}
+     * объект респонса с полями {ok,status,body}
      * @param {string} url имя пути
      * @param {Object} data данные для составления тела запроса
-     * @return {Promise<ParsedResponse>} объект ответа с полями {status, body}
+     * @return {Object} объект ответа с полями {ok,status,body}
      */
   delete(url, data = {}) {
     return this._request(url, 'DELETE', data);
@@ -86,11 +87,11 @@ export default class Ajax {
 
   /**
      * отправляет Request-запрос на заданный url,
-     * возвращает promise<ParsedResponse>
-     * @param {string} url
-     * @param {string} method
-     * @param {Object} data
-     * @return {Promise<ParsedResponse>}
+     * возвращает объект ответа с полями {ok,status,body}
+     * @param {string} url имя пути
+     * @param {string} method метод запроса
+     * @param {Object} data данные для составления тела запроса
+     * @return {Object} объект ответа с полями {ok,status,body}
      */
   async _request(url, method, data) {
     const options = {
