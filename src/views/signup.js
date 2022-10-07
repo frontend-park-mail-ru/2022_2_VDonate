@@ -49,9 +49,9 @@ const contextSignUp = {
 export default async (router) => {
   router.root.innerHTML = '';
 
-  const { signlog } = Handlebars.templates;
+  const {signlog} = Handlebars.templates;
   router.root.innerHTML += signlog(contextSignUp);
 
-  const { footer } = Handlebars.templates;
+  const {footer} = Handlebars.templates;
   router.root.innerHTML += footer();
 };

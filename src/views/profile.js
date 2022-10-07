@@ -6,7 +6,7 @@
 /**
  * Функция, создающая контекст для страницы профиля донатера
  * @param {Object} body объект ответа согласно API
- * @returns {Object} объект с контекстом
+ * @return {Object} объект с контекстом
  */
 const createDonaterJSON = (body) => {
   const donater = {
@@ -24,7 +24,7 @@ const createDonaterJSON = (body) => {
 /**
  * Функция, создающая контекст для страницы профиля автора
  * @param {Object} body объект ответа согласно API
- * @returns {Object} объект с контекстом
+ * @return {Object} объект с контекстом
  */
 const createAuthorJSON = (body) => {
   const author = {
@@ -88,15 +88,15 @@ export default async (router) => {
     }
     context = createAuthorJSON(user.body);
     posts.body.forEach(
-      (post) => {
-        const tmp = {
-          image: '../static/img/4.jpg',
-          text: post.title,
-          likesCount: 5,
-          commentsCount: 15,
-        };
-        context.posts.push(tmp);
-      },
+        (post) => {
+          const tmp = {
+            image: '../static/img/4.jpg',
+            text: post.title,
+            likesCount: 5,
+            commentsCount: 15,
+          };
+          context.posts.push(tmp);
+        },
     );
   } else {
     context = createDonaterJSON(user.body);

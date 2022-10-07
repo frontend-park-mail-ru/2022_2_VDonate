@@ -43,14 +43,14 @@ const sizes = {
 /**
  * Проверка на допустимую длину локальную и доменную часть почтового адреса
  * @param {string} email валидный по формату почтовый адрес
- * @returns {bool}
+ * @return {bool}
  */
 const emailLengthCheck = (email) => {
   const tmpSplit = email.split('@');
   const local = tmpSplit[0];
   const domain = tmpSplit[1].split('.');
-  if (local.length <= sizes.localMax
-    && domain.reduce((prev, current) => prev && current.length <= sizes.domainLableMax, true)) {
+  if (local.length <= sizes.localMax &&
+    domain.reduce((prev, current) => prev && current.length <= sizes.domainLableMax, true)) {
     return true;
   }
   return false;
@@ -59,7 +59,7 @@ const emailLengthCheck = (email) => {
 /**
  * Проверка поля ввода почты на верный формат
  * @param {Element} email элемент ввода почты
- * @returns {bool} результат проверки
+ * @return {bool} результат проверки
  */
 const emailCheck = (email) => {
   // eslint-disable-next-line
@@ -79,14 +79,14 @@ const emailCheck = (email) => {
 /**
  * Проверка поля ввода псевдонима на верный формат
  * @param {Element} username элемент ввода псевдонима
- * @returns {bool} результат проверки
+ * @return {bool} результат проверки
  */
 const usernameCheck = (username) => {
   const usernameSyms = /[\d\wа-яёА-ЯЁ]/;
   const usernameReg = new RegExp(`^${usernameSyms.source}( ?${usernameSyms.source})*$`);
-  if (username.value.length >= sizes.username.min
-    && username.value.length <= sizes.username.max
-    && usernameReg.test(username.value)) {
+  if (username.value.length >= sizes.username.min &&
+    username.value.length <= sizes.username.max &&
+    usernameReg.test(username.value)) {
     username.className = 'input__input';
     return true;
   }
@@ -97,12 +97,12 @@ const usernameCheck = (username) => {
 /**
  * Проверка поля ввода пароля на верный формат
  * @param {Element} password элемент ввода пароля
- * @returns {bool} результат проверки
+ * @return {bool} результат проверки
  */
 const passwordCheck = (password) => {
-  if (password.value.length >= sizes.password.min
-    && password.value.length <= sizes.password.max
-    && /^.+$/.test(password.value)) {
+  if (password.value.length >= sizes.password.min &&
+    password.value.length <= sizes.password.max &&
+    /^.+$/.test(password.value)) {
     password.className = 'input__input';
     return true;
   }
@@ -114,7 +114,7 @@ const passwordCheck = (password) => {
  * Проверка поля повторного ввода пароля совподение с полем ввода пароля
  * @param {Element} origin элемент ввода пароля
  * @param {Element} repeat элемент повторного ввода пароля
- * @returns {bool} результат проверки
+ * @return {bool} результат проверки
  */
 const repeatPasswordCheck = (origin, repeat) => {
   if (repeat.value.length !== 0 && origin.value === repeat.value) {
@@ -128,7 +128,7 @@ const repeatPasswordCheck = (origin, repeat) => {
 /**
  * Проверка проверка формы входа на верный формат входных полей
  * @param {HTMLFormElement} form элемент формы входа для валидации
- * @returns {bool} результат проверки
+ * @return {bool} результат проверки
  */
 const loginValidation = (form) => {
   const usernameChecked = usernameCheck(form.username);
@@ -139,7 +139,7 @@ const loginValidation = (form) => {
 /**
  * Проверка проверка формы регистрации на верный формат входных полей
  * @param {HTMLFormElement} form элемент формы регистрации для валидации
- * @returns {bool} результат проверки
+ * @return {bool} результат проверки
  */
 const signupValidation = (form) => {
   const emailChecked = emailCheck(form.email);
@@ -152,7 +152,7 @@ const signupValidation = (form) => {
 /**
  * Валидация формы
  * @param {HTMLFormElement} form элемент формы регистрации для валидации
- * @returns {bool} результат проверки
+ * @return {bool} результат проверки
  */
 const validationForm = (form) => {
   switch (form.name) {
@@ -240,19 +240,19 @@ function sendRequest(form) {
   switch (form.name) {
     case formType.login:
       router.api.loginUser(form.username.value, form.password.value)
-        .then(({ status, body }) => {
-          validateOrLogin(router, form, status, body.id);
-        });
+          .then(({status, body}) => {
+            validateOrLogin(router, form, status, body.id);
+          });
       break;
     case formType.signup:
       router.api.signupUser(
-        form.username.value,
-        form.email.value,
-        form.password.value,
+          form.username.value,
+          form.email.value,
+          form.password.value,
       )
-        .then(({ status, body }) => {
-          validateOrSignup(router, form, status, body.id);
-        });
+          .then(({status, body}) => {
+            validateOrSignup(router, form, status, body.id);
+          });
       break;
     default:
       break;

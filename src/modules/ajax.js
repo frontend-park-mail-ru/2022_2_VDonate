@@ -6,7 +6,7 @@
 /**
  * Формирует из входных данных query-параметры
  * @param {Object} data данные для преобразования в query-параметры
- * @returns {string} строка query-параметров
+ * @return {string} строка query-параметров
  */
 function dataToQuery(data) {
   if (Object.entries(data).length === 0) {
@@ -14,10 +14,10 @@ function dataToQuery(data) {
   }
   let queryString = '?';
   Object
-    .entries(data)
-    .forEach((key, value) => {
-      queryString += `${key}=${value}`;
-    });
+      .entries(data)
+      .forEach((key, value) => {
+        queryString += `${key}=${value}`;
+      });
   return queryString;
 }
 
@@ -40,10 +40,11 @@ export default class Ajax {
   }
 
   /**
-     * отправляет GET запрос, возвращает  объект респонса с полями ок, статус и тело
+     * отправляет GET запрос, возвращает
+     * объект респонса с полями {status, body}
      * @param {string} url имя пути
      * @param {Object} data данные для query-параметров
-     * @returns {Promise<ParsedResponse>} объект ответа с полями {status, body}
+     * @return {Promise<ParsedResponse>} объект ответа с полями {status, body}
      */
   get(url, data = {}) {
     const urlWithParams = url + dataToQuery(data);
@@ -51,30 +52,33 @@ export default class Ajax {
   }
 
   /**
-     * отправляет POST запрос, возвращает  объект респонса с полями ок, статус и тело
+     * отправляет POST запрос, возвращает
+     * объект респонса с полями {status, body}
      * @param {string} url имя пути
      * @param {Object} data данные для составления тела запроса
-     * @returns {Promise<ParsedResponse>} объект ответа с полями {status, body}
+     * @return {Promise<ParsedResponse>} объект ответа с полями {status, body}
      */
   post(url, data = {}) {
     return this._request(url, 'POST', data);
   }
 
   /**
-     * отправляет PUT запрос, возвращает  объект респонса с полями ок, статус и тело
+     * отправляет PUT запрос, возвращает
+     * объект респонса с полями {status, body}
      * @param {string} url имя пути
      * @param {Object} data данные для составления тела запроса
-     * @returns {Promise<ParsedResponse>} объект ответа с полями {status, body}
+     * @return {Promise<ParsedResponse>} объект ответа с полями {status, body}
      */
   put(url, data = {}) {
     return this._request(url, 'PUT', data);
   }
 
   /**
-     * отправляет DELETE запрос, возвращает  объект респонса с полями ок, статус и тело
+     * отправляет DELETE запрос, возвращает
+     * объект респонса с полями {status, body}
      * @param {string} url имя пути
      * @param {Object} data данные для составления тела запроса
-     * @returns {Promise<ParsedResponse>} объект ответа с полями {status, body}
+     * @return {Promise<ParsedResponse>} объект ответа с полями {status, body}
      */
   delete(url, data = {}) {
     return this._request(url, 'DELETE', data);
@@ -86,7 +90,7 @@ export default class Ajax {
      * @param {string} url
      * @param {string} method
      * @param {Object} data
-     * @returns {Promise<ParsedResponse>}
+     * @return {Promise<ParsedResponse>}
      */
   async _request(url, method, data) {
     const options = {
@@ -98,23 +102,25 @@ export default class Ajax {
       },
     };
 
-    if (!['GET', 'HEAD'].includes(method)) { options.body = JSON.stringify(data); }
+    if (!['GET', 'HEAD'].includes(method)) {
+      options.body = JSON.stringify(data);
+    }
 
     const response = await fetch(
-      this.baseUrl + url,
-      options,
+        this.baseUrl + url,
+        options,
     );
 
     if (response.ok) {
       return response.json()
-        .then((json) => ({
-          status: response.status,
-          body: json,
-        }))
-        .catch(() => ({
-          status: 515,
-          body: {},
-        }));
+          .then((json) => ({
+            status: response.status,
+            body: json,
+          }))
+          .catch(() => ({
+            status: 515,
+            body: {},
+          }));
     }
     return {
       status: response.status,
