@@ -1,17 +1,15 @@
 @require 'style/*'
 
-*
-  box-sizing border-box
-
 a
   text-decoration none
 
 body
+  box-sizing border-box
   background bg-second-color
   display grid
   min-height 100vh
   gap 20px
-  grid-template-areas  "sub-header main up"\
+  grid-template-areas  "sub-navbar main up"\
                         "footer footer footer"
   grid-template-columns 1fr 700px 1fr
   grid-template-rows 1fr min-content 
@@ -156,7 +154,6 @@ body
         sub-text()
   &__button
     cursor pointer
-    align-self stretch
     border-radius radius
     border none
     background main-color
@@ -183,14 +180,21 @@ body
       display: none
 
 .input
-  flex-column-start()
+  flex-column-stretch()
   gap 5px
   &__lable
+  &__error
     sub-text()
+  &__error
+    color error-color
+    text-align right
+    &_disable
+      visibility hidden
+    &_enable
+      visibility visible
   &__input
     main-text()
     padding 5px 
-    align-self stretch
     background bg-second-color
     height 30px
     border-radius radius

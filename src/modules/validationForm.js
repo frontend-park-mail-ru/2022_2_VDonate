@@ -3,16 +3,23 @@
  * @module processForm
  */
 
-import Router from './router.js';
-
 /**
- * Виды форм
+ * Виды полей ввода
+ * @readonly
  * @enum {string}
  */
-const formType = {
-  signup: 'signup',
-  login: 'login',
+const inputType = {
+  username: 'username',
+  password: 'password',
+  repeatPassword: 'repeatPassword',
+  email: 'email',
 };
+
+/**
+ * @typedef {Object} errorMessage
+ * @property {inputType} input
+ * @property {string} message
+ */
 
 /**
  * Ограничения длин полей
@@ -62,10 +69,8 @@ const emailLengthCheck = (email) => {
  * @returns {bool} результат проверки
  */
 const emailCheck = (email) => {
-  // eslint-disable-next-line
-  const localSyms = /[a-zA-Z0-9!#\$&%_+-]/;
+  const localSyms = /[a-zA-Z0-9!#$&%_+-]/;
   const localReg = new RegExp(`^${localSyms.source}+(\\.?${localSyms.source}+)*`);
-  // eslint-disable-next-line
   const domainReg = /[0-9a-zA-Z]([\.-]?[0-9a-zA-Z]+)*$/;
   const emailReg = new RegExp(`${localReg.source}@${domainReg.source}`);
   if (emailReg.test(email.value) && emailLengthCheck(email.value)) {
@@ -126,150 +131,72 @@ const repeatPasswordCheck = (origin, repeat) => {
 };
 
 /**
- * Проверка проверка формы входа на верный формат входных полей
- * @param {HTMLFormElement} form элемент формы входа для валидации
- * @returns {bool} результат проверки
- */
-const loginValidation = (form) => {
-  const usernameChecked = usernameCheck(form.username);
-  const passwordChecked = passwordCheck(form.password);
-  return usernameChecked && passwordChecked;
-};
-
-/**
- * Проверка проверка формы регистрации на верный формат входных полей
- * @param {HTMLFormElement} form элемент формы регистрации для валидации
- * @returns {bool} результат проверки
- */
-const signupValidation = (form) => {
-  const emailChecked = emailCheck(form.email);
-  const passwordChecked = passwordCheck(form.password);
-  const usernameChecked = usernameCheck(form.username);
-  const repeatChecked = repeatPasswordCheck(form.password, form.passwordRepeat);
-  return emailChecked && passwordChecked && usernameChecked && repeatChecked;
-};
-
-/**
  * Валидация формы
  * @param {HTMLFormElement} form элемент формы регистрации для валидации
- * @returns {bool} результат проверки
+ * @param {...inputType} formFields список входных полей формы
+ * @returns {errorMessage[] | undefined} результат проверки
  */
-const validationForm = (form) => {
-  switch (form.name) {
-    case formType.login:
-      return loginValidation(form);
-    case formType.signup:
-      return signupValidation(form);
-    default:
-      return false;
-  }
+const validationForm = (form, ...formFields) => {
+  const inputs = form.querySelectorAll('.input__input');
+  let errors;
+  inputs.forEach((input, idx) => {
+    switch (formFields[idx]) {
+      case inputType.username:
+        errors.push(usernameCheck(input));
+        break;
+      case inputType.email:
+        errors.push(emailCheck(input));
+        break;
+      case inputType.password:
+        errors.push(passwordCheck(input));
+        break;
+      case inputType.repeatPassword:
+        errors.push(repeatPasswordCheck(input));
+        break;
+      default:
+        break;
+    }
+  })
+  return errors;
 };
 
 /**
- * Валидация результата запроса формы на вход
- * @param {Router} router
- * @param {HTMLFormElement} form форма, которая отправила запрос
- * @param {number} status код ответа
- * @param {number} id ID пользователя из результата отправки формы
- */
-function validateOrLogin(router, form, status, id) {
-  const errorMessage = form.querySelector('#error-msg');
-  switch (status) {
-    case 200:
-      router.id = id;
-      router.goTo(`/profile?id=${id}`);
-      break;
-    case 400:
-      errorMessage.className = 'form__error-msg form__error-msg_enable';
-      errorMessage.innerHTML = 'Неверно введен пароль!';
-      form.password.className = 'input__input input__input_error';
-      break;
-    case 404:
-      errorMessage.className = 'form__error-msg form__error-msg_enable';
-      errorMessage.innerHTML = 'Пользователь не найден!';
-      form.username.className = 'input__input input__input_error';
-      break;
-    case 500:
-      errorMessage.className = 'form__error-msg form__error-msg_enable';
-      errorMessage.innerHTML = 'Внутренняя ошибка сервера!';
-      break;
-    default:
-      errorMessage.className = 'form__error-msg form__error-msg_enable';
-      errorMessage.innerHTML = 'Ошибка, повторите попытку еще раз!';
-      break;
-  }
-}
-
-/**
- * Валидация результата запроса формы на регистрацию
- * @param {Router} router
- * @param {HTMLFormElement} form форма, которая отправила запрос
- * @param {number} status код ответа
- * @param {number} id ID пользователя из результата отправки формы
- */
-function validateOrSignup(router, form, status, id) {
-  const errorMessage = form.querySelector('#error-msg');
-  switch (status) {
-    case 200:
-      router.id = id;
-      router.goTo(`/profile?id=${id}`);
-      break;
-    case 409:
-      errorMessage.className = 'form__error-msg form__error-msg_enable';
-      errorMessage.innerHTML = 'Пользователь с данной почтой или псевдонимом уже существует!';
-      form.email.className = 'input__input input__input_error';
-      form.username.className = 'input__input input__input_error';
-      break;
-    case 500:
-      errorMessage.className = 'form__error-msg form__error-msg_enable';
-      errorMessage.innerHTML = 'Внутренняя ошибка сервера!';
-      break;
-    default:
-      errorMessage.className = 'form__error-msg form__error-msg_enable';
-      errorMessage.innerHTML = 'Ошибка, повторите попытку еще раз!';
-      break;
-  }
-}
-
-/**
- * Отправка запрос на авторизацию/регистрацию
+ * Отображение ошибок валидации
  * @param {HTMLFormElement} form
+ * @param {...errorMessage} errors 
  */
-function sendRequest(form) {
-  const router = new Router();
-  switch (form.name) {
-    case formType.login:
-      router.api.loginUser(form.username.value, form.password.value)
-        .then(({ status, body }) => {
-          validateOrLogin(router, form, status, body.id);
-        });
-      break;
-    case formType.signup:
-      router.api.signupUser(
-        form.username.value,
-        form.email.value,
-        form.password.value,
-      )
-        .then(({ status, body }) => {
-          validateOrSignup(router, form, status, body.id);
-        });
-      break;
-    default:
-      break;
+const displayErrors = (form, ...errors) => {
+  if (errors.length == 0) {
+    const errorMsgs = form.querySelectorAll('.input__error');
+    errorMsgs.forEach((inputErr) => {
+      inputErr.className = 'input__error input__error_disable';
+    })
+    const inputs = form.querySelectorAll('.input__input');
+    inputs.forEach((input) => {
+      input.className = 'input__input';
+    })
   }
 }
+
+/**
+ * Функция отправки запроса по форме
+ * @callback sendFormRequest
+ * @param {HTMLFormElement} responseCode
+ * @returns {errorMessage[]} 
+ */
 
 /**
  * Обработка формы
  * @param {HTMLFormElement} form
+ * @param {sendFormRequest} formRequest функция обработки запроса формы 
+ * @param {...inputType} formFields список входных полей формы
+ * на сервер
  */
-export default function processForm(form) {
-  const errorMessage = form.querySelector('#error-msg');
-  if (validationForm(form)) {
-    errorMessage.className = 'form__error-msg form__error-msg_disable';
-    sendRequest(form);
-  } else {
-    errorMessage.className = 'form__error-msg form__error-msg_enable';
-    errorMessage.innerHTML = 'Неверно введены данные!';
+export default function processForm(form, formRequest, ...formFields) {
+  alert();
+  let errors = validationForm(form, formFields);
+  if (errors === undefined) {
+    errors = formRequest(form);
   }
+  displayErrors(errors);
 }

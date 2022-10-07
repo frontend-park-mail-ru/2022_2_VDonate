@@ -40,6 +40,12 @@ export default async (router) => {
   const { signlog } = Handlebars.templates;
   router.root.innerHTML += signlog(contextLogIn);
 
+  const form = router.root.querySelector('form');
+  form.addEventListener('submit', function () {
+    alert(this);
+  }, false);
+
+
   const { footer } = Handlebars.templates;
   router.root.innerHTML += footer();
 };
