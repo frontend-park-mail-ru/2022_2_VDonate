@@ -8,7 +8,6 @@
  * @param {Router} router Класс маршрутизации по страницам сайта
  */
 export default (router) => {
-  router.header.innerHTML = '';
   router.main.innerHTML = '';
   const errorEl = Handlebars.templates.error;
   router.main.innerHTML += errorEl({
