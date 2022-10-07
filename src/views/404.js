@@ -17,6 +17,6 @@ export default (router) => {
   });
   const link = document.getElementById('post-block-link');
   link.onclick = () => {
-    router.authUser();
+    history.go(-1);
   };
 };
