@@ -220,7 +220,7 @@ const displayErrors = (form, errorMsgs) => {
 export function processingForm(form, formRequest, formFields) {
   let errors = validationForm(form, formFields);
   if (errors === undefined) {
-    // errors = formRequest(form, errors);
+    errors = formRequest(form, errors);
   }
   displayErrors(form, errors);
 }
