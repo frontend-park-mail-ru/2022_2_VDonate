@@ -77,7 +77,7 @@ export default class Router {
         .then(({status, body}) => {
           if (status === 200) {
             this.id = body.id;
-            this.goTo(`/profile?id=${this.id}`);
+            this.goTo('/' + location.pathname + location.search);
           } else {
             this.goTo('/login');
           }
