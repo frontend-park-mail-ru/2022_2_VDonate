@@ -55,7 +55,8 @@ const emailLengthCheck = (email) => {
   const local = tmpSplit[0];
   const domain = tmpSplit[1].split('.');
   if (local.length <= sizes.localMax &&
-    domain.reduce((prev, current) => prev && current.length <= sizes.domainLableMax, true)) {
+    domain.reduce((prev, current) => prev &&
+      current.length <= sizes.domainLableMax, true)) {
     return true;
   }
   return false;
@@ -68,8 +69,9 @@ const emailLengthCheck = (email) => {
  */
 const emailCheck = (email) => {
   const localSyms = /[a-zA-Z0-9!#$&%_+-]/;
-  const localReg = new RegExp(`^${localSyms.source}+(\\.?${localSyms.source}+)*`);
-  const domainReg = /[0-9a-zA-Z]+([\.-]?[0-9a-zA-Z]+)*(\.[0-9a-zA-Z]+)$/;
+  const localReg =
+    new RegExp(`^${localSyms.source}+(\\.?${localSyms.source}+)*`);
+  const domainReg = /[0-9a-zA-Z]+([.-]?[0-9a-zA-Z]+)*(\.[0-9a-zA-Z]+)$/;
   const emailReg = new RegExp(`${localReg.source}@${domainReg.source}`);
 
   email.className = 'input__input input__input_error';
@@ -87,11 +89,12 @@ const emailCheck = (email) => {
 /**
  * Проверка поля ввода псевдонима на верный формат
  * @param {Element} username элемент ввода псевдонима
- * @returns {errorMessage} результат проверки
+ * @return {errorMessage} результат проверки
  */
 const usernameCheck = (username) => {
   const usernameSyms = /[\d\wа-яёА-ЯЁ]/;
-  const usernameReg = new RegExp(`^${usernameSyms.source}( ?${usernameSyms.source})*$`);
+  const usernameReg =
+    new RegExp(`^${usernameSyms.source}( ?${usernameSyms.source})*$`);
   username.className = 'input__input input__input_error';
   if (username.value.length < sizes.username.min) {
     return `Минимальная длина ${sizes.username.min}`;
@@ -148,7 +151,7 @@ const repeatPasswordCheck = (origin, repeat) => {
  * Валидация формы
  * @param {HTMLFormElement} form элемент формы регистрации для валидации
  * @param {inputType[]} formFields список входных полей формы
- * @returns {errorMessage[] | undefined} результат проверки
+ * @return {errorMessage[] | undefined} результат проверки
  */
 const validationForm = (form, formFields) => {
   const inputs = form.querySelectorAll('.input__input');
@@ -160,7 +163,7 @@ const validationForm = (form, formFields) => {
         err = usernameCheck(input);
         break;
       case inputType.email:
-        err = emailCheck(input)
+        err = emailCheck(input);
         break;
       case inputType.password:
         err = passwordCheck(input);
@@ -174,25 +177,25 @@ const validationForm = (form, formFields) => {
     if (err !== undefined) {
       errors.set(idx, err);
     }
-  })
+  });
   return errors;
 };
 
 /**
  * Отображение ошибок валидации
  * @param {HTMLFormElement} form
- * @param {errorMessage} errorMsgs 
+ * @param {errorMessage} errorMsgs
  */
 const displayErrors = (form, errorMsgs) => {
   if (errorMsgs.size === 0) {
     const errorMsgs = form.querySelectorAll('.input__error');
     errorMsgs.forEach((inputErr) => {
       inputErr.className = 'input__error input__error_disable';
-    })
+    });
     const inputs = form.querySelectorAll('.input__input');
     inputs.forEach((input) => {
       input.className = 'input__input';
-    })
+    });
     return;
   }
   const errors = form.querySelectorAll('.input__error');
@@ -203,21 +206,21 @@ const displayErrors = (form, errorMsgs) => {
     } else {
       err.className = 'input__error input__error_disable';
     }
-  })
-}
+  });
+};
 
 /**
  * Функция отправки запроса по форме
  * @callback sendFormRequest
  * @param {HTMLFormElement} responseCode
- * @param {errorMessage} errors 
- * @returns {errorMessage[]} 
+ * @param {errorMessage} errors
+ * @returns {errorMessage[]}
  */
 
 /**
  * Обработка формы
  * @param {HTMLFormElement} form
- * @param {sendFormRequest} formRequest функция обработки запроса формы 
+ * @param {sendFormRequest} formRequest функция обработки запроса формы
  * @param {inputType[]} formFields список входных полей формы
  * на сервер
  */

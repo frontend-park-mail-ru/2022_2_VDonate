@@ -3,7 +3,7 @@
  * @module signup
  */
 
-import { inputType, processingForm } from "../modules/validationForm.js";
+import {inputType, processingForm} from '../modules/validationForm.js';
 
 /**
  * @const {Object} contextSignUp объект с контекстом страницы регистрации
@@ -49,7 +49,7 @@ const formFields = [
   inputType.username,
   inputType.password,
   inputType.repeatPassword,
-]
+];
 
 /**
  * Функция, которая рендерит страницу регистрации
@@ -58,18 +58,15 @@ const formFields = [
 export default async (router) => {
   router.main.innerHTML = '';
 
-  const { signlog } = Handlebars.templates;
+  const {signlog} = Handlebars.templates;
   router.main.innerHTML += signlog(contextSignUp);
 
-  /**
- * @type {import("../modules/validationForm.js").sendFormRequest}
- */
   const sendFormRequest = async (form, errors) => {
     const res = await router.api.signupUser(
-      form.username.value,
-      form.email.value,
-      form.password.value,
-    )
+        form.username.value,
+        form.email.value,
+        form.password.value,
+    );
     switch (res.status) {
       case 200:
         router.id = res.body.id;
@@ -92,13 +89,13 @@ export default async (router) => {
         errors.set(3, 'АХТУНГ! Нас тут быть не должно!');
         break;
     }
-  }
+  };
 
   setTimeout(() => {
     const form = router.main.querySelector('.form');
-    form.addEventListener("submit", function (e) {
+    form.addEventListener('submit', function(formEl, e) {
       e.preventDefault();
-      processingForm(this, sendFormRequest, formFields)
+      processingForm(formEl, sendFormRequest, formFields);
     }, false);
   }, 10);
 };

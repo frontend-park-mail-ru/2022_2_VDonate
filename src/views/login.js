@@ -3,7 +3,7 @@
  * @module login
  */
 
-import { inputType, processingForm } from "../modules/validationForm.js";
+import {inputType, processingForm} from '../modules/validationForm.js';
 
 /**
  * @const {Object} contextLogIn обьект с контекстом страницы авторизации
@@ -35,25 +35,22 @@ const contextLogIn = {
 const formFields = [
   inputType.username,
   inputType.password,
-]
+];
 
 /**
  * Функция, которая рендерит страницу авторизации
- * @param {import("../modules/router.js").default} router Класс маршрутизации по 
+ * @param {Router} router Класс маршрутизации по
  * страницам сайта
  */
 export default async (router) => {
   router.main.innerHTML = '';
 
-  const { signlog } = Handlebars.templates;
+  const {signlog} = Handlebars.templates;
   router.main.innerHTML += signlog(contextLogIn);
 
-  /**
-   * @type {import("../modules/validationForm.js").sendFormRequest}
-   */
   const sendFormRequest = async (form, errors) => {
     const res = await router.api.loginUser(form.username.value,
-      form.password.value);
+        form.password.value);
     switch (res.status) {
       case 200:
         router.id = res.body.id;
@@ -74,13 +71,13 @@ export default async (router) => {
         errors.set(1, 'АХТУНГ! Нас тут быть не должно!');
         break;
     }
-  }
+  };
 
   setTimeout(() => {
     const form = router.main.querySelector('.form');
-    form.addEventListener("submit", function (e) {
+    form.addEventListener('submit', function(formEl, e) {
       e.preventDefault();
-      processingForm(this, sendFormRequest, formFields)
+      processingForm(formEl, sendFormRequest, formFields);
     }, false);
   }, 10);
 };
