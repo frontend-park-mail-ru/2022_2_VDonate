@@ -56,7 +56,6 @@ const formFields = [
  * @param {Router} router Класс маршрутизации по страницам сайта
  */
 export default async (router) => {
-  router.header.innerHTML = '';
   router.main.innerHTML = '';
 
   const { signlog } = Handlebars.templates;
