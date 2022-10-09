@@ -74,11 +74,9 @@ export default async (router) => {
     return;
   };
 
-  setTimeout(() => {
-    const form = router.main.querySelector('.form');
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      processingForm(form, sendFormRequest, formFields);
-    }, false);
-  }, 10);
+  const form = router.main.querySelector('.form');
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    processingForm(form, sendFormRequest, formFields);
+  }, false);
 };
