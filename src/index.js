@@ -12,7 +12,7 @@ const router = new Router();
 router.root = document.getElementById('entry');
 router.main = document.getElementById('main');
 router.footer = document.getElementById('footer');
-router.api = new Api('/api/v1');
+router.api = new Api('https://95.163.209.195:8080/api/v1');
 
 /**
  * шаблон футера
