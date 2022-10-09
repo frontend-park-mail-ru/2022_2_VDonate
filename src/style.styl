@@ -1,19 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap')
 @require 'style/*'
 
 a
   text-decoration none
 
 body
+  box-sizing border-box
   background bg-second-color
   display grid
   min-height 100vh
   gap 20px
-  grid-template-areas  "sub-header main up"\
+  grid-template-areas  "sub-navbar main up"\
                         "footer footer footer"
   grid-template-columns 1fr 700px 1fr
   grid-template-rows 1fr min-content 
-  margin-top 80px 
+  padding-top 80px 
+  margin 0
 
 .navbar
   position fixed 
@@ -50,6 +51,20 @@ body
   &__icon
     width 24px
     height 26px
+
+.logout
+  &__button
+    background bg-main-color
+    border none
+    border-radius radius
+    padding 5px
+    cursor pointer
+    &:hover
+      background bg-second-color
+  &__icon
+    width 24px
+    height 26px
+    fill #c1365f
 
 .logo
   logo-text()
@@ -139,7 +154,6 @@ body
         sub-text()
   &__button
     cursor pointer
-    align-self stretch
     border-radius radius
     border none
     background main-color
@@ -166,14 +180,21 @@ body
       display: none
 
 .input
-  flex-column-start()
+  flex-column-stretch()
   gap 5px
   &__lable
+  &__error
     sub-text()
+  &__error
+    color error-color
+    text-align right
+    &_disable
+      visibility hidden
+    &_enable
+      visibility visible
   &__input
     main-text()
     padding 5px 
-    align-self stretch
     background bg-second-color
     height 30px
     border-radius radius
@@ -214,6 +235,14 @@ body
         main-text()
       &_sub
         sub-text()
+  &__link
+    main-text()
+    text-align center
+    padding 5px 10px
+    border-radius radius
+    cursor pointer
+    &:hover
+      background bg-second-color 
 
 .level-block
   &__image

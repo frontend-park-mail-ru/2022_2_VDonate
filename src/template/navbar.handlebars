@@ -1,24 +1,27 @@
-<div class="main">
-  <nav class="navbar">
-    <div class="navbar__back">
-      <a class="logo" href="/" data-link>ВДонате</a>
-      <a class="navbar__link" href="/feed" data-link>Лента</a>
-      <a class="navbar__link" href="/search" data-link>Поиск авторов</a>
-      <a class="navbar__link" href="/subscriptions" data-link>Подписки</a>
-      <div class="navbar__profile">
-        {{#with user}}
-          <a class="navbar__link profile" href="/profile?id={{id}}" data-link>
-            <img class="profile__image" src="{{image}}" alt="image">
-            <span class="profile__text">Мой профиль</span>
-          </a>
-        {{/with}}
-        <div class="navbar__menu dropdown-menu">
-          <button class="dropdown-menu__button">
-            <img class="dropdown-menu__icon" src="../static/icon/menu.svg" alt="menu">
+<nav class="navbar">
+  <div class="navbar__back">
+    <a class="logo" href="/" data-link>ВДонате</a>
+    <a class="navbar__link" href="/feed" data-link>Лента</a>
+    <a class="navbar__link" href="/search" data-link>Поиск авторов</a>
+    <a class="navbar__link" href="/subscriptions" data-link>Подписки</a>
+    <div class="navbar__profile">
+      {{#with user}}
+        <a class="navbar__link profile" href="/profile?id={{id}}" data-link>
+          <img class="profile__image" src="{{image}}" alt="image">
+          <span class="profile__text">Мой профиль</span>
+        </a>
+        <a href="/logout" data-link>
+          <button class="logout__button">
+            <img class="logout__icon" src="../static/icon/logout.svg" alt="/logout">
           </button>
-          <div class="dropdown-menu__menu"></div>
-        </div>
-      </div>
+        </a>
+      {{/with}}
+      <!-- <div class="navbar__menu dropdown-menu">
+        <button class="dropdown-menu__button">
+          <img class="dropdown-menu__icon" src="../static/icon/menu.svg" alt="menu">
+        </button>
+        <div class="dropdown-menu__menu"></div>
+      </div> -->
     </div>
-  </nav>
-</div>
+  </div>
+</nav>

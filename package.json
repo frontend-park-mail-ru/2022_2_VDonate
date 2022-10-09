@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx stylus -c -o public src/style.styl && npx handlebars src/template/ -f public/all.precompiled.js",
-    "stylus": "npx stylus -c -w src -o public"
+    "stylus": "npx stylus -c -w src -o public",
+    "lint": "npx eslint src/",
+    "lint:fix": "npx eslint src/ --fix"
   },
   "repository": {
     "type": "git",
@@ -21,5 +23,9 @@
   "dependencies": {
     "handlebars": "^4.7.7",
     "stylus": "^0.59.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.24.0",
+    "eslint-config-google": "^0.14.0"
   }
 }

@@ -1,253 +1,233 @@
-import Router from "./router.js";
+/**
+ * Модуль валидации и обработки формы
+ * @module processForm
+ */
 
 /**
- * Виды форм
+ * Виды полей ввода
+ * @readonly
  * @enum {string}
  */
-const formType = {
-  signup: 'signup',
-  login: 'login',
-}
+export const inputType = {
+  username: 'username',
+  password: 'password',
+  repeatPassword: 'repeatPassword',
+  email: 'email',
+};
+
+/**
+ * @typedef {Map<number, string>} errorMessage
+ */
 
 /**
  * Ограничения длин полей
  * @namespace
- * @property {int} localMax максимальная длина локальной части почты
- * @property {int} domainLableMax максимальная длина одного уровня доменной 
+ * @property {number} localMax максимальная длина локальной части почты
+ * @property {number} domainLableMax максимальная длина одного уровня доменной
  * части почты
  * @property {object} username значения длин псевдонима
- * @property {int} username.max значение максимальной длины псевдонима
- * @property {int} username.min значение минимальной длины псевдонима
+ * @property {number} username.max значение максимальной длины псевдонима
+ * @property {number} username.min значение минимальной длины псевдонима
  * @property {object} password значения длин пароля
- * @property {int} password.max значение максимальной длины пароля
- * @property {int} password.min значение минимальной длины пароля
+ * @property {number} password.max значение максимальной длины пароля
+ * @property {number} password.min значение минимальной длины пароля
  */
 const sizes = {
   localMax: 64,
   domainLableMax: 63,
   username: {
-    min: 1,
+    min: 5,
     max: 20,
   },
   password: {
-    min: 1,
+    min: 5,
     max: 30,
   },
-}
+};
 
 /**
  * Проверка на допустимую длину локальную и доменную часть почтового адреса
- * @param {string} email валидный по формату почтовый адрес 
- * @returns {bool}
+ * @param {string} email валидный по формату почтовый адрес
+ * @return {bool}
  */
-const emailLengthCheck = email => {
+const emailLengthCheck = (email) => {
   const tmpSplit = email.split('@');
   const local = tmpSplit[0];
   const domain = tmpSplit[1].split('.');
-  if (local.length <= sizes.localMax
-    && domain.reduce((prev, current) => {
-      return prev && current.length <= sizes.domainLableMax
-    }, true)) {
-    return true
+  if (local.length <= sizes.localMax &&
+    domain.reduce((prev, current) => prev &&
+      current.length <= sizes.domainLableMax, true)) {
+    return true;
   }
   return false;
-}
+};
 
 /**
  * Проверка поля ввода почты на верный формат
  * @param {Element} email элемент ввода почты
- * @returns {bool} результат проверки
+ * @return {bool} результат проверки
  */
-const emailCheck = email => {
-  const localSyms = /[a-zA-Z0-9!#\$&%_+-]/;
-  const localReg = new RegExp(`^${localSyms.source}+(\\.?${localSyms.source}+)*`);
-  const domainReg = /[0-9a-zA-Z]([\.-]?[0-9a-zA-Z]+)*$/;
-  const emailReg = new RegExp(localReg.source + '@' + domainReg.source);
-  if (emailReg.test(email.value) && emailLengthCheck(email.value)) {
-    email.className = 'input__input';
-    return true;
-  }
+const emailCheck = (email) => {
+  const localSyms = /[a-zA-Z0-9!#$&%_+-]/;
+  const localReg =
+    new RegExp(`^${localSyms.source}+(\\.?${localSyms.source}+)*`);
+  const domainReg = /[0-9a-zA-Z]+([.-]?[0-9a-zA-Z]+)*(\.[0-9a-zA-Z]+)$/;
+  const emailReg = new RegExp(`${localReg.source}@${domainReg.source}`);
+
   email.className = 'input__input input__input_error';
-  return false;
-}
+  if (!emailReg.test(email.value)) {
+    return `Неверный формат`;
+  }
+
+  if (!emailLengthCheck(email.value)) {
+    return `Неверная длина`;
+  }
+  email.className = 'input__input';
+  return undefined;
+};
 
 /**
  * Проверка поля ввода псевдонима на верный формат
  * @param {Element} username элемент ввода псевдонима
- * @returns {bool} результат проверки
+ * @return {errorMessage} результат проверки
  */
-const usernameCheck = username => {
+const usernameCheck = (username) => {
   const usernameSyms = /[\d\wа-яёА-ЯЁ]/;
   const usernameReg =
     new RegExp(`^${usernameSyms.source}( ?${usernameSyms.source})*$`);
-  if (username.value.length >= sizes.username.min
-    && username.value.length <= sizes.username.max
-    && usernameReg.test(username.value)) {
-    username.className = 'input__input';
-    return true;
-  }
   username.className = 'input__input input__input_error';
-  return false;
-}
+  if (username.value.length < sizes.username.min) {
+    return `Минимальная длина ${sizes.username.min}`;
+  }
+  if (username.value.length > sizes.username.max) {
+    return `Максимальная длина ${sizes.username.max}`;
+  }
+  if (!usernameReg.test(username.value)) {
+    return `Недопустимый псевдоним`;
+  }
+  username.className = 'input__input';
+  return undefined;
+};
 
 /**
  * Проверка поля ввода пароля на верный формат
  * @param {Element} password элемент ввода пароля
- * @returns {bool} результат проверки
+ * @return {bool} результат проверки
  */
-const passwordCheck = password => {
-  if (password.value.length >= sizes.password.min
-    && password.value.length <= sizes.password.max
-    && /^.+$/.test(password.value)) {
-    password.className = 'input__input';
-    return true;
-  }
+const passwordCheck = (password) => {
   password.className = 'input__input input__input_error';
-  return false;
-}
+  if (password.value.length < sizes.password.min) {
+    return `Минимальная длина ${sizes.password.min}`;
+  }
+  if (password.value.length > sizes.password.max) {
+    return `Максимальная длина ${sizes.password.max}`;
+  }
+  if (!/^.+$/.test(password.value)) {
+    return 'Недопустимый псевдоним';
+  }
+  password.className = 'input__input';
+  return undefined;
+};
 
 /**
  * Проверка поля повторного ввода пароля совподение с полем ввода пароля
  * @param {Element} origin элемент ввода пароля
  * @param {Element} repeat элемент повторного ввода пароля
- * @returns {bool} результат проверки
+ * @return {bool} результат проверки
  */
 const repeatPasswordCheck = (origin, repeat) => {
-  if (repeat.value != '' && origin.value === repeat.value) {
-    repeat.className = 'input__input';
-    return true;
-  }
   repeat.className = 'input__input input__input_error';
-  return false;
-}
-
-/**
- * Проверка проверка формы входа на верный формат входных полей
- * @param {HTMLFormElement} form элемент формы входа для валидации
- * @returns {bool} результат проверки
- */
-const loginValidation = form => {
-  const usernameChecked = usernameCheck(form.username);
-  const passwordChecked = passwordCheck(form.password);
-  return usernameChecked && passwordChecked;
-}
-
-/**
- * Проверка проверка формы регистрации на верный формат входных полей
- * @param {HTMLFormElement} form элемент формы регистрации для валидации
- * @returns {bool} результат проверки
- */
-const signupValidation = form => {
-  const emailChecked = emailCheck(form.email);
-  const passwordChecked = passwordCheck(form.password);
-  const usernameChecked = usernameCheck(form.username);
-  const repeatChecked = repeatPasswordCheck(form.password, form.passwordRepeat);
-  return emailChecked && passwordChecked && usernameChecked && repeatChecked;
-}
+  if (repeat.value.length === 0) {
+    return 'Поле не может быть пустым';
+  }
+  if (origin.value !== repeat.value) {
+    return 'Не совпадает';
+  }
+  repeat.className = 'input__input';
+  return undefined;
+};
 
 /**
  * Валидация формы
  * @param {HTMLFormElement} form элемент формы регистрации для валидации
- * @returns {bool} результат проверки
+ * @param {inputType[]} formFields список входных полей формы
+ * @return {errorMessage[] | undefined} результат проверки
  */
-function validationForm(form) {
-  switch (form.name) {
-    case formType.login:
-      return loginValidation(form);
-    case formType.signup:
-      return signupValidation(form);
-    default:
-      return false;
-  }
-}
+const validationForm = (form, formFields) => {
+  const inputs = form.querySelectorAll('.input__input');
+  const errors = new Map();
+  inputs.forEach((input, idx, arr) => {
+    let err;
+    switch (formFields[idx]) {
+      case inputType.username:
+        err = usernameCheck(input);
+        break;
+      case inputType.email:
+        err = emailCheck(input);
+        break;
+      case inputType.password:
+        err = passwordCheck(input);
+        break;
+      case inputType.repeatPassword:
+        err = repeatPasswordCheck(arr[idx - 1], input);
+        break;
+      default:
+        break;
+    }
+    if (err !== undefined) {
+      errors.set(idx, err);
+    }
+  });
+  return errors;
+};
 
 /**
- * Заглушка
- * @param {HTMLFormElement} form 
+ * Отображение ошибок валидации
+ * @param {HTMLFormElement} form
+ * @param {errorMessage} errorMsgs
  */
-export default function processForm(form) {
-  const errorMessage = form.querySelector('#error-msg');
-  if (validationForm(form)) {
-    errorMessage.className = 'form__error-msg form__error-msg_disable';
-    sendRequest(form);
-  } else {
-    errorMessage.className = 'form__error-msg form__error-msg_enable';
-    errorMessage.textContent = 'Неверно введены данные!';
+const displayErrors = (form, errorMsgs) => {
+  if (errorMsgs.size === 0) {
+    const errorMsgs = form.querySelectorAll('.input__error');
+    errorMsgs.forEach((inputErr) => {
+      inputErr.className = 'input__error input__error_disable';
+    });
+    const inputs = form.querySelectorAll('.input__input');
+    inputs.forEach((input) => {
+      input.className = 'input__input';
+    });
+    return;
   }
-}
+  const errors = form.querySelectorAll('.input__error');
+  errors.forEach((err, idx) => {
+    if (errorMsgs.has(idx)) {
+      err.className = 'input__error input__error_enable';
+      err.textContent = errorMsgs.get(idx);
+    } else {
+      err.className = 'input__error input__error_disable';
+    }
+  });
+};
 
 /**
- * отправляет запрос на авторизацию/регистрацию
- * @param {HTMLFormElement} form 
- * @param {Router} router 
+ * Функция отправки запроса по форме
+ * @callback sendFormRequest
+ * @param {HTMLFormElement} responseCode
+ * @param {errorMessage} errors
+ * @returns {Promise}
  */
-function sendRequest(form) {
-  const router = new Router();
-  switch (form.name) {
-    case formType.login:
-      const login = form.username.value;
-      const pass = form.password.value;
-      router.api.loginUser(login, pass)
-        .then(({ status, body }) => {
-          validateOrLogin(router, form, status, body.id);
-        });
-      break;
-    case formType.signup:
-      router.api.signupUser(form.username.value, form.email.value, form.password.value)
-        .then(({ status, body }) => {
-          validateOrSignup(router, form, status, body.id);
-        });
-      break;
-  }
-}
 
-function validateOrLogin(router, form, status, id) {
-  const errorMessage = form.querySelector('#error-msg');
-  switch (status) {
-    case 200:
-      router.id = id;
-      router.goTo(`/profile?id=${id}`);
-      break;
-    case 400:
-      errorMessage.className = 'form__error-msg form__error-msg_enable';
-      errorMessage.innerHTML = 'Неверно введен пароль!';
-      form.password.className = 'input__input input__input_error';
-      break;
-    case 404:
-      errorMessage.className = 'form__error-msg form__error-msg_enable';
-      errorMessage.innerHTML = 'Пользователь не найден!';
-      form.username.className = 'input__input input__input_error';
-      break;
-    case 500:
-      errorMessage.className = 'form__error-msg form__error-msg_enable';
-      errorMessage.innerHTML = 'Внутренняя ошибка сервера!';
-      break;
-    default:
-      errorMessage.className = 'form__error-msg form__error-msg_enable';
-      errorMessage.innerHTML = 'Ошибка, повторите попытку еще раз!';
-      break;
+/**
+ * Обработка формы
+ * @param {HTMLFormElement} form
+ * @param {sendFormRequest} formRequest функция обработки запроса формы
+ * @param {inputType[]} formFields список входных полей формы
+ * на сервер
+ */
+export async function processingForm(form, formRequest, formFields) {
+  const errors = validationForm(form, formFields);
+  if (errors.size === 0) {
+    await formRequest(form, errors);
   }
-}
-
-function validateOrSignup(router, form, status, id) {
-  const errorMessage = form.querySelector('#error-msg');
-  switch (status) {
-    case 200:
-      router.id = id;
-      router.goTo(`/profile?id=${id}`);
-      break;
-    case 409:
-      errorMessage.className = 'form__error-msg form__error-msg_enable';
-      errorMessage.innerHTML = 'Пользователь с данной почтой или псевдонимом уже существует!';
-      form.email.className = 'form__error-msg form__error-msg_enable';
-      form.username.className = 'form__error-msg form__error-msg_enable';
-    case 500:
-      errorMessage.className = 'form__error-msg form__error-msg_enable';
-      errorMessage.innerHTML = 'Внутренняя ошибка сервера!';
-      break;
-    default:
-      errorMessage.className = 'form__error-msg form__error-msg_enable';
-      errorMessage.innerHTML = 'Ошибка, повторите попытку еще раз!';
-      break;
-  }
+  displayErrors(form, errors);
 }
