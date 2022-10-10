@@ -136,8 +136,9 @@ const passwordCheck = (password) => {
   if (password.value.length > sizes.password.max) {
     return `Максимальная длина ${sizes.password.max}`;
   }
-  if (!/^.+$/.test(password.value)) {
-    return 'Недопустимый псевдоним';
+  const passwordReg = /^[\w!@#$%^&* ]+$/;
+  if (!passwordReg.test(password.value)) {
+    return 'Только A-z, 0-9, !@#$%^&*_ и пробелы';
   }
   password.className = 'input__input';
   return undefined;
