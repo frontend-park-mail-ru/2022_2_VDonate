@@ -115,7 +115,7 @@ const usernameCheck = (username) => {
     return `Максимальная длина ${sizes.username.max}`;
   }
   if (!usernameReg.test(username.value)) {
-    return `A-z, А-я, 0-9, _ и ' ' между словами`;
+    return `Только A-z, А-я, 0-9, _ и пробел между словами`;
   }
   username.className = 'input__input';
   return undefined;
