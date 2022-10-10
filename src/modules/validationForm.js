@@ -73,25 +73,25 @@ const emailCheck = (email) => {
   }
 
   const domain = emailSplit[1];
-  if (domain.split('.').reduce((prev, current) => prev ||
+  const domainLables = domain.split('.');
+  if (domainLables.reduce((prev, current) => prev ||
     current.length < sizes.domainLable.min, false)) {
     return `Длина уровня домена ${sizes.domainLable.min}+`;
   }
-  if (domain.reduce((prev, current) => prev ||
+  if (domainLables.reduce((prev, current) => prev ||
     current.length > sizes.domainLable.max, false)) {
     return `Длина уровня домена от ${sizes.domainLable.max}`;
   }
 
   const localReg =
-    /^$[\w\d!#$%&'*+\-/=?^`{|}~]+(\.$[\w\d!#$%&'*+\-/=?^`{|}~]+)*$/;
+    /^[\w\d!#$%&'*+\-/=?^`{|}~]+(\.[\w\d!#$%&'*+\-/=?^`{|}~]+)*$/;
   if (!localReg.test(local)) {
-    return 'В имени разрешены: A-z, 0-9, символы !#$%&\'*+-/=?^_`{|}~ и ' +
-      'точка-разделитель';
+    return 'Ошибка имени: A-z, 0-9, !#$%&\'*+-/=?^_`{|}~ и точка-разделитель';
   }
 
   const domainReg = /[0-9a-zA-Z]+([.-]?[0-9a-zA-Z]+)*(\.[0-9a-zA-Z]+)$/;
   if (!domainReg.test(domain)) {
-    return 'В домене разрешены: A-z, 0-9 и точка-разделитель';
+    return 'Ошибка домена: A-z, 0-9 и точка-разделитель';
   }
 
   email.className = 'input__input';
