@@ -104,19 +104,21 @@ const emailCheck = (email) => {
  * @return {errorMessage} результат проверки
  */
 const usernameCheck = (username) => {
-  const usernameSyms = /[\d\wа-яёА-ЯЁ]/;
-  const usernameReg =
-    new RegExp(`^${usernameSyms.source}( ?${usernameSyms.source})*$`);
   username.className = 'input__input input__input_error';
+
   if (username.value.length < sizes.username.min) {
     return `Минимальная длина ${sizes.username.min}`;
   }
+
   if (username.value.length > sizes.username.max) {
     return `Максимальная длина ${sizes.username.max}`;
   }
+
+  const usernameReg = /^[\d\wа-яёА-ЯЁ]+( [\d\wа-яёА-ЯЁ]+)*$/;
   if (!usernameReg.test(username.value)) {
     return `Только A-z, А-я, 0-9, _ и пробел между словами`;
   }
+
   username.className = 'input__input';
   return undefined;
 };
