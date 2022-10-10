@@ -33,8 +33,14 @@ export const inputType = {
  * @property {number} password.min значение минимальной длины пароля
  */
 const sizes = {
-  localMax: 64,
-  domainLableMax: 63,
+  localEmail: {
+    min: 1,
+    max: 64,
+  },
+  domainLable: {
+    min: 1,
+    max: 63,
+  },
   username: {
     min: 5,
     max: 20,
@@ -46,41 +52,50 @@ const sizes = {
 };
 
 /**
- * Проверка на допустимую длину локальную и доменную часть почтового адреса
- * @param {string} email валидный по формату почтовый адрес
- * @return {bool}
- */
-const emailLengthCheck = (email) => {
-  const tmpSplit = email.split('@');
-  const local = tmpSplit[0];
-  const domain = tmpSplit[1].split('.');
-  if (local.length <= sizes.localMax &&
-    domain.reduce((prev, current) => prev &&
-      current.length <= sizes.domainLableMax, true)) {
-    return true;
-  }
-  return false;
-};
-
-/**
  * Проверка поля ввода почты на верный формат
- * @param {Element} email элемент ввода почты
+ * @param {HTMLInputElement} email элемент ввода почты
  * @return {bool} результат проверки
  */
 const emailCheck = (email) => {
-  const localSyms = /[a-zA-Z0-9!#$&%_+-]/;
-  const localReg =
-    new RegExp(`^${localSyms.source}+(\\.?${localSyms.source}+)*`);
-  const domainReg = /[0-9a-zA-Z]+([.-]?[0-9a-zA-Z]+)*(\.[0-9a-zA-Z]+)$/;
-  const emailReg = new RegExp(`${localReg.source}@${domainReg.source}`);
-
   email.className = 'input__input input__input_error';
-  if (!emailReg.test(email.value)) {
-    return `Неверный формат`;
+
+  const emailSplit = email.value.split('@');
+  if (emailSplit.length != 2) {
+    return 'Пример: name@email.ru';
+  }
+
+  const local = emailSplit[0];
+  if (local.length < sizes.localEmail.min) {
+    return `Длина имени ${sizes.localEmail.min}+`;
+  }
+  if (local.length > sizes.localEmail.max) {
+    return `Длина имени до ${sizes.localEmail.max}`;
+  }
+
+  const domain = emailSplit[1];
+  if (domain.split('.').reduce((prev, current) => prev ||
+    current.length < sizes.domainLable.min, false)) {
+    return `Длина уровня домена ${sizes.domainLable.min}+`;
+  }
+  if (domain.reduce((prev, current) => prev ||
+    current.length > sizes.domainLable.max, false)) {
+    return `Длина уровня домена от ${sizes.domainLable.max}`;
+  }
+
+  const localReg =
+    /^$[\w\d!#$%&'*+\-/=?^`{|}~]+(\.$[\w\d!#$%&'*+\-/=?^`{|}~]+)*$/;
+  if (!localReg.test(local)) {
+    return 'В имени разрешены: A-z, 0-9, символы !#$%&\'*+-/=?^_`{|}~ и ' +
+      'точка-разделитель';
+  }
+
+  const domainReg = /[0-9a-zA-Z]+([.-]?[0-9a-zA-Z]+)*(\.[0-9a-zA-Z]+)$/;
+  if (!domainReg.test(domain)) {
+    return 'В домене разрешены: A-z, 0-9 и точка-разделитель';
   }
 
   if (!emailLengthCheck(email.value)) {
-    return `Неверная длина`;
+    return 'Максимальная длина';
   }
   email.className = 'input__input';
   return undefined;
@@ -103,7 +118,7 @@ const usernameCheck = (username) => {
     return `Максимальная длина ${sizes.username.max}`;
   }
   if (!usernameReg.test(username.value)) {
-    return `Недопустимый псевдоним`;
+    return `A-z, А-я, 0-9, _ и ' ' между словами`;
   }
   username.className = 'input__input';
   return undefined;
