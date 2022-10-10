@@ -74,6 +74,9 @@ const emailCheck = (email) => {
 
   const domain = emailSplit[1];
   const domainLables = domain.split('.');
+  if (domainLables.length < 2) {
+    return 'Домен должен состоять минимум из 2-х частей';
+  }
   if (domainLables.reduce((prev, current) => prev ||
     current.length < sizes.domainLable.min, false)) {
     return `Длина уровня домена ${sizes.domainLable.min}+`;
