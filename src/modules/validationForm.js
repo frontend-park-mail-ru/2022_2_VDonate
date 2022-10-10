@@ -94,9 +94,6 @@ const emailCheck = (email) => {
     return 'В домене разрешены: A-z, 0-9 и точка-разделитель';
   }
 
-  if (!emailLengthCheck(email.value)) {
-    return 'Максимальная длина';
-  }
   email.className = 'input__input';
   return undefined;
 };
