@@ -23,4 +23,3 @@ router.footer.innerHTML = footerEl();
 
 router.authUser();
 f
-d;
