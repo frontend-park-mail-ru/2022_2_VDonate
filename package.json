@@ -8,8 +8,7 @@
     "build": "npx stylus -c -o public src/style.styl && npx handlebars src/template/ -f public/all.precompiled.js",
     "stylus": "npx stylus -c -w src -o public",
     "lint": "npx eslint src/",
-    "lint:fix": "npx eslint src/ --fix",
-    "pre-commit": "lint-staged"
+    "lint:fix": "npx eslint src/ --fix"
   },
   "repository": {
     "type": "git",
@@ -31,11 +30,13 @@
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3"
   },
-  "lint-staged": {
-    "*.{js, ts}": [
-      "npx eslint src/ --max-warnings=0",
-      "npx eslint src/ --fix",
-      "git add"
-    ]
+  "husky": {
+    "hooks": {
+      "pre-commit": [
+        "npx eslint src/ --max-warnings=0",
+        "npx eslint src/ --fix",
+        "git add"
+      ]
+    }
   }
 }
