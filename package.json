@@ -8,7 +8,9 @@
     "build": "npx stylus -c -o public src/style.styl && npx handlebars src/template/ -f public/all.precompiled.js",
     "stylus": "npx stylus -c -w src -o public",
     "lint": "npx eslint src/",
-    "lint:fix": "npx eslint src/ --fix"
+    "lint:fix": "npx eslint src/ --fix",
+    "pre-commit": "npx eslint src/ --max-warnings=0 --fix",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -27,16 +29,6 @@
   "devDependencies": {
     "eslint": "^8.24.0",
     "eslint-config-google": "^0.14.0",
-    "husky": "^8.0.1",
-    "lint-staged": "^13.0.3"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": [
-        "npx eslint src/ --max-warnings=0",
-        "npx eslint src/ --fix",
-        "git add"
-      ]
-    }
+    "husky": "^8.0.1"
   }
 }
