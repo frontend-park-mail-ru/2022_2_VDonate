@@ -22,4 +22,5 @@ const footerEl = Handlebars.templates.footer;
 router.footer.innerHTML = footerEl();
 
 router.authUser();
-fsd;
+f
+d;
