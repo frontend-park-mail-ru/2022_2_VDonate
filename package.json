@@ -34,6 +34,7 @@
   "lint-staged": {
     "*.{js, ts}": [
       "npx eslint src/ --max-warnings=0",
+      "npx eslint src/ --fix",
       "git add"
     ]
   }
