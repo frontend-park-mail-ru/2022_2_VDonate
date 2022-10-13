@@ -25,11 +25,26 @@ npm i
 ```
 
 #### Сборка проекта:
+###### в режиме production
 ```
-npm run build
+npm run build:prod
+```
+###### в режиме development
+```
+npm run build:dev
 ```
 
-#### Запуск stylus в фоновом режиме:
+#### Запуск Webpack сервера для разработки:
 ```
-npm run stylus
+npm run start
+```
+
+#### Запуск анализатора пакетов Webpack, позволяющий получить визуализацию того, что находится в пакете.
+```
+npm run stats
+```
+
+#### Запуск eslint
+```
+npm run lint
 ```

@@ -1,6 +1,7 @@
 node_modules
 public
 dist
+stats.json
 
 ### VisualStudioCode ###
 .vscode

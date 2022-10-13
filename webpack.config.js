@@ -19,6 +19,9 @@ module.exports = {
       '@views': path.resolve(__dirname, 'src/views'),
     },
   },
+  devServer: {
+    port: 4200,
+  },
   plugins: [
     new HTMLWebpackPlugin({
       template: './index.html',
