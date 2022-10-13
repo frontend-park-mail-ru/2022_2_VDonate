@@ -3,9 +3,9 @@
  * @module profile
  */
 
-import errorTemplate from '../template/error.handlebars';
-import navbarTemplate from '../template/navbar.handlebars';
-import userTemplate from '../template/user.handlebars';
+import errorTemplate from '@template/error.handlebars';
+import navbarTemplate from '@template/navbar.handlebars';
+import userTemplate from '@template/user.handlebars';
 
 /**
  * Функция, создающая контекст для страницы профиля донатера

@@ -3,7 +3,7 @@
  * @module render404
  */
 
-import errorTemplate from '../template/error.handlebars';
+import errorTemplate from '@template/error.handlebars';
 
 /**
  * Функция, которая рендерит страницу ошибки 404

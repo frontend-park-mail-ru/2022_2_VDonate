@@ -3,8 +3,8 @@
  * @module signup
  */
 
-import {inputType, processingForm} from '../modules/validationForm.js';
-import signlogTemplate from '../template/signlog.handlebars';
+import {inputType, processingForm} from '@modules/validationForm.js';
+import signlogTemplate from '@template/signlog.handlebars';
 
 /**
  * @const {Object} contextSignUp объект с контекстом страницы регистрации

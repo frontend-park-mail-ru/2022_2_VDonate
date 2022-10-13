@@ -13,6 +13,13 @@ module.exports = {
     filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, 'dist'),
   },
+  resolve: {
+    alias: {
+      '@modules': path.resolve(__dirname, 'src/modules'),
+      '@template': path.resolve(__dirname, 'src/template'),
+      '@views': path.resolve(__dirname, 'src/views'),
+    },
+  },
   module: {
     rules: [
       {
