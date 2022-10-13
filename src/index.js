@@ -2,6 +2,7 @@
 
 import Router from './modules/router.js';
 import Api from './modules/api.js';
+import './style.styl';
 
 /**
  * класс маршрутизации по страницам сайта
@@ -21,4 +22,4 @@ router.api = new Api('https://95.163.209.195:8080/api/v1');
 const footerEl = Handlebars.templates.footer;
 router.footer.innerHTML = footerEl();
 
-router.authUser();
+// router.authUser();
