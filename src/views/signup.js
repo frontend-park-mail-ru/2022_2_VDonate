@@ -3,7 +3,8 @@
  * @module signup
  */
 
-import {inputType, processingForm} from '../modules/validationForm.js';
+import {inputType, processingForm} from '@modules/validationForm.js';
+import signlogTemplate from '@template/signlog.handlebars';
 
 /**
  * @const {Object} contextSignUp объект с контекстом страницы регистрации
@@ -54,9 +55,7 @@ const formFields = [
  */
 export default async (router) => {
   router.main.innerHTML = '';
-
-  const {signlog} = Handlebars.templates;
-  router.main.innerHTML += signlog(contextSignUp);
+  router.main.innerHTML += signlogTemplate(contextSignUp);
 
   const sendFormRequest = async (form, errors) => {
     const res = await router.api.signupUser(
