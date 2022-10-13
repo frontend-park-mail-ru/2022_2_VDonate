@@ -1,17 +1,17 @@
-const path = require('path')
-const HTMLWebpackPlugin = require('html-webpack-plugin')
-const {CleanWebpackPlugin} = require('clean-webpack-plugin')
+const path = require('path');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
   mode: 'development',
   entry: {
     main: './index.js',
-    validation: './modules/validationForm.js'
-  }, 
+    validation: './modules/validationForm.js',
+  },
   output: {
     filename: '[name].[contenthash].js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
   },
   module: {
     rules: [
@@ -20,19 +20,19 @@ module.exports = {
         use: [
           'style-loader',
           'css-loader',
-          'stylus-loader'
-        ]
+          'stylus-loader',
+        ],
       },
       {
         test: /\.handlebars$/,
         loader: 'handlebars-loader',
-      }
-    ]
+      },
+    ],
   },
   plugins: [
     new HTMLWebpackPlugin({
-      template: './index.html'
+      template: './index.html',
     }),
-    new CleanWebpackPlugin()
-  ]
-}
+    new CleanWebpackPlugin(),
+  ],
+};

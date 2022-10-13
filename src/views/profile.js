@@ -3,6 +3,10 @@
  * @module profile
  */
 
+import errorTemplate from '../template/error.handlebars';
+import navbarTemplate from '../template/navbar.handlebars';
+import userTemplate from '../template/user.handlebars';
+
 /**
  * Функция, создающая контекст для страницы профиля донатера
  * @param {Object} body объект ответа согласно API
@@ -58,8 +62,7 @@ export default async (router) => {
   const user = await router.api.getUser(id);
 
   if (!user.ok) {
-    const errorEl = Handlebars.templates.error;
-    router.main.innerHTML += errorEl({
+    router.main.innerHTML += errorTemplate({
       status: user.status,
       description: 'Ошибка',
       id: router.id,
@@ -67,22 +70,18 @@ export default async (router) => {
     return;
   }
 
-  const navbarEl = Handlebars.templates.navbar;
-  router.main.innerHTML += navbarEl({
+  router.main.innerHTML += navbarTemplate({
     user: {
       id: router.id,
       image: '../static/img/0.jpg',
     },
   });
 
-  const userEl = Handlebars.templates.user;
-
   let context;
   if (user.body.is_author) {
     const posts = await router.api.getAllPosts(user.body.id);
     if (!posts.ok) {
-      const errorEl = Handlebars.templates.error;
-      router.main.innerHTML += errorEl({
+      router.main.innerHTML += errorTemplate({
         status: posts.status,
         description: 'Ошибка',
         id: router.id,
@@ -105,5 +104,5 @@ export default async (router) => {
     context = createDonaterJSON(user.body);
   }
 
-  router.main.innerHTML += userEl(context);
+  router.main.innerHTML += userTemplate(context);
 };
