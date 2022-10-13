@@ -14,13 +14,11 @@ const contextLogIn = {
   inputs: [
     {
       title: 'Псевдоним',
-      placeholder: 'Мой псевдоним',
       name: 'username',
       type: 'text',
     },
     {
       title: 'Пароль',
-      placeholder: '*****',
       name: 'password',
       type: 'password',
     },

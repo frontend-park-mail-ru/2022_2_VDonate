@@ -14,25 +14,22 @@ const contextSignUp = {
   inputs: [
     {
       title: 'Почта',
-      placeholder: 'example@example.ru',
       name: 'email',
       type: 'text',
     },
     {
       title: 'Псевдоним',
-      placeholder: 'До 20 символов',
+      placeholder: '',
       name: 'username',
       type: 'text',
     },
     {
       title: 'Пароль',
-      placeholder: 'До 30 символов',
       name: 'password',
       type: 'password',
     },
     {
       title: 'Повторите пароль',
-      placeholder: 'До 30 символов',
       name: 'passwordRepeat',
       type: 'password',
     },
