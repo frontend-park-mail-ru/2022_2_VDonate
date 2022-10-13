@@ -1,4 +1,8 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npx eslint src/ --max-warnings=0 --fix
+if ! npx --no eslint src/ --max-warnings=0 --fix; then
+  echo "I CATCH THE IMPOSTER!!"
+  echo "Не выполнять коммиты из prod окружения!"
+  exit 1
+fi
