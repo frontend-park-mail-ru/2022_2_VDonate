@@ -18,4 +18,5 @@ router.api = new Api('https://95.163.209.195:8080/api/v1');
 
 router.footer.innerHTML = footer();
 
-router.authUser();
+// router.authUser();
+router.goTo('/login');
