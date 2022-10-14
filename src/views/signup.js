@@ -3,70 +3,28 @@
  * @module signup
  */
 
-import {inputType, processingForm} from '@modules/validationForm.js';
+import {processingForm} from '@modules/validationForm.js';
 import signlogTemplate from '@template/signlog.handlebars';
-
-/**
- * @const {Object} contextSignUp объект с контекстом страницы регистрации
- */
-const contextSignUp = {
-  formTitle: 'Регистрация',
-  formName: 'signup',
-  inputs: [
-    {
-      title: 'Почта',
-      name: 'email',
-      type: 'text',
-    },
-    {
-      title: 'Псевдоним',
-      placeholder: '',
-      name: 'username',
-      type: 'text',
-    },
-    {
-      title: 'Пароль',
-      name: 'password',
-      type: 'password',
-    },
-    {
-      title: 'Повторите пароль',
-      name: 'passwordRepeat',
-      type: 'password',
-    },
-  ],
-  buttonTittle: 'Зарегистрироваться',
-  orButton: {
-    title: 'Войти',
-    link: '/login',
-  },
-};
-
-const formFields = [
-  inputType.email,
-  inputType.username,
-  inputType.password,
-  inputType.repeatPassword,
-];
+import {contextSignUp, signFields} from '@configs/signlogConfig.js';
 
 /**
  * Функция, которая рендерит страницу регистрации
- * @param {Router} router Класс маршрутизации по страницам сайта
+ * @param {App} app Основной класс веб-приложения
  */
-export default async (router) => {
-  router.main.innerHTML = '';
-  router.main.innerHTML += signlogTemplate(contextSignUp);
+export default async (app) => {
+  app.main.innerHTML = '';
+  app.main.innerHTML += signlogTemplate(contextSignUp);
 
   const sendFormRequest = async (form, errors) => {
-    const res = await router.api.signupUser(
+    const res = await app.api.signupUser(
         form.username.value,
         form.email.value,
         form.password.value,
     );
     switch (res.status) {
       case 200:
-        router.id = res.body.id;
-        router.goTo(`/profile?id=${res.body.id}`);
+        app.id = res.body.id;
+        app.router.goTo(`/profile?id=${res.body.id}`);
         break;
       case 409:
         errors.set(0, 'Или почта уже занята...');
@@ -88,9 +46,9 @@ export default async (router) => {
     return;
   };
 
-  const form = router.main.querySelector('.form');
+  const form = app.main.querySelector('.form');
   form.addEventListener('submit', function(e) {
     e.preventDefault();
-    processingForm(form, sendFormRequest, formFields);
+    processingForm(form, sendFormRequest, signFields);
   }, false);
 };

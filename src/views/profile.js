@@ -50,41 +50,41 @@ const createAuthorJSON = (body) => {
 
 /**
  * Функция, которая рендерит страницу профиля
- * @param {Router} router Класс маршрутизации по страницам сайта
+ * @param {App} app Основной класс веб-приложения
  */
-export default async (router) => {
-  router.main.innerHTML = '';
+export default async (app) => {
+  app.main.innerHTML = '';
   const params = new URL(window.location.href).searchParams;
   let id = params.get('id');
   if (id === null) {
-    id = router.id;
+    id = app.id;
   }
-  const user = await router.api.getUser(id);
+  const user = await app.api.getUser(id);
 
   if (!user.ok) {
-    router.main.innerHTML += errorTemplate({
+    app.main.innerHTML += errorTemplate({
       status: user.status,
       description: 'Ошибка',
-      id: router.id,
+      id: app.id,
     });
     return;
   }
 
-  router.main.innerHTML += navbarTemplate({
+  app.main.innerHTML += navbarTemplate({
     user: {
-      id: router.id,
+      id: app.id,
       image: '../static/img/0.jpg',
     },
   });
 
   let context;
   if (user.body.is_author) {
-    const posts = await router.api.getAllPosts(user.body.id);
+    const posts = await app.api.getAllPosts(user.body.id);
     if (!posts.ok) {
-      router.main.innerHTML += errorTemplate({
+      app.main.innerHTML += errorTemplate({
         status: posts.status,
         description: 'Ошибка',
-        id: router.id,
+        id: app.id,
       });
       return;
     }
@@ -104,5 +104,5 @@ export default async (router) => {
     context = createDonaterJSON(user.body);
   }
 
-  router.main.innerHTML += userTemplate(context);
+  app.main.innerHTML += userTemplate(context);
 };
