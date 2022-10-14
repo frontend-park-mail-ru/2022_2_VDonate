@@ -13,6 +13,6 @@ const config = {
       id: 'footer',
     },
   ],
-  baseUrl: 'https://95.163.209.195:8080/api/v1',
+  baseUrl: 'https://vdonate.ml:8080/api/v1',
 };
 export default config;

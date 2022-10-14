@@ -23,7 +23,7 @@
 ### Инициализация проекта:
 Production
 ```
-npm i --omit=dev
+npm ci --omit=dev
 ```
 Development
 ```

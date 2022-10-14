@@ -66,35 +66,36 @@ const emailCheck = (email) => {
 
   const local = emailSplit[0];
   if (local.length < sizes.localEmail.min) {
-    return `Длина имени ${sizes.localEmail.min}+`;
+    return `Символов до @ меньше ${sizes.localEmail.min}`;
   }
   if (local.length > sizes.localEmail.max) {
-    return `Длина имени до ${sizes.localEmail.max}`;
+    return `Символов до @ больше ${sizes.localEmail.max}`;
   }
 
   const domain = emailSplit[1];
   const domainLables = domain.split('.');
   if (domainLables.length < 2) {
-    return 'Домен должен состоять минимум из 2-х частей';
+    return 'После @ должно быть минимум 2 подуровня';
   }
   if (domainLables.reduce((prev, current) => prev ||
     current.length < sizes.domainLable.min, false)) {
-    return `Длина уровня домена ${sizes.domainLable.min}+`;
+    return `Символов после @ в одном подуровне меньше ${sizes.domainLable.min}`;
   }
   if (domainLables.reduce((prev, current) => prev ||
     current.length > sizes.domainLable.max, false)) {
-    return `Длина уровня домена от ${sizes.domainLable.max}`;
+    return `Символов после @ в одном подуровне больше ${sizes.domainLable.max}`;
   }
 
   const localReg =
     /^[\w\d!#$%&'*+\-/=?^`{|}~]+(\.[\w\d!#$%&'*+\-/=?^`{|}~]+)*$/;
   if (!localReg.test(local)) {
-    return 'Ошибка имени: A-z, 0-9, !#$%&\'*+-/=?^_`{|}~ и точка-разделитель';
+    return `До @ разрешены латиница, числа, символы !#$%&'*+-/=?^_\`{|}~ и 
+    точка-разделитель`;
   }
 
   const domainReg = /[0-9a-zA-Z]+([.-]?[0-9a-zA-Z]+)*(\.[0-9a-zA-Z]+)$/;
   if (!domainReg.test(domain)) {
-    return 'Ошибка домена: A-z, 0-9 и точка-разделитель';
+    return 'После @ разрешены латиница, числа и точка-разделитель';
   }
 
   email.className = 'input__input';
@@ -110,16 +111,17 @@ const usernameCheck = (username) => {
   username.className = 'input__input input__input_error';
 
   if (username.value.length < sizes.username.min) {
-    return `Минимальная длина ${sizes.username.min}`;
+    return `Символов в псевдониме меньше ${sizes.username.min}`;
   }
 
   if (username.value.length > sizes.username.max) {
-    return `Максимальная длина ${sizes.username.max}`;
+    return `Символов в псевдониме больше ${sizes.username.max}`;
   }
 
   const usernameReg = /^[\d\wа-яёА-ЯЁ]+( [\d\wа-яёА-ЯЁ]+)*$/;
   if (!usernameReg.test(username.value)) {
-    return `Только A-z, А-я, 0-9, _ и пробел между словами`;
+    return `Разрешены латиница, кириллица, числа, знак нижнего подчеркивания и 
+    пробел между словами`;
   }
 
   username.className = 'input__input';
@@ -134,14 +136,14 @@ const usernameCheck = (username) => {
 const passwordCheck = (password) => {
   password.className = 'input__input input__input_error';
   if (password.value.length < sizes.password.min) {
-    return `Минимальная длина ${sizes.password.min}`;
+    return `Символов в пароле меньше ${sizes.password.min}`;
   }
   if (password.value.length > sizes.password.max) {
-    return `Максимальная длина ${sizes.password.max}`;
+    return `Символов в пароле больше ${sizes.password.max}`;
   }
   const passwordReg = /^[\w!@#$%^&* ]+$/;
   if (!passwordReg.test(password.value)) {
-    return 'Только A-z, 0-9, !@#$%^&*_ и пробелы';
+    return 'Только латинца, числа, символы !@#$%^&*_ и пробелы';
   }
   password.className = 'input__input';
   return undefined;
@@ -159,7 +161,7 @@ const repeatPasswordCheck = (origin, repeat) => {
     return 'Поле не может быть пустым';
   }
   if (origin.value !== repeat.value) {
-    return 'Не совпадает';
+    return 'Должно совпадать полем пароля';
   }
   repeat.className = 'input__input';
   return undefined;
