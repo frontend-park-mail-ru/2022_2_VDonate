@@ -17,6 +17,7 @@ module.exports = {
       '@modules': path.resolve(__dirname, 'src/modules'),
       '@template': path.resolve(__dirname, 'src/template'),
       '@views': path.resolve(__dirname, 'src/views'),
+      '@configs': path.resolve(__dirname, 'src/configs'),
     },
   },
   devServer: {

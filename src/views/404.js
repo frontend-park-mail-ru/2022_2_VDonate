@@ -7,11 +7,11 @@ import errorTemplate from '@template/error.handlebars';
 
 /**
  * Функция, которая рендерит страницу ошибки 404
- * @param {Router} router Класс маршрутизации по страницам сайта
+ * @param {App} app Основной класс веб-приложения
  */
-export default (router) => {
-  router.main.innerHTML = '';
-  router.main.innerHTML += errorTemplate({
+export default (app) => {
+  app.main.innerHTML = '';
+  app.main.innerHTML += errorTemplate({
     status: 404,
     description: 'Страница не найдена',
   });

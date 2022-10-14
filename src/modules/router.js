@@ -2,87 +2,47 @@
  * Модуль маршрутизации по страницам сайта
  * @module Router
  */
-import profile from '@views/profile.js';
-import login from '@views/login.js';
-import signup from '@views/signup.js';
-import render404 from '@views/404.js';
-import logout from '@views/logout.js';
-/**
- * Массив объектов с путем и функцией рендера страницы
- * @const {Array<Object>} routes
- */
-const routes = [
-  {
-    path: /^\/(profile(\?id=\d+)?)?$/,
-    render: profile,
-  },
-  {
-    path: /^\/login$/,
-    render: login,
-  },
-  {
-    path: /^\/signup$/,
-    render: signup,
-  },
-  {
-    path: /^\/logout$/,
-    render: logout,
-  },
 
-];
+import render404 from '@views/404.js';
+import routes from '@configs/routes.js';
 
 /**
  * Класс маршрутизации по страницам сайта
- * @property {Element} root указатель на блок, куда будет рендериться страница
- * @property {Api} api API связи с сервером
+ * @property {App} App Основной класс веб-приложения
  */
 export default class Router {
   static _instance = null;
 
   /**
-     * Конструктор, добавляющий обработку 2 событий:
-     * переход между страницами и переход вперед/назад
-     * и при входе на сайт запускает процесс аутенфикации
-     * @constructor
-     */
-  constructor() {
-    if (Router._instance === null) {
-      Router._instance = this;
-      window.addEventListener('click', (e) => {
-        const target = e.target.closest('a[data-link]');
-        if (target !== null) {
-          e.preventDefault();
-          this.goTo(target.getAttribute('href'));
-        }
-      });
-
-      window.addEventListener('popstate', () => {
-        const route = routes.find(
-            (obj) => window.location.pathname.match(obj.path),
-        );
-        if (route !== undefined) {
-          route.render(this);
-        }
-      });
-      return this;
+   * Конструктор, добавляющий обработку 2 событий:
+   * переход между страницами и переход вперед/назад
+   * @constructor
+   * @param {App} app Основной класс веб-приложения
+   * @return {Router}
+   */
+  constructor(app) {
+    if (Router._instance != null) {
+      return Router._instance;
     }
-    return Router._instance;
-  }
+    this.app = app;
+    Router._instance = this;
+    window.addEventListener('click', (e) => {
+      const target = e.target.closest('a[data-link]');
+      if (target !== null) {
+        e.preventDefault();
+        this.goTo(target.getAttribute('href'));
+      }
+    });
 
-  /**
-     * Функция аутификации пользователя
-     */
-  authUser() {
-    this.api.authUser()
-        .then(({status, body}) => {
-          if (status === 200) {
-            this.id = body.id;
-            this.goTo(location.pathname + location.search);
-          } else {
-            this.id = null;
-            this.goTo('/login');
-          }
-        });
+    window.addEventListener('popstate', () => {
+      const route = routes.find(
+          (obj) => window.location.pathname.match(obj.path),
+      );
+      if (route !== undefined) {
+        route.render(this.app);
+      }
+    });
+    return this;
   }
 
   /**
@@ -93,8 +53,8 @@ export default class Router {
     const route = routes.find((obj) => loc.match(obj.path));
     window.history.pushState(null, null, loc);
     if (route === undefined) {
-      render404(this);
+      render404(this.app);
     }
-    route.render(this);
+    route.render(this.app);
   }
 }

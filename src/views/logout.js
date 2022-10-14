@@ -5,10 +5,10 @@
 
 /**
  * Функция логики выхода из учетной записи
- * @param {Router} router Класс маршрутизации по страницам сайта
+ * @param {App} app Основной класс веб-приложения
  */
-export default (router) => {
-  router.id = undefined;
-  router.api.logout()
-      .then(router.goTo('/login'));
+export default (app) => {
+  app.id = undefined;
+  app.api.logout()
+      .then(app.router.goTo('/login'));
 };
