@@ -18,6 +18,8 @@ module.exports = {
       '@template': path.resolve(__dirname, 'src/template'),
       '@views': path.resolve(__dirname, 'src/views'),
       '@configs': path.resolve(__dirname, 'src/configs'),
+      '@components': path.resolve(__dirname, 'src/components'),
+      '@style': path.resolve(__dirname, 'src/style'),
     },
   },
   devServer: {
