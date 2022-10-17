@@ -11,7 +11,6 @@ export default class App {
   /** */
   constructor() {
     config.HTMLblocks.forEach((obj) => {
-      console.log(obj.field + ' ' + obj.id);
       this[obj.field] = document.getElementById(obj.id);
     });
 

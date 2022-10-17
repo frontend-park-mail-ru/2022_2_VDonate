@@ -12,8 +12,7 @@ import {contextSignUp, signFields} from '@configs/signlogConfig.js';
  * @param {App} app Основной класс веб-приложения
  */
 export default async (app) => {
-  app.main.innerHTML = '';
-  app.main.innerHTML += signlogTemplate(contextSignUp);
+  app.main.innerHTML = signlogTemplate(contextSignUp);
 
   const sendFormRequest = async (form, errors) => {
     const res = await app.api.signupUser(

@@ -53,7 +53,6 @@ const createAuthorJSON = (body) => {
  * @param {App} app Основной класс веб-приложения
  */
 export default async (app) => {
-  app.main.innerHTML = '';
   const params = new URL(window.location.href).searchParams;
   let id = params.get('id');
   if (id === null) {
@@ -62,7 +61,7 @@ export default async (app) => {
   const user = await app.api.getUser(id);
 
   if (!user.ok) {
-    app.main.innerHTML += errorTemplate({
+    app.main.innerHTML = errorTemplate({
       status: user.status,
       description: 'Ошибка',
       id: app.id,
@@ -70,7 +69,7 @@ export default async (app) => {
     return;
   }
 
-  app.main.innerHTML += navbarTemplate({
+  app.main.innerHTML = navbarTemplate({
     user: {
       id: app.id,
       image: '../static/img/0.jpg',

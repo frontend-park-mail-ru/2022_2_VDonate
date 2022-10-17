@@ -18,10 +18,13 @@ module.exports = {
       '@template': path.resolve(__dirname, 'src/template'),
       '@views': path.resolve(__dirname, 'src/views'),
       '@configs': path.resolve(__dirname, 'src/configs'),
+      '@icon': path.resolve(__dirname, 'static/icon'),
+      '@img': path.resolve(__dirname, 'static/img'),
     },
   },
   devServer: {
     port: 4200,
+    historyApiFallback: true,
   },
   plugins: [
     new HTMLWebpackPlugin({
@@ -68,6 +71,10 @@ module.exports = {
             ],
           },
         },
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
       },
     ],
   },

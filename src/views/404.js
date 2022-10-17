@@ -10,8 +10,7 @@ import errorTemplate from '@template/error.handlebars';
  * @param {App} app Основной класс веб-приложения
  */
 export default (app) => {
-  app.main.innerHTML = '';
-  app.main.innerHTML += errorTemplate({
+  app.main.innerHTML = errorTemplate({
     status: 404,
     description: 'Страница не найдена',
   });

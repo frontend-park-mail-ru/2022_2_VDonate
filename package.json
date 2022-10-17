@@ -5,13 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "npx eslint src/",
-    "lint:fix": "npx eslint src/ --fix",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
     "prepare": "husky install",
-    "build:dev": "npx webpack --mode development",
-    "build:prod": "npx webpack --mode production",
-    "stats": "npx webpack --json > stats.json && webpack-bundle-analyzer stats.json",
-    "start": "npx webpack serve --mode development --open"
+    "build:dev": "webpack --mode development",
+    "build:prod": "webpack --mode production",
+    "stats": "webpack --json > stats.json && webpack-bundle-analyzer stats.json",
+    "start": "webpack serve --mode development --open"
   },
   "repository": {
     "type": "git",
