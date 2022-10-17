@@ -29,6 +29,7 @@ module.exports = {
   plugins: [
     new HTMLWebpackPlugin({
       template: './index.html',
+      favicon: '../static/icon/favicon.ico'
     }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
@@ -73,8 +74,8 @@ module.exports = {
         },
       },
       {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: 'asset/resource',
+        test: /\.(png|svg|jpg|jpeg|ico)$/i,
+        loader: 'file-loader',
       },
     ],
   },
