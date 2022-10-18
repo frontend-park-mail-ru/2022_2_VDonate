@@ -6,6 +6,12 @@
 import errorTemplate from '@template/error.handlebars';
 import navbarTemplate from '@template/navbar.handlebars';
 import userTemplate from '@template/user.handlebars';
+import logoutIcon from '@icon/logout.svg';
+import errorImg from '@img/error.jpg';
+import img0 from '@img/0.jpg';
+import img4 from '@img/4.jpg';
+import likesIcon from '@icon/like.svg';
+import commentIcon from '@icon/comment.svg';
 
 /**
  * Функция, создающая контекст для страницы профиля донатера
@@ -17,7 +23,7 @@ const createDonaterJSON = (body) => {
     owner: {
       username: body.username,
       tags: 'Донатер',
-      avatar: '../static/img/0.jpg',
+      avatar: img0,
       isAuthor: false,
     },
     subscriptions: [],
@@ -35,9 +41,9 @@ const createAuthorJSON = (body) => {
     owner: {
       username: body.username,
       tags: 'Искусство',
-      avatar: '../static/img/0.jpg',
+      avatar: img0,
       about: {
-        image: '../static/img/4.jpg',
+        image: img4,
         text: body.about,
       },
       isAuthor: true,
@@ -65,6 +71,7 @@ export default async (app) => {
       status: user.status,
       description: 'Ошибка',
       id: app.id,
+      img: errorImg,
     });
     return;
   }
@@ -72,7 +79,8 @@ export default async (app) => {
   app.main.innerHTML = navbarTemplate({
     user: {
       id: app.id,
-      image: '../static/img/0.jpg',
+      image: img0,
+      logout: logoutIcon,
     },
   });
 
@@ -84,6 +92,7 @@ export default async (app) => {
         status: posts.status,
         description: 'Ошибка',
         id: app.id,
+        img: errorImg,
       });
       return;
     }
@@ -91,10 +100,12 @@ export default async (app) => {
     posts.body.forEach(
         (post) => {
           const tmp = {
-            image: '../static/img/4.jpg',
+            image: img4,
             text: post.title,
             likesCount: 5,
             commentsCount: 15,
+            likesIcon: likesIcon,
+            commentIcon: commentIcon,
           };
           context.posts.push(tmp);
         },

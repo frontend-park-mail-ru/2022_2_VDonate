@@ -4,6 +4,7 @@
  */
 
 import errorTemplate from '@template/error.handlebars';
+import errorImg from '@img/error.jpg';
 
 /**
  * Функция, которая рендерит страницу ошибки 404
@@ -13,5 +14,6 @@ export default (app) => {
   app.main.innerHTML = errorTemplate({
     status: 404,
     description: 'Страница не найдена',
+    img: errorImg,
   });
 };
