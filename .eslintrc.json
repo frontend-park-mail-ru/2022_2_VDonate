@@ -15,6 +15,11 @@
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
+    "ignorePatterns": [
+        "dist/*",
+        "webpack.config.js"
+    ],
     "rules": {
+        "space-in-parens": "error"
     }
 }

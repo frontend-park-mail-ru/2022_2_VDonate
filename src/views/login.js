@@ -3,58 +3,24 @@
  * @module login
  */
 
-import {inputType, processingForm} from '../modules/validationForm.js';
-
-/**
- * @const {Object} contextLogIn обьект с контекстом страницы авторизации
- */
-const contextLogIn = {
-  formTitle: 'Вход',
-  formName: 'login',
-  inputs: [
-    {
-      title: 'Псевдоним',
-      placeholder: 'Мой псевдоним',
-      name: 'username',
-      type: 'text',
-    },
-    {
-      title: 'Пароль',
-      placeholder: '*****',
-      name: 'password',
-      type: 'password',
-    },
-  ],
-  buttonTittle: 'Войти',
-  orButton: {
-    title: 'Зарегистрироваться',
-    link: '/signup',
-  },
-};
-
-const formFields = [
-  inputType.username,
-  inputType.password,
-];
+import {processingForm} from '@modules/validationForm.js';
+import signlogTemplate from '@template/signlog.handlebars';
+import {contextLogIn, logFields} from '@configs/signlogConfig';
 
 /**
  * Функция, которая рендерит страницу авторизации
- * @param {Router} router Класс маршрутизации по
- * страницам сайта
+ * @param {App} app Основной класс веб-приложения
  */
-export default async (router) => {
-  router.main.innerHTML = '';
-
-  const {signlog} = Handlebars.templates;
-  router.main.innerHTML += signlog(contextLogIn);
+export default async (app) => {
+  app.main.innerHTML = signlogTemplate(contextLogIn);
 
   const sendFormRequest = async (form, errors) => {
-    const res = await router.api.loginUser(form.username.value,
+    const res = await app.api.loginUser(form.username.value,
         form.password.value);
     switch (res.status) {
       case 200:
-        router.id = res.body.id;
-        router.goTo(`/profile?id=${res.body.id}`);
+        app.id = res.body.id;
+        app.router.goTo(`/profile?id=${res.body.id}`);
         break;
       case 400:
         errors.set(1, 'Неверно введен пароль!');
@@ -74,11 +40,9 @@ export default async (router) => {
     return;
   };
 
-  setTimeout(() => {
-    const form = router.main.querySelector('.form');
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      processingForm(form, sendFormRequest, formFields);
-    }, false);
-  }, 10);
+  const form = app.main.querySelector('.form');
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    processingForm(form, sendFormRequest, logFields);
+  }, false);
 };

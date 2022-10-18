@@ -3,6 +3,16 @@
  * @module profile
  */
 
+import errorTemplate from '@template/error.handlebars';
+import navbarTemplate from '@template/navbar.handlebars';
+import userTemplate from '@template/user.handlebars';
+import logoutIcon from '@icon/logout.svg';
+import errorImg from '@img/error.jpg';
+import img0 from '@img/0.jpg';
+import img4 from '@img/4.jpg';
+import likesIcon from '@icon/like.svg';
+import commentIcon from '@icon/comment.svg';
+
 /**
  * Функция, создающая контекст для страницы профиля донатера
  * @param {Object} body объект ответа согласно API
@@ -13,7 +23,7 @@ const createDonaterJSON = (body) => {
     owner: {
       username: body.username,
       tags: 'Донатер',
-      avatar: '../static/img/0.jpg',
+      avatar: img0,
       isAuthor: false,
     },
     subscriptions: [],
@@ -31,9 +41,9 @@ const createAuthorJSON = (body) => {
     owner: {
       username: body.username,
       tags: 'Искусство',
-      avatar: '../static/img/0.jpg',
+      avatar: img0,
       about: {
-        image: '../static/img/4.jpg',
+        image: img4,
         text: body.about,
       },
       isAuthor: true,
@@ -46,46 +56,43 @@ const createAuthorJSON = (body) => {
 
 /**
  * Функция, которая рендерит страницу профиля
- * @param {Router} router Класс маршрутизации по страницам сайта
+ * @param {App} app Основной класс веб-приложения
  */
-export default async (router) => {
-  router.main.innerHTML = '';
+export default async (app) => {
   const params = new URL(window.location.href).searchParams;
   let id = params.get('id');
   if (id === null) {
-    id = router.id;
+    id = app.id;
   }
-  const user = await router.api.getUser(id);
+  const user = await app.api.getUser(id);
 
   if (!user.ok) {
-    const errorEl = Handlebars.templates.error;
-    router.main.innerHTML += errorEl({
+    app.main.innerHTML = errorTemplate({
       status: user.status,
       description: 'Ошибка',
-      id: router.id,
+      id: app.id,
+      img: errorImg,
     });
     return;
   }
 
-  const navbarEl = Handlebars.templates.navbar;
-  router.main.innerHTML += navbarEl({
+  app.main.innerHTML = navbarTemplate({
     user: {
-      id: router.id,
-      image: '../static/img/0.jpg',
+      id: app.id,
+      image: img0,
+      logout: logoutIcon,
     },
   });
 
-  const userEl = Handlebars.templates.user;
-
   let context;
   if (user.body.is_author) {
-    const posts = await router.api.getAllPosts(user.body.id);
+    const posts = await app.api.getAllPosts(user.body.id);
     if (!posts.ok) {
-      const errorEl = Handlebars.templates.error;
-      router.main.innerHTML += errorEl({
+      app.main.innerHTML += errorTemplate({
         status: posts.status,
         description: 'Ошибка',
-        id: router.id,
+        id: app.id,
+        img: errorImg,
       });
       return;
     }
@@ -93,10 +100,12 @@ export default async (router) => {
     posts.body.forEach(
         (post) => {
           const tmp = {
-            image: '../static/img/4.jpg',
+            image: img4,
             text: post.title,
             likesCount: 5,
             commentsCount: 15,
+            likesIcon: likesIcon,
+            commentIcon: commentIcon,
           };
           context.posts.push(tmp);
         },
@@ -105,5 +114,5 @@ export default async (router) => {
     context = createDonaterJSON(user.body);
   }
 
-  router.main.innerHTML += userEl(context);
+  app.main.innerHTML += userTemplate(context);
 };

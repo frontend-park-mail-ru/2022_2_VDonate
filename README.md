@@ -19,17 +19,43 @@
 - [Ксения Самойлова](https://github.com/somebody-kseny) - frontend
 
 ## Основные команды для работы
-#### Инициализация проекта:
+> Не коммитить в product окружении. На коммиты стоят хуки на eslint
+### Инициализация проекта:
+Production
 ```
-npm i
+npm ci --omit=dev
 ```
-
-#### Сборка проекта:
+Development
 ```
-npm run build
+npm ci
 ```
-
-#### Запуск stylus в фоновом режиме:
+---
+### Сборка проекта:
+Production
 ```
-npm run stylus
+npm run build:prod
+```
+Development
+```
+npm run build:dev
+```
+---
+### Запуск Webpack сервера на порту **4200** для разработки:
+```
+npm run start
+```
+---
+### Запуск анализатора пакетов Webpack, позволяющий получить визуализацию того, что находится в пакете.
+```
+npm run stats
+```
+---
+### Запуск eslint
+Отображение ошибок
+```
+npm run lint
+```
+Исправление ошибок
+```
+npm run lint:fix
 ```

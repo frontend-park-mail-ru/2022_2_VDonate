@@ -3,15 +3,17 @@
  * @module render404
  */
 
+import errorTemplate from '@template/error.handlebars';
+import errorImg from '@img/error.jpg';
+
 /**
  * Функция, которая рендерит страницу ошибки 404
- * @param {Router} router Класс маршрутизации по страницам сайта
+ * @param {App} app Основной класс веб-приложения
  */
-export default (router) => {
-  router.main.innerHTML = '';
-  const errorEl = Handlebars.templates.error;
-  router.main.innerHTML += errorEl({
+export default (app) => {
+  app.main.innerHTML = errorTemplate({
     status: 404,
     description: 'Страница не найдена',
+    img: errorImg,
   });
 };

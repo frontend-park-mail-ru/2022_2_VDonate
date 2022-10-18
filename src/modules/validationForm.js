@@ -33,8 +33,14 @@ export const inputType = {
  * @property {number} password.min значение минимальной длины пароля
  */
 const sizes = {
-  localMax: 64,
-  domainLableMax: 63,
+  localEmail: {
+    min: 1,
+    max: 64,
+  },
+  domainLable: {
+    min: 1,
+    max: 63,
+  },
   username: {
     min: 5,
     max: 20,
@@ -46,42 +52,52 @@ const sizes = {
 };
 
 /**
- * Проверка на допустимую длину локальную и доменную часть почтового адреса
- * @param {string} email валидный по формату почтовый адрес
- * @return {bool}
- */
-const emailLengthCheck = (email) => {
-  const tmpSplit = email.split('@');
-  const local = tmpSplit[0];
-  const domain = tmpSplit[1].split('.');
-  if (local.length <= sizes.localMax &&
-    domain.reduce((prev, current) => prev &&
-      current.length <= sizes.domainLableMax, true)) {
-    return true;
-  }
-  return false;
-};
-
-/**
  * Проверка поля ввода почты на верный формат
- * @param {Element} email элемент ввода почты
+ * @param {HTMLInputElement} email элемент ввода почты
  * @return {bool} результат проверки
  */
 const emailCheck = (email) => {
-  const localSyms = /[a-zA-Z0-9!#$&%_+-]/;
-  const localReg =
-    new RegExp(`^${localSyms.source}+(\\.?${localSyms.source}+)*`);
-  const domainReg = /[0-9a-zA-Z]+([.-]?[0-9a-zA-Z]+)*(\.[0-9a-zA-Z]+)$/;
-  const emailReg = new RegExp(`${localReg.source}@${domainReg.source}`);
-
   email.className = 'input__input input__input_error';
-  if (!emailReg.test(email.value)) {
-    return `Неверный формат`;
+
+  const emailSplit = email.value.split('@');
+  if (emailSplit.length != 2) {
+    return 'Пример: name@email.ru';
   }
 
-  if (!emailLengthCheck(email.value)) {
-    return `Неверная длина`;
+  const local = emailSplit[0];
+  if (local.length < sizes.localEmail.min) {
+    return `Символов до @ меньше ${sizes.localEmail.min}`;
   }
+  if (local.length > sizes.localEmail.max) {
+    return `Символов до @ больше ${sizes.localEmail.max}`;
+  }
+
+  const domain = emailSplit[1];
+  const domainLables = domain.split('.');
+  if (domainLables.length < 2) {
+    return 'После @ должно быть минимум 2 подуровня';
+  }
+  if (domainLables.reduce((prev, current) => prev ||
+    current.length < sizes.domainLable.min, false)) {
+    return `Символов после @ в одном подуровне меньше ${sizes.domainLable.min}`;
+  }
+  if (domainLables.reduce((prev, current) => prev ||
+    current.length > sizes.domainLable.max, false)) {
+    return `Символов после @ в одном подуровне больше ${sizes.domainLable.max}`;
+  }
+
+  const localReg =
+    /^[\w\d!#$%&'*+\-/=?^`{|}~]+(\.[\w\d!#$%&'*+\-/=?^`{|}~]+)*$/;
+  if (!localReg.test(local)) {
+    return `До @ разрешены латиница, числа, символы !#$%&'*+-/=?^_\`{|}~ и 
+    точка-разделитель`;
+  }
+
+  const domainReg = /[0-9a-zA-Z]+([.-]?[0-9a-zA-Z]+)*(\.[0-9a-zA-Z]+)$/;
+  if (!domainReg.test(domain)) {
+    return 'После @ разрешены латиница, числа и точка-разделитель';
+  }
+
   email.className = 'input__input';
   return undefined;
 };
@@ -92,19 +108,22 @@ const emailCheck = (email) => {
  * @return {errorMessage} результат проверки
  */
 const usernameCheck = (username) => {
-  const usernameSyms = /[\d\wа-яёА-ЯЁ]/;
-  const usernameReg =
-    new RegExp(`^${usernameSyms.source}( ?${usernameSyms.source})*$`);
   username.className = 'input__input input__input_error';
+
   if (username.value.length < sizes.username.min) {
-    return `Минимальная длина ${sizes.username.min}`;
+    return `Символов в псевдониме меньше ${sizes.username.min}`;
   }
+
   if (username.value.length > sizes.username.max) {
-    return `Максимальная длина ${sizes.username.max}`;
+    return `Символов в псевдониме больше ${sizes.username.max}`;
   }
+
+  const usernameReg = /^[\d\wа-яёА-ЯЁ]+( [\d\wа-яёА-ЯЁ]+)*$/;
   if (!usernameReg.test(username.value)) {
-    return `Недопустимый псевдоним`;
+    return `Разрешены латиница, кириллица, числа, знак нижнего подчеркивания и 
+    пробел между словами`;
   }
+
   username.className = 'input__input';
   return undefined;
 };
@@ -117,13 +136,14 @@ const usernameCheck = (username) => {
 const passwordCheck = (password) => {
   password.className = 'input__input input__input_error';
   if (password.value.length < sizes.password.min) {
-    return `Минимальная длина ${sizes.password.min}`;
+    return `Символов в пароле меньше ${sizes.password.min}`;
   }
   if (password.value.length > sizes.password.max) {
-    return `Максимальная длина ${sizes.password.max}`;
+    return `Символов в пароле больше ${sizes.password.max}`;
   }
-  if (!/^.+$/.test(password.value)) {
-    return 'Недопустимый псевдоним';
+  const passwordReg = /^[\w!@#$%^&* ]+$/;
+  if (!passwordReg.test(password.value)) {
+    return 'Только латинца, числа, символы !@#$%^&*_ и пробелы';
   }
   password.className = 'input__input';
   return undefined;
@@ -141,7 +161,7 @@ const repeatPasswordCheck = (origin, repeat) => {
     return 'Поле не может быть пустым';
   }
   if (origin.value !== repeat.value) {
-    return 'Не совпадает';
+    return 'Должно совпадать полем пароля';
   }
   repeat.className = 'input__input';
   return undefined;

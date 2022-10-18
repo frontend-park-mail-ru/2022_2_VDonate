@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+if ! npx --no eslint src/ --max-warnings=0; then
+  echo "I CATCH THE IMPOSTER!!"
+  exit 1
+fi
