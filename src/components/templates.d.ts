@@ -1,4 +1,5 @@
 declare module '*.hbs' {
-  const _: (context: unknown)=> string;
+  import Handlebars from 'handlebars';
+  const _: Handlebars.TemplateDelegate;
   export default _;
 }
