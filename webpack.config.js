@@ -1,3 +1,4 @@
+/* eslint no-undef: "off"*/
 const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
@@ -66,13 +67,7 @@ module.exports = {
         test: /\.ts$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              '@babel/preset-env',
-              '@babel/preset-typescript',
-            ],
-          },
+          loader: 'ts-loader',
         },
       },
       {
