@@ -50,7 +50,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.handlebars$/,
+        test: /\.(handlebars|hbs)$/,
         loader: 'handlebars-loader',
       },
       {

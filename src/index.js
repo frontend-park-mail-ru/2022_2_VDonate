@@ -3,6 +3,7 @@
 // import App from '@modules/app';
 // import './style.styl';
 import {Button, ButtonType} from '@components/button/button.ts';
+import {Input} from '@components/input/input.ts';
 
 /**
  * Основной класс веб-приложения
@@ -10,6 +11,9 @@ import {Button, ButtonType} from '@components/button/button.ts';
  */
 // const app = new App();
 // app.authUser();
-
+const main = document.getElementById('main');
 const but = new Button(ButtonType.primary, 'Нажми меня!', 'submit');
-document.getElementById('main')?.appendChild(but.element);
+main.appendChild(but.element);
+
+const input = new Input('Логин', 'qwerty');
+main.appendChild(input.element);
