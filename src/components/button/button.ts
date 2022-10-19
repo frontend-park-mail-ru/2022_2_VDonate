@@ -9,16 +9,18 @@ export enum ButtonType {
 }
 
 /**
- *
+ * Компонент кнопка
  */
 export class Button {
+  /**
+   * Актуальный контейнер кнопки
+   */
   readonly element : HTMLButtonElement;
 
   /**
-   * @constructor
-   * @param {ButtonType} viewType
-   * @param {string} content
-   * @param {string} actionType
+   * @param viewType дизайн кнопки
+   * @param content текст в кнопке
+   * @param actionType тип дейсмтвия
    */
   constructor(
       viewType: ButtonType,
