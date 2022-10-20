@@ -39,7 +39,8 @@
                     "error",
                     {
                         "requireReturnType": false,
-                        "requireParamType": false
+                        "requireParamType": false,
+                        "requireReturn": false
                     }
                 ]
             }
