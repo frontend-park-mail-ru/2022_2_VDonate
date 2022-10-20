@@ -1,40 +1,44 @@
-// @require '../../style/const.styl'
+@require '@style/const.styl'
 
-// .input
-//   display: flex
-//   flex-direction: column
-//   align-items: stretch
-//   gap: 5px
-//   &__lable
-//     sub-font()
-//     color: font-dark-color
-//   &__error
-//     sub-font()
-//     color: error-color
-//     &_disable
-//       visibility: hidden
-//     &_enable
-//       visibility: visible
-//   &__input
-//     box-sizing: border-box
-//     main-font()
-//     color: font-dark-color
-//     background: bg-light-color url("../../static/icon/like.svg") no-repeat
-//     background-size: 26px 26px
-//     background-position-x: calc(100% - 10px)
-//     background-position-y: 50%
-//     box-shadow: 0px 0px shadow-blur shadow-color
-//     border-radius: min-radius
-//     border: none
-//     height: 40px
-//     padding: 0 40px 0 10px
-//     &:focus 
-//       outline: none;
-//     &_error
-//       border: 1px solid pink-color;
-//       box-shadow: 0px 0px shadow-blur error-shadow-color;
-//   &__icon
-//     height: 26px
-//     weight: 26px
-//     position: absolute
-//     right: 5%
+.input
+  display: flex
+  flex-direction: column
+  gap: 5px
+  &__label
+    font-16()
+    color: color-font-light
+  &__back
+    display: flex
+    flex-direction: row
+    gap: 5px
+    padding: 10px
+    height: 50px
+    background: linear-gradient(109.46deg, rgba(201, 201, 201, 0.8) 1.57%, rgba(196, 196, 196, 0.1) 100%), linear-gradient(108.87deg, rgba(255, 255, 255, 0.8) 0.66%, rgba(211, 211, 211, 0.1) 99.48%);
+    opacity: 0.5
+    backdrop-filter: blur(30px)
+    border-radius: radius-min 
+    position: relative
+    box-sizing: border-box
+    &:before
+      content: ""
+      position: absolute
+      inset: 0
+      border-radius: radius-min
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
+      -webkit-mask-composite: xor
+      padding: 1px
+      background: linear-gradient(108.87deg, rgba(255, 255, 255, 0.8) 0.66%, rgba(211, 211, 211, 0.1) 99.48%)
+    &_error
+      box-shadow: 0px 0px 20px 0px color-error;
+      &:before
+        background: linear-gradient(108.87deg, rgba(237, 10, 52, 0.8) 0.66%, rgba(237, 10, 52, 0.1) 99.48%)
+  &__field
+    border: none
+    background: none
+    outline: none
+    flex: 1
+    font-16()
+    color: color-font-dark
+    &::placeholder
+      font-16()
+      color: color-font-light
