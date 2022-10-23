@@ -3,7 +3,7 @@ import {Reducer} from './types/reducer';
 import {State, IStore} from './types/store';
 
 /** Хранилище состояния. */
-export default class ProtoStore implements IStore {
+export default class Store implements IStore {
   /** Текущее состояние хранилища */
   private state: State;
   /** Список наблюдателей за хранилищем */
