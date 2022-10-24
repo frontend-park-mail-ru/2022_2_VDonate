@@ -27,8 +27,29 @@
     "moduleResolution": "node", /* Specify how TypeScript looks up a file from a given module specifier. */
     "baseUrl": "./", /* Specify the base directory to resolve non-relative module names. */
     "paths": {
+      "@flux/*": [
+        "src/modules/flux/*"
+      ],
+      "@reducers/*": [
+        "src/reducers/*"
+      ],
+      "@views/*": [
+        "src/views/*"
+      ],
+      "@configs/*": [
+        "src/configs/*"
+      ],
       "@components/*": [
         "src/components/*"
+      ],
+      "@router/*": [
+        "src/router/*"
+      ],
+      "@icon/*": [
+        "static/icon/*"
+      ],
+      "@img/*": [
+        "static/img/*"
       ],
     }, /* Specify a set of entries that re-map imports to additional lookup locations. */
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
@@ -60,7 +81,7 @@
     // "inlineSources": true,                            /* Include source code in the sourcemaps inside the emitted JavaScript. */
     // "emitBOM": true,                                  /* Emit a UTF-8 Byte Order Mark (BOM) in the beginning of output files. */
     // "newLine": "crlf",                                /* Set the newline character for emitting files. */
-    // "stripInternal": true,                            /* Disable emitting declarations that have '@internal' in their JSDoc comments. */
+    // "stripInternal": true,                            /* Disable emitting declarations that have "@internal" in their JSDoc comments. */
     // "noEmitHelpers": true,                            /* Disable generating custom helper functions like '__extends' in compiled output. */
     // "noEmitOnError": true,                            /* Disable emitting files if any type checking errors are reported. */
     // "preserveConstEnums": true,                       /* Disable erasing 'const enum' declarations in generated code. */

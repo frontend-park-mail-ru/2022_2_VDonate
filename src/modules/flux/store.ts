@@ -15,7 +15,7 @@ export default class Store implements IStore {
    * @param reducer - что-то наполненное магией
    * @param initinalState - начальное состояние хранилища
    */
-  private constructor(reducer: Reducer, initinalState: State) {
+  constructor(reducer: Reducer, initinalState: State = {}) {
     this.state = initinalState;
     this.reducer = reducer;
   }
