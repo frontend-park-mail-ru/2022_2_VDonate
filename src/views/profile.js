@@ -101,7 +101,7 @@ export default async (app) => {
         (post) => {
           const tmp = {
             image: img4,
-            text: post.title,
+            text: post.text,
             likesCount: 5,
             commentsCount: 15,
             likesIcon: likesIcon,
