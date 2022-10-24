@@ -66,7 +66,7 @@ export default async (app) => {
   }
   const user = await app.api.getUser(id);
 
-  if (!user.ok) {
+  if (!user.ok || user.status === 404) {
     app.main.innerHTML = errorTemplate({
       status: user.status,
       description: 'Ошибка',
