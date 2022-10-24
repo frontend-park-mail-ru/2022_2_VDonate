@@ -1,7 +1,7 @@
-import {ActionType} from 'src/configs/actionConfig';
-import {IAction} from 'src/modules/flux/types/actions';
-import {Reducer} from 'src/modules/flux/types/reducer';
-import {State} from 'src/modules/flux/types/store';
+import {ActionType} from '@configs/actionConfig';
+import {IAction} from '@flux/types/actions';
+import {Reducer} from '@flux/types/reducer';
+import {State} from '@flux/types/store';
 
 const userReducer: Reducer = (state: State, action: IAction): State => {
   switch (action.type) {

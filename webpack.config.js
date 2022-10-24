@@ -7,7 +7,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
   context: path.resolve(__dirname, 'src'),
   entry: {
-    main: './index.js',
+    main: './index.ts',
   },
   output: {
     filename: '[name].[contenthash].js',
@@ -15,15 +15,17 @@ module.exports = {
   },
   resolve: {
     alias: {
-      '@modules': path.resolve(__dirname, 'src/modules'),
-      '@template': path.resolve(__dirname, 'src/template'),
+      '@flux': path.resolve(__dirname, 'src/modules/flux'),
+      '@reducers': path.resolve(__dirname, 'src/reducers'),
       '@views': path.resolve(__dirname, 'src/views'),
       '@configs': path.resolve(__dirname, 'src/configs'),
       '@components': path.resolve(__dirname, 'src/components'),
+      '@router': path.resolve(__dirname, 'src/router'),
       '@style': path.resolve(__dirname, 'src/style'),
       '@icon': path.resolve(__dirname, 'static/icon'),
       '@img': path.resolve(__dirname, 'static/img'),
     },
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
   devServer: {
     port: 4200,
