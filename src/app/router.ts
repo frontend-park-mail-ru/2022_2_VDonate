@@ -1,4 +1,4 @@
-import routes from '@configs/routerConfig';
+import routes from '@configs/router';
 
 /** sds */
 export default class Router {
@@ -16,7 +16,7 @@ export default class Router {
       const route = routes.certain.find(
           (obj) => window.location.pathname.match(obj.path),
       );
-      route === undefined ? routes.uncertain() : route.view();
+      route === undefined ? routes.uncertain() : route.render();
     });
 
     this.go(location.pathname + location.search);
@@ -29,6 +29,6 @@ export default class Router {
   go(loc: string) {
     const route = routes.certain.find((obj) => loc.match(obj.path));
     window.history.pushState(null, '', loc);
-    route === undefined ? routes.uncertain() : route.view();
+    route === undefined ? routes.uncertain() : route.render();
   }
 }

@@ -1,9 +1,5 @@
 'use_strict';
 
-import Router from '@router/router';
+import Router from '@app/router';
 
-/**
- * Основной класс веб-приложения
- * @const {App} app
- */
 new Router();

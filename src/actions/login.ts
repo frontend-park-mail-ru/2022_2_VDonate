@@ -1,12 +1,25 @@
-import {ActionType} from 'src/configs/actionConfig';
-import {IAction} from 'src/modules/flux/types/actions';
+import ActionType from '@configs/action';
+import {Dispatcher} from '@flux/types/store';
+import {ResponseData} from '@api/ajax';
+import api from '@app/api';
+import {LoginForm} from './types/login';
 
-export interface PayloadLogIn {
-  username: string
-  password: string
-}
-
-export interface ActionLogIn extends IAction {
-  type: ActionType.LOGIN
-  payload: PayloadLogIn
-}
+export default (props: LoginForm, dispatch: Dispatcher): void => {
+  api.loginUser(props.username.value, props.password.value)
+      .then((res: ResponseData) => {
+        dispatch({
+          type: ActionType.LOGIN,
+          payload: {
+            id: res.body.id as number,
+          },
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: ActionType.NOTICE,
+          payload: {
+            message: 'error fetch',
+          },
+        });
+      });
+};

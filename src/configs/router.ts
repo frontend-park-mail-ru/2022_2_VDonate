@@ -9,7 +9,7 @@ const routes = {
   // },
     {
       path: /^\/login$/,
-      view: login,
+      render: login,
     },
   // {
   //   path: /^\/signup$/,

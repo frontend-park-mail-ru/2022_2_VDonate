@@ -1,4 +1,4 @@
-import {ActionType} from '@configs/actionConfig';
+import ActionType from '@configs/action';
 import {IAction} from '@flux/types/actions';
 import {Reducer} from '@flux/types/reducer';
 import {State} from '@flux/types/store';

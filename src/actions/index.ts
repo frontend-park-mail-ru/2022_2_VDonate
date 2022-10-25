@@ -1,4 +1,4 @@
-import {ActionLogIn} from './login';
+import {ActionLogIn} from './types/login';
 import {ActionSignUp} from './signup';
 
 type Action =

@@ -27,3 +27,5 @@ export interface IStore {
   /** Распределение пришедшего действия в отдельную область хранилища */
   dispatch: (action: IAction) => void
 }
+
+export type Dispatcher = (action: IAction) => void;
