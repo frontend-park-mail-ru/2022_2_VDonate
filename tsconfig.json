@@ -30,6 +30,9 @@
       "@flux/*": [
         "src/modules/flux/*"
       ],
+      "@api/*": [
+        "src/modules/api/*"
+      ],
       "@reducers/*": [
         "src/reducers/*"
       ],
@@ -42,8 +45,11 @@
       "@components/*": [
         "src/components/*"
       ],
-      "@router/*": [
-        "src/router/*"
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@actions/*": [
+        "src/actions/*"
       ],
       "@icon/*": [
         "static/icon/*"

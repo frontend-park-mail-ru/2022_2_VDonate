@@ -3,10 +3,24 @@
  * @module Api
  */
 
-import Ajax, {ResponseData} from './ajax.js';
+import ajax, {RequestData, Method, ResponseData} from './ajax';
 
 /** Класс интерфейса для связи с сервером */
-export default class Api extends Ajax {
+export default class Api {
+  private readonly request: typeof ajax;
+
+  /**
+   * @param baseUrl - базовый урл
+   */
+  constructor(baseUrl: string) {
+    this.request = (
+        url: string,
+        method: Method,
+        data: RequestData = {}): Promise<ResponseData> => {
+      return ajax(baseUrl + url, method, data);
+    };
+  }
+
   /**
      * Интерфейс авторизации пользователя
      * @param username - логин пользователя
@@ -14,7 +28,7 @@ export default class Api extends Ajax {
      * @return объект ответа с полями {ok,status,body}
      */
   loginUser(username: string, password: string): Promise<ResponseData> {
-    return this.post('/login', {username, password});
+    return this.request('/login', Method.POST, {username, password});
   }
 
   /**
@@ -22,7 +36,7 @@ export default class Api extends Ajax {
      * @return объект ответа с полями {ok,status,body}
      */
   logout(): Promise<ResponseData> {
-    return this.delete('/logout');
+    return this.request('/logout', Method.DELETE);
   }
 
   /**
@@ -30,7 +44,7 @@ export default class Api extends Ajax {
      * @return объект ответа с полями {ok,status,body}
      */
   authUser(): Promise<ResponseData> {
-    return this.get('/auth');
+    return this.request('/auth', Method.GET);
   }
 
   /**
@@ -40,12 +54,9 @@ export default class Api extends Ajax {
      * @param password - пароль
      * @return объект ответа с полями {ok,status,body}
      */
-  signupUser(
-      username: string,
-      email: string,
-      password: string,
-  ): Promise<ResponseData> {
-    return this.post('/users', {
+  signupUser(username: string, email: string, password: string)
+    : Promise<ResponseData> {
+    return this.request('/users', Method.POST, {
       username,
       email,
       password,
@@ -55,9 +66,11 @@ export default class Api extends Ajax {
   /**
      * интерфейс получения данных о пользователе с данным id
      * @param id id пользователя
-     * @return {Object} объект ответа с полями {ok,status,body}
+     * @return объект ответа с полями {ok,status,body}
      */
-  getUser = (id: number) => this.get(`/users/${id}`);
+  getUser(id: number): Promise<ResponseData> {
+    return this.request(`/users/${id}`, Method.GET);
+  }
 
   /**
      * интерфейс для получения постов автора с id
@@ -65,6 +78,6 @@ export default class Api extends Ajax {
      * @return объект ответа с полями {ok,status,body}
      */
   getAllPosts(id: number): Promise<ResponseData> {
-    return this.get(`/posts?user_id=${id}`);
+    return this.request(`/posts?user_id=${id}`, Method.GET);
   }
 }

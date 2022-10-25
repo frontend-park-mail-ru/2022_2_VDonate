@@ -16,11 +16,13 @@ module.exports = {
   resolve: {
     alias: {
       '@flux': path.resolve(__dirname, 'src/modules/flux'),
+      '@api': path.resolve(__dirname, 'src/modules/api'),
       '@reducers': path.resolve(__dirname, 'src/reducers'),
       '@views': path.resolve(__dirname, 'src/views'),
       '@configs': path.resolve(__dirname, 'src/configs'),
       '@components': path.resolve(__dirname, 'src/components'),
-      '@router': path.resolve(__dirname, 'src/router'),
+      '@app': path.resolve(__dirname, 'src/app'),
+      '@actions': path.resolve(__dirname, 'src/actions'),
       '@style': path.resolve(__dirname, 'src/style'),
       '@icon': path.resolve(__dirname, 'static/icon'),
       '@img': path.resolve(__dirname, 'static/img'),

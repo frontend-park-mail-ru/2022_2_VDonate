@@ -1,4 +1,4 @@
-import {ActionType} from 'src/configs/actionConfig';
+import ActionType from 'src/configs/action';
 import {IAction} from 'src/modules/flux/types/actions';
 
 export interface PayloadSignUp {
