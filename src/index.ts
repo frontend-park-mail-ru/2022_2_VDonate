@@ -1,5 +1,6 @@
 'use_strict';
 
-import Router from '@app/router';
+import auth from '@actions/auth';
+import store from '@app/store';
 
-new Router();
+auth(store.dispatch.bind(store));

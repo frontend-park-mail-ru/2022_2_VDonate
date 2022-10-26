@@ -8,4 +8,4 @@ import {State} from './store';
  * @param action - исполненое действие
  * @returns - новое состояние
  */
-export type Reducer = (state: State, action: IAction) => State
+export type Reducer<A extends IAction> = (state: State, action: A) => State

@@ -79,7 +79,7 @@ export default async (
   try {
     const body: Body = await response.json() as Body;
     return {
-      ok: true,
+      ok: response.ok,
       status: response.status,
       body,
     };

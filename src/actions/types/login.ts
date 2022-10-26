@@ -1,9 +1,8 @@
 import {IAction} from '@flux/types/actions';
-import ActionType from '@configs/action';
+import {ActionType} from './action';
 
-export interface PayloadLogIn {
-  username: string
-  password: string
+interface PayloadLogIn {
+  id: number
 }
 
 export interface ActionLogIn extends IAction {
