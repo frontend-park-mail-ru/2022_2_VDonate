@@ -1,12 +1,16 @@
-import {Dispatcher} from '@flux/types/store';
 import router from '@app/router';
 import api from '@app/api';
 import {ResponseData} from '@api/ajax';
 import {ActionType} from '@actions/types/action';
+import store from '@app/store';
 import {ActionAuth} from './types/auth';
 import {ActionNotice} from './types/notice';
 
-export default (dispatch: Dispatcher<ActionAuth | ActionNotice>): void => {
+const dispatch = (action: ActionAuth | ActionNotice) => {
+  store.dispatch(action);
+};
+
+export default (): void => {
   api.authUser()
       .then(
           (res: ResponseData) => {

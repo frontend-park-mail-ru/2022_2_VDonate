@@ -1,5 +1,5 @@
 import {IAction} from './actions';
-import {State} from './store';
+import {Map} from './store';
 
 /**
  * Тип функции для получения нового состояния на основе текущего состояния и
@@ -8,4 +8,4 @@ import {State} from './store';
  * @param action - исполненое действие
  * @returns - новое состояние
  */
-export type Reducer<A extends IAction> = (state: State, action: A) => State
+export type Reducer<A extends IAction> = (state: Map, action: A) => Map

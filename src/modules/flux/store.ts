@@ -1,11 +1,11 @@
 import {IAction} from './types/actions';
 import {Reducer} from './types/reducer';
-import {State, IStore} from './types/store';
+import {Map, IStore} from './types/store';
 
 /** Хранилище состояния. */
 export default class Store<A extends IAction> implements IStore<A> {
   /** Текущее состояние хранилища */
-  private state: State;
+  private state: Map;
   /** Список наблюдателей за хранилищем */
   private observers: (() => void)[] = [];
   /** Универсальный обработчик действий */
@@ -15,7 +15,7 @@ export default class Store<A extends IAction> implements IStore<A> {
    * @param reducer - что-то наполненное магией
    * @param initinalState - начальное состояние хранилища
    */
-  constructor(reducer: Reducer<A>, initinalState: State = {}) {
+  constructor(reducer: Reducer<A>, initinalState: Map = {}) {
     this.state = initinalState;
     this.reducer = reducer;
   }
@@ -24,7 +24,7 @@ export default class Store<A extends IAction> implements IStore<A> {
    * Чтение текущего состояни хранилища
    * @returns Текущее состояние дерева хранилища
    */
-  getState(): State {
+  getState(): Map {
     return this.state;
   }
 
