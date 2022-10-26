@@ -22,7 +22,7 @@ export enum Method {
   POST = 'POST',
   PUT = 'PUT',
   DELETE = 'DELETE',
-  HEAD= 'HEAD',
+  HEAD = 'HEAD',
 }
 
 /**
