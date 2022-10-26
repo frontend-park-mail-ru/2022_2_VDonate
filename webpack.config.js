@@ -14,12 +14,14 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
   },
   resolve: {
+    extensions: ['.ts', '.tsx', '.js'],
     alias: {
       '@modules': path.resolve(__dirname, 'src/modules'),
       '@template': path.resolve(__dirname, 'src/template'),
       '@views': path.resolve(__dirname, 'src/views'),
       '@configs': path.resolve(__dirname, 'src/configs'),
       '@components': path.resolve(__dirname, 'src/components'),
+      '@models' : path.resolve(__dirname, 'src/models'),
       '@style': path.resolve(__dirname, 'src/style'),
       '@icon': path.resolve(__dirname, 'static/icon'),
       '@img': path.resolve(__dirname, 'static/img'),

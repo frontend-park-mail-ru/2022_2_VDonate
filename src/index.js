@@ -1,9 +1,16 @@
 'use_strict';
 
 // import App from '@modules/app';
-// import './style.styl';
-import {Button, ButtonType} from '@components/button/button.ts';
-import {Input, InputType} from '@components/input/input.ts';
+import './style.styl';
+
+import {Post} from '@models/post/post.ts';
+import avatarImage from '@img/1.jpg';
+
+import {Sub} from '@models/sub/sub.ts';
+import subImg from '@img/2.jpg';
+import likeIcon from '@icon/like.svg';
+import {LeftNavbar} from '@models/navbar/left/left_navbar.ts';
+import {RightNavbar, NavbarType} from './models/navbar/right/right_navbar.ts';
 
 /**
  * Основной класс веб-приложения
@@ -12,22 +19,116 @@ import {Input, InputType} from '@components/input/input.ts';
 // const app = new App();
 // app.authUser();
 const main = document.getElementById('main');
-const but = new Button(ButtonType.primary, 'Нажми меня!', 'submit');
-main.appendChild(but.element);
 
-const input = new Input(
-    InputType.username,
-    {
-      label: 'Псевдоним',
-      placeholder: 'Введите свой псевдоним',
-      name: 'username',
-    },
-);
-main.appendChild(input.element);
-input.errorDetect(true);
-input.errorDetect(true);
-input.errorDetect(true);
 
-setTimeout(() => {
-  input.errorDetect(false);
-}, 2000);
+const testPost = {
+  post_id: '1',
+  author: {
+    img: avatarImage,
+    username: 'User_test',
+  },
+  date: new Date().toLocaleDateString(),
+  content: `Прежде всего, синтетическое тестирование не оставляет шанса \
+  для дальнейших направлений развития. Идейные соображения \
+  высшего порядка, а также экономическая повестка сегодняшнего \
+  дня является качественно новой ступенью анализа существующих \
+  паттернов поведения. С другой стороны, постоянное \
+  информационно-пропагандистское обеспечение нашей деятельности \
+  способствует повышению качества глубокомысленных рассуждений. \
+  Как принято считать, действия представителей оппозиции освещают \
+  чрезвычайно интересные особенности картины в целом, однако \
+  конкретные выводы, разумеется, представлены в исключительно \
+  положительном свете.`,
+  likeCount: '315',
+  like: true,
+  commentCount: '400',
+};
+
+const testSub = {
+  id: '1',
+  subName: 'Элитная подписка',
+  lvl: '1',
+  img: subImg,
+  price: '2000',
+  period: 'за неделю',
+  motivation: `Участие в розыгрышах<br>
+  Доступ к эксклюзивным семплам<br>
+  Материалы со стримов <br>
+  Запись стримов<br>
+  Эксклюзивные посты<br>
+  30 минутный разговор<br>
+  Что-нибудь еще<br>
+  Третье<br>
+  Десятое<br>
+  Сто двадцать пятое`,
+};
+
+const navbarLinkTest = [
+  {
+    icon: likeIcon,
+    text: 'Лента',
+    choosen: true,
+  },
+  {
+    icon: likeIcon,
+    text: 'Поиск',
+    choosen: false,
+  },
+  {
+    icon: likeIcon,
+    text: 'Подписки',
+    choosen: false,
+  },
+];
+
+const navbarSubTest = [
+  {
+    img: avatarImage,
+    username: 'Кодзима гений',
+    id: '1',
+  },
+  {
+    img: avatarImage,
+    username: 'Кодзима гений',
+    id: '1',
+  },
+  {
+    img: avatarImage,
+    username: 'Кодзима гений',
+    id: '1',
+  },
+  {
+    img: avatarImage,
+    username: 'Кодзима гений',
+    id: '1',
+  },
+];
+
+const navbar = new LeftNavbar(navbarLinkTest, navbarSubTest);
+main.appendChild(navbar.element);
+
+const man = document.createElement('div');
+man.setAttribute('style', 'margin-left: 300px');
+main.appendChild(man);
+
+const lev = document.createElement('div');
+lev.setAttribute('style', `
+display: flex;
+flex-direction: row;
+gap: 40px;
+`);
+
+let sub = new Sub(testSub);
+lev.appendChild(sub.element);
+sub = new Sub(testSub);
+lev.appendChild(sub.element);
+man.appendChild(lev);
+
+
+let post = new Post(testPost);
+man.appendChild(post.element);
+post = new Post(testPost);
+man.appendChild(post.element);
+
+const nav = new RightNavbar(NavbarType.feed);
+main.appendChild(nav.element);
