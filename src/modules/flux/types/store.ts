@@ -14,7 +14,7 @@ export type ObserverCallback = () => void;
 export type State = Record<string, any>;
 
 /** Интерфейс хранилища */
-export interface IStore {
+export interface IStore<A extends IAction> {
   /** Получение сосотояния хранилища */
   getState: () => State
 
@@ -25,7 +25,7 @@ export interface IStore {
   notifyObservers: () => void
 
   /** Распределение пришедшего действия в отдельную область хранилища */
-  dispatch: (action: IAction) => void
+  dispatch: Dispatcher<A>
 }
 
-export type Dispatcher = (action: IAction) => void;
+export type Dispatcher<A extends IAction> = (action: A) => void;

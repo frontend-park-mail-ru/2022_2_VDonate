@@ -11,11 +11,15 @@ class LoginPage {
   /** Получает текущее состояние и пописывается на изменение хранилища */
   constructor() {
     this.state = store.getState();
+    const main = document.getElementById('main');
+    if (main) {
+      main.innerHTML = '';
+    }
     this.render();
     store.registerObserver(this.observer.bind(this));
   }
 
-  /** */
+  /** Наблюдатель за именением хранилища */
   observer() {
     this.state = store.getState();
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access

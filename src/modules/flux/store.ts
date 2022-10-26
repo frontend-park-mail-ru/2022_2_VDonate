@@ -3,19 +3,19 @@ import {Reducer} from './types/reducer';
 import {State, IStore} from './types/store';
 
 /** Хранилище состояния. */
-export default class Store implements IStore {
+export default class Store<A extends IAction> implements IStore<A> {
   /** Текущее состояние хранилища */
   private state: State;
   /** Список наблюдателей за хранилищем */
   private observers: (() => void)[] = [];
   /** Универсальный обработчик действий */
-  private reducer: Reducer;
+  private reducer: Reducer<A>;
 
   /**
    * @param reducer - что-то наполненное магией
    * @param initinalState - начальное состояние хранилища
    */
-  constructor(reducer: Reducer, initinalState: State = {}) {
+  constructor(reducer: Reducer<A>, initinalState: State = {}) {
     this.state = initinalState;
     this.reducer = reducer;
   }
@@ -45,7 +45,7 @@ export default class Store implements IStore {
    * Применение действия на текущем хранилище
    * @param action вызывающее событие
    */
-  dispatch(action: IAction) {
+  dispatch(action: A) {
     this.state = this.reducer(this.state, action);
     this.notifyObservers();
   }

@@ -8,8 +8,8 @@ import {State} from './types/store';
  * @returns обобщенный редьюсер
  */
 const combineReducers =
-  (reducers: Record<string, Reducer>): Reducer =>
-    (state: State, action: IAction): State => {
+  <A extends IAction>(reducers: Record<string, Reducer<A>>): Reducer<A> =>
+    (state: State, action: A): State => {
       Object.entries(reducers).forEach(
           ([key, reducer]) => {
             state[key] = reducer(state[key] as State, action);
