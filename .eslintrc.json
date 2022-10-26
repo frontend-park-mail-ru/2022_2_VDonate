@@ -48,7 +48,9 @@
                     {
                         "allowBoolean": true
                     }
-                ]
+                ],
+                "space-infix-ops": "off",
+                "@typescript-eslint/space-infix-ops": "warn"
             }
         }
     ]

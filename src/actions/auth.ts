@@ -6,7 +6,7 @@ import {ActionType} from '@actions/types/action';
 import {ActionAuth} from './types/auth';
 import {ActionNotice} from './types/notice';
 
-export default (dispatch: Dispatcher<ActionAuth|ActionNotice>): void => {
+export default (dispatch: Dispatcher<ActionAuth | ActionNotice>): void => {
   api.authUser()
       .then(
           (res: ResponseData) => {
