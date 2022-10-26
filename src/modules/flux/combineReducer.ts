@@ -1,6 +1,6 @@
 import {IAction} from './types/actions';
 import {Reducer} from './types/reducer';
-import {Map} from './types/store';
+import {PropTree} from './types/store';
 
 /**
  * Функция комбинирования нескольких редьюсеров в один обобщенный
@@ -9,10 +9,10 @@ import {Map} from './types/store';
  */
 const combineReducers =
   <A extends IAction>(reducers: Record<string, Reducer<A>>): Reducer<A> =>
-    (state: Map, action: A): Map => {
+    (state: PropTree, action: A): PropTree => {
       Object.entries(reducers).forEach(
           ([key, reducer]) => {
-            state[key] = reducer(state[key] as Map, action);
+            state[key] = reducer(state[key] as PropTree, action);
           },
       );
       return state;

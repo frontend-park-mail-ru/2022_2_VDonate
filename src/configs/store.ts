@@ -1,6 +1,6 @@
-import {Map} from '@flux/types/store';
+import {PropTree} from '@flux/types/store';
 
-const initinalState: Map = {
+const initinalState: PropTree = {
 
 };
 
