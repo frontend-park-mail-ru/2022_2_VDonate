@@ -3,18 +3,14 @@ import {Input, InputType} from '@components/input/input';
 import login from '@actions/login';
 import {LoginForm} from '@actions/types/login';
 import store from '@app/store';
-import {State} from '@flux/types/store';
+import {Map} from '@flux/types/store';
 
 /** Корневой вид страницы входа */
 class LoginPage {
-  private state: State;
+  private state: Map;
   /** Получает текущее состояние и пописывается на изменение хранилища */
   constructor() {
     this.state = store.getState();
-    const main = document.getElementById('main');
-    if (main) {
-      main.innerHTML = '';
-    }
     this.render();
     store.registerObserver(this.observer.bind(this));
   }
@@ -22,12 +18,18 @@ class LoginPage {
   /** Наблюдатель за именением хранилища */
   observer() {
     this.state = store.getState();
+    this.render();
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     console.log(this.state.user.id);
   }
 
   /** Рендринг страницы */
   render() {
+    const main = document.getElementById('main');
+    if (!main) {
+      return;
+    }
+    main.innerHTML = '';
     const form = document.createElement('form');
     form.style.display = 'flex';
     form.style.flexDirection = 'column';
@@ -48,7 +50,7 @@ class LoginPage {
     });
     const button = new Button(ButtonType.primary, 'Press Me!', 'submit');
     form.append(username.element, password.element, button.element);
-    document.getElementById('main')?.appendChild(form);
+    main.appendChild(form);
   }
 }
 

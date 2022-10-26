@@ -11,12 +11,12 @@ export type ObserverCallback = () => void;
  * необходимоти должна быть выполнена все модуля **flux**
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type State = Record<string, any>;
+export type Map = Record<string, any>;
 
 /** Интерфейс хранилища */
 export interface IStore<A extends IAction> {
   /** Получение сосотояния хранилища */
-  getState: () => State
+  getState: () => Map
 
   /** Регистрация наблюдателя по паттерну Observer */
   registerObserver: (observer: ObserverCallback) => void
