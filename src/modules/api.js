@@ -32,27 +32,18 @@ export default class Api extends Ajax {
   /**
      * Интерфейс регистрации пользователя
      * @param {string} username логин
-     * @param {string} email почта (необязательный параметр)
+     * @param {string} email почта
      * @param {string} password пароль
-     * @param {string} firstName имя (необязательный параметр)
-     * @param {string} lastName фамилия (необязательный параметр)
-     * @param {string} phone телефон (необязательный параметр)
      * @return {Object} объект ответа с полями {ok,status,body}
      */
   signupUser = (
       username,
       email,
       password,
-      firstName = '',
-      lastName = '',
-      phone = '',
   ) => this.post('/users', {
     username,
-    firstName,
-    lastName,
     email,
     password,
-    phone,
   });
 
   /**
@@ -67,7 +58,7 @@ export default class Api extends Ajax {
      * @param {string} id id автора
      * @return {Object} объект ответа с полями {ok,status,body}
      */
-  getAllPosts = (id) => this.get(`/users/${id}/posts`);
+  getAllPosts = (id) => this.get(`/posts?user_id=${id}`);
 
   /**
      * Функция выхода из учетной записи

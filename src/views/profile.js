@@ -66,7 +66,7 @@ export default async (app) => {
   }
   const user = await app.api.getUser(id);
 
-  if (!user.ok) {
+  if (!user.ok || user.status === 404) {
     app.main.innerHTML = errorTemplate({
       status: user.status,
       description: 'Ошибка',
@@ -101,7 +101,7 @@ export default async (app) => {
         (post) => {
           const tmp = {
             image: img4,
-            text: post.title,
+            text: post.text,
             likesCount: 5,
             commentsCount: 15,
             likesIcon: likesIcon,
