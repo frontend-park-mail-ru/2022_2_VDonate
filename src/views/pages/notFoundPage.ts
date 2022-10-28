@@ -22,6 +22,7 @@ export default class NotFoundPage implements IView {
   render(): HTMLElement {
     this.image.src = img404;
     this.image.alt = '404 error';
+    this.image.width = 500;
     return this.image;
   }
 }
