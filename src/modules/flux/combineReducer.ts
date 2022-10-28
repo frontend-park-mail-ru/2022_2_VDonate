@@ -1,7 +1,6 @@
 import {IAction} from './types/actions';
 import {Reducer} from './types/reducer';
 import {PropTree} from './types/store';
-
 /**
  * Функция комбинирования нескольких редьюсеров в один обобщенный
  * @param reducers - ассоциативный массив редьюсеров

@@ -1,7 +1,12 @@
-import {PropTree} from '@flux/types/store';
+import {StateLocation} from '@actions/types/routing';
+import {Pages} from './router';
 
-const initinalState: PropTree = {
-
+const initinalState: {
+  location: StateLocation,
+} = {
+  location: {
+    type: Pages.PRELOAD,
+  },
 };
 
 export default initinalState;

@@ -10,7 +10,7 @@ export interface ActionLogIn extends IAction {
   payload: PayloadLogIn
 }
 
-export interface LoginForm extends HTMLCollection{
+export interface LoginForm extends HTMLCollection {
   username: HTMLInputElement
   password: HTMLInputElement
 }

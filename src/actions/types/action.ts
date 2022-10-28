@@ -1,16 +1,17 @@
 import {ActionAuth} from './auth';
 import {ActionLogIn} from './login';
 import {ActionNotice} from './notice';
+import {ActionRouting} from './routing';
 
 export enum ActionType {
-  AUTH,
-  SIGNUP,
   LOGIN,
-  LOGOUT,
+  AUTH,
   NOTICE,
+  ROUTING,
 }
 
 export type Action =
   | ActionLogIn
   | ActionAuth
-  | ActionNotice;
+  | ActionNotice
+  | ActionRouting;
