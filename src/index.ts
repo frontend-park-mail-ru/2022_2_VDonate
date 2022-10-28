@@ -1,6 +1,5 @@
 'use_strict';
 
-import auth from '@actions/auth';
-import store from '@app/store';
+import Root from '@views/root';
 
-auth(store.dispatch.bind(store));
+new Root(document.getElementById('root') ?? document.body);

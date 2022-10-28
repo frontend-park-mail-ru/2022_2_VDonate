@@ -4,6 +4,7 @@ import {ResponseData} from '@api/ajax';
 import api from '@app/api';
 import {ActionLogIn, LoginForm} from './types/login';
 import {ActionNotice} from './types/notice';
+import router from '@app/router';
 
 export default (props: LoginForm,
     dispatch: Dispatcher<ActionLogIn | ActionNotice>): void => {
@@ -16,6 +17,7 @@ export default (props: LoginForm,
               id: res.body.id as number,
             },
           });
+          router.go('/feed');
         } else {
           dispatch({
             type: ActionType.NOTICE,

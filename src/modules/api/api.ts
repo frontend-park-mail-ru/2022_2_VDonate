@@ -54,8 +54,11 @@ export default class Api {
      * @param password - пароль
      * @return объект ответа с полями {ok,status,body}
      */
-  signupUser(username: string, email: string, password: string)
-    : Promise<ResponseData> {
+  signupUser(
+      username: string,
+      email: string,
+      password: string,
+  ): Promise<ResponseData> {
     return this.request('/users', Method.POST, {
       username,
       email,

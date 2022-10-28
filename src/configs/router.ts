@@ -1,16 +1,23 @@
-import login from '@views/loginPage';
-import notFoundPage from '@views/notFoundPage';
+export enum Pages {
+  PRELOAD,
+  NOT_FOUND,
+  LOGIN,
+  SIGNUP,
+  LOGOUT,
+  PROFILE,
+  SEARCH,
+  FEED,
+}
 
-const routes = {
-  certain: [
+export const routes = [
   // {
   //   path: /^\/(profile(\?id=\d+)?)?$/,
   //   render: profile,
   // },
-    {
-      path: /^\/login$/,
-      render: login,
-    },
+  {
+    path: /^\/login$/,
+    type: Pages.LOGIN,
+  },
   // {
   //   path: /^\/signup$/,
   //   render: signup,
@@ -19,7 +26,4 @@ const routes = {
   //   path: /^\/logout$/,
   //   render: logout,
   // },
-  ],
-  uncertain: notFoundPage,
-};
-export default routes;
+];

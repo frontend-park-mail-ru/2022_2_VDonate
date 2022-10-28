@@ -1,8 +1,5 @@
 import {IAction} from './actions';
-
-/** Функция обратного вызова наблюдателя */
-export type ObserverCallback = () => void;
-
+import {IObservable} from './observer';
 /**
  * Ассоциативный список для описания состояния хранилища.
  *
@@ -12,20 +9,16 @@ export type ObserverCallback = () => void;
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type PropTree = Record<string, any>;
-
+/**
+ * Диспетчер действий.
+ *
+ * Принимает на вход реализацию *IAction*
+ */
+export type Dispatcher<A extends IAction> = (action: A) => void;
 /** Интерфейс хранилища */
-export interface IStore<A extends IAction> {
-  /** Получение сосотояния хранилища */
-  getState: () => PropTree
-
-  /** Регистрация наблюдателя по паттерну Observer */
-  registerObserver: (observer: ObserverCallback) => void
-
-  /** Оповещение наблюдателя по паттерну Observer */
-  notifyObservers: () => void
-
-  /** Распределение пришедшего действия в отдельную область хранилища */
+export interface IStore<A extends IAction> extends IObservable {
+  /** Метод отдачи текущего состояния хранилища */
+  getState(): PropTree
+  /** Метод диспетчера хранилища */
   dispatch: Dispatcher<A>
 }
-
-export type Dispatcher<A extends IAction> = (action: A) => void;

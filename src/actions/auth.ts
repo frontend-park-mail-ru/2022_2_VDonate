@@ -1,14 +1,8 @@
-import router from '@app/router';
 import api from '@app/api';
 import {ResponseData} from '@api/ajax';
-import {ActionType} from '@actions/types/action';
-import store from '@app/store';
-import {ActionAuth} from './types/auth';
-import {ActionNotice} from './types/notice';
-
-const dispatch = (action: ActionAuth | ActionNotice) => {
-  store.dispatch(action);
-};
+import {ActionType} from './types/action';
+import {dispatch} from './types/auth';
+import router from '@app/router';
 
 export default (): void => {
   api.authUser()
@@ -21,9 +15,9 @@ export default (): void => {
                   id: res.body.id as number,
                 },
               });
-              router(location.pathname + location.search);
+              router.go(location.pathname + location.search);
             } else {
-              router('/login');
+              router.go('/login');
             }
           },
       )
@@ -35,7 +29,7 @@ export default (): void => {
                 message: 'error fetch',
               },
             });
-            router('/login');
+            router.go('/login');
           },
       );
 };
