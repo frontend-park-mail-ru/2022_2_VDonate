@@ -1,5 +1,5 @@
-import auth from '@actions/auth';
-import {StateLocation} from '@actions/types/routing';
+import auth from '@actions/handlers/auth';
+import {PayloadLocation} from '@actions/types/routing';
 import store from '@app/store';
 import {Pages} from '@configs/router';
 import {IObserver} from '@flux/types/observer';
@@ -11,7 +11,7 @@ import NotFoundPage from './pages/notFoundPage';
 /** Класс корневой вьюшки */
 export default class Root implements IView, IObserver {
   /** Состояния расположения в приложении */
-  private location: StateLocation;
+  private location: PayloadLocation;
   /** Отображаемая страница */
   private currentPage: IView | undefined;
   /** Элемент, к которому необходимо присоеденить страницу */
@@ -22,14 +22,14 @@ export default class Root implements IView, IObserver {
    */
   constructor(rootElement: HTMLElement) {
     this.rootElement = rootElement;
-    this.location = store.getState().location as StateLocation;
+    this.location = store.getState().location as PayloadLocation;
     rootElement.appendChild(this.render());
     store.registerObserver(this);
     auth();
   }
   /** Оповещение об изменением хранилища */
   notify(): void {
-    const locationNew = store.getState().location as StateLocation;
+    const locationNew = store.getState().location as PayloadLocation;
     if (JSON.stringify(locationNew) !== JSON.stringify(this.location)) {
       this.location = locationNew;
       this.rootElement.appendChild(this.render());

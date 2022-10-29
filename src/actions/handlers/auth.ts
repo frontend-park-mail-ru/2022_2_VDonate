@@ -1,35 +1,43 @@
 import api from '@app/api';
 import {ResponseData} from '@api/ajax';
-import {ActionType} from './types/action';
-import {dispatch} from './types/auth';
+import {ActionType} from '@actions/types/action';
 import router from '@app/router';
+import store from '@app/store';
 
 export default (): void => {
   api.authUser()
       .then(
           (res: ResponseData) => {
             if (res.ok) {
-              dispatch({
+              store.dispatch({
                 type: ActionType.AUTH,
                 payload: {
-                  id: res.body.id as number,
+                  auth: {
+                    id: res.body.id as number,
+                  },
+                  location: {
+                    type: router.go(location.pathname + location.search),
+                  },
                 },
               });
-              router.go(location.pathname + location.search);
             } else {
-              router.go('/login');
+              store.dispatch({
+                type: ActionType.ROUTING,
+                payload: {
+                  type: router.go('/login'),
+                },
+              });
             }
           },
       )
       .catch(
           () => {
-            dispatch({
+            store.dispatch({
               type: ActionType.NOTICE,
               payload: {
                 message: 'error fetch',
               },
             });
-            router.go('/login');
           },
       );
 };

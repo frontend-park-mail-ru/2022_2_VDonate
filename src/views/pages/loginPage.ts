@@ -1,6 +1,6 @@
 import {Button, ButtonType} from '@components/button/button';
 import {Input, InputType} from '@components/input/input';
-import login from '@actions/login';
+import login from '@actions/handlers/login';
 import {LoginForm} from '@actions/types/login';
 import store from '@app/store';
 import {IView} from '@flux/types/view';
@@ -68,10 +68,7 @@ export default class LoginPage implements IView, IObserver {
     this.components.form.style.gap = '10px';
     this.components.form.addEventListener('submit', (e) => {
       e.preventDefault();
-      login(
-        (e.target as HTMLFormElement).elements as LoginForm,
-        store.dispatch.bind(store),
-      );
+      login((e.target as HTMLFormElement).elements as LoginForm);
     });
     return this.components.form;
   }

@@ -5,6 +5,9 @@ import {PropTree} from '@flux/types/store';
 const locationReducer: Reducer<Action> =
   (state: PropTree, action: Action): PropTree => {
     switch (action.type) {
+      case ActionType.AUTH:
+      case ActionType.LOGIN:
+        return action.payload.location;
       case ActionType.ROUTING:
         return action.payload;
       default:

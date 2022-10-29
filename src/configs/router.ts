@@ -9,7 +9,12 @@ export enum Pages {
   FEED,
 }
 
-export const routes = [
+export interface RouteType {
+  path: RegExp
+  type: Pages
+}
+
+export const routes: RouteType[] = [
   // {
   //   path: /^\/(profile(\?id=\d+)?)?$/,
   //   render: profile,

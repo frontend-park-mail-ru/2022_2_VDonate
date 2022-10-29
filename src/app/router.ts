@@ -1,4 +1,5 @@
-import routing from '@actions/routing';
+import routing from '@actions/handlers/routing';
+import {Pages, routes} from '@configs/router';
 
 /** Роутинг урлов */
 class Router {
@@ -20,10 +21,11 @@ class Router {
   /**
    * Вызывает рендер страницы по переданому пути
    * @param {string} loc путь страницы
+   * @returns TODO
    */
-  go(loc: string) {
+  go(loc: string): Pages {
     window.history.pushState(null, '', loc);
-    routing(loc);
+    return routes.find((obj) => loc.match(obj.path))?.type ?? Pages.NOT_FOUND;
   }
 }
 
