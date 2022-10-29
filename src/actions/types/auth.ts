@@ -1,17 +1,15 @@
-import store from '@app/store';
 import {IAction} from '@flux/types/actions';
 import {ActionType} from './action';
-import {ActionNotice} from './notice';
-
+import {PayloadLocation} from './routing';
+/** Результат успешной аутификации */
 interface PayloadAuth {
   id: number
 }
-
+/** Действие аутификации */
 export interface ActionAuth extends IAction {
   type: ActionType.AUTH
-  payload: PayloadAuth
+  payload: {
+    auth: PayloadAuth
+    location: PayloadLocation
+  }
 }
-
-export const dispatch = (action: ActionAuth | ActionNotice) => {
-  store.dispatch(action);
-};

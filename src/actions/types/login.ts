@@ -1,5 +1,6 @@
 import {IAction} from '@flux/types/actions';
 import {ActionType} from './action';
+import {PayloadLocation} from './routing';
 
 interface PayloadLogIn {
   id: number
@@ -7,7 +8,10 @@ interface PayloadLogIn {
 
 export interface ActionLogIn extends IAction {
   type: ActionType.LOGIN
-  payload: PayloadLogIn
+  payload: {
+    login: PayloadLogIn
+    location: PayloadLocation
+  }
 }
 
 export interface LoginForm extends HTMLCollection {

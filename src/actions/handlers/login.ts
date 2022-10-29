@@ -1,25 +1,27 @@
 import {ActionType} from '@actions/types/action';
-import {Dispatcher} from '@flux/types/store';
 import {ResponseData} from '@api/ajax';
 import api from '@app/api';
-import {ActionLogIn, LoginForm} from './types/login';
-import {ActionNotice} from './types/notice';
+import {LoginForm} from '@actions/types/login';
 import router from '@app/router';
+import store from '@app/store';
 
-export default (props: LoginForm,
-    dispatch: Dispatcher<ActionLogIn | ActionNotice>): void => {
+export default (props: LoginForm): void => {
   api.loginUser(props.username.value, props.password.value)
       .then((res: ResponseData) => {
         if (res.ok) {
-          dispatch({
+          store.dispatch({
             type: ActionType.LOGIN,
             payload: {
-              id: res.body.id as number,
+              login: {
+                id: res.body.id as number,
+              },
+              location: {
+                type: router.go('/feed'),
+              },
             },
           });
-          router.go('/feed');
         } else {
-          dispatch({
+          store.dispatch({
             type: ActionType.NOTICE,
             payload: {
               message: 'error login',
@@ -28,7 +30,7 @@ export default (props: LoginForm,
         }
       })
       .catch(() => {
-        dispatch({
+        store.dispatch({
           type: ActionType.NOTICE,
           payload: {
             message: 'error fetch',

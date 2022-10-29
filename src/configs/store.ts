@@ -1,8 +1,8 @@
-import {StateLocation} from '@actions/types/routing';
+import {PayloadLocation} from '@actions/types/routing';
 import {Pages} from './router';
 
 const initinalState: {
-  location: StateLocation,
+  location: PayloadLocation,
 } = {
   location: {
     type: Pages.PRELOAD,

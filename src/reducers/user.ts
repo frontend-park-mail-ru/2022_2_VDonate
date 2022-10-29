@@ -6,9 +6,9 @@ const userReducer: Reducer<Action> =
   (state: PropTree, action: Action): PropTree => {
     switch (action.type) {
       case ActionType.AUTH:
-        return action.payload;
+        return action.payload.auth;
       case ActionType.LOGIN:
-        return action.payload;
+        return action.payload.login;
       default:
         return state;
     }

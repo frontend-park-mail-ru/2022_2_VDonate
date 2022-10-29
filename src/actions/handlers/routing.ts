@@ -1,16 +1,14 @@
-import {Pages, routes} from '@configs/router';
-import {ActionType} from './types/action';
-import {ActionRouting, dispatch} from './types/routing';
+import router from '@app/router';
+import store from '@app/store';
+import {Pages} from '@configs/router';
+import {ActionType} from '@actions/types/action';
+import {ActionRouting} from '@actions/types/routing';
 
 export default (loc: string): void => {
-  const page = routes.find(
-      (obj) => loc.match(obj.path),
-  );
-
   const action: ActionRouting = {
     type: ActionType.ROUTING,
     payload: {
-      type: page?.type ?? Pages.NOT_FOUND,
+      type: router.go(loc),
     },
   };
 
@@ -22,5 +20,5 @@ export default (loc: string): void => {
       break;
   }
 
-  dispatch(action);
+  store.dispatch(action);
 };
