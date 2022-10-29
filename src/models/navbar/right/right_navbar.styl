@@ -1,12 +1,55 @@
 @require '@style/const.styl'
 
 .right-navbar
-  width: 280px
-  position: absolute
-  right: 0
-  border-radius: 16px 0px 0px 16px
-  flex-direction: column
-  justify-content: center
-  align-items: flex-end
-  gap: 10px;
-  padding: 8px
+  &__feed
+    width: 280px
+    position: fixed
+    right: 0
+    border-radius: 16px 0px 0px 16px
+    display: flex
+    flex-direction: column
+    padding: 8px
+    padding-right: 0px
+    margin: 0px
+    margin-top: 10px
+    align-items: flex-end
+    gap: 10px
+  &__profile
+    height: 90vh
+    width: 280px
+    position: fixed
+    right: 0
+    border-radius: 16px 0px 0px 16px
+    display: flex
+    flex-direction: column
+    padding-top: 32px
+    padding-right: 0px
+    margin: 0px
+    margin-top: 10px
+    align-items: center
+    gap: 14px
+    &_username
+      font-27()
+      color: color-font-light
+    &_info
+      display: flex
+      flex-direction: row
+      justify-content: center
+      align-items: center
+      gap: 30px
+      border-right: 2px rgba(0, 16, 61, 0.06)
+      &_container
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+      &_donaters
+        font-21()
+        color: #FF9E00
+      &_subs
+        font-21()
+        color: color-primary
+      &_count
+        font-16()
+        color: color-font-light
+      

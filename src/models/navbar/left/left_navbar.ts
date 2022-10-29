@@ -3,6 +3,8 @@ import {Glass, GlassType} from '@components/glass/glass';
 import {NavbarUnit, OrientType} from '@components/navbar_unit/navbar_unit';
 import {Logo} from '@components/logo/logo';
 import {Image, ImageType} from '@components/image/image';
+import {IconButton} from '@components/icon_button/icon_button';
+import menuIcon from '@icon/menu.svg';
 
 interface Link {
     icon: string,
@@ -17,6 +19,13 @@ interface Sub {
   id: string,
 }
 
+interface Profile {
+  img: string,
+  username: string,
+  id: string,
+  is_author: boolean,
+}
+
 /**
  * Модель левого навбара
  */
@@ -29,10 +38,12 @@ export class LeftNavbar {
   /**
    * @param links ссылки
    * @param subs подписки
+   * @param profileData линый профиль
    */
   constructor(
       links: Link[],
       subs: Sub[],
+      profileData: Profile,
   ) {
     const glass = new Glass(GlassType.mono);
     this.element = glass.element;
@@ -64,5 +75,24 @@ export class LeftNavbar {
       subsList.appendChild(sub);
     });
     this.element.appendChild(subsList);
+    const profileContainer = document.createElement('div');
+    profileContainer.classList.add('left-navbar__down');
+    profileContainer.innerHTML += '<hr>';
+    const profile = document.createElement('div');
+    profile.classList.add('left-navbar__down_profile');
+    const avatar = new Image(
+      profileData.is_author? ImageType.author : ImageType.donater,
+      '50px',
+      profileData.img,
+    );
+    const usrname = document.createElement('span');
+    usrname.innerText = profileData.username;
+    profile.appendChild(avatar.element);
+    profile.appendChild(usrname);
+    const icnbtn = new IconButton(menuIcon, 'submit');
+    icnbtn.element.classList.add('left-navbar__down_btn');
+    profile.appendChild(icnbtn.element);
+    profileContainer.appendChild(profile);
+    this.element.appendChild(profileContainer);
   }
 }

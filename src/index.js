@@ -8,9 +8,10 @@ import avatarImage from '@img/1.jpg';
 
 import {Sub} from '@models/sub/sub.ts';
 import subImg from '@img/2.jpg';
-import likeIcon from '@icon/like.svg';
+import menuIcon from '@icon/menu.svg';
 import {LeftNavbar} from '@models/navbar/left/left_navbar.ts';
-import {RightNavbar, NavbarType} from './models/navbar/right/right_navbar.ts';
+import {RightNavbar, NavbarType} from '@models/navbar/right/right_navbar.ts';
+import {About} from '@models/about/about.ts';
 
 /**
  * Основной класс веб-приложения
@@ -65,17 +66,17 @@ const testSub = {
 
 const navbarLinkTest = [
   {
-    icon: likeIcon,
+    icon: menuIcon,
     text: 'Лента',
     choosen: true,
   },
   {
-    icon: likeIcon,
+    icon: menuIcon,
     text: 'Поиск',
     choosen: false,
   },
   {
-    icon: likeIcon,
+    icon: menuIcon,
     text: 'Подписки',
     choosen: false,
   },
@@ -104,11 +105,32 @@ const navbarSubTest = [
   },
 ];
 
-const navbar = new LeftNavbar(navbarLinkTest, navbarSubTest);
+const navbarProfileTest = {
+  img: avatarImage,
+  username: 'Кодзима гений',
+  id: '1',
+  is_author: true,
+};
+
+const navbar = new LeftNavbar(navbarLinkTest, navbarSubTest, navbarProfileTest);
 main.appendChild(navbar.element);
 
+const rightNavbar = {
+  img: avatarImage,
+  username: 'Кадзима',
+  subscriptions: '1040',
+  is_author: true,
+  subscribers: '4322',
+};
+
+let nav = new RightNavbar(NavbarType.feed, rightNavbar);
+main.appendChild(nav.element);
+
+nav = new RightNavbar(NavbarType.profile, rightNavbar);
+main.appendChild(nav.element);
+
 const man = document.createElement('div');
-man.setAttribute('style', 'margin-left: 300px');
+man.setAttribute('style', `margin-left: 320px;`);
 main.appendChild(man);
 
 const lev = document.createElement('div');
@@ -118,17 +140,74 @@ flex-direction: row;
 gap: 40px;
 `);
 
-let sub = new Sub(testSub);
-lev.appendChild(sub.element);
-sub = new Sub(testSub);
+const sub = new Sub(testSub);
 lev.appendChild(sub.element);
 man.appendChild(lev);
 
+const about = new About(testPost.content);
+man.appendChild(about.element);
 
-let post = new Post(testPost);
-man.appendChild(post.element);
-post = new Post(testPost);
+const post = new Post(testPost);
 man.appendChild(post.element);
 
-const nav = new RightNavbar(NavbarType.feed);
-main.appendChild(nav.element);
+import {SignLog, SignLogType} from '@models/signlog/signlog.ts';
+
+import {InputType} from '@components/input/input.ts';
+
+const logTest = [
+  {
+    inputType: InputType.username,
+    context: {
+      label: 'Псевдоним',
+      placeholder: 'Введите свой псеводим',
+      name: 'хз',
+    },
+  },
+  {
+    inputType: InputType.password,
+    context: {
+      label: 'Пароль',
+      placeholder: 'Введите свой пароль',
+      name: 'ххзз',
+    },
+  },
+];
+
+const signTest = [
+  {
+    inputType: InputType.email,
+    context: {
+      label: 'Почта',
+      placeholder: 'Введите свою почту',
+      name: 'хз',
+    },
+  },
+  {
+    inputType: InputType.username,
+    context: {
+      label: 'Псевдоним',
+      placeholder: 'Введите свой псеводим',
+      name: 'хз',
+    },
+  },
+  {
+    inputType: InputType.password,
+    context: {
+      label: 'Пароль',
+      placeholder: 'Введите свой пароль',
+      name: 'ххзз',
+    },
+  },
+  {
+    inputType: InputType.password,
+    context: {
+      label: 'Повторите пароль',
+      placeholder: 'Введите свой пароль',
+      name: 'ххзз',
+    },
+  },
+];
+let sgn = new SignLog(SignLogType.login, logTest);
+main.appendChild(sgn.element);
+sgn = new SignLog(SignLogType.signup, signTest);
+main.appendChild(sgn.element);

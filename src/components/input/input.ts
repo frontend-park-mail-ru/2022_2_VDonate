@@ -2,6 +2,7 @@ import './input.styl';
 import input from './input.hbs';
 import userIcon from '@icon/user.svg';
 import emailIcon from '@icon/email.svg';
+import passwordIcon from '@icon/password.svg';
 
 export enum InputType {
   username,
@@ -43,6 +44,7 @@ export class Input {
         break;
       case InputType.password:
         fullContext.type = 'password';
+        fullContext.icon = passwordIcon;
         break;
       default:
         break;
