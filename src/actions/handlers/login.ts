@@ -6,6 +6,7 @@ import router from '@app/router';
 import store from '@app/store';
 
 export default (props: LoginForm): void => {
+  // TODO валидация
   api.loginUser(props.username.value, props.password.value)
       .then((res: ResponseData) => {
         if (res.ok) {

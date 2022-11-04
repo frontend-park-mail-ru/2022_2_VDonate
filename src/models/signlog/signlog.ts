@@ -2,6 +2,8 @@ import {Glass, GlassType} from '@components/glass/glass';
 import {Button, ButtonType} from '@components/button/button';
 import {Input, InputType} from '@components/input/input';
 import './signlog.styl';
+import login from '@actions/handlers/login';
+import {LoginForm} from '@actions/types/login';
 
 /**
  * Вход или регистрация
@@ -16,7 +18,7 @@ const logContext = [
     context: {
       label: 'Псевдоним',
       placeholder: 'Введите свой псеводим',
-      name: 'хз',
+      name: 'username',
     },
   },
   {
@@ -24,7 +26,7 @@ const logContext = [
     context: {
       label: 'Пароль',
       placeholder: 'Введите свой пароль',
-      name: 'ххзз',
+      name: 'password',
     },
   },
 ];
@@ -35,7 +37,7 @@ const signContext = [
     context: {
       label: 'Почта',
       placeholder: 'Введите свою почту',
-      name: 'хз',
+      name: 'email',
     },
   },
   {
@@ -43,7 +45,7 @@ const signContext = [
     context: {
       label: 'Псевдоним',
       placeholder: 'Введите свой псеводим',
-      name: 'хз',
+      name: 'username',
     },
   },
   {
@@ -51,7 +53,7 @@ const signContext = [
     context: {
       label: 'Пароль',
       placeholder: 'Введите свой пароль',
-      name: 'ххзз',
+      name: 'password',
     },
   },
   {
@@ -59,7 +61,7 @@ const signContext = [
     context: {
       label: 'Повторите пароль',
       placeholder: 'Введите свой пароль',
-      name: 'ххзз',
+      name: 'passwordRepeat',
     },
   },
 ];
@@ -99,6 +101,7 @@ export class SignLog {
    * Конструктор для входа
    */
   loginConstruct() {
+    const form = document.createElement('form');
     this.element.innerHTML = '';
     const type = document.createElement('span');
     type.classList.add('signlog__type');
@@ -106,12 +109,12 @@ export class SignLog {
     greets.classList.add('signlog__greets');
     type.innerText = 'Вход';
     greets.innerText = 'Мы ждали тебя!';
-    this.element.appendChild(type);
-    this.element.appendChild(greets);
+    form.appendChild(type);
+    form.appendChild(greets);
     logContext.forEach(({inputType, context}) => {
       const inputEl = new Input(inputType, context);
       inputEl.element.classList.add('signlog__input');
-      this.element.appendChild(inputEl.element);
+      form.appendChild(inputEl.element);
     });
     const btnArea = document.createElement('div');
     btnArea.classList.add('signlog__btn-area');
@@ -120,27 +123,29 @@ export class SignLog {
         type.innerText,
         'submit',
     );
-    signlogButton.element.onclick = () => {
-      // TODO: вызов валиации и вход
-    };
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      login((e.target as HTMLFormElement).elements as LoginForm);
+    });
     signlogButton.element.classList.add('signlog__btn-area_btn');
-    const link = document.createElement('span');
+    const link = document.createElement('a');
     link.classList.add('signlog__btn-area_link');
+    link.href = '/signup';
+    link.setAttribute('data-link', '');
     link.innerHTML = `
-      Ещё не с нами? Зарегистрироваться
+      Ещё не с нами? Зарегистрироваться!
     `;
-    link.onclick = () => {
-      this.signupConstruct();
-    };
     btnArea.appendChild(signlogButton.element);
     btnArea.appendChild(link);
-    this.element.appendChild(btnArea);
+    form.appendChild(btnArea);
+    this.element.appendChild(form);
   }
 
   /**
    * Конструктор для регистрации
    */
   signupConstruct() {
+    const form = document.createElement('form');
     this.element.innerHTML = '';
     const type = document.createElement('span');
     type.classList.add('signlog__type');
@@ -148,12 +153,12 @@ export class SignLog {
     greets.classList.add('signlog__greets');
     type.innerText = 'Регистрация';
     greets.innerText = 'Скорее присоединяйся к нам!';
-    this.element.appendChild(type);
-    this.element.appendChild(greets);
+    form.appendChild(type);
+    form.appendChild(greets);
     signContext.forEach(({inputType, context}) => {
       const inputEl = new Input(inputType, context);
       inputEl.element.classList.add('signlog__input');
-      this.element.appendChild(inputEl.element);
+      form.appendChild(inputEl.element);
     });
     const btnArea = document.createElement('div');
     btnArea.classList.add('signlog__btn-area');
@@ -162,20 +167,22 @@ export class SignLog {
         type.innerText,
         'submit',
     );
-    signlogButton.element.onclick = () => {
-      // TODO: вызов валиации и регистрация
-    };
+    form.addEventListener('click', (e) => {
+      e.preventDefault();
+      // TODO поменять на action signup
+      login((e.target as HTMLFormElement).elements as LoginForm);
+    });
     signlogButton.element.classList.add('signlog__btn-area_btn');
-    const link = document.createElement('span');
+    const link = document.createElement('a');
     link.classList.add('signlog__btn-area_link');
+    link.href = '/login';
+    link.setAttribute('data-link', '');
     link.innerHTML = `
         Мне кажется, или мы знакомы? Войти
     `;
-    link.onclick = () => {
-      this.loginConstruct();
-    };
     btnArea.appendChild(signlogButton.element);
     btnArea.appendChild(link);
-    this.element.appendChild(btnArea);
+    form.appendChild(btnArea);
+    this.element.appendChild(form);
   }
 }

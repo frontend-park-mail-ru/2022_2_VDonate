@@ -45,6 +45,9 @@
       "@components/*": [
         "src/components/*"
       ],
+      "@models/*": [
+        "src/models/*"
+      ],
       "@app/*": [
         "src/app/*"
       ],

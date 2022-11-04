@@ -9,7 +9,7 @@ class Router {
       const target = (e.target as Element).closest('a[data-link]');
       if (target !== null) {
         e.preventDefault();
-        this.go(target.getAttribute('href') ?? '/');
+        routing(target.getAttribute('href') ?? '/');
       }
     });
 
