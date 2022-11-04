@@ -54,7 +54,7 @@ export class Popup {
       change: () => boolean,
   ) {
     const popupGlass = new Glass(GlassType.lines);
-    popupGlass.element.classList.add('change-popup');
+    popupGlass.element.classList.add('change-popup__glass');
     const darkening =document.createElement('div');
     darkening.classList.add('change-popup__back');
     darkening.appendChild(popupGlass.element);

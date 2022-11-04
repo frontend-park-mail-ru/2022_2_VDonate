@@ -1,6 +1,7 @@
 import {Button, ButtonType} from '@components/button/button';
 import {Glass, GlassType} from '@components/glass/glass';
 import {Image, ImageType} from '@components/image/image';
+import {Popup} from '../popup/sub/popup';
 import './sub.styl';
 import subHbs from './sub.hbs';
 
@@ -29,9 +30,6 @@ export class Sub {
   constructor(data: Data) {
     const lvlImg = new Image(ImageType.sub, '96px', data.img);
     const button = new Button(ButtonType.primary, 'Задонатить', 'button');
-    button.element.onclick = () => {
-      // TODO: попап с донатом
-    };
     const glass = new Glass(GlassType.mono);
     this.element = glass.element;
     this.element.classList.add('sub');
@@ -55,5 +53,13 @@ export class Sub {
       showMore.hidden = true;
     };
     this.element.firstChild?.appendChild(showMore);
+    const popupEdit = new Popup(() => {
+      // TODO: функция отправки на сервер согласия на донат
+      return true;
+    });
+    this.element.getElementsByTagName('button')[0].onclick = () => {
+      popupEdit.element.style.display = 'flex';
+    };
+    document.getElementById('entry')?.appendChild(popupEdit.element);
   }
 }

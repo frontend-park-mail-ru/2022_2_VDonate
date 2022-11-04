@@ -22,7 +22,7 @@ export class Popup {
       change: () => boolean,
   ) {
     const popupGlass = new Glass(GlassType.lines);
-    popupGlass.element.classList.add('popup');
+    popupGlass.element.classList.add('popup__glass');
     const darkening =document.createElement('div');
     darkening.classList.add('popup__back');
     this.element = darkening;
