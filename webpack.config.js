@@ -7,25 +7,28 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
   context: path.resolve(__dirname, 'src'),
   entry: {
-    main: './index.js',
+    main: './index.ts',
   },
   output: {
     filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, 'dist'),
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
     alias: {
-      '@modules': path.resolve(__dirname, 'src/modules'),
-      '@template': path.resolve(__dirname, 'src/template'),
+      '@flux': path.resolve(__dirname, 'src/modules/flux'),
+      '@api': path.resolve(__dirname, 'src/modules/api'),
+      '@reducers': path.resolve(__dirname, 'src/reducers'),
       '@views': path.resolve(__dirname, 'src/views'),
       '@configs': path.resolve(__dirname, 'src/configs'),
       '@components': path.resolve(__dirname, 'src/components'),
-      '@models' : path.resolve(__dirname, 'src/models'),
+      '@models': path.resolve(__dirname, 'src/models'),
+      '@app': path.resolve(__dirname, 'src/app'),
+      '@actions': path.resolve(__dirname, 'src/actions'),
       '@style': path.resolve(__dirname, 'src/style'),
       '@icon': path.resolve(__dirname, 'static/icon'),
       '@img': path.resolve(__dirname, 'static/img'),
     },
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
   devServer: {
     port: 4200,

@@ -16,7 +16,7 @@ export class Button {
   /**
    * Актуальный контейнер кнопки
    */
-  readonly element : HTMLButtonElement;
+  readonly element: HTMLButtonElement;
 
   /**
    * @param viewType дизайн кнопки
