@@ -28,7 +28,7 @@ export class Post {
   /**
    * Актуальный контейнер поста
    */
-  readonly element : HTMLElement;
+  readonly element: HTMLElement;
 
   /**
    * @param data данные для генерации поста

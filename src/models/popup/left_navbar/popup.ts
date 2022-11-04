@@ -45,7 +45,7 @@ export class Popup {
   /**
    * Актуальный контейнер
    */
-  readonly element : HTMLElement;
+  readonly element: HTMLElement;
 
   /**
    * @param change Функция валидации и отправки на сервер
@@ -55,11 +55,11 @@ export class Popup {
   ) {
     const popupGlass = new Glass(GlassType.lines);
     popupGlass.element.classList.add('change-popup');
-    const darkening =document.createElement('div');
+    const darkening = document.createElement('div');
     darkening.classList.add('change-popup__back');
     darkening.appendChild(popupGlass.element);
     this.element = darkening;
-    this.element.style.display ='none';
+    this.element.style.display = 'none';
     const head = document.createElement('span');
     head.classList.add('change-popup__head');
     head.innerText = 'Изменение данных';

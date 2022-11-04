@@ -10,7 +10,7 @@ export class About {
   /**
    * Актуальный контейнер
    */
-  readonly element : HTMLElement;
+  readonly element: HTMLElement;
 
   /**
    * @param data текст об авторе

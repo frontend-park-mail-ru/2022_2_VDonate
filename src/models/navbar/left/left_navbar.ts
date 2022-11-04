@@ -35,7 +35,7 @@ export class LeftNavbar {
   /**
    * Актуальный контейнер левого навбара
    */
-  readonly element : HTMLElement;
+  readonly element: HTMLElement;
 
   /**
    * @param links ссылки
@@ -84,7 +84,7 @@ export class LeftNavbar {
     const profile = document.createElement('div');
     profile.classList.add('left-navbar__down_profile');
     const avatar = new Image(
-      profileData.is_author? ImageType.author : ImageType.donater,
+      profileData.is_author ? ImageType.author : ImageType.donater,
       '50px',
       profileData.img,
     );
@@ -104,7 +104,7 @@ export class LeftNavbar {
         popup.element.style.display = 'none';
       }
     };
-    popup.element.style.display ='none';
+    popup.element.style.display = 'none';
     popup.element.classList.add('left-navbar__down_popup');
     const profileLink = new Button(ButtonType.outline, 'Профиль', 'button');
     profileLink.element.classList.add('left-navbar__down_popup_btn');

@@ -21,7 +21,7 @@ export class Sub {
   /**
    * Актуальный контейнер уровня подписки
    */
-  readonly element : HTMLElement;
+  readonly element: HTMLElement;
 
   /**
    * @param data данные для генерации

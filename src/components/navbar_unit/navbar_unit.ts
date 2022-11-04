@@ -14,7 +14,7 @@ export class NavbarUnit {
   /**
    * Актуальный контейнер элемента навбара
    */
-  readonly element : HTMLElement;
+  readonly element: HTMLElement;
   /**
    * @param icon иконка
    * @param text текст

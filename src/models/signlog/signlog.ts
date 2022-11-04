@@ -71,7 +71,7 @@ export class SignLog {
   /**
   * Актуальный контейнер авторизации
   */
-  readonly element : HTMLElement;
+  readonly element: HTMLElement;
 
   /**
    * @param signlog вход или регистрация

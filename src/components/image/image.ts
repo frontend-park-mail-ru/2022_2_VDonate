@@ -16,7 +16,7 @@ export class Image {
   /**
    * Актуальный контейнер стекла
    */
-  readonly element : HTMLElement;
+  readonly element: HTMLElement;
 
   /**
    * @param viewType вид аватара

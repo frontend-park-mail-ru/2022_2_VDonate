@@ -24,7 +24,7 @@ export class RightNavbar {
   /**
    * Актуальный контейнер правого навбара
    */
-  readonly element : HTMLElement;
+  readonly element: HTMLElement;
 
   /**
    * @param navbarType вид правого навбара
@@ -43,8 +43,8 @@ export class RightNavbar {
         break;
       case NavbarType.profile:
         glass.element.classList.add('right-navbar__profile');
-        data.is_author?
-          this.authorConstruct(glass.element, data):
+        data.is_author ?
+          this.authorConstruct(glass.element, data) :
           this.donaterConstruct(glass.element, data);
         break;
       default:

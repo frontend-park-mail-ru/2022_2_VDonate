@@ -18,7 +18,7 @@ export class ReactButton {
   /**
    * Актуальный контейнер кнопки
    */
-  readonly element : HTMLButtonElement;
+  readonly element: HTMLButtonElement;
 
   /**
    * @param reactType дизайн кнопки

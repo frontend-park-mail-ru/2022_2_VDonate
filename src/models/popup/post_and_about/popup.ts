@@ -9,7 +9,7 @@ export class Popup {
   /**
    * Актуальный контейнер
    */
-  readonly element : HTMLElement;
+  readonly element: HTMLElement;
 
   /**
    * @param title заголовок
@@ -23,10 +23,10 @@ export class Popup {
   ) {
     const popupGlass = new Glass(GlassType.lines);
     popupGlass.element.classList.add('popup');
-    const darkening =document.createElement('div');
+    const darkening = document.createElement('div');
     darkening.classList.add('popup__back');
     this.element = darkening;
-    this.element.style.display ='none';
+    this.element.style.display = 'none';
     const popupHead = document.createElement('span');
     popupHead.classList.add('popup__head');
     popupHead.innerText = title;
@@ -34,7 +34,7 @@ export class Popup {
     popupAboutBack.classList.add('popup__text_back');
     const popupAbout = document.createElement('textarea');
     popupAbout.classList.add('popup__text_field');
-    popupAbout.innerText= content;
+    popupAbout.innerText = content;
     popupAboutBack.appendChild(popupAbout);
     const btnContainer = document.createElement('div');
     btnContainer.classList.add('popup__btn-container');

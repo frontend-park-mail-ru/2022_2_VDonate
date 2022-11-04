@@ -8,7 +8,7 @@ export class Logo {
   /**
    * Актуальный контейнер лого
    */
-  readonly element : HTMLElement;
+  readonly element: HTMLElement;
 
   /**
    * Конструктор

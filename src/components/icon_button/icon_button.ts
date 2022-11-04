@@ -7,7 +7,7 @@ export class IconButton {
   /**
    * Актуальный контейнер кнопки с иконкой
    */
-  readonly element : HTMLButtonElement;
+  readonly element: HTMLButtonElement;
 
   /**
    * @param icon url иконки
