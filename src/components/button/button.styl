@@ -1,0 +1,54 @@
+@require '@style/const.styl'
+
+.button
+  &__back
+    box-sizing: border-box
+    border: none
+    border-radius: 10px
+    padding: 10px 20px
+    position: relative
+    &:before 
+      content: ""
+      position: absolute
+      inset: 0
+      border-radius: 10px
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
+      -webkit-mask-composite: xor
+    &_primary
+      background: linear-gradient(
+                                  101.7deg, 
+                                  rgba(255, 255, 255, 0.2) 0%, 
+                                  rgba(255, 255, 255, 0.2) 21.5%, 
+                                  rgba(255, 255, 255, 0.28) 21.51%, 
+                                  rgba(255, 255, 255, 0) 45.14%
+                                  ), 
+                  radial-gradient(
+                                  100% 144.66% at 0% 0%, 
+                                  color-primary-gradient-1 0%, 
+                                  color-primary-gradient-2 100%
+                                  )
+      box-shadow: 0px 20px 20px -10px color-primary-shadow
+      &:before 
+        padding: 1px
+        background:linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%)    
+      &:hover
+        box-shadow: none
+      &:active
+        box-shadow: inset 0px 0px 20px color-primary-dark-2
+        &:before
+          background: none
+    &_outline
+      background: none
+      &:before 
+        padding: 2px
+        background:linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%)
+      &:hover
+        &:before
+          background: none
+      &:active
+        &:before
+          background: linear-gradient(180deg, rgba(44, 45, 46, 0.2) 0%, rgba(255, 255, 255, 0.2) 100%)
+  &__text
+    font-21()
+    color: color-font-light
+
