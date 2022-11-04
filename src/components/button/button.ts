@@ -6,6 +6,7 @@ import './button.styl';
 export enum ButtonType {
   primary,
   outline,
+  fingers,
 }
 
 /**
@@ -38,6 +39,9 @@ export class Button {
         break;
       case ButtonType.outline:
         this.element.classList.add('button__back_outline');
+        break;
+      case ButtonType.fingers:
+        this.element.classList.add('button__back_fingers');
         break;
       default:
         this.element.classList.add('button__back_primary');

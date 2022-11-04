@@ -1,0 +1,38 @@
+@require '@style/const.styl'
+
+.sub
+  max-width: 300px
+  display: flex
+  flex-direction: column
+  align-items: center
+  &__name
+    font-21()
+    color: color-font-light
+  &__lvl
+    font-16()
+    color: color-font-secondary
+  &__price
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    padding: 6px
+    &_count
+      font-16()
+      color: color-font-light
+    &_period
+      font-12()
+      color: color-font-secondary
+  &__motivation
+    padding: 12px
+    font-12()
+    color: color-font-light
+    &_part
+      max-height: 50px
+      background: linear-gradient(180deg, rgba(255, 255, 255, 1) 70%, rgba(255, 255, 255, 0) 100%)
+      -webkit-background-clip: text
+      -webkit-text-fill-color: transparent
+  &__more
+    font-12()
+    color: color-primary-light-2
+    cursor: pointer

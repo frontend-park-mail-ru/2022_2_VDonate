@@ -1,0 +1,63 @@
+@require '@style/const.styl'
+
+.right-navbar
+  position: absolute
+  top: 0
+  bottom: 0
+  right: 0
+  &__feed
+    width: 280px
+    position: sticky
+    top: 10px
+    right: 0
+    border-radius: 16px 0px 0px 16px
+    display: flex
+    flex-direction: column
+    padding: 8px
+    padding-right: 0px
+    margin: auto
+    margin-top: 16px
+    margin-right: 0px
+    align-items: flex-end
+    gap: 10px
+  &__profile
+    height: 90vh
+    width: 280px
+    position: sticky
+    top: 10px
+    right: 0
+    border-radius: 16px 0px 0px 16px
+    display: flex
+    flex-direction: column
+    padding-top: 32px
+    padding-right: 0px
+    margin: auto
+    margin-top: 16px
+    margin-right: 0px
+    align-items: center
+    gap: 14px
+    &_username
+      font-27()
+      color: color-font-light
+    &_info
+      display: flex
+      flex-direction: row
+      justify-content: center
+      align-items: center
+      gap: 30px
+      border-right: 2px rgba(0, 16, 61, 0.06)
+      &_container
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+      &_donaters
+        font-21()
+        color: #FF9E00
+      &_subs
+        font-21()
+        color: color-primary
+      &_count
+        font-16()
+        color: color-font-light
+      

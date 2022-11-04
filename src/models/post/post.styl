@@ -1,0 +1,33 @@
+@require '@style/const.styl'
+
+.post
+  margin-top: 50px
+  width: calc(96vw - 640px)
+  &__head
+    display: flex
+    flex-direction: row
+    padding: 8px
+    &_user_n_date
+      display: flex
+      flex-direction: column
+      justify-content: center
+      align-items: flex-start
+      padding: 0px 0px 0px 8px
+    &_user
+      font-21()
+      color: color-font-light
+    &_date
+      font-12()
+      color: color-font-light
+    &_btn
+      position: absolute
+      right: 20px
+  &__content
+    font-21()
+    color: color-font-light
+    padding: 8px
+  &__reaction
+    display: flex
+    flex-direction: row
+    gap: 8px
+    padding: 8px

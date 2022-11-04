@@ -1,0 +1,80 @@
+@require '@style/const.styl'
+
+.left-navbar
+  position: absolute
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+  &__glass
+    border-radius: 0px 16px 16px 0px
+    height: 90vh
+    width: 280px
+    position: sticky
+    margin-top: 16px
+    top: 10px
+    left: 0
+    padding: 0px
+  &__logo
+    padding: 12px 0px 24px 8px
+  &__subs-list
+    display: flex
+    flex-direction: column
+    align-items: flex-start
+    gap: 10px
+    max-height: 204px
+    overflow: auto
+    scrollbar-color: color-font-secondary
+    scrollbar-width: 4px
+    &::-webkit-scrollbar
+      width: 4px;
+      height: 16px;
+      &-thumb
+        background: #CBE0FD
+        border-radius: 16px;
+        box-shadow: inset 2px 2px 2px hsla(0,0%,100%,.25),inset -2px -2px 2px rgba(0,0,0,.25);
+      &-track 
+        background: none
+  &__sub
+    font-16()
+    color: color-font-light
+    display: flex
+    flex-direction: row
+    justify-content: center
+    align-items: center
+    padding-left: 16px
+    gap: 8px
+    text-decoration: none
+  &__down
+    position: fixed;
+    left: 0
+    right: 0
+    bottom: 0
+    align-items: left 
+    padding-bottom: 10px
+    gap: 10px
+    &_profile
+      display: flex
+      flex-direction: row
+      align-items: center
+      padding: 5px 10px
+      gap: 10px
+      font-16()
+      color: color-font-light
+    &_btn
+      margin-left: 22px
+    &_popup
+      flex-direction: column;
+      align-items: center;
+      padding: 8px;
+      gap: 8px;
+      &_btn
+        width: 100%
+
+hr
+  height: 7px
+  width: 250px
+  background-color: rgba(#00103D, 0.10)
+  border: none
+  border-radius: 0px 5px 5px 0px
+  margin: 16px 20px 16px 0px

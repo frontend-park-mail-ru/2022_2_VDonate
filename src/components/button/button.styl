@@ -7,6 +7,7 @@
     border-radius: 10px
     padding: 10px 20px
     position: relative
+    cursor: pointer
     &:before 
       content: ""
       position: absolute
@@ -44,10 +45,31 @@
         background:linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%)
       &:hover
         &:before
-          background: none
+          background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%)
       &:active
         &:before
           background: linear-gradient(180deg, rgba(44, 45, 46, 0.2) 0%, rgba(255, 255, 255, 0.2) 100%)
+    &_fingers
+      background: url('https://s3-alpha-sig.figma.com/img/7361/3ee1/d8285b5aef72c8357d210b2a1f4e820c?Expires=1667779200&Signature=RUFJFjcZbiuSpwZktWTDJPczBTZdECzpafPF~QXtT9lpqNCWshR2Lj-dYVoZ5GV~Oa0wxtoa8yJ7QrPliCnaDvlQDOuNJECsYKyWRM2gAmEUnpLSO2QSIOI6BjftrgGEoDdeGaaPl342QRDvCsSNrrpMgbuF2WLERmoe15Gedb9Oxc~3ndnl0uqBiXYb~7nDNj24GV6m2NNenOc3oecAF~Lu~bdDASYo4FPIMLxzaOp83OwyuRGygjQ1av73X8SJfa798Ti~nrgKqgZmjY3-T7boLSguN~ageWTcQg3~xeJrCWt2k-ox~uVlC2X6W~XhKiZChs8jI2UuseSA4SKV8w__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA')
+      background-repeat: no-repeat
+      background-size: cover
+      min-height: 100%
+      min-width: 100%
+      &:before 
+        padding: 2px
+        box-shadow: inset 0px -4px 2px rgba(0, 0, 0, 0.05), inset 0px 4px 2px rgba(255, 255, 255, 0.25), inset 4px 4px 26px rgba(255, 255, 255, 0.25)
+        filter: drop-shadow(0px 40px 80px rgba(0, 0, 0, 0.38))
+        backdrop-filter: blur(40px)
+      &:hover
+        &:before
+          background-blend-mode: soft-light;
+          box-shadow: inset 0px -4px 2px rgba(0, 0, 0, 0.05), inset 4px 8px 4px rgba(255, 255, 255, 0.25), inset 4px 4px 26px rgba(255, 255, 255, 0.25);
+          backdrop-filter: blur(40px);
+      &:active
+        &:before
+          background-blend-mode: soft-light;
+          box-shadow: inset 0px -4px 2px rgba(0, 0, 0, 0.05), inset 4px 8px 4px rgba(255, 255, 255, 0.25), inset 4px 4px 26px rgba(255, 255, 255, 0.25);
+          backdrop-filter: blur(40px);
   &__text
     font-21()
     color: color-font-light

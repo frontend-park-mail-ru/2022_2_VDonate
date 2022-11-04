@@ -21,6 +21,7 @@ module.exports = {
       '@views': path.resolve(__dirname, 'src/views'),
       '@configs': path.resolve(__dirname, 'src/configs'),
       '@components': path.resolve(__dirname, 'src/components'),
+      '@models': path.resolve(__dirname, 'src/models'),
       '@app': path.resolve(__dirname, 'src/app'),
       '@actions': path.resolve(__dirname, 'src/actions'),
       '@style': path.resolve(__dirname, 'src/style'),
