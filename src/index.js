@@ -43,6 +43,7 @@ const testPost = {
   likeCount: '315',
   like: true,
   commentCount: '400',
+  changeable: true,
 };
 
 const testSub = {
@@ -103,6 +104,51 @@ const navbarSubTest = [
     username: 'Кодзима гений',
     id: '1',
   },
+  {
+    img: avatarImage,
+    username: 'Кодзима гений',
+    id: '1',
+  },
+  {
+    img: avatarImage,
+    username: 'Кодзима гений',
+    id: '1',
+  },
+  {
+    img: avatarImage,
+    username: 'Кодзима гений',
+    id: '1',
+  },
+  {
+    img: avatarImage,
+    username: 'Кодзима гений',
+    id: '1',
+  },
+  {
+    img: avatarImage,
+    username: 'Кодзима гений',
+    id: '1',
+  },
+  {
+    img: avatarImage,
+    username: 'Кодзима гений',
+    id: '1',
+  },
+  {
+    img: avatarImage,
+    username: 'Кодзима гений',
+    id: '1',
+  },
+  {
+    img: avatarImage,
+    username: 'Кодзима гений',
+    id: '1',
+  },
+  {
+    img: avatarImage,
+    username: 'Кодзима гений',
+    id: '1',
+  },
 ];
 
 const navbarProfileTest = {
@@ -123,14 +169,14 @@ const rightNavbar = {
   subscribers: '4322',
 };
 
-let nav = new RightNavbar(NavbarType.feed, rightNavbar);
-main.appendChild(nav.element);
+// const nav = new RightNavbar(NavbarType.feed, rightNavbar);
+// main.appendChild(nav.element);
 
-nav = new RightNavbar(NavbarType.profile, rightNavbar);
+const nav = new RightNavbar(NavbarType.profile, rightNavbar);
 main.appendChild(nav.element);
 
 const man = document.createElement('div');
-man.setAttribute('style', `margin-left: 320px;`);
+man.setAttribute('style', `position:relative; margin-left: 320px;`);
 main.appendChild(man);
 
 const lev = document.createElement('div');
@@ -144,7 +190,7 @@ const sub = new Sub(testSub);
 lev.appendChild(sub.element);
 man.appendChild(lev);
 
-const about = new About(testPost.content);
+const about = new About(testPost.content, true);
 man.appendChild(about.element);
 
 const post = new Post(testPost);
@@ -152,62 +198,5 @@ man.appendChild(post.element);
 
 import {SignLog, SignLogType} from '@models/signlog/signlog.ts';
 
-import {InputType} from '@components/input/input.ts';
-
-const logTest = [
-  {
-    inputType: InputType.username,
-    context: {
-      label: 'Псевдоним',
-      placeholder: 'Введите свой псеводим',
-      name: 'хз',
-    },
-  },
-  {
-    inputType: InputType.password,
-    context: {
-      label: 'Пароль',
-      placeholder: 'Введите свой пароль',
-      name: 'ххзз',
-    },
-  },
-];
-
-const signTest = [
-  {
-    inputType: InputType.email,
-    context: {
-      label: 'Почта',
-      placeholder: 'Введите свою почту',
-      name: 'хз',
-    },
-  },
-  {
-    inputType: InputType.username,
-    context: {
-      label: 'Псевдоним',
-      placeholder: 'Введите свой псеводим',
-      name: 'хз',
-    },
-  },
-  {
-    inputType: InputType.password,
-    context: {
-      label: 'Пароль',
-      placeholder: 'Введите свой пароль',
-      name: 'ххзз',
-    },
-  },
-  {
-    inputType: InputType.password,
-    context: {
-      label: 'Повторите пароль',
-      placeholder: 'Введите свой пароль',
-      name: 'ххзз',
-    },
-  },
-];
-let sgn = new SignLog(SignLogType.login, logTest);
-main.appendChild(sgn.element);
-sgn = new SignLog(SignLogType.signup, signTest);
+const sgn = new SignLog(SignLogType.login);
 main.appendChild(sgn.element);

@@ -31,17 +31,21 @@ export class RightNavbar {
    * @param data данные для для генерации правого навбара
    */
   constructor(navbarType: NavbarType, data: ProfileNavbar) {
+    this.element = document.createElement('div');
+    this.element.classList.add('right-navbar');
     const glass = new Glass(GlassType.mono);
-    this.element = glass.element;
-    this.element.classList.remove('glass');
+    glass.element.classList.add('right-navbar__glass');
+    this.element.appendChild(glass.element);
     switch (navbarType) {
       case NavbarType.feed:
-        this.element.classList.add('right-navbar__feed');
-        this.feedConstruct();
+        glass.element.classList.add('right-navbar__feed');
+        this.feedConstruct(glass.element);
         break;
       case NavbarType.profile:
-        this.element.classList.add('right-navbar__profile');
-        data.is_author? this.authorConstruct(data): this.donaterConstruct(data);
+        glass.element.classList.add('right-navbar__profile');
+        data.is_author?
+          this.authorConstruct(glass.element, data):
+          this.donaterConstruct(glass.element, data);
         break;
       default:
         break;
@@ -50,22 +54,24 @@ export class RightNavbar {
 
   /**
    * конструктор для ленты
+   * @param glass элемент стекла
    */
-  feedConstruct() {
+  feedConstruct(glass: HTMLElement) {
     let item =
         new NavbarUnit(icon, 'Все публикации', false, '/', OrientType.right);
-    this.element.appendChild(item.element);
+    glass.appendChild(item.element);
     item = new NavbarUnit(icon, 'Доступные', false, '/', OrientType.right);
-    this.element.appendChild(item.element);
+    glass.appendChild(item.element);
     item = new NavbarUnit(icon, 'Понравилось', true, '/', OrientType.right);
-    this.element.appendChild(item.element);
+    glass.appendChild(item.element);
   }
 
   /**
    * Конструктор для автора
+   * @param glass элемент стекла
    * @param data данные для для генерации правого навбара
    */
-  authorConstruct(data: ProfileNavbar) {
+  authorConstruct(glass: HTMLElement, data: ProfileNavbar) {
     const avatar = new Image(
         ImageType.author,
         '200px',
@@ -98,16 +104,17 @@ export class RightNavbar {
     subsContainer.appendChild(subsCount);
     info.appendChild(donatersContainer);
     info.appendChild(subsContainer);
-    this.element.appendChild(avatar.element);
-    this.element.appendChild(usrname);
-    this.element.appendChild(info);
+    glass.appendChild(avatar.element);
+    glass.appendChild(usrname);
+    glass.appendChild(info);
   }
 
   /**
    * Конструктор для донатера
+   * @param glass элемент стекла
    * @param data данные для для генерации правого навбара
    */
-  donaterConstruct(data: ProfileNavbar) {
+  donaterConstruct(glass: HTMLElement, data: ProfileNavbar) {
     const avatar = new Image(
         ImageType.donater,
         '200px',
@@ -129,8 +136,8 @@ export class RightNavbar {
     subsContainer.appendChild(subs);
     subsContainer.appendChild(subsCount);
     info.appendChild(subsContainer);
-    this.element.appendChild(avatar.element);
-    this.element.appendChild(usrname);
-    this.element.appendChild(info);
+    glass.appendChild(avatar.element);
+    glass.appendChild(usrname);
+    glass.appendChild(info);
   }
 }

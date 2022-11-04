@@ -4,6 +4,8 @@ import {NavbarUnit, OrientType} from '@components/navbar_unit/navbar_unit';
 import {Logo} from '@components/logo/logo';
 import {Image, ImageType} from '@components/image/image';
 import {IconButton} from '@components/icon_button/icon_button';
+import {Popup} from '../../popup/left_navbar/popup';
+import {Button, ButtonType} from '@components/button/button';
 import menuIcon from '@icon/menu.svg';
 
 interface Link {
@@ -45,10 +47,11 @@ export class LeftNavbar {
       subs: Sub[],
       profileData: Profile,
   ) {
-    const glass = new Glass(GlassType.mono);
-    this.element = glass.element;
-    this.element.classList.remove('glass');
+    this.element = document.createElement('div');
     this.element.classList.add('left-navbar');
+    const glass = new Glass(GlassType.mono);
+    glass.element.classList.add('left-navbar__glass');
+    this.element.appendChild(glass.element);
     const logo = new Logo();
     logo.element.classList.add('left-navbar__logo');
     const linkes = document.createElement('div');
@@ -57,9 +60,9 @@ export class LeftNavbar {
           new NavbarUnit(icon, text, choosen, href, OrientType.left);
       linkes.appendChild(item.element);
     });
-    this.element.appendChild(logo.element);
-    this.element.appendChild(linkes);
-    this.element.innerHTML += '<hr>';
+    glass.element.appendChild(logo.element);
+    glass.element.appendChild(linkes);
+    glass.element.innerHTML += '<hr>';
     const subsList = document.createElement('div');
     subsList.classList.add('left-navbar__subs-list');
     subs.forEach(({img, username, id}) => {
@@ -74,7 +77,7 @@ export class LeftNavbar {
       sub.appendChild(usrname);
       subsList.appendChild(sub);
     });
-    this.element.appendChild(subsList);
+    glass.element.appendChild(subsList);
     const profileContainer = document.createElement('div');
     profileContainer.classList.add('left-navbar__down');
     profileContainer.innerHTML += '<hr>';
@@ -89,10 +92,45 @@ export class LeftNavbar {
     usrname.innerText = profileData.username;
     profile.appendChild(avatar.element);
     profile.appendChild(usrname);
-    const icnbtn = new IconButton(menuIcon, 'submit');
+    const popup = new Glass(GlassType.lines);
+    popup.element.style.display = 'none';
+    profileContainer.appendChild(popup.element);
+    const icnbtn = new IconButton(menuIcon, 'button');
     icnbtn.element.classList.add('left-navbar__down_btn');
+    icnbtn.element.onclick = () => {
+      if (popup.element.style.display == 'none') {
+        popup.element.style.display = 'flex';
+      } else {
+        popup.element.style.display = 'none';
+      }
+    };
+    popup.element.style.display ='none';
+    popup.element.classList.add('left-navbar__down_popup');
+    const profileLink = new Button(ButtonType.outline, 'Профиль', 'button');
+    profileLink.element.classList.add('left-navbar__down_popup_btn');
+    profileLink.element.onclick = () => {
+      // TODO: переход на профиль
+    };
+    const change = new Button(ButtonType.outline, 'Изменить данные', 'button');
+    change.element.classList.add('left-navbar__down_popup_btn');
+    const popupEdit = new Popup(() => {
+      // TODO: функция валидации и отправки на сервер
+      return true;
+    });
+    change.element.onclick = () => {
+      popupEdit.element.style.display = 'flex';
+    };
+    document.getElementById('entry')?.appendChild(popupEdit.element);
+    const logout = new Button(ButtonType.outline, 'Выйти', 'button');
+    logout.element.classList.add('left-navbar__down_popup_btn');
+    logout.element.onclick = () => {
+      // TODO: вызов выхода
+    };
+    popup.element.appendChild(profileLink.element);
+    popup.element.appendChild(change.element);
+    popup.element.appendChild(logout.element);
     profile.appendChild(icnbtn.element);
     profileContainer.appendChild(profile);
-    this.element.appendChild(profileContainer);
+    glass.element.appendChild(profileContainer);
   }
 }

@@ -28,7 +28,10 @@ export class Sub {
    */
   constructor(data: Data) {
     const lvlImg = new Image(ImageType.sub, '96px', data.img);
-    const button = new Button(ButtonType.primary, 'Задонатить', 'submit');
+    const button = new Button(ButtonType.primary, 'Задонатить', 'button');
+    button.element.onclick = () => {
+      // TODO: попап с донатом
+    };
     const glass = new Glass(GlassType.mono);
     this.element = glass.element;
     this.element.classList.add('sub');
