@@ -2,19 +2,30 @@ import {IAction} from '@flux/types/actions';
 import {ActionType} from './action';
 import {PayloadLocation} from './routing';
 
-interface PayloadLogIn {
+interface PayloadLogInSuccess {
   id: number
 }
 
-export interface ActionLogIn extends IAction {
-  type: ActionType.LOGIN
+interface PayloadLogInFail {
+  usernameErr: null | string
+  passwordErr: null | string
+}
+
+export interface LogInForm extends HTMLCollection {
+  username: HTMLInputElement
+  password: HTMLInputElement
+}
+
+export interface ActionLogInSuccess extends IAction {
+  type: ActionType.LOGIN_SUCCESS
   payload: {
-    login: PayloadLogIn
+    login: PayloadLogInSuccess
     location: PayloadLocation
+    formStatus: PayloadLogInFail
   }
 }
 
-export interface LoginForm extends HTMLCollection {
-  username: HTMLInputElement
-  password: HTMLInputElement
+export interface ActionLogInFail extends IAction {
+  type: ActionType.LOGIN_FAIL
+  payload: PayloadLogInFail
 }

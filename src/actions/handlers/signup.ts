@@ -1,38 +1,42 @@
 import {ActionType} from '@actions/types/action';
 import {ResponseData} from '@api/ajax';
 import api from '@app/api';
-import {LogInForm} from '@actions/types/login';
 import router from '@app/router';
 import store from '@app/store';
+import {SignUpForm} from '@actions/types/signup';
 
-export default (props: LogInForm): void => {
+export default (props: SignUpForm): void => {
   // TODO валидация
-  api.loginUser(props.username.value, props.password.value)
+  api.signupUser(props.username.value, props.email.value, props.password.value)
       .then((res: ResponseData) => {
         switch (res.status) {
           case 200:
             store.dispatch({
-              type: ActionType.LOGIN_SUCCESS,
+              type: ActionType.SIGNUP_SUCCESS,
               payload: {
-                login: {
+                signup: {
                   id: res.body.id as number,
                 },
                 location: {
                   type: router.go('/feed'),
                 },
                 formStatus: {
+                  emailErr: null,
                   usernameErr: null,
                   passwordErr: null,
+                  passwordRepeatErr: null,
                 },
               },
             });
             break;
-          case 404:
+          case 405:
             store.dispatch({
-              type: ActionType.LOGIN_FAIL,
+              type: ActionType.SIGNUP_FAIL,
               payload: {
+                emailErr: 'Неверная почта',
                 usernameErr: 'Неверный псевдоним или пароль',
                 passwordErr: 'Неверный псевдоним или пароль',
+                passwordRepeatErr: null,
               },
             });
             break;

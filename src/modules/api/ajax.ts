@@ -86,7 +86,7 @@ export default async (
   } catch (error) {
     return {
       ok: false,
-      status: response.status,
+      status: 0,
       body: {
         error: error,
       },

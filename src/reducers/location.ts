@@ -6,7 +6,8 @@ const locationReducer: Reducer<Action> =
   (state: PropTree, action: Action): PropTree => {
     switch (action.type) {
       case ActionType.AUTH:
-      case ActionType.LOGIN:
+      case ActionType.LOGIN_SUCCESS:
+      case ActionType.SIGNUP_SUCCESS:
         return action.payload.location;
       case ActionType.ROUTING:
         return action.payload;
