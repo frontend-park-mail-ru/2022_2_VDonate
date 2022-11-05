@@ -6,9 +6,9 @@ interface PayloadLogInSuccess {
   id: number
 }
 
-interface PayloadLogInFail {
-  usernameErr: null | string
-  passwordErr: null | string
+export interface PayloadLogInErrors {
+  username: null | string
+  password: null | string
 }
 
 export interface LogInForm extends HTMLCollection {
@@ -21,11 +21,11 @@ export interface ActionLogInSuccess extends IAction {
   payload: {
     login: PayloadLogInSuccess
     location: PayloadLocation
-    formStatus: PayloadLogInFail
+    formErrors: PayloadLogInErrors
   }
 }
 
 export interface ActionLogInFail extends IAction {
   type: ActionType.LOGIN_FAIL
-  payload: PayloadLogInFail
+  payload: PayloadLogInErrors
 }

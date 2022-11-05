@@ -22,22 +22,26 @@
       background-size: cover
       opacity: 0.6
       border-radius: 20px
-  &__type
+  &__title
     font-36()
     color: color-font-light
-  &__greets
+  &__greeting
     font-21()
     color: color-font-light
   &__btn-area
     display: flex
     flex-direction: column
-    align-items: center
+    align-items: stretch
     padding: 0px
     gap: 15px
-    &_btn
-      width: 340px
-    &_link
-      font-16()
-      color: color-font-light
-      text-decoration: none
-      cursor: pointer
+  &__link
+    font-16()
+    color: color-font-light
+    text-decoration: none
+    align-self: center
+    cursor: pointer
+    &:hover
+      text-decoration: underline
+  &__inputs
+  &__submit
+    display: contents

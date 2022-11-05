@@ -4,9 +4,31 @@ import api from '@app/api';
 import router from '@app/router';
 import store from '@app/store';
 import {SignUpForm} from '@actions/types/signup';
+import {
+  emailCheck,
+  passwordCheck,
+  repeatPasswordCheck,
+  usernameCheck} from '@validation/validation';
 
 export default (props: SignUpForm): void => {
-  // TODO валидация
+  const emailErr = emailCheck(props.email.value);
+  const usernameErr = usernameCheck(props.username.value);
+  const passwordErr = passwordCheck(props.password.value);
+  const repeatPasswordErr = repeatPasswordCheck(
+      props.password.value,
+      props.repeatPassword.value);
+  if (emailErr || usernameErr || passwordErr || repeatPasswordErr) {
+    store.dispatch({
+      type: ActionType.SIGNUP_FAIL,
+      payload: {
+        email: emailErr,
+        username: usernameErr,
+        password: passwordErr,
+        repeatPassword: repeatPasswordErr,
+      },
+    });
+    return;
+  }
   api.signupUser(props.username.value, props.email.value, props.password.value)
       .then((res: ResponseData) => {
         switch (res.status) {
@@ -20,11 +42,11 @@ export default (props: SignUpForm): void => {
                 location: {
                   type: router.go('/feed'),
                 },
-                formStatus: {
-                  emailErr: null,
-                  usernameErr: null,
-                  passwordErr: null,
-                  passwordRepeatErr: null,
+                formErrors: {
+                  email: null,
+                  username: null,
+                  password: null,
+                  repeatPassword: null,
                 },
               },
             });
@@ -33,10 +55,10 @@ export default (props: SignUpForm): void => {
             store.dispatch({
               type: ActionType.SIGNUP_FAIL,
               payload: {
-                emailErr: 'Неверная почта',
-                usernameErr: 'Неверный псевдоним или пароль',
-                passwordErr: 'Неверный псевдоним или пароль',
-                passwordRepeatErr: null,
+                email: 'Неверная почта',
+                username: 'Неверный псевдоним или пароль',
+                password: 'Неверный псевдоним или пароль',
+                repeatPassword: null,
               },
             });
             break;

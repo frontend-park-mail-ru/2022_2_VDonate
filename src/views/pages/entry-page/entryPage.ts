@@ -1,8 +1,15 @@
 import store from '@app/store';
 import {IView} from '@flux/types/view';
 import {IObserver} from '@flux/types/observer';
-import {SignLog, SignLogType} from '@models/signlog/signlog';
 import './entryPage.styl';
+import {PayloadSignUpErrors} from '@actions/types/signup';
+import {SignUpModel} from '@models/signlog/signUpModel';
+import {LogInModel} from '@models/signlog/logInModel';
+/** Перечисление типов формы входа */
+export enum EntryFormType {
+  logIn,
+  signUp
+}
 /** Тип структорного представления страницы из компонентов */
 interface LoginModel {
   root: HTMLDivElement
@@ -13,7 +20,7 @@ interface LoginModel {
     }
     form: {
       el: HTMLDivElement
-      children: SignLog
+      children: LogInModel | SignUpModel
     }
   }
 }
@@ -21,11 +28,13 @@ interface LoginModel {
 export default class LoginPage implements IView, IObserver {
   /** Структорное представление страницы из компонентов */
   private page: LoginModel;
+  /** Сосотояние ошибок в форме */
+  private formErrors: PayloadSignUpErrors | undefined;
   /**
    * Конструктор
    * @param type - тип страницы входа
    */
-  constructor(type: SignLogType) {
+  constructor(type: EntryFormType) {
     const root = document.createElement('div');
     root.className = 'entry-page';
 
@@ -41,7 +50,14 @@ export default class LoginPage implements IView, IObserver {
     content.innerHTML = '<i>Тут Нужен Kонтент!</i>';
     contentArea.appendChild(content);
 
-    const form = new SignLog(type);
+    let form: LogInModel | SignUpModel;
+    switch (type) {
+      case EntryFormType.logIn:
+        form = new LogInModel();
+        break;
+      case EntryFormType.signUp:
+        form = new SignUpModel();
+    }
     formArea.appendChild(form.element);
 
     this.page = {
@@ -57,11 +73,16 @@ export default class LoginPage implements IView, IObserver {
         },
       },
     };
+    this.formErrors = store.getState().formErrors as PayloadSignUpErrors;
     store.registerObserver(this);
   }
   /** Оповещение об изменением хранилища */
   notify(): void {
-    this.rerender();
+    const formErrorsNew = store.getState().formErrors as PayloadSignUpErrors;
+    if (JSON.stringify(formErrorsNew) !== JSON.stringify(this.formErrors)) {
+      this.formErrors = formErrorsNew;
+      this.rerender();
+    }
   }
   /** Сброс страницы, отключение от хранилища */
   reset(): void {
@@ -76,5 +97,7 @@ export default class LoginPage implements IView, IObserver {
     return this.page.root;
   }
   /** Перерисовка страницы по текущему состоянию хранилища */
-  rerender(): void {}// eslint-disable-line @typescript-eslint/no-empty-function
+  rerender(): void {
+    console.warn(this.formErrors);
+  }
 }

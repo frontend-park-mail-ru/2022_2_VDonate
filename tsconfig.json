@@ -33,6 +33,9 @@
       "@api/*": [
         "src/modules/api/*"
       ],
+      "@validation/*": [
+        "src/modules/validation/*"
+      ],
       "@reducers/*": [
         "src/reducers/*"
       ],

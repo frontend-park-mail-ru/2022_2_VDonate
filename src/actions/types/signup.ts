@@ -6,18 +6,18 @@ interface PayloadSignUpSuccess {
   id: number
 }
 
-interface PayloadSignUpFail {
-  emailErr: null | string
-  usernameErr: null | string
-  passwordErr: null | string
-  passwordRepeatErr: null | string
+export interface PayloadSignUpErrors {
+  email: null | string
+  username: null | string
+  password: null | string
+  repeatPassword: null | string
 }
 
 export interface SignUpForm extends HTMLCollection {
   email: HTMLInputElement
   username: HTMLInputElement
   password: HTMLInputElement
-  passwordRepeat: HTMLInputElement
+  repeatPassword: HTMLInputElement
 }
 
 export interface ActionSignUpSuccess extends IAction {
@@ -25,11 +25,11 @@ export interface ActionSignUpSuccess extends IAction {
   payload: {
     signup: PayloadSignUpSuccess
     location: PayloadLocation
-    formStatus: PayloadSignUpFail
+    formErrors: PayloadSignUpErrors
   }
 }
 
 export interface ActionSignUpFail extends IAction {
   type: ActionType.SIGNUP_FAIL
-  payload: PayloadSignUpFail
+  payload: PayloadSignUpErrors
 }
