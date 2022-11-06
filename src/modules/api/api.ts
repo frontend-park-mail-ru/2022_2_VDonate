@@ -83,4 +83,32 @@ export default class Api {
   getAllPosts(id: number): Promise<ResponseData> {
     return this.request(`/posts?user_id=${id}`, Method.GET);
   }
+
+  /**
+     * интерфейс для получения подписчиков автора с id
+     * @param id id автора
+     * @return объект ответа с полями {ok,status,body}
+     */
+  getSubscribers(id: number): Promise<ResponseData> {
+    return this.request(`/subscribers/${id}`, Method.GET);
+  }
+
+  /**
+     * интерфейс для получения подписок пользователя с id
+     * @param id id автора
+     * @return объект ответа с полями {ok,status,body}
+     */
+  getSubscritions(id: number): Promise<ResponseData> {
+    // TODO в свагере без id, хз как надо
+    return this.request(`/subscriptions/${id}`, Method.GET);
+  }
+
+  /**
+   * интерфейс для получения авторских подписок с id
+   * @param id id автора
+   * @return объект ответа с полями {ok,status,body}
+   */
+  getAuthorSubscritions(id: number): Promise<ResponseData> {
+    return this.request(`/author/subscriptions/${id}`, Method.GET);
+  }
 }

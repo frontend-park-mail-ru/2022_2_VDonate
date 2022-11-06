@@ -7,46 +7,47 @@ import {IconButton} from '@components/icon_button/icon_button';
 import {Popup} from '../../popup/left_navbar/popup';
 import {Button, ButtonType} from '@components/button/button';
 import menuIcon from '@icon/menu.svg';
+import store from '@app/store';
+import {IObserver} from '@flux/types/observer';
+import {PayloadGetProfileData} from '@actions/types/getProfileData';
+import getProfile from '@actions/handlers/getProfileData';
 
-interface Link {
-    icon: string,
-    text: string,
-    choosen: boolean,
-    href: string,
-}
-
-interface Sub {
-  img: string,
-  username: string,
-  id: string,
-}
-
-interface Profile {
-  img: string,
-  username: string,
-  id: string,
-  is_author: boolean,
-}
+const links = [
+  {
+    icon: menuIcon,
+    text: 'Лента',
+    link: '/feed',
+  },
+  {
+    icon: menuIcon,
+    text: 'Поиск',
+    link: '/search',
+  },
+  {
+    icon: menuIcon,
+    text: 'Подписки',
+    link: '/subsriptions',
+  },
+];
 
 /**
  * Модель левого навбара
  */
-export class LeftNavbar {
+export class LeftNavbar implements IObserver {
   /**
    * Актуальный контейнер левого навбара
    */
   readonly element: HTMLElement;
 
+  private subsList: HTMLElement;
+  private profile: HTMLElement;
+  private user: PayloadGetProfileData['profile'] | undefined;
+  private subs: PayloadGetProfileData['subscriptions'] | undefined;
+  private navbarUnits: NavbarUnit[] = [];
   /**
-   * @param links ссылки
-   * @param subs подписки
-   * @param profileData линый профиль
+   * Конструктор
    */
-  constructor(
-      links: Link[],
-      subs: Sub[],
-      profileData: Profile,
-  ) {
+  constructor() {
     this.element = document.createElement('div');
     this.element.classList.add('left-navbar');
     const glass = new Glass(GlassType.mono);
@@ -55,43 +56,23 @@ export class LeftNavbar {
     const logo = new Logo();
     logo.element.classList.add('left-navbar__logo');
     const linkes = document.createElement('div');
-    links.forEach(({icon, text, choosen, href}) => {
+    links.forEach(({icon, text, link}) => {
       const item =
-          new NavbarUnit(icon, text, choosen, href, OrientType.left);
+          new NavbarUnit(icon, text, link, OrientType.left);
       linkes.appendChild(item.element);
+      this.navbarUnits.push(item);
     });
     glass.element.appendChild(logo.element);
     glass.element.appendChild(linkes);
     glass.element.innerHTML += '<hr>';
-    const subsList = document.createElement('div');
-    subsList.classList.add('left-navbar__subs-list');
-    subs.forEach(({img, username, id}) => {
-      const sub = document.createElement('a');
-      sub.setAttribute('href', `/profile?id=${id}`);
-      sub.setAttribute('data-link', '');
-      sub.classList.add('left-navbar__sub');
-      const avatar = new Image(ImageType.author, '30px', img);
-      const usrname = document.createElement('span');
-      usrname.innerText = username;
-      sub.appendChild(avatar.element);
-      sub.appendChild(usrname);
-      subsList.appendChild(sub);
-    });
-    glass.element.appendChild(subsList);
+    this.subsList = document.createElement('div');
+    this.subsList.classList.add('left-navbar__subs-list');
+    glass.element.appendChild(this.subsList);
     const profileContainer = document.createElement('div');
     profileContainer.classList.add('left-navbar__down');
     profileContainer.innerHTML += '<hr>';
-    const profile = document.createElement('div');
-    profile.classList.add('left-navbar__down_profile');
-    const avatar = new Image(
-      profileData.is_author ? ImageType.author : ImageType.donater,
-      '50px',
-      profileData.img,
-    );
-    const usrname = document.createElement('span');
-    usrname.innerText = profileData.username;
-    profile.appendChild(avatar.element);
-    profile.appendChild(usrname);
+    this.profile = document.createElement('div');
+    this.profile.classList.add('left-navbar__down_profile');
     const popup = new Glass(GlassType.lines);
     popup.element.style.display = 'none';
     profileContainer.appendChild(popup.element);
@@ -129,8 +110,92 @@ export class LeftNavbar {
     popup.element.appendChild(profileLink.element);
     popup.element.appendChild(change.element);
     popup.element.appendChild(logout.element);
-    profile.appendChild(icnbtn.element);
-    profileContainer.appendChild(profile);
+    this.profile.appendChild(icnbtn.element);
+    profileContainer.appendChild(this.profile);
     glass.element.appendChild(profileContainer);
+    store.registerObserver(this);
+    this.renderLocation();
+    getProfile(1);
+  }
+
+  /**
+   * рендер подписок
+   */
+  renderSubs() {
+    this.subs?.forEach(({img, title}) => {
+      const sub = document.createElement('a');
+      // sub.setAttribute('href', `/profile?id=${id}`);
+      // sub.setAttribute('data-link', '');
+      sub.classList.add('left-navbar__sub');
+      const avatar = new Image(ImageType.author, '30px', img);
+      const usrname = document.createElement('span');
+      usrname.innerText = title;
+      sub.appendChild(avatar.element);
+      sub.appendChild(usrname);
+      this.subsList.appendChild(sub);
+    });
+  }
+
+  /**
+   * рендер профиля
+   */
+  renderProfile() {
+    if (!this.user) {
+      return;
+    }
+    const avatar = new Image(
+      this.user.is_author ? ImageType.author : ImageType.donater,
+      '50px',
+      this.user.avatar,
+    );
+    const usrname = document.createElement('span');
+    usrname.innerText = this.user.username;
+    this.profile.prepend(avatar.element, usrname);
+  }
+
+  /**
+   * рендер выбора локации
+   */
+  renderLocation() {
+    this.navbarUnits.forEach((navbarUnit: NavbarUnit) =>{
+      navbarUnit.setSelect(
+          navbarUnit.element.getAttribute('href') ==
+          location.href,
+      );
+    });
+  }
+  // /**
+  //  * функция рендера
+  //  */
+  // render() {
+  //   this.renderLocation();
+  //   const newProfile =
+  //   store.getState().profile as PayloadGetProfileData;
+  //   if (JSON.stringify(newProfile.profile) !== JSON.stringify(this.user)) {
+  //     this.user = newProfile.profile;
+  //     this.renderProfile();
+  //   }
+  //   if (
+  //     JSON.stringify(newProfile.subscriptions) !== JSON.stringify(this.subs)
+  //   ) {
+  //     this.subs = newProfile.subscriptions;
+  //     this.renderSubs();
+  //   }
+  // }
+  /** Callback метод обновления хранилища */
+  notify(): void {
+    this.renderLocation();
+    const newProfile =
+    store.getState().profile as PayloadGetProfileData;
+    if (JSON.stringify(newProfile.profile) !== JSON.stringify(this.user)) {
+      this.user = newProfile.profile;
+      this.renderProfile();
+    }
+    if (
+      JSON.stringify(newProfile.subscriptions) !== JSON.stringify(this.subs)
+    ) {
+      this.subs = newProfile.subscriptions;
+      this.renderSubs();
+    }
   }
 }

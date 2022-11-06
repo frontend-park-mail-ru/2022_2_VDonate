@@ -17,7 +17,7 @@ export default (props: LoginForm): void => {
                 id: res.body.id as number,
               },
               location: {
-                type: router.go('/feed'),
+                type: router.go('/profile?id=1'),
               },
             },
           });

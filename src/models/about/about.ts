@@ -3,20 +3,25 @@ import {IconButton} from '@components/icon_button/icon_button';
 import {Popup} from '../popup/post_and_about/popup';
 import './about.styl';
 import redactIcn from '@icon/redact.svg';
+import store from '@app/store';
+import {IObserver} from '@flux/types/observer';
+import {PayloadGetProfileData} from '@actions/types/getProfileData';
+
 /**
  * Модель поля 'Обо мне'
  */
-export class About {
+export class About implements IObserver {
   /**
    * Актуальный контейнер
    */
   readonly element: HTMLElement;
 
+  private about: HTMLElement;
+  private textAbout = '';
   /**
-   * @param data текст об авторе
    * @param changeable возможность изменять текст
    */
-  constructor(data: string, changeable: boolean) {
+  constructor(changeable: boolean) {
     const glass = new Glass(GlassType.mono);
     this.element = glass.element;
     this.element.classList.add('about');
@@ -30,7 +35,7 @@ export class About {
       // TODO: вызвать изменение вместо пустой фунции
       const popup = new Popup(
           'Обо мне',
-          data,
+          '', // TODO потом придумать что с этим сделать
           () => {
             // TODO: вызвать изменение вместо пустой фунции
             return true;
@@ -40,10 +45,30 @@ export class About {
       };
       document.getElementById('entry')?.appendChild(popup.element);
     }
-    const about = document.createElement('div');
-    about.classList.add('about__text');
-    about.innerHTML = data;
+    this.about = document.createElement('div');
+    this.about.classList.add('about__text');
     this.element.appendChild(head);
-    this.element.appendChild(about);
+    this.element.appendChild(this.about);
+    store.registerObserver(this);
+  }
+
+  /**
+   * set text
+   */
+  setText() {
+    if (this.textAbout !== '') {
+      this.about.innerHTML = this.textAbout;
+    } else {
+      this.about.innerHTML = 'Пользователь пока что не расказал о себе';
+    }
+  }
+
+  /** Callback метод обновления хранилища */
+  notify(): void {
+    const profileStore = store.getState().profile as PayloadGetProfileData;
+    if (profileStore.profile.about != this.textAbout) {
+      this.textAbout = profileStore.profile.about;
+      this.setText();
+    }
   }
 }

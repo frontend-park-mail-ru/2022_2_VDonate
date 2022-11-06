@@ -7,6 +7,9 @@ import {IView} from '@flux/types/view';
 import PreloadPage from './pages/preloadPage';
 import LoginPage from './pages/loginPage';
 import NotFoundPage from './pages/notFoundPage';
+import ProfilePage from './pages/profilePage';
+import {LeftNavbar} from '@models/navbar/left/left_navbar';
+import getProfile from '@actions/handlers/getProfileData';
 
 /** Класс корневой вьюшки */
 export default class Root implements IView, IObserver {
@@ -16,6 +19,8 @@ export default class Root implements IView, IObserver {
   private currentPage: IView | undefined;
   /** Элемент, к которому необходимо присоеденить страницу */
   readonly rootElement: HTMLElement;
+  /** элемент левого навбара */
+  private navbar: LeftNavbar;
   /**
    * Конструктор
    * @param rootElement - корневой элемент для вставки страницы
@@ -23,6 +28,8 @@ export default class Root implements IView, IObserver {
   constructor(rootElement: HTMLElement) {
     this.rootElement = rootElement;
     this.location = store.getState().location as PayloadLocation;
+    this.navbar = new LeftNavbar();
+    rootElement.appendChild(this.navbar.element);
     rootElement.appendChild(this.render());
     store.registerObserver(this);
     auth();
@@ -59,6 +66,9 @@ export default class Root implements IView, IObserver {
       case Pages.SIGNUP:
       case Pages.LOGOUT:
       case Pages.PROFILE:
+        getProfile(1);
+        this.currentPage = new ProfilePage();
+        return this.currentPage.render();
       case Pages.SEARCH:
       case Pages.FEED:
       case Pages.NOT_FOUND:

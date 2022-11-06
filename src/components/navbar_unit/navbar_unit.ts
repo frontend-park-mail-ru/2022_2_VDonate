@@ -18,14 +18,12 @@ export class NavbarUnit {
   /**
    * @param icon иконка
    * @param text текст
-   * @param choosen индикатор выбора
    * @param href ссылка
    * @param orientation расположение
    */
   constructor(
       icon: string,
       text: string,
-      choosen: boolean,
       href: string,
       orientation: OrientType,
   ) {
@@ -33,9 +31,6 @@ export class NavbarUnit {
     this.element.setAttribute('href', href);
     this.element.setAttribute('data-link', '');
     this.element.classList.add('navbar-unit');
-    if (choosen) {
-      this.element.classList.add('navbar-unit__choosen');
-    }
     switch (orientation) {
       case OrientType.left:
         this.element.classList.add('navbar-unit__left');
@@ -54,5 +49,15 @@ export class NavbarUnit {
     context.innerText = text;
     this.element.appendChild(ico);
     this.element.appendChild(context);
+  }
+  /**
+   * @param selected флаг выбора
+   */
+  setSelect(selected: boolean) {
+    if (selected) {
+      this.element.classList.add('navbar-unit__choosen');
+    } else {
+      this.element.classList.remove('navbar-unit__choosen');
+    }
   }
 }

@@ -32,7 +32,6 @@ export class Sub {
     const button = new Button(ButtonType.primary, 'Задонатить', 'button');
     const glass = new Glass(GlassType.mono);
     this.element = glass.element;
-    this.element.classList.add('sub');
     this.element.innerHTML = subHbs({
       id: data.id,
       subName: data.subName,

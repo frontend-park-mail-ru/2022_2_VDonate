@@ -1,4 +1,5 @@
 import {ActionAuth} from './auth';
+import {ActionGetProfileData} from './getProfileData';
 import {ActionLogIn} from './login';
 import {ActionNotice} from './notice';
 import {ActionRouting} from './routing';
@@ -6,6 +7,7 @@ import {ActionRouting} from './routing';
 export enum ActionType {
   LOGIN,
   AUTH,
+  GETPROFILEDATA,
   NOTICE,
   ROUTING,
 }
@@ -13,5 +15,6 @@ export enum ActionType {
 export type Action =
   | ActionLogIn
   | ActionAuth
+  | ActionGetProfileData
   | ActionNotice
   | ActionRouting;
