@@ -1,5 +1,5 @@
-import signup from '@actions/handlers/signup';
-import {PayloadSignUpErrors, SignUpForm} from '@actions/types/signup';
+import {signup, SignUpForm} from '@actions/handlers/user';
+import {PayloadSignUpErrors} from '@actions/types/user';
 import store from '@app/store';
 import {Button, ButtonType} from '@components/button/button';
 import {Input, InputType} from '@components/input/input';

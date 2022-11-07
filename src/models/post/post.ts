@@ -33,7 +33,6 @@ export class Post {
   /**
    * @param context данные для генерации поста
    */
-
   constructor(context: PostContext) {
     const avatarImg = new Image(ImageType.author, context.author.img);
     avatarImg.element.classList.add('post__img');

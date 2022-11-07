@@ -11,8 +11,8 @@ import store from '@app/store';
 import {IObserver} from '@flux/types/observer';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
 import getProfile from '@actions/handlers/getProfileData';
-import {PayloadAuth} from '@actions/types/auth';
 import routing from '@actions/handlers/routing';
+import {PayloadUser} from '@actions/types/user';
 
 
 const links = [
@@ -93,7 +93,7 @@ export class LeftNavbar implements IObserver {
     const profileLink = new Button(ButtonType.outline, 'Профиль', 'button');
     profileLink.element.classList.add('left-navbar__down_popup_btn');
     profileLink.element.onclick = () => {
-      const user = store.getState().user as PayloadAuth;
+      const user = store.getState().user as PayloadUser;
       routing(`/profile?id=${user.id}`);
     };
     const change = new Button(ButtonType.outline, 'Изменить данные', 'button');

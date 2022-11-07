@@ -2,7 +2,7 @@ import {Glass, GlassType} from '@components/glass/glass';
 import {IconButton} from '@components/icon_button/icon_button';
 import {Popup} from '../popup/post_and_about/popup';
 import './about.styl';
-import redactIcn from '@icon/redact.svg';
+import editIcn from '@icon/edit.svg';
 import store from '@app/store';
 import {IObserver} from '@flux/types/observer';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
@@ -29,7 +29,7 @@ export class About implements IObserver {
     head.classList.add('about__head');
     head.innerText = 'Обо мне';
     if (changeable) {
-      const redactBtn = new IconButton(redactIcn, 'button');
+      const redactBtn = new IconButton(editIcn, 'button');
       redactBtn.element.classList.add('about__head_btn');
       head.appendChild(redactBtn.element);
       // TODO: вызвать изменение вместо пустой фунции

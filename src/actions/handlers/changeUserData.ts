@@ -3,7 +3,7 @@ import {ResponseData} from '@api/ajax';
 import {ActionType} from '@actions/types/action';
 import store from '@app/store';
 import {ChangeUserDataForm} from '@actions/types/changeUserData';
-import {PayloadAuth} from '@actions/types/auth';
+import {PayloadUser} from '@actions/types/user';
 
 export default (props: ChangeUserDataForm): void => {
   if (props.password !== props.password) {
@@ -16,7 +16,7 @@ export default (props: ChangeUserDataForm): void => {
     });
     return;
   }
-  const user = store.getState().user as PayloadAuth;
+  const user = store.getState().user as PayloadUser;
   api.putUserData(
       Number(user.id),
       props.username.value,

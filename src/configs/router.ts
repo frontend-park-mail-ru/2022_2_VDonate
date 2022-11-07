@@ -3,7 +3,6 @@ export enum Pages {
   NOT_FOUND,
   LOGIN,
   SIGNUP,
-  LOGOUT,
   PROFILE,
   SEARCH,
   FEED,

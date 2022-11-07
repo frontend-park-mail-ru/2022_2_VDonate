@@ -100,7 +100,7 @@ export default class Api {
      * @return объект ответа с полями {ok,status,body}
      */
   getSubscribers(id: number): Promise<ResponseData> {
-    return this.request(`/subscribers/${id}`, Method.GET);
+    return this.request(`/subscribers/${id}`, Method.GET, ContentType.json);
   }
 
   /**
@@ -110,7 +110,7 @@ export default class Api {
      */
   getSubscritions(id: number): Promise<ResponseData> {
     // TODO в свагере без id, хз как надо
-    return this.request(`/subscriptions/${id}`, Method.GET);
+    return this.request(`/subscriptions/${id}`, Method.GET, ContentType.json);
   }
 
   /**
@@ -119,7 +119,10 @@ export default class Api {
    * @return объект ответа с полями {ok,status,body}
    */
   getAuthorSubscritions(id: number): Promise<ResponseData> {
-    return this.request(`/author/subscriptions/${id}`, Method.GET);
+    return this.request(
+        `/author/subscriptions/${id}`,
+        Method.GET, ContentType.json,
+    );
   }
 
   /**
@@ -136,7 +139,7 @@ export default class Api {
       email: string,
       password: string,
   ): Promise<ResponseData> {
-    return this.request(`/users/${id}`, Method.PUT, {
+    return this.request(`/users/${id}`, Method.PUT, ContentType.formData, {
       id,
       email,
       password,
@@ -152,7 +155,7 @@ export default class Api {
   subscribe(
       authorID: number, authorSubscriptionID: number,
   ): Promise<ResponseData> {
-    return this.request('/subscribers', Method.POST, {
+    return this.request('/subscribers', Method.POST, ContentType.json, {
       authorID,
       authorSubscriptionID,
     });

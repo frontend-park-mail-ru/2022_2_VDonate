@@ -1,4 +1,3 @@
-import auth from '@actions/handlers/auth';
 import {PayloadLocation} from '@actions/types/routing';
 import store from '@app/store';
 import {Pages} from '@configs/router';
@@ -11,6 +10,7 @@ import FeedPage from './pages/feed-page/feedPage';
 import {PayloadNotice} from '@actions/types/notice';
 import ProfilePage from './pages/profilePage';
 import {LeftNavbar} from '@models/navbar/left/left_navbar';
+import {auth} from '@actions/handlers/user';
 
 /** Класс корневой вьюшки */
 export default class Root implements IView, IObserver {
@@ -69,6 +69,7 @@ export default class Root implements IView, IObserver {
     this.reset();
     switch (this.location.type) {
       case Pages.PRELOAD:
+        this.navbar.hideNavbar();
         this.currentPage = new PreloadPage();
         return this.currentPage.render();
       case Pages.LOGIN:
@@ -76,12 +77,13 @@ export default class Root implements IView, IObserver {
         this.currentPage = new EntryPage(EntryFormType.logIn);
         return this.currentPage.render();
       case Pages.SIGNUP:
+        this.navbar.hideNavbar();
         this.currentPage = new EntryPage(EntryFormType.signUp);
         return this.currentPage.render();
       case Pages.FEED:
+        this.navbar.showNavbar();
         this.currentPage = new FeedPage();
         return this.currentPage.render();
-      case Pages.LOGOUT:
       case Pages.PROFILE:
         this.navbar.showNavbar();
         this.currentPage = new ProfilePage();

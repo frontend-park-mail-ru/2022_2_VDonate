@@ -2,9 +2,9 @@ import store from '@app/store';
 import {IView} from '@flux/types/view';
 import {IObserver} from '@flux/types/observer';
 import './entryPage.styl';
-import {PayloadSignUpErrors} from '@actions/types/signup';
 import {SignUpModel} from '@models/signlog/signUpModel';
 import {LogInModel} from '@models/signlog/logInModel';
+import {PayloadSignUpErrors} from '@actions/types/user';
 /** Перечисление типов формы входа */
 export enum EntryFormType {
   logIn,

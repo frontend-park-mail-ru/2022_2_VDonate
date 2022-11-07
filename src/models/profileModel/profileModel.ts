@@ -1,5 +1,4 @@
 import getProfileData from '@actions/handlers/getProfileData';
-import {PayloadAuth} from '@actions/types/auth';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
 import store from '@app/store';
 import {Glass, GlassType} from '@components/glass/glass';
@@ -18,21 +17,17 @@ export class ProfileModel {
    */
   readonly element: HTMLElement;
 
-  /** конструктор
+  /**
+   * конструктор
+   * @param changeable ff
   */
-  constructor() {
+  constructor(changeable: boolean) {
     this.element = document.createElement('div');
     this.element.classList.add('content');
-    const user = store.getState().user as PayloadAuth;
     const profile = store.getState().profile as PayloadGetProfileData;
-    const locId = new URL(location.href).searchParams.get('id');
     if (profile.profile?.is_author) {
-      const subContainer = new SubContainer(
-          user.id.toString() == locId,
-      );
-      const about = new About(
-          user.id.toString() == locId,
-      );
+      const subContainer = new SubContainer(changeable);
+      const about = new About(changeable);
       this.element.appendChild(subContainer.element);
       this.element.appendChild(about.element);
     } else {

@@ -2,6 +2,7 @@ import store from '@app/store';
 import {IView} from '@flux/types/view';
 import {IObserver} from '@flux/types/observer';
 import {ProfileModel} from '@models/profileModel/profileModel';
+import {PayloadUser} from '@actions/types/user';
 
 /** Реализация интерфейса *IView* для страницы профиля */
 export default class ProfilePage implements IView, IObserver {
@@ -9,7 +10,11 @@ export default class ProfilePage implements IView, IObserver {
   private components: ProfileModel;
   /** Конструктор */
   constructor() {
-    this.components = new ProfileModel();
+    const user = store.getState().user as PayloadUser;
+    const locId = new URL(location.href).searchParams.get('id');
+    this.components = new ProfileModel(
+        user.id.toString() == locId,
+    );
     store.registerObserver(this);
   }
   /** Оповещение об изменением хранилища */

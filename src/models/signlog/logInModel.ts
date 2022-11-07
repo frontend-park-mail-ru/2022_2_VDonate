@@ -1,5 +1,5 @@
-import login from '@actions/handlers/login';
-import {LogInForm, PayloadLogInErrors} from '@actions/types/login';
+import {login, LogInForm} from '@actions/handlers/user';
+import {PayloadLogInErrors} from '@actions/types/user';
 import store from '@app/store';
 import {Button, ButtonType} from '@components/button/button';
 import {Input, InputType} from '@components/input/input';
