@@ -10,7 +10,6 @@ import menuIcon from '@icon/menu.svg';
 import store from '@app/store';
 import {IObserver} from '@flux/types/observer';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
-import getProfile from '@actions/handlers/getProfileData';
 import routing from '@actions/handlers/routing';
 import {PayloadUser} from '@actions/types/user';
 
@@ -44,7 +43,7 @@ export class LeftNavbar implements IObserver {
 
   private subsList: HTMLElement;
   private profile: HTMLElement;
-  private user: PayloadGetProfileData['profile'] | undefined;
+  private user: PayloadUser | undefined;
   private subs: PayloadGetProfileData['subscriptions'] | undefined;
   private navbarUnits: NavbarUnit[] = [];
   /**
@@ -114,9 +113,8 @@ export class LeftNavbar implements IObserver {
     profileContainer.appendChild(icnbtn.element);
     profileContainer.appendChild(this.profile);
     glass.element.appendChild(profileContainer);
-    store.registerObserver(this);
     this.renderLocation();
-    getProfile(Number(new URL(location.href).searchParams.get('id')));
+    store.registerObserver(this);
   }
 
   /**
@@ -148,7 +146,7 @@ export class LeftNavbar implements IObserver {
     }
     this.profile.innerHTML = '';
     const avatar = new Image(
-      this.user.is_author ? ImageType.author : ImageType.donater,
+      this.user.isAuthor ? ImageType.author : ImageType.donater,
       this.user.avatar,
     );
     avatar.element.classList.add('left-navbar__down_profile_img');
@@ -179,17 +177,18 @@ export class LeftNavbar implements IObserver {
   /** Callback метод обновления хранилища */
   notify(): void {
     this.renderLocation();
-    const newProfile =
-    store.getState().profile as PayloadGetProfileData;
-    if (JSON.stringify(newProfile.profile) !== JSON.stringify(this.user)) {
-      this.user = newProfile.profile;
+    const newUser =
+      store.getState().user as PayloadUser;
+    if (JSON.stringify(newUser) !== JSON.stringify(this.user)) {
+      this.user = newUser;
       this.renderProfile();
     }
-    if (
-      JSON.stringify(newProfile.subscriptions) !== JSON.stringify(this.subs)
-    ) {
-      this.subs = newProfile.subscriptions;
-      this.renderSubs();
-    }
+    // TODO вызов среза подписок
+    // if (
+    //   JSON.stringify(newProfile.subscriptions) !== JSON.stringify(this.subs)
+    // ) {
+    //   this.subs = newProfile.subscriptions;
+    //   this.renderSubs();
+    // }
   }
 }

@@ -3,6 +3,7 @@ import {IView} from '@flux/types/view';
 import {IObserver} from '@flux/types/observer';
 import {ProfileModel} from '@models/profileModel/profileModel';
 import {PayloadUser} from '@actions/types/user';
+import getProfile from '@actions/handlers/getProfileData';
 
 /** Реализация интерфейса *IView* для страницы профиля */
 export default class ProfilePage implements IView, IObserver {
@@ -10,6 +11,7 @@ export default class ProfilePage implements IView, IObserver {
   private components: ProfileModel;
   /** Конструктор */
   constructor() {
+    getProfile(Number(new URL(location.href).searchParams.get('id')));
     const user = store.getState().user as PayloadUser;
     const locId = new URL(location.href).searchParams.get('id');
     this.components = new ProfileModel(

@@ -19,7 +19,7 @@ export class ProfileModel {
 
   /**
    * конструктор
-   * @param changeable ff
+   * @param changeable флаг возможности изменять данные
   */
   constructor(changeable: boolean) {
     this.element = document.createElement('div');
