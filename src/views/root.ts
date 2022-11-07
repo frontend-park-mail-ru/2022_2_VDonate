@@ -7,6 +7,8 @@ import {IView} from '@flux/types/view';
 import PreloadPage from './pages/preloadPage';
 import EntryPage, {EntryFormType} from './pages/entry-page/entryPage';
 import NotFoundPage from './pages/notFoundPage';
+import FeedPage from './pages/feed-page/feedPage';
+import {PayloadNotice} from '@actions/types/notice';
 import ProfilePage from './pages/profilePage';
 import {LeftNavbar} from '@models/navbar/left/left_navbar';
 
@@ -14,6 +16,7 @@ import {LeftNavbar} from '@models/navbar/left/left_navbar';
 export default class Root implements IView, IObserver {
   /** Состояния расположения в приложении */
   private location: PayloadLocation;
+  private notice: PayloadNotice;
   /** Отображаемая страница */
   private currentPage: IView | undefined;
   /** Элемент, к которому необходимо присоеденить страницу */
@@ -26,7 +29,9 @@ export default class Root implements IView, IObserver {
    */
   constructor(rootElement: HTMLElement) {
     this.rootElement = rootElement;
-    this.location = store.getState().location as PayloadLocation;
+    const state = store.getState();
+    this.location = state.location as PayloadLocation;
+    this.notice = state.notice as PayloadNotice;
     this.navbar = new LeftNavbar();
     rootElement.appendChild(this.navbar.element);
     rootElement.appendChild(this.render());
@@ -35,7 +40,14 @@ export default class Root implements IView, IObserver {
   }
   /** Оповещение об изменением хранилища */
   notify(): void {
-    const locationNew = store.getState().location as PayloadLocation;
+    const state = store.getState();
+    const locationNew = state.location as PayloadLocation;
+
+    this.notice = state.notice as PayloadNotice;
+    if (this.notice.message) {
+      console.warn(this.notice.message);
+    }
+
     if (JSON.stringify(locationNew) !== JSON.stringify(this.location)) {
       this.location = locationNew;
       this.rootElement.appendChild(this.render());
@@ -66,13 +78,15 @@ export default class Root implements IView, IObserver {
       case Pages.SIGNUP:
         this.currentPage = new EntryPage(EntryFormType.signUp);
         return this.currentPage.render();
+      case Pages.FEED:
+        this.currentPage = new FeedPage();
+        return this.currentPage.render();
       case Pages.LOGOUT:
       case Pages.PROFILE:
         this.navbar.showNavbar();
         this.currentPage = new ProfilePage();
         return this.currentPage.render();
       case Pages.SEARCH:
-      case Pages.FEED:
       case Pages.NOT_FOUND:
         this.currentPage = new NotFoundPage();
         return this.currentPage.render();

@@ -2,7 +2,7 @@ import {IAction} from '@flux/types/actions';
 import {ActionType} from './action';
 
 export interface PayloadNotice {
-  message: string
+  message: string | null
 }
 
 export interface ActionNotice extends IAction {

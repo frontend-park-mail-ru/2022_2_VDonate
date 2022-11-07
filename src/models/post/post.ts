@@ -1,24 +1,24 @@
 import {ReactButton, ReactType} from '@components/reaction/reaction';
-import {Glass, GlassType} from '@components/glass/glass';
 import {Image, ImageType} from '@components/image/image';
 import {IconButton} from '@components/icon_button/icon_button';
 import {Popup} from '../popup/post_and_about/popup';
-import postHbs from './post.hbs';
-import redactIcn from '@icon/redact.svg';
+import template from './post.hbs';
+import editIcon from '@icon/edit.svg';
 import './post.styl';
+import store from '@app/store';
 
-interface Data {
-  post_id: string,
+interface PostContext {
+  postID: number,
   author: {
+    id: number,
     img: string,
     username: string,
   },
-  date: string,
+  date: Date,
   content: string,
-  likeCount: string,
-  like: boolean,
-  commentCount: string,
-  changeable: boolean,
+  likeCount: number,
+  isLikedByMe: boolean,
+  commentCount: number,
 }
 
 /**
@@ -31,55 +31,60 @@ export class Post {
   readonly element: HTMLElement;
 
   /**
-   * @param data данные для генерации поста
+   * @param context данные для генерации поста
    */
-  constructor(data: Data) {
-    const avatarImg = new Image(ImageType.author, data.author.img);
+
+  constructor(context: PostContext) {
+    const avatarImg = new Image(ImageType.author, context.author.img);
     avatarImg.element.classList.add('post__img');
     const like = new ReactButton(
         ReactType.likes,
-        data.likeCount,
+        context.likeCount.toString(),
         'button',
-        data.like);
+        context.isLikedByMe);
 
-    like.element.onclick = () => {
-      // TODO: вызов лайка
-    };
+    like.element.addEventListener('click',
+        () => {
+          // TODO экшен на лайки
+        });
 
     const comment = new ReactButton(
         ReactType.comments,
-        data.commentCount,
+        context.commentCount.toString(),
         'button', false);
+    comment.element.addEventListener('click',
+        () => {
+          // TODO экшен на открытие комментариев
+        });
 
-    const glass = new Glass(GlassType.mono);
-    this.element = glass.element;
-    this.element.classList.add('post');
-    this.element.innerHTML = postHbs({
-      id: data.post_id,
-      avatarImg: avatarImg.element.outerHTML,
-      username: data.author.username,
-      date: data.date,
-      content: data.content,
-      likes: like.element.outerHTML,
-      comments: comment.element.outerHTML,
+    const post = document.createElement('div');
+
+    post.classList.add('post', 'post__back');
+    post.innerHTML = template({
+      username: context.author.username,
+      date: context.date.toDateString(),
+      content: context.content,
     });
-    if (data.changeable) {
-      this.element.getElementsByClassName('post__head');
-      const head = this.element.getElementsByClassName('post__head');
-      const redactBtn = new IconButton(redactIcn, 'button');
-      redactBtn.element.classList.add('post__head_btn');
-      head[0].appendChild(redactBtn.element);
+    post.querySelector('.post__author-avatar')?.appendChild(avatarImg.element);
+    post.querySelector('.post__reaction')
+        ?.append(like.element, comment.element);
+    if ((store.getState().user as {id: number}).id === context.author.id) {
+      const editBtn = new IconButton(editIcon, 'button');
+      editBtn.element.classList.add('post__head_btn');
+      post.querySelector('post__head')?.appendChild(editBtn.element);
       const popup = new Popup(
           'Изменить пост',
-          data.content,
-          ()=>{
+          context.content,
+          () => {
             // TODO: вызвать изменение вместо пустой фунции
-            return true;
           });
-      redactBtn.element.onclick = () => {
-        popup.element.style.display = 'flex';
-      };
+      editBtn.element.addEventListener('click',
+          () => {
+            popup.element.style.display = 'flex';
+          });
       document.getElementById('entry')?.appendChild(popup.element);
     }
+
+    this.element = post;
   }
 }

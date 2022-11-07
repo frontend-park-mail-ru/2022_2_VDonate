@@ -7,6 +7,7 @@ import {ActionRouting} from './routing';
 import {ActionSubscribe} from './subscribe';
 import {ActionLogInSuccess, ActionLogInFail} from './login';
 import {ActionNotice} from './notice';
+import {ActionGetPosts} from './posts';
 import {ActionRouting} from './routing';
 import {ActionSignUpFail, ActionSignUpSuccess} from './signup';
 /** Типы действий */
@@ -21,6 +22,7 @@ export enum ActionType {
   SUBSCRIBE,
   NOTICE,
   ROUTING,
+  GET_POSTS,
 }
 /** Объединение действий */
 export type Action =
@@ -33,4 +35,5 @@ export type Action =
   | ActionChangeUserData
   | ActionSubscribe
   | ActionNotice
-  | ActionRouting;
+  | ActionRouting
+  | ActionGetPosts;
