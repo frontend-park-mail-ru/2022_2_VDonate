@@ -15,10 +15,10 @@ export interface RouteType {
 }
 
 export const routes: RouteType[] = [
-  // {
-  //   path: /^\/(profile(\?id=\d+)?)?$/,
-  //   render: profile,
-  // },
+  {
+    path: /^\/(profile(\?id=\d+)?)?$/,
+    type: Pages.PROFILE,
+  },
   {
     path: /^\/login$/,
     type: Pages.LOGIN,

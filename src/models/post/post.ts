@@ -34,8 +34,8 @@ export class Post {
    * @param data данные для генерации поста
    */
   constructor(data: Data) {
-    const avatarImg = new Image(ImageType.author, '58px', data.author.img);
-
+    const avatarImg = new Image(ImageType.author, data.author.img);
+    avatarImg.element.classList.add('post__img');
     const like = new ReactButton(
         ReactType.likes,
         data.likeCount,

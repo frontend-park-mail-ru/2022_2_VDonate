@@ -93,4 +93,68 @@ export default class Api {
   getAllPosts(id: number): Promise<ResponseData> {
     return this.request(`/posts?user_id=${id}`, Method.GET, ContentType.json);
   }
+
+  /**
+     * интерфейс для получения подписчиков автора с id
+     * @param id id автора
+     * @return объект ответа с полями {ok,status,body}
+     */
+  getSubscribers(id: number): Promise<ResponseData> {
+    return this.request(`/subscribers/${id}`, Method.GET);
+  }
+
+  /**
+     * интерфейс для получения подписок пользователя с id
+     * @param id id автора
+     * @return объект ответа с полями {ok,status,body}
+     */
+  getSubscritions(id: number): Promise<ResponseData> {
+    // TODO в свагере без id, хз как надо
+    return this.request(`/subscriptions/${id}`, Method.GET);
+  }
+
+  /**
+   * интерфейс для получения авторских подписок с id
+   * @param id id автора
+   * @return объект ответа с полями {ok,status,body}
+   */
+  getAuthorSubscritions(id: number): Promise<ResponseData> {
+    return this.request(`/author/subscriptions/${id}`, Method.GET);
+  }
+
+  /**
+     * Интерфейс изменения данных пользователя
+     * @param id - ID
+     * @param username - псевдоним
+     * @param email - почта
+     * @param password - пароль
+     * @return объект ответа с полями {ok,status,body}
+     */
+  putUserData(
+      id: number,
+      username: string,
+      email: string,
+      password: string,
+  ): Promise<ResponseData> {
+    return this.request(`/users/${id}`, Method.PUT, {
+      id,
+      email,
+      password,
+      username,
+    });
+  }
+
+  /**
+   * @param authorID ID автора
+   * @param authorSubscriptionID ID подписки
+   * @return объект ответа с полями {ok,status,body}
+   */
+  subscribe(
+      authorID: number, authorSubscriptionID: number,
+  ): Promise<ResponseData> {
+    return this.request('/subscribers', Method.POST, {
+      authorID,
+      authorSubscriptionID,
+    });
+  }
 }
