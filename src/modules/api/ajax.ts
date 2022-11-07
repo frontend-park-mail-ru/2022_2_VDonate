@@ -42,35 +42,54 @@ const dataToQuery = (data: RequestData): string => {
       });
   return queryString;
 };
-
-
+/** Поле для CSFR токена */
+const csrfField = 'csrf_token';
+/**
+ *  Сохрание CSRF токена в локальное хранилище
+ * @returns успешное сохранение CSRF токена
+ */
+export const saveCSRF = (): boolean => {
+  const csrfCookie = document.cookie.match(
+      new RegExp(`${csrfField}=([\\w-]+)`),
+  );
+  if (!csrfCookie) {
+    return false;
+  }
+  localStorage.setItem(csrfField, csrfCookie[0]);
+  return true;
+};
 /**
      * отправляет Request-запрос на заданный url,
      * возвращает объект ответа с полями {ok,status,body}
      * @param url - имя пути
      * @param method - метод запроса
+     * @param withCSRF - выполнить запрос с указаниме загловка CSRF
+     * из локального хранилища csrf_token
      * @param data - данные для составления тела запроса
      * @return объект ответа с полями {ok,status,body}
      */
 export default async (
     url: string,
     method: Method,
+    withCSRF: boolean,
     data: RequestData = {}): Promise<ResponseData> => {
   const options: RequestInit = {
     method,
     mode: 'cors',
     credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
   };
-
+  const headers = new Headers({
+    'Content-Type': 'application/json',
+  });
   if ([Method.GET, Method.HEAD].includes(method)) {
     url += dataToQuery(data);
   } else {
     options.body = JSON.stringify(data);
+    if (withCSRF) {
+      headers.append('X-CSRF-TOKEN', localStorage.getItem('csrf_token') ?? '');
+    }
   }
-
+  options.headers = headers;
   const response = await fetch(
       url,
       options,

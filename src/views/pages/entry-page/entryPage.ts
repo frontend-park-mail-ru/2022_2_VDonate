@@ -12,7 +12,7 @@ export enum EntryFormType {
 }
 /** Тип структорного представления страницы из компонентов */
 interface LoginModel {
-  root: HTMLDivElement
+  base: HTMLDivElement
   children: {
     content: {
       el: HTMLDivElement
@@ -35,16 +35,16 @@ export default class LoginPage implements IView, IObserver {
    * @param type - тип страницы входа
    */
   constructor(type: EntryFormType) {
-    const root = document.createElement('div');
-    root.className = 'entry-page';
+    const base = document.createElement('div');
+    base.className = 'entry-page';
 
     const contentArea = document.createElement('div');
     contentArea.className = 'entry-page__content-area';
-    root.appendChild(contentArea);
+    base.appendChild(contentArea);
 
     const formArea = document.createElement('div');
     formArea.className = 'entry-page__form-area';
-    root.appendChild(formArea);
+    base.appendChild(formArea);
 
     const content = document.createElement('span');
     content.innerHTML = '<i>Тут Нужен Kонтент!</i>';
@@ -61,7 +61,7 @@ export default class LoginPage implements IView, IObserver {
     formArea.appendChild(form.element);
 
     this.page = {
-      root,
+      base: base,
       children: {
         content: {
           el: contentArea,
@@ -87,14 +87,14 @@ export default class LoginPage implements IView, IObserver {
   /** Сброс страницы, отключение от хранилища */
   reset(): void {
     store.removeObserver(this);
-    this.page.root.remove();
+    this.page.base.remove();
   }
   /**
    * Создание страницы входа
    * @returns Страница-элемент
    */
   render(): HTMLElement {
-    return this.page.root;
+    return this.page.base;
   }
   /** Перерисовка страницы по текущему состоянию хранилища */
   rerender(): void {

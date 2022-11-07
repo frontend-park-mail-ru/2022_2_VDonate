@@ -2,7 +2,7 @@ import {IAction} from '@flux/types/actions';
 import {ActionType} from './action';
 import {PayloadLocation} from './routing';
 /** Результат успешной аутификации */
-interface PayloadAuth {
+export interface PayloadAuth {
   id: number
 }
 /** Действие аутификации */

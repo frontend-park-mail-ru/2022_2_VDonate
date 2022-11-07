@@ -1,14 +1,15 @@
 import {ActionType} from '@actions/types/action';
-import {ResponseData} from '@api/ajax';
+import {ResponseData, saveCSRF} from '@api/ajax';
 import api from '@app/api';
 import router from '@app/router';
 import store from '@app/store';
-import {SignUpForm} from '@actions/types/signup';
+import {PayloadSignUpSuccess, SignUpForm} from '@actions/types/signup';
 import {
   emailCheck,
   passwordCheck,
   repeatPasswordCheck,
   usernameCheck} from '@validation/validation';
+import {PayloadNotice} from '@actions/types/notice';
 
 export default (props: SignUpForm): void => {
   const emailErr = emailCheck(props.email.value);
@@ -33,12 +34,19 @@ export default (props: SignUpForm): void => {
       .then((res: ResponseData) => {
         switch (res.status) {
           case 200:
+            if (!saveCSRF()) {
+              store.dispatch({
+                type: ActionType.NOTICE,
+                payload: {
+                  message: 'CSRF токен не получен',
+                },
+              });
+              return;
+            }
             store.dispatch({
               type: ActionType.SIGNUP_SUCCESS,
               payload: {
-                signup: {
-                  id: res.body.id as number,
-                },
+                signup: res.body as PayloadSignUpSuccess,
                 location: {
                   type: router.go('/feed'),
                 },
@@ -65,9 +73,7 @@ export default (props: SignUpForm): void => {
           case 0:
             store.dispatch({
               type: ActionType.NOTICE,
-              payload: {
-                message: res.body.error as string,
-              },
+              payload: res.body as PayloadNotice,
             });
             break;
           default:

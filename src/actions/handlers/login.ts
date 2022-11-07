@@ -1,10 +1,11 @@
 import {ActionType} from '@actions/types/action';
-import {ResponseData} from '@api/ajax';
+import {ResponseData, saveCSRF} from '@api/ajax';
 import api from '@app/api';
-import {LogInForm} from '@actions/types/login';
+import {LogInForm, PayloadLogInSuccess} from '@actions/types/login';
 import router from '@app/router';
 import store from '@app/store';
 import {passwordCheck, usernameCheck} from '@validation/validation';
+import {PayloadNotice} from '@actions/types/notice';
 
 export default (props: LogInForm): void => {
   const usernameErr = usernameCheck(props.username.value);
@@ -23,12 +24,20 @@ export default (props: LogInForm): void => {
       .then((res: ResponseData) => {
         switch (res.status) {
           case 200:
+            if (!saveCSRF()) {
+              store.dispatch({
+                type: ActionType.NOTICE,
+                payload: {
+                  message: 'CSRF токен не получен',
+                },
+              });
+              return;
+            }
+
             store.dispatch({
               type: ActionType.LOGIN_SUCCESS,
               payload: {
-                login: {
-                  id: res.body.id as number,
-                },
+                login: res.body as PayloadLogInSuccess,
                 location: {
                   type: router.go('/feed'),
                 },
@@ -51,9 +60,7 @@ export default (props: LogInForm): void => {
           case 0:
             store.dispatch({
               type: ActionType.NOTICE,
-              payload: {
-                message: res.body.error as string,
-              },
+              payload: res.body as PayloadNotice,
             });
             break;
           default:

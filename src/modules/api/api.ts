@@ -5,6 +5,10 @@
 
 import ajax, {RequestData, Method, ResponseData} from './ajax';
 
+export interface ErrorBody {
+  message: string
+}
+
 /** Класс интерфейса для связи с сервером */
 export default class Api {
   private readonly request: typeof ajax;
@@ -16,8 +20,9 @@ export default class Api {
     this.request = (
         url: string,
         method: Method,
+        withCSRF: boolean,
         data: RequestData = {}): Promise<ResponseData> => {
-      return ajax(baseUrl + url, method, data);
+      return ajax(baseUrl + url, method, withCSRF, data);
     };
   }
 
@@ -28,7 +33,7 @@ export default class Api {
      * @return объект ответа с полями {ok,status,body}
      */
   loginUser(username: string, password: string): Promise<ResponseData> {
-    return this.request('/login', Method.POST, {username, password});
+    return this.request('/login', Method.POST, false, {username, password});
   }
 
   /**
@@ -36,7 +41,7 @@ export default class Api {
      * @return объект ответа с полями {ok,status,body}
      */
   logout(): Promise<ResponseData> {
-    return this.request('/logout', Method.DELETE);
+    return this.request('/logout', Method.DELETE, true);
   }
 
   /**
@@ -44,7 +49,7 @@ export default class Api {
      * @return объект ответа с полями {ok,status,body}
      */
   authUser(): Promise<ResponseData> {
-    return this.request('/auth', Method.GET);
+    return this.request('/auth', Method.GET, true);
   }
 
   /**
@@ -59,7 +64,7 @@ export default class Api {
       email: string,
       password: string,
   ): Promise<ResponseData> {
-    return this.request('/users', Method.POST, {
+    return this.request('/users', Method.POST, false, {
       username,
       email,
       password,
@@ -72,7 +77,7 @@ export default class Api {
      * @return объект ответа с полями {ok,status,body}
      */
   getUser(id: number): Promise<ResponseData> {
-    return this.request(`/users/${id}`, Method.GET);
+    return this.request(`/users/${id}`, Method.GET, false);
   }
 
   /**
@@ -81,6 +86,6 @@ export default class Api {
      * @return объект ответа с полями {ok,status,body}
      */
   getAllPosts(id: number): Promise<ResponseData> {
-    return this.request(`/posts?user_id=${id}`, Method.GET);
+    return this.request(`/posts?user_id=${id}`, Method.GET, false);
   }
 }

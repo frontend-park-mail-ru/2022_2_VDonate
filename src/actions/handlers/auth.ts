@@ -3,6 +3,7 @@ import {ResponseData} from '@api/ajax';
 import {ActionType} from '@actions/types/action';
 import router from '@app/router';
 import store from '@app/store';
+import {PayloadAuth} from '@actions/types/auth';
 
 export default (): void => {
   api.authUser()
@@ -12,9 +13,7 @@ export default (): void => {
               store.dispatch({
                 type: ActionType.AUTH,
                 payload: {
-                  auth: {
-                    id: res.body.id as number,
-                  },
+                  auth: res.body as PayloadAuth,
                   location: {
                     type: router.go(location.pathname + location.search),
                   },
