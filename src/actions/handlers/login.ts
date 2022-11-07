@@ -1,5 +1,5 @@
 import {ActionType} from '@actions/types/action';
-import {ResponseData, saveCSRF} from '@api/ajax';
+import {ResponseData} from '@api/ajax';
 import api from '@app/api';
 import {LogInForm, PayloadLogInSuccess} from '@actions/types/login';
 import router from '@app/router';
@@ -24,16 +24,6 @@ export default (props: LogInForm): void => {
       .then((res: ResponseData) => {
         switch (res.status) {
           case 200:
-            if (!saveCSRF()) {
-              store.dispatch({
-                type: ActionType.NOTICE,
-                payload: {
-                  message: 'CSRF токен не получен',
-                },
-              });
-              return;
-            }
-
             store.dispatch({
               type: ActionType.LOGIN_SUCCESS,
               payload: {
