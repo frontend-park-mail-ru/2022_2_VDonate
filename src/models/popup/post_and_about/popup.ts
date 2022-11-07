@@ -19,7 +19,7 @@ export class Popup {
   constructor(
       title: string,
       content: string,
-      change: () => boolean,
+      change: () => void,
   ) {
     const popupGlass = new Glass(GlassType.lines);
     popupGlass.element.classList.add('popup__glass');

@@ -1,14 +1,9 @@
-<div id="post-head_{{id}}" class="post__head">
-  {{{avatarImg}}}
-  <div class="post__head_user_n_date">
-    <span class="post__head_user">{{username}}</span>
-    <span class="post__head_date">{{date}}</span>
-  </div>
+<div class="post__header">
+  <div class="post__author-avatar"></div>
+  <span class="post__author-name">{{username}}</span>
+  <span class="post__date-created">{{date}}</span>
 </div>
 <div class="post__content">
   {{content}}
 </div>
-<div id="reaction_{{id}}" class="post__reaction">
-    {{{likes}}}
-    {{{comments}}}
-</div>
+<div class="post__reaction"></div>

@@ -1,6 +1,7 @@
 import {ActionAuth} from './auth';
 import {ActionLogInSuccess, ActionLogInFail} from './login';
 import {ActionNotice} from './notice';
+import {ActionGetPosts} from './posts';
 import {ActionRouting} from './routing';
 import {ActionSignUpFail, ActionSignUpSuccess} from './signup';
 /** Типы действий */
@@ -12,6 +13,7 @@ export enum ActionType {
   AUTH,
   NOTICE,
   ROUTING,
+  GET_POSTS,
 }
 /** Объединение действий */
 export type Action =
@@ -21,4 +23,5 @@ export type Action =
   | ActionSignUpFail
   | ActionAuth
   | ActionNotice
-  | ActionRouting;
+  | ActionRouting
+  | ActionGetPosts;
