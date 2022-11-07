@@ -17,6 +17,7 @@ module.exports = {
     alias: {
       '@flux': path.resolve(__dirname, 'src/modules/flux'),
       '@api': path.resolve(__dirname, 'src/modules/api'),
+      '@validation': path.resolve(__dirname, 'src/modules/validation'),
       '@reducers': path.resolve(__dirname, 'src/reducers'),
       '@views': path.resolve(__dirname, 'src/views'),
       '@configs': path.resolve(__dirname, 'src/configs'),

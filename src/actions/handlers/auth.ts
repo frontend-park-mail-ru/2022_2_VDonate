@@ -1,20 +1,28 @@
 import api from '@app/api';
-import {ResponseData} from '@api/ajax';
+import {ResponseData, saveCSRF} from '@api/ajax';
 import {ActionType} from '@actions/types/action';
 import router from '@app/router';
 import store from '@app/store';
+import {PayloadAuth} from '@actions/types/auth';
 
 export default (): void => {
   api.authUser()
       .then(
           (res: ResponseData) => {
+            if (!saveCSRF()) {
+              store.dispatch({
+                type: ActionType.NOTICE,
+                payload: {
+                  message: 'CSRF токен не получен',
+                },
+              });
+              return;
+            }
             if (res.ok) {
               store.dispatch({
                 type: ActionType.AUTH,
                 payload: {
-                  auth: {
-                    id: res.body.id as number,
-                  },
+                  auth: res.body as PayloadAuth,
                   location: {
                     type: router.go(location.pathname + location.search),
                   },
@@ -31,11 +39,11 @@ export default (): void => {
           },
       )
       .catch(
-          () => {
+          (err) => {
             store.dispatch({
               type: ActionType.NOTICE,
               payload: {
-                message: 'error fetch',
+                message: err as string,
               },
             });
           },

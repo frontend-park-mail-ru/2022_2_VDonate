@@ -5,9 +5,16 @@ import {ActionLogIn} from './login';
 import {ActionNotice} from './notice';
 import {ActionRouting} from './routing';
 import {ActionSubscribe} from './subscribe';
+import {ActionLogInSuccess, ActionLogInFail} from './login';
+import {ActionNotice} from './notice';
+import {ActionRouting} from './routing';
+import {ActionSignUpFail, ActionSignUpSuccess} from './signup';
 /** Типы действий */
 export enum ActionType {
-  LOGIN,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  SIGNUP_SUCCESS,
+  SIGNUP_FAIL,
   AUTH,
   GETPROFILEDATA,
   CHANGEUSERDATA,
@@ -17,7 +24,10 @@ export enum ActionType {
 }
 /** Объединение действий */
 export type Action =
-  | ActionLogIn
+  | ActionLogInSuccess
+  | ActionLogInFail
+  | ActionSignUpSuccess
+  | ActionSignUpFail
   | ActionAuth
   | ActionGetProfileData
   | ActionChangeUserData

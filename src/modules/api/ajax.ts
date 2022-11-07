@@ -17,6 +17,11 @@ export interface ResponseData {
   body: Body
 }
 
+export enum ContentType {
+  json = 'application/json',
+  formData = 'multipart/form-data'
+}
+
 export enum Method {
   GET = 'GET',
   POST = 'POST',
@@ -42,35 +47,70 @@ const dataToQuery = (data: RequestData): string => {
       });
   return queryString;
 };
-
-
+/** Поле для CSFR токена */
+const csrfField = 'csrf_token';
+/**
+ *  Сохрание CSRF токена в локальное хранилище
+ * @returns успешное сохранение CSRF токена
+ */
+export const saveCSRF = (): boolean => {
+  document.cookie = `${csrfField}=RxG10rldgZwVrvR6BAsJAq62omEaG4hG;`;
+  const csrfCookie = document.cookie.match(
+      new RegExp(`${csrfField}=([\\w-]+)`),
+  );
+  if (!csrfCookie) {
+    return false;
+  }
+  localStorage.setItem(csrfField, csrfCookie[1]);
+  return true;
+};
 /**
      * отправляет Request-запрос на заданный url,
      * возвращает объект ответа с полями {ok,status,body}
      * @param url - имя пути
      * @param method - метод запроса
+     * @param contentType - тип тела в запросе
      * @param data - данные для составления тела запроса
      * @return объект ответа с полями {ok,status,body}
      */
 export default async (
     url: string,
     method: Method,
+    contentType: ContentType,
     data: RequestData = {}): Promise<ResponseData> => {
   const options: RequestInit = {
     method,
     mode: 'cors',
     credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
   };
-
+  const headers = new Headers({
+    'Content-Type': contentType,
+  });
   if ([Method.GET, Method.HEAD].includes(method)) {
     url += dataToQuery(data);
   } else {
-    options.body = JSON.stringify(data);
-  }
+    switch (contentType) {
+      case ContentType.json:
+        options.body = JSON.stringify(data);
+        break;
+      case ContentType.formData: {
+        const formData = new FormData();
 
+        for (const [name, value] of Object.entries(data)) {
+          formData.append(name, value.toString());
+        }
+        options.body = formData;
+        headers.delete('Content-Type');
+      }
+        break;
+    }
+
+    headers.append(
+        'X-CSRF-Token',
+        localStorage.getItem(`${csrfField}`) ?? '',
+    );
+  }
+  options.headers = headers;
   const response = await fetch(
       url,
       options,
@@ -86,11 +126,10 @@ export default async (
   } catch (error) {
     return {
       ok: false,
-      status: response.status,
+      status: 0,
       body: {
         error: error,
       },
     };
   }
 };
-

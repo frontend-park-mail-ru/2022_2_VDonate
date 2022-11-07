@@ -52,4 +52,11 @@ export class Button {
     innerText.textContent = content;
     this.element.appendChild(innerText);
   }
+  /**
+   *
+   * @param text - новый текст кнопки
+   */
+  changeText(text: string) {
+    this.element.getElementsByClassName('button__text')[0].textContent = text;
+  }
 }
