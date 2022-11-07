@@ -23,10 +23,10 @@ export const routes: RouteType[] = [
     path: /^\/login$/,
     type: Pages.LOGIN,
   },
-  // {
-  //   path: /^\/signup$/,
-  //   render: signup,
-  // },
+  {
+    path: /^\/signup$/,
+    type: Pages.SIGNUP,
+  },
   // {
   //   path: /^\/logout$/,
   //   render: logout,

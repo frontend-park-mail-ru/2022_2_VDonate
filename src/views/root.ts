@@ -5,7 +5,7 @@ import {Pages} from '@configs/router';
 import {IObserver} from '@flux/types/observer';
 import {IView} from '@flux/types/view';
 import PreloadPage from './pages/preloadPage';
-import LoginPage from './pages/loginPage';
+import EntryPage, {EntryFormType} from './pages/entry-page/entryPage';
 import NotFoundPage from './pages/notFoundPage';
 
 /** Класс корневой вьюшки */
@@ -54,9 +54,11 @@ export default class Root implements IView, IObserver {
         this.currentPage = new PreloadPage();
         return this.currentPage.render();
       case Pages.LOGIN:
-        this.currentPage = new LoginPage();
+        this.currentPage = new EntryPage(EntryFormType.logIn);
         return this.currentPage.render();
       case Pages.SIGNUP:
+        this.currentPage = new EntryPage(EntryFormType.signUp);
+        return this.currentPage.render();
       case Pages.LOGOUT:
       case Pages.PROFILE:
       case Pages.SEARCH:

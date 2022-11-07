@@ -1,49 +1,63 @@
 import {ActionType} from '@actions/types/action';
 import {ResponseData} from '@api/ajax';
 import api from '@app/api';
-import {LogInForm, PayloadLogInSuccess} from '@actions/types/login';
 import router from '@app/router';
 import store from '@app/store';
-import {passwordCheck, usernameCheck} from '@validation/validation';
+import {PayloadSignUpSuccess, SignUpForm} from '@actions/types/signup';
+import {
+  emailCheck,
+  passwordCheck,
+  repeatPasswordCheck,
+  usernameCheck} from '@validation/validation';
 import {PayloadNotice} from '@actions/types/notice';
 
-export default (props: LogInForm): void => {
+export default (props: SignUpForm): void => {
+  const emailErr = emailCheck(props.email.value);
   const usernameErr = usernameCheck(props.username.value);
   const passwordErr = passwordCheck(props.password.value);
-  if (usernameErr || passwordErr) {
+  const repeatPasswordErr = repeatPasswordCheck(
+      props.password.value,
+      props.repeatPassword.value);
+  if (emailErr || usernameErr || passwordErr || repeatPasswordErr) {
     store.dispatch({
-      type: ActionType.LOGIN_FAIL,
+      type: ActionType.SIGNUP_FAIL,
       payload: {
+        email: emailErr,
         username: usernameErr,
         password: passwordErr,
+        repeatPassword: repeatPasswordErr,
       },
     });
     return;
   }
-  api.loginUser(props.username.value, props.password.value)
+  api.signupUser(props.username.value, props.email.value, props.password.value)
       .then((res: ResponseData) => {
         switch (res.status) {
           case 200:
             store.dispatch({
-              type: ActionType.LOGIN_SUCCESS,
+              type: ActionType.SIGNUP_SUCCESS,
               payload: {
-                login: res.body as PayloadLogInSuccess,
+                signup: res.body as PayloadSignUpSuccess,
                 location: {
                   type: router.go('/feed'),
                 },
                 formErrors: {
+                  email: null,
                   username: null,
                   password: null,
+                  repeatPassword: null,
                 },
               },
             });
             break;
-          case 404:
+          case 405:
             store.dispatch({
-              type: ActionType.LOGIN_FAIL,
+              type: ActionType.SIGNUP_FAIL,
               payload: {
+                email: 'Неверная почта',
                 username: 'Неверный псевдоним или пароль',
                 password: 'Неверный псевдоним или пароль',
+                repeatPassword: null,
               },
             });
             break;
