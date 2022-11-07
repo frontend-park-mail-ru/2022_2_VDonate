@@ -33,9 +33,10 @@ export class Post {
   /**
    * @param context данные для генерации поста
    */
-  constructor(context: PostContext) {
-    const avatarImg = new Image(ImageType.author, '58px', context.author.img);
 
+  constructor(context: PostContext) {
+    const avatarImg = new Image(ImageType.author, context.author.img);
+    avatarImg.element.classList.add('post__img');
     const like = new ReactButton(
         ReactType.likes,
         context.likeCount.toString(),

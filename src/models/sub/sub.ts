@@ -4,6 +4,7 @@ import {Image, ImageType} from '@components/image/image';
 import {Popup} from '../popup/sub/popup';
 import './sub.styl';
 import subHbs from './sub.hbs';
+import subscribe from '@actions/handlers/subscribe';
 
 interface Data {
   id: string,
@@ -28,11 +29,11 @@ export class Sub {
    * @param data данные для генерации
    */
   constructor(data: Data) {
-    const lvlImg = new Image(ImageType.sub, '96px', data.img);
+    const lvlImg = new Image(ImageType.sub, data.img);
+    lvlImg.element.classList.add('sub__img');
     const button = new Button(ButtonType.primary, 'Задонатить', 'button');
     const glass = new Glass(GlassType.mono);
     this.element = glass.element;
-    this.element.classList.add('sub');
     this.element.innerHTML = subHbs({
       id: data.id,
       subName: data.subName,
@@ -54,12 +55,12 @@ export class Sub {
     };
     this.element.firstChild?.appendChild(showMore);
     const popupEdit = new Popup(() => {
-      // TODO: функция отправки на сервер согласия на донат
-      return true;
+      // TODO вроде нет id подписки
+      subscribe(Number(new URL(location.href).searchParams.get('id')), 1);
     });
     this.element.getElementsByTagName('button')[0].onclick = () => {
       popupEdit.element.style.display = 'flex';
     };
-    document.getElementById('entry')?.appendChild(popupEdit.element);
+    document.body.appendChild(popupEdit.element);
   }
 }

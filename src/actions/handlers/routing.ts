@@ -15,10 +15,10 @@ export default (loc: string): void => {
   switch (action.payload.type) {
     case Pages.PROFILE:
       action.payload.options = {
-        id: new URL(loc).searchParams.get('id'),
+        // TODO при деплое норм адрес написать
+        id: new URL(loc, 'http://localhost:4200').searchParams.get('id'),
       };
       break;
   }
-
   store.dispatch(action);
 };

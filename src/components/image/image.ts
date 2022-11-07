@@ -1,4 +1,5 @@
 import './image.styl';
+import altImg from '@img/0.jpg';
 
 /**
  * Перечисление типов аватара
@@ -20,12 +21,10 @@ export class Image {
 
   /**
    * @param viewType вид аватара
-   * @param size размер аватара
    * @param image url аватара
    */
   constructor(
       viewType: ImageType,
-      size: string,
       image: string,
   ) {
     this.element = document.createElement('img');
@@ -43,7 +42,11 @@ export class Image {
       default:
         break;
     }
-    this.element.setAttribute('style', `width: ${size}`);
-    this.element.setAttribute('src', image);
+    // this.element.setAttribute('style', `width: ${size}`);
+    if (image) {
+      this.element.setAttribute('src', image);
+    } else {
+      this.element.setAttribute('src', altImg);
+    }
   }
 }
