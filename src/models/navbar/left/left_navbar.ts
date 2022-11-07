@@ -11,6 +11,9 @@ import store from '@app/store';
 import {IObserver} from '@flux/types/observer';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
 import getProfile from '@actions/handlers/getProfileData';
+import {PayloadAuth} from '@actions/types/auth';
+import routing from '@actions/handlers/routing';
+
 
 const links = [
   {
@@ -90,18 +93,16 @@ export class LeftNavbar implements IObserver {
     const profileLink = new Button(ButtonType.outline, 'Профиль', 'button');
     profileLink.element.classList.add('left-navbar__down_popup_btn');
     profileLink.element.onclick = () => {
-      // TODO: переход на профиль
+      const user = store.getState().user as PayloadAuth;
+      routing(`/profile?id=${user.id}`);
     };
     const change = new Button(ButtonType.outline, 'Изменить данные', 'button');
     change.element.classList.add('left-navbar__down_popup_btn');
-    const popupEdit = new Popup(() => {
-      // TODO: функция валидации и отправки на сервер
-      return true;
-    });
+    const popupEdit = new Popup();
     change.element.onclick = () => {
       popupEdit.element.style.display = 'flex';
     };
-    document.getElementById('entry')?.appendChild(popupEdit.element);
+    document.body.appendChild(popupEdit.element);
     const logout = new Button(ButtonType.outline, 'Выйти', 'button');
     logout.element.classList.add('left-navbar__down_popup_btn');
     logout.element.onclick = () => {
@@ -110,24 +111,26 @@ export class LeftNavbar implements IObserver {
     popup.element.appendChild(profileLink.element);
     popup.element.appendChild(change.element);
     popup.element.appendChild(logout.element);
-    this.profile.appendChild(icnbtn.element);
+    profileContainer.appendChild(icnbtn.element);
     profileContainer.appendChild(this.profile);
     glass.element.appendChild(profileContainer);
     store.registerObserver(this);
     this.renderLocation();
-    getProfile(1);
+    getProfile(Number(new URL(location.href).searchParams.get('id')));
   }
 
   /**
    * рендер подписок
    */
   renderSubs() {
+    this.subsList.innerHTML = '';
     this.subs?.forEach(({img, title}) => {
       const sub = document.createElement('a');
       // sub.setAttribute('href', `/profile?id=${id}`);
       // sub.setAttribute('data-link', '');
       sub.classList.add('left-navbar__sub');
-      const avatar = new Image(ImageType.author, '30px', img);
+      const avatar = new Image(ImageType.author, img);
+      avatar.element.classList.add('left-navbar__sub_avatar');
       const usrname = document.createElement('span');
       usrname.innerText = title;
       sub.appendChild(avatar.element);
@@ -143,11 +146,12 @@ export class LeftNavbar implements IObserver {
     if (!this.user) {
       return;
     }
+    this.profile.innerHTML = '';
     const avatar = new Image(
       this.user.is_author ? ImageType.author : ImageType.donater,
-      '50px',
       this.user.avatar,
     );
+    avatar.element.classList.add('left-navbar__down_profile_img');
     const usrname = document.createElement('span');
     usrname.innerText = this.user.username;
     this.profile.prepend(avatar.element, usrname);
@@ -164,24 +168,14 @@ export class LeftNavbar implements IObserver {
       );
     });
   }
-  // /**
-  //  * функция рендера
-  //  */
-  // render() {
-  //   this.renderLocation();
-  //   const newProfile =
-  //   store.getState().profile as PayloadGetProfileData;
-  //   if (JSON.stringify(newProfile.profile) !== JSON.stringify(this.user)) {
-  //     this.user = newProfile.profile;
-  //     this.renderProfile();
-  //   }
-  //   if (
-  //     JSON.stringify(newProfile.subscriptions) !== JSON.stringify(this.subs)
-  //   ) {
-  //     this.subs = newProfile.subscriptions;
-  //     this.renderSubs();
-  //   }
-  // }
+  /** функция скрывающая navbar */
+  hideNavbar() {
+    this.element.style.display = 'none';
+  }
+  /** функция показывающая navbar */
+  showNavbar() {
+    this.element.style.display = 'block';
+  }
   /** Callback метод обновления хранилища */
   notify(): void {
     this.renderLocation();

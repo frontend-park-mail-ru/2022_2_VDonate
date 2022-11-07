@@ -17,7 +17,7 @@ export class About implements IObserver {
   readonly element: HTMLElement;
 
   private about: HTMLElement;
-  private textAbout = '';
+  private textAbout: string | undefined;
   /**
    * @param changeable возможность изменять текст
    */
@@ -56,7 +56,7 @@ export class About implements IObserver {
    * set text
    */
   setText() {
-    if (this.textAbout !== '') {
+    if (this.textAbout) {
       this.about.innerHTML = this.textAbout;
     } else {
       this.about.innerHTML = 'Пользователь пока что не расказал о себе';
@@ -66,7 +66,7 @@ export class About implements IObserver {
   /** Callback метод обновления хранилища */
   notify(): void {
     const profileStore = store.getState().profile as PayloadGetProfileData;
-    if (profileStore.profile.about != this.textAbout) {
+    if (profileStore.profile?.about != this.textAbout && profileStore.profile) {
       this.textAbout = profileStore.profile.about;
       this.setText();
     }

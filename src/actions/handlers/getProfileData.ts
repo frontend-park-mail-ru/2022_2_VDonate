@@ -8,39 +8,12 @@ import {PayloadGetProfileData} from '@actions/types/getProfileData';
 
 export default (id: number): void => {
   const profileData: PayloadGetProfileData = {
-    profile: {
-      about: '',
-      avatar: '',
-      is_author: false,
-      username: '',
-    },
-    authorSubscriptions: [{
-      img: '',
-      price: 0,
-      text: '',
-      tier: 0,
-      title: '',
-    }],
-    subscriptions: [{
-      // TODO Мы разве получаем не авторов, а сами подписки?
-      img: '',
-      price: 0,
-      text: '',
-      tier: 0,
-      title: '',
-      // id: string,
-      // about: string,
-      // avatar: string,
-      // is_author: boolean,
-      // username: string,
-    }],
-    subscribers: [{
-      about: '',
-      avatar: '',
-      is_author: false,
-      username: '',
-    }],
+    profile: undefined,
+    authorSubscriptions: undefined,
+    subscriptions: undefined,
+    subscribers: undefined,
   };
+  // const tup = [true, true, false];
   // const profileData: PayloadGetProfileData = {
   //   profile: {
   //     about: `Меня зовут Марина, мне 17 лет, я учусь
@@ -52,7 +25,7 @@ export default (id: number): void => {
   //      сожалению, я себя ни в чем не нашла...
   //     `,
   //     avatar: avatarImage,
-  //     is_author: true,
+  //     is_author: tup[id - 1],
   //     username: 'Кодзима',
   //   },
   //   authorSubscriptions: [
@@ -318,7 +291,7 @@ export default (id: number): void => {
             return;
           },
       );
-  if (profileData.profile.is_author) {
+  if (profileData.profile?.is_author) {
     api.getSubscribers(id)
         .then(
             (res: ResponseData) => {

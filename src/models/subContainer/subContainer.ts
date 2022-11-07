@@ -43,8 +43,12 @@ export class SubContainer implements IObserver {
    * @param subs элементы подписок
    */
   renderSubs() {
+    if (!this.subs || this.subs.length == 0) {
+      this.container.innerHTML = 'Пока что тут пусто';
+      return;
+    }
     this.container.innerHTML = '';
-    this.subs?.forEach((sub) => {
+    this.subs.forEach((sub) => {
       const subItem = new Sub({
         id: '1', // TODO вроде раньше ID подписки было
         subName: sub.title,

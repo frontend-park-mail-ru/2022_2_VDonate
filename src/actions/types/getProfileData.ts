@@ -7,14 +7,14 @@ export interface PayloadGetProfileData {
     avatar: string,
     is_author: boolean,
     username: string,
-  },
+  } | undefined,
   authorSubscriptions: {
     img: string,
     price: number,
     text: string,
     tier: number,
     title: string,
-  }[],
+  }[] | undefined,
   subscriptions: {
     // TODO Мы разве получаем не авторов, а сами подписки?
     img: string,
@@ -27,13 +27,13 @@ export interface PayloadGetProfileData {
     // avatar: string,
     // is_author: boolean,
     // username: string,
-  }[],
+  }[] | undefined,
   subscribers: {
     about: string,
     avatar: string,
     is_author: boolean,
     username: string,
-  }[]
+  }[] | undefined
 }
 
 /** Действие аутификации */

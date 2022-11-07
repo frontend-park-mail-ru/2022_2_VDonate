@@ -9,7 +9,6 @@ import LoginPage from './pages/loginPage';
 import NotFoundPage from './pages/notFoundPage';
 import ProfilePage from './pages/profilePage';
 import {LeftNavbar} from '@models/navbar/left/left_navbar';
-import getProfile from '@actions/handlers/getProfileData';
 
 /** Класс корневой вьюшки */
 export default class Root implements IView, IObserver {
@@ -61,12 +60,13 @@ export default class Root implements IView, IObserver {
         this.currentPage = new PreloadPage();
         return this.currentPage.render();
       case Pages.LOGIN:
+        this.navbar.hideNavbar();
         this.currentPage = new LoginPage();
         return this.currentPage.render();
       case Pages.SIGNUP:
       case Pages.LOGOUT:
       case Pages.PROFILE:
-        getProfile(1);
+        this.navbar.showNavbar();
         this.currentPage = new ProfilePage();
         return this.currentPage.render();
       case Pages.SEARCH:

@@ -15,7 +15,7 @@ export class Popup {
    * @param change Функция валидации и отправки на сервер
   */
   constructor(
-      change: () => boolean,
+      change: () => void,
   ) {
     const popupGlass = new Glass(GlassType.lines);
     popupGlass.element.classList.add('sub-popup__glass');
@@ -23,7 +23,7 @@ export class Popup {
     darkening.classList.add('sub-popup__back');
     darkening.appendChild(popupGlass.element);
     this.element = darkening;
-    // this.element.style.display ='none';
+    this.element.style.display = 'none';
     const text = document.createElement('span');
     text.classList.add('sub-popup__text');
     text.innerText = 'Вы действительно собиратесь задонатить';

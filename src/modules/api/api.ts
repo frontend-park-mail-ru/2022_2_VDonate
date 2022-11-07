@@ -111,4 +111,40 @@ export default class Api {
   getAuthorSubscritions(id: number): Promise<ResponseData> {
     return this.request(`/author/subscriptions/${id}`, Method.GET);
   }
+
+  /**
+     * Интерфейс изменения данных пользователя
+     * @param id - ID
+     * @param username - псевдоним
+     * @param email - почта
+     * @param password - пароль
+     * @return объект ответа с полями {ok,status,body}
+     */
+  putUserData(
+      id: number,
+      username: string,
+      email: string,
+      password: string,
+  ): Promise<ResponseData> {
+    return this.request(`/users/${id}`, Method.PUT, {
+      id,
+      email,
+      password,
+      username,
+    });
+  }
+
+  /**
+   * @param authorID ID автора
+   * @param authorSubscriptionID ID подписки
+   * @return объект ответа с полями {ok,status,body}
+   */
+  subscribe(
+      authorID: number, authorSubscriptionID: number,
+  ): Promise<ResponseData> {
+    return this.request('/subscribers', Method.POST, {
+      authorID,
+      authorSubscriptionID,
+    });
+  }
 }

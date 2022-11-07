@@ -1,16 +1,14 @@
 import './right_navbar.styl';
 import {Glass, GlassType} from '@components/glass/glass';
-import {NavbarUnit, OrientType} from '@components/navbar_unit/navbar_unit';
-import icon from '@icon/menu.svg';
 import {Image, ImageType} from '@components/image/image';
 import store from '@app/store';
 import {IObserver} from '@flux/types/observer';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
 
 interface Profile {
-  avatar: string;
-  is_author: boolean;
-  username: string;
+  avatar: string,
+  is_author: boolean,
+  username: string,
   subscriptionsCount: number,
   subscribersCount: number,
 }
@@ -38,20 +36,6 @@ export class RightNavbar implements IObserver {
   }
 
   /**
-   * конструктор для ленты
-   */
-  feedConstruct() {
-    this.glass.classList.add('right-navbar__feed');
-    let item =
-        new NavbarUnit(icon, 'Все публикации', '/', OrientType.right);
-    this.glass.appendChild(item.element);
-    item = new NavbarUnit(icon, 'Доступные', '/', OrientType.right);
-    this.glass.appendChild(item.element);
-    item = new NavbarUnit(icon, 'Понравилось', '/', OrientType.right);
-    this.glass.appendChild(item.element);
-  }
-
-  /**
    * Конструктор для автора
    */
   authorConstruct() {
@@ -61,9 +45,9 @@ export class RightNavbar implements IObserver {
     }
     const avatar = new Image(
         ImageType.author,
-        '200px',
         this.profile.avatar,
     );
+    avatar.element.classList.add('right-navbar__img');
     const usrname = document.createElement('span');
     usrname.classList.add('right-navbar__profile_username');
     usrname.innerText = this.profile.username;
@@ -106,9 +90,9 @@ export class RightNavbar implements IObserver {
     }
     const avatar = new Image(
         ImageType.donater,
-        '200px',
         this.profile.avatar,
     );
+    avatar.element.classList.add('right-navbar__img');
     const usrname = document.createElement('span');
     usrname.classList.add('right-navbar__profile_username');
     usrname.innerText = this.profile.username;
@@ -133,12 +117,17 @@ export class RightNavbar implements IObserver {
   /** Callback метод обновления хранилища */
   notify(): void {
     const profileStore = store.getState().profile as PayloadGetProfileData;
+    if (!profileStore.profile) {
+      return;
+    }
     const profileNew: Profile = {
       avatar: profileStore.profile.avatar,
       is_author: profileStore.profile.is_author,
       username: profileStore.profile.username,
-      subscriptionsCount: profileStore.subscriptions.length,
-      subscribersCount: profileStore.subscribers.length,
+      subscriptionsCount:
+        profileStore.subscriptions ? profileStore.subscriptions.length : 0,
+      subscribersCount:
+        profileStore.subscribers ? profileStore.subscribers.length : 0,
     };
     if (JSON.stringify(profileNew) !== JSON.stringify(this.profile)) {
       this.profile = profileNew;
