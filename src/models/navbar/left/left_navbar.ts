@@ -97,11 +97,10 @@ export class LeftNavbar implements IObserver {
     };
     const change = new Button(ButtonType.outline, 'Изменить данные', 'button');
     change.element.classList.add('left-navbar__down_popup_btn');
-    const popupEdit = new Popup();
     change.element.onclick = () => {
-      popupEdit.element.style.display = 'flex';
+      const popupEdit = new Popup();
+      document.body.appendChild(popupEdit.element);
     };
-    document.body.appendChild(popupEdit.element);
     const logout = new Button(ButtonType.outline, 'Выйти', 'button');
     logout.element.classList.add('left-navbar__down_popup_btn');
     logout.element.onclick = () => {
@@ -172,11 +171,10 @@ export class LeftNavbar implements IObserver {
   }
   /** функция показывающая navbar */
   showNavbar() {
-    this.element.style.display = 'block';
+    this.element.removeAttribute('style');
   }
   /** Callback метод обновления хранилища */
   notify(): void {
-    this.renderLocation();
     const newUser =
       store.getState().user as PayloadUser;
     if (JSON.stringify(newUser) !== JSON.stringify(this.user)) {

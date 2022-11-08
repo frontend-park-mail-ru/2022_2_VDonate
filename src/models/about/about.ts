@@ -28,22 +28,22 @@ export class About implements IObserver {
     const head = document.createElement('div');
     head.classList.add('about__head');
     head.innerText = 'Обо мне';
+    this.about = document.createElement('div');
+    this.about.classList.add('about__text');
+    const profileStore = store.getState().profile as PayloadGetProfileData;
+    this.textAbout = profileStore.profile?.about;
     if (changeable) {
       const redactBtn = new IconButton(editIcn, 'button');
       redactBtn.element.classList.add('about__head_btn');
       head.appendChild(redactBtn.element);
-      // TODO: вызвать изменение вместо пустой фунции
-      const popup = new Popup(
-          'Обо мне',
-          '', // TODO потом придумать что с этим сделать
-      );
       redactBtn.element.onclick = () => {
-        popup.element.style.display = 'flex';
+        const popup = new Popup(
+            'Обо мне',
+            this.textAbout,
+        );
+        document.body.appendChild(popup.element);
       };
-      document.body.appendChild(popup.element);
     }
-    this.about = document.createElement('div');
-    this.about.classList.add('about__text');
     this.element.appendChild(head);
     this.element.appendChild(this.about);
     store.registerObserver(this);

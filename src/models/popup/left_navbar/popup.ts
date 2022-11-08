@@ -66,7 +66,6 @@ export class Popup implements IObserver {
     darkening.classList.add('change-popup__back');
     darkening.appendChild(popupGlass.element);
     this.element = darkening;
-    this.element.style.display = 'none';
     const form = document.createElement('form');
     form.classList.add('change-popup__form');
     popupGlass.element.appendChild(form);
@@ -80,7 +79,7 @@ export class Popup implements IObserver {
       form.appendChild(inputEl.element);
     });
     const user = store.getState().user as PayloadUser | null;
-    if (user?.isAuthor) {
+    if (!user?.isAuthor) {
       this.becomeAuthor = document.createElement('div');
       this.becomeAuthor.classList.add('change-popup__author');
       const inputAuthor = document.createElement('input');
@@ -97,7 +96,7 @@ export class Popup implements IObserver {
     btnContainer.classList.add('change-popup__btn-container');
     const cansel = new Button(ButtonType.outline, 'Отмена', 'button');
     cansel.element.onclick = () => {
-      this.element.style.display = 'none';
+      this.element.remove();
     };
     const changeBtn = new Button(ButtonType.primary, 'Изменить', 'submit');
     btnContainer.appendChild(cansel.element);
@@ -140,9 +139,10 @@ export class Popup implements IObserver {
       !change.repeatPassword ||
       !change.username ||
       !change.isAuthor) {
-      this.element.style.display = 'none';
+      this.element.remove();
+    } else {
+      // TODO отображение ошибок
     }
-    // TODO отображение ошибок
     const user = store.getState().user as PayloadUser | null;
     if (user?.isAuthor) {
       this.becomeAuthor?.remove();
