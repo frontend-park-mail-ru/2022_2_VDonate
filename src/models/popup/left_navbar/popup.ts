@@ -3,7 +3,9 @@ import {Button, ButtonType} from '@components/button/button';
 import {Input, InputType} from '@components/input/input';
 import './popup.styl';
 import changeUserData from '@actions/handlers/changeUserData';
-import {ChangeUserDataForm} from '@actions/types/changeUserData';
+import {
+  ChangeUserDataForm,
+  PayloadChangeUserDataErrors} from '@actions/types/changeUserData';
 import {IObserver} from '@flux/types/observer';
 import store from '@app/store';
 
@@ -94,7 +96,15 @@ export class Popup implements IObserver {
   }
   /** Callback метод обновления хранилища */
   notify(): void {
-    // TODO добавить редусер
-    this.element.style.display = 'none';
+    const change =
+      store.getState().formErrors as PayloadChangeUserDataErrors;
+    if (
+      !change.email ||
+      !change.password ||
+      !change.repeatPassword ||
+      !change.username) {
+      this.element.style.display = 'none';
+    }
+    // TODO отображение ошибок
   }
 }

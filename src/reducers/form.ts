@@ -7,9 +7,11 @@ const formErrorsReducer: Reducer<Action> =
     switch (action.type) {
       case ActionType.LOGIN_SUCCESS:
       case ActionType.SIGNUP_SUCCESS:
+      case ActionType.CHANGEUSERDATA_SUCCESS:
         return action.payload.formErrors;
       case ActionType.LOGIN_FAIL:
       case ActionType.SIGNUP_FAIL:
+      case ActionType.CHANGEUSERDATA_FAIL:
         return action.payload;
       case ActionType.ROUTING:
         return {};
