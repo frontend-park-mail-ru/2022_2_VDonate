@@ -8,7 +8,7 @@ export interface PayloadChangeUserData {
   about?: string
   password?: string
   repeatPassword?: string
-  isAuthor?: string
+  isAuthor?: boolean
 }
 
 /** Нагрузка в срез ошибок формы регистрации */
@@ -19,6 +19,7 @@ export interface PayloadChangeUserDataErrors {
   repeatPassword: null | string
   about: null | string
   isAuthor: null | string
+  avatar: null | string
 }
 
 export interface ChangeUserDataForm extends HTMLCollection {
@@ -26,6 +27,7 @@ export interface ChangeUserDataForm extends HTMLCollection {
   username: HTMLInputElement
   password: HTMLInputElement
   repeatPassword: HTMLInputElement
+  isAuthor: HTMLInputElement | undefined
 }
 
 /** Интерфейс действия успешной регистрации */

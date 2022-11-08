@@ -3,7 +3,6 @@ import {ResponseData} from '@api/ajax';
 import {ActionType} from '@actions/types/action';
 import store from '@app/store';
 import {PayloadChangeUserData} from '@actions/types/changeUserData';
-import {PayloadUser} from '@actions/types/user';
 import {
   emailCheck,
   passwordCheck,
@@ -30,17 +29,12 @@ export default (props: PayloadChangeUserData): void => {
         repeatPassword: repeatPasswordErr,
         isAuthor: null,
         about: null,
+        avatar: null,
       },
     });
     return;
   }
-  const user = store.getState().user as PayloadUser;
-  api.putUserData({
-    id: Number(user.id),
-    username: props.username,
-    email: props.email,
-    password: props.password,
-  })
+  api.putUserData(props)
       .then((res: ResponseData) => {
         if (res.ok) {
           store.dispatch({
@@ -54,6 +48,7 @@ export default (props: PayloadChangeUserData): void => {
                 repeatPassword: null,
                 isAuthor: null,
                 about: null,
+                avatar: null,
               },
             },
           });
@@ -67,6 +62,7 @@ export default (props: PayloadChangeUserData): void => {
               repeatPassword: null,
               isAuthor: 'Error',
               about: 'Error',
+              avatar: 'Error',
             },
           });
         }

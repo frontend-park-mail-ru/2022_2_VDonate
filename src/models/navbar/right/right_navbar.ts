@@ -7,7 +7,7 @@ import {PayloadGetProfileData} from '@actions/types/getProfileData';
 
 interface Profile {
   avatar: string,
-  is_author: boolean,
+  isAuthor: boolean,
   username: string,
   subscriptionsCount: number,
   subscribersCount: number,
@@ -48,6 +48,10 @@ export class RightNavbar implements IObserver {
         this.profile.avatar,
     );
     avatar.element.classList.add('right-navbar__img');
+    avatar.element.addEventListener('click', (e) => {
+      e.preventDefault(); // чтобы не ругался
+      // TODO создать попап отправки аватара
+    });
     const usrname = document.createElement('span');
     usrname.classList.add('right-navbar__profile_username');
     usrname.innerText = this.profile.username;
@@ -122,7 +126,7 @@ export class RightNavbar implements IObserver {
     }
     const profileNew: Profile = {
       avatar: profileStore.profile.avatar,
-      is_author: profileStore.profile.is_author,
+      isAuthor: profileStore.profile.isAuthor,
       username: profileStore.profile.username,
       subscriptionsCount:
         profileStore.subscriptions ? profileStore.subscriptions.length : 0,
@@ -131,7 +135,7 @@ export class RightNavbar implements IObserver {
     };
     if (JSON.stringify(profileNew) !== JSON.stringify(this.profile)) {
       this.profile = profileNew;
-      if (this.profile.is_author) {
+      if (this.profile.isAuthor) {
         this.authorConstruct();
       } else {
         this.donaterConstruct();

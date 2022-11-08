@@ -5,6 +5,7 @@ import './popup.styl';
 import changeUserData from '@actions/handlers/changeUserData';
 import {
   ChangeUserDataForm,
+  PayloadChangeUserData,
   PayloadChangeUserDataErrors} from '@actions/types/changeUserData';
 import {IObserver} from '@flux/types/observer';
 import store from '@app/store';
@@ -54,6 +55,7 @@ export class Popup implements IObserver {
    */
   readonly element: HTMLElement;
 
+  private becomeAuthor: HTMLElement | undefined;
   /**
    * конструктор
   */
@@ -77,6 +79,20 @@ export class Popup implements IObserver {
       inputEl.element.classList.add('change-popup__input');
       form.appendChild(inputEl.element);
     });
+    const user = store.getState().user as PayloadUser | null;
+    if (user?.isAuthor) {
+      this.becomeAuthor = document.createElement('div');
+      this.becomeAuthor.classList.add('change-popup__author');
+      const inputAuthor = document.createElement('input');
+      inputAuthor.classList.add('change-popup__author_checkbox');
+      inputAuthor.type = 'checkbox';
+      inputAuthor.name = 'isAuthor';
+      const text = document.createElement('span');
+      text.classList.add('change-popup__author_text');
+      text.innerText = 'Стать автором';
+      this.becomeAuthor.append(inputAuthor, text);
+      form.appendChild(this.becomeAuthor);
+    }
     const btnContainer = document.createElement('div');
     btnContainer.classList.add('change-popup__btn-container');
     const cansel = new Button(ButtonType.outline, 'Отмена', 'button');
@@ -88,31 +104,48 @@ export class Popup implements IObserver {
     btnContainer.appendChild(changeBtn.element);
     form.appendChild(btnContainer);
     form.addEventListener('submit', (e) => {
-      console.log('subm');
       e.preventDefault();
       const form = (e.target as HTMLFormElement).elements as ChangeUserDataForm;
       const user = store.getState().user as PayloadUser;
-      changeUserData({
+      // TODO может как-то норм добавлять поля
+      const userData: PayloadChangeUserData = {
         id: user.id,
-        username: form.username.value,
-        email: form.email.value,
-        password: form.password.value,
-        repeatPassword: form.repeatPassword.value,
-      });
+      };
+      if (form.username.value != '') {
+        userData.username = form.username.value;
+      }
+      if (form.email.value != '') {
+        userData.email = form.email.value;
+      }
+      if (form.password.value != '') {
+        userData.password = form.password.value;
+      }
+      if (form.repeatPassword.value != '') {
+        userData.repeatPassword = form.repeatPassword.value;
+      }
+      if (form.isAuthor?.checked) {
+        userData.isAuthor = true;
+      }
+      changeUserData(userData);
     });
     store.registerObserver(this);
   }
   /** Callback метод обновления хранилища */
   notify(): void {
     const change =
-      store.getState().formErrors as PayloadChangeUserDataErrors;
+      store.getState().formErrors as PayloadChangeUserDataErrors | null;
     if (
-      !change.email ||
+      !change?.email ||
       !change.password ||
       !change.repeatPassword ||
-      !change.username) {
+      !change.username ||
+      !change.isAuthor) {
       this.element.style.display = 'none';
     }
     // TODO отображение ошибок
+    const user = store.getState().user as PayloadUser | null;
+    if (user?.isAuthor) {
+      this.becomeAuthor?.remove();
+    }
   }
 }

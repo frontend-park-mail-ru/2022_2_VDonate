@@ -32,13 +32,13 @@ const getUser = (id: number, dispatch: (user: PayloadUser) => void) => {
               const payload: PayloadUser = {
                 id: id,
                 avatar: res.body.avatar as PayloadUser['avatar'],
-                isAuthor: res.body.is_author as PayloadUser['isAuthor'],
+                isAuthor: res.body.isAuthor as PayloadUser['isAuthor'],
                 username: res.body.username as PayloadUser['username'],
                 email: res.body.email as PayloadUser['email'],
                 countSubscriptions:
               res.body.countSubscriptions as PayloadUser['countSubscriptions'],
               };
-              if (res.body.is_author) {
+              if (res.body.isAuthor) {
                 payload.countSubscribers =
                   res.body.countSubscribers as PayloadUser['countSubscribers'];
                 payload.about =

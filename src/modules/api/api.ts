@@ -136,7 +136,7 @@ export default class Api {
       email?: string,
       password?: string,
       about?: string,
-      is_author?: boolean,
+      isAuthor?: boolean,
   }): Promise<ResponseData> {
     return this.request(
         `/users/${data.id}`,

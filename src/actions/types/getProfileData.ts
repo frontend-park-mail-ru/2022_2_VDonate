@@ -5,7 +5,7 @@ export interface PayloadGetProfileData {
   profile: {
     about: string,
     avatar: string,
-    is_author: boolean,
+    isAuthor: boolean,
     username: string,
   } | undefined,
   authorSubscriptions: {
@@ -25,13 +25,13 @@ export interface PayloadGetProfileData {
     // id: string,
     // about: string,
     // avatar: string,
-    // is_author: boolean,
+    // isAuthor: boolean,
     // username: string,
   }[] | undefined,
   subscribers: {
     about: string,
     avatar: string,
-    is_author: boolean,
+    isAuthor: boolean,
     username: string,
   }[] | undefined
 }
