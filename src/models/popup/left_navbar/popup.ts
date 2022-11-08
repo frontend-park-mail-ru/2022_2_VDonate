@@ -55,6 +55,7 @@ export class Popup implements IObserver {
    */
   readonly element: HTMLElement;
 
+  private inputs: Input[] = [];
   private becomeAuthor: HTMLElement | undefined;
   /**
    * конструктор
@@ -77,6 +78,7 @@ export class Popup implements IObserver {
       const inputEl = new Input(inputType, context);
       inputEl.element.classList.add('change-popup__input');
       form.appendChild(inputEl.element);
+      this.inputs.push(inputEl);
     });
     const user = store.getState().user as PayloadUser | null;
     if (!user?.isAuthor) {
@@ -106,7 +108,6 @@ export class Popup implements IObserver {
       e.preventDefault();
       const form = (e.target as HTMLFormElement).elements as ChangeUserDataForm;
       const user = store.getState().user as PayloadUser;
-      // TODO может как-то норм добавлять поля
       const userData: PayloadChangeUserData = {
         id: user.id,
       };
@@ -135,13 +136,16 @@ export class Popup implements IObserver {
       store.getState().formErrors as PayloadChangeUserDataErrors | null;
     if (
       !err?.email ||
+      !err.username ||
       !err.password ||
       !err.repeatPassword ||
-      !err.username ||
       !err.isAuthor) {
       this.element.remove();
     } else {
-      // TODO отображение ошибок
+      this.inputs[0].errorDetect(Boolean(err.email));
+      this.inputs[0].errorDetect(Boolean(err.username));
+      this.inputs[0].errorDetect(Boolean(err.password));
+      this.inputs[0].errorDetect(Boolean(err.repeatPassword));
     }
     const user = store.getState().user as PayloadUser | null;
     if (user?.isAuthor) {
