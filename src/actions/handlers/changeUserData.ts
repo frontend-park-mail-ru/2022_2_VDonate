@@ -13,9 +13,11 @@ import {
   usernameCheck} from '@validation/validation';
 
 export default (props: ChangeUserDataForm): void => {
-  const emailErr = emailCheck(props.email.value);
-  const usernameErr = usernameCheck(props.username.value);
-  const passwordErr = passwordCheck(props.password.value);
+  const emailErr = props.email.value ? emailCheck(props.email.value) : null;
+  const usernameErr =
+    props.username.value ? usernameCheck(props.username.value) : null;
+  const passwordErr =
+    props.password.value ? passwordCheck(props.password.value) : null;
   const repeatPasswordErr = repeatPasswordCheck(
       props.password.value,
       props.repeatPassword.value);
@@ -27,6 +29,8 @@ export default (props: ChangeUserDataForm): void => {
         username: usernameErr,
         password: passwordErr,
         repeatPassword: repeatPasswordErr,
+        isAuthor: null,
+        about: null,
       },
     });
     return;
@@ -49,6 +53,8 @@ export default (props: ChangeUserDataForm): void => {
                 username: null,
                 password: null,
                 repeatPassword: null,
+                isAuthor: null,
+                about: null,
               },
             },
           });
@@ -60,6 +66,8 @@ export default (props: ChangeUserDataForm): void => {
               username: 'Неверный псевдоним или пароль',
               password: 'Неверный псевдоним или пароль',
               repeatPassword: null,
+              isAuthor: 'Error',
+              about: 'Error',
             },
           });
         }
