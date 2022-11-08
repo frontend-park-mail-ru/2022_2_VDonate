@@ -2,9 +2,7 @@ import api from '@app/api';
 import {ResponseData} from '@api/ajax';
 import {ActionType} from '@actions/types/action';
 import store from '@app/store';
-import {
-  ChangeUserDataForm,
-  PayloadChangeUserData} from '@actions/types/changeUserData';
+import {PayloadChangeUserData} from '@actions/types/changeUserData';
 import {PayloadUser} from '@actions/types/user';
 import {
   emailCheck,
@@ -12,15 +10,16 @@ import {
   repeatPasswordCheck,
   usernameCheck} from '@validation/validation';
 
-export default (props: ChangeUserDataForm): void => {
-  const emailErr = props.email.value ? emailCheck(props.email.value) : null;
+export default (props: PayloadChangeUserData): void => {
+  const emailErr = props.email ? emailCheck(props.email) : null;
   const usernameErr =
-    props.username.value ? usernameCheck(props.username.value) : null;
+    props.username ? usernameCheck(props.username) : null;
   const passwordErr =
-    props.password.value ? passwordCheck(props.password.value) : null;
-  const repeatPasswordErr = repeatPasswordCheck(
-      props.password.value,
-      props.repeatPassword.value);
+    props.password ? passwordCheck(props.password) : null;
+  const repeatPasswordErr =
+    props.password && props.repeatPassword ? repeatPasswordCheck(
+        props.password,
+        props.repeatPassword) : null;
   if (emailErr || usernameErr || passwordErr || repeatPasswordErr) {
     store.dispatch({
       type: ActionType.CHANGEUSERDATA_FAIL,
@@ -38,9 +37,9 @@ export default (props: ChangeUserDataForm): void => {
   const user = store.getState().user as PayloadUser;
   api.putUserData({
     id: Number(user.id),
-    username: props.username.value,
-    email: props.email.value,
-    password: props.password.value,
+    username: props.username,
+    email: props.email,
+    password: props.password,
   })
       .then((res: ResponseData) => {
         if (res.ok) {

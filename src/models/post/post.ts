@@ -1,7 +1,7 @@
 import {ReactButton, ReactType} from '@components/reaction/reaction';
 import {Image, ImageType} from '@components/image/image';
 import {IconButton} from '@components/icon_button/icon_button';
-import {Popup} from '../popup/post_and_about/popup';
+// import {Popup} from '../popup/about/popup';
 import template from './post.hbs';
 import editIcon from '@icon/edit.svg';
 import './post.styl';
@@ -71,17 +71,16 @@ export class Post {
       const editBtn = new IconButton(editIcon, 'button');
       editBtn.element.classList.add('post__head_btn');
       post.querySelector('post__head')?.appendChild(editBtn.element);
-      const popup = new Popup(
-          'Изменить пост',
-          context.content,
-          () => {
-            // TODO: вызвать изменение вместо пустой фунции
-          });
-      editBtn.element.addEventListener('click',
-          () => {
-            popup.element.style.display = 'flex';
-          });
-      document.getElementById('entry')?.appendChild(popup.element);
+      // TODO свой попап для поста (добавить возможность удаления)
+      // const popup = new Popup(
+      //     'Изменить пост',
+      //     context.content,
+      // );
+      // editBtn.element.addEventListener('click',
+      //     () => {
+      //       popup.element.style.display = 'flex';
+      //     });
+      // document.body.appendChild(popup.element);
     }
 
     this.element = post;

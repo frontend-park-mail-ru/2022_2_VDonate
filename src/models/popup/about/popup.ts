@@ -1,6 +1,9 @@
 import {Glass, GlassType} from '@components/glass/glass';
 import {Button, ButtonType} from '@components/button/button';
 import './popup.styl';
+import changeUserData from '@actions/handlers/changeUserData';
+import {PayloadUser} from '@actions/types/user';
+import store from '@app/store';
 
 /**
  * Модель изменяемого окна
@@ -19,7 +22,6 @@ export class Popup {
   constructor(
       title: string,
       content: string,
-      change: () => void,
   ) {
     const popupGlass = new Glass(GlassType.lines);
     popupGlass.element.classList.add('popup__glass');
@@ -44,7 +46,11 @@ export class Popup {
     };
     const changeBtn = new Button(ButtonType.primary, 'Изменить', 'submit');
     changeBtn.element.onclick = () => {
-      change();
+      const user = store.getState().user as PayloadUser;
+      changeUserData({
+        id: user.id,
+        about: popupAbout.innerText,
+      });
       this.element.style.display = 'none';
     };
     btnContainer.appendChild(cansel.element);

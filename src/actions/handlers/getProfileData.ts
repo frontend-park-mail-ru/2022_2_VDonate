@@ -7,12 +7,7 @@ import subImg from '@img/2.jpg';
 import avatarImage from '@img/1.jpg';
 
 export default (id: number): void => {
-  // const profileData: PayloadGetProfileData = {
-  //   profile: undefined,
-  //   authorSubscriptions: undefined,
-  //   subscriptions: undefined,
-  //   subscribers: undefined,
-  // };
+  // заглушка на профиль
   const tup = [true, true, false];
   const profileData: PayloadGetProfileData = {
     profile: {
@@ -235,6 +230,12 @@ export default (id: number): void => {
       },
     ],
   };
+  // const profileData: PayloadGetProfileData = {
+  //   profile: undefined,
+  //   authorSubscriptions: undefined,
+  //   subscriptions: undefined,
+  //   subscribers: undefined,
+  // };
   // api.getUser(id)
   //     .then(
   //         (res: ResponseData) => {

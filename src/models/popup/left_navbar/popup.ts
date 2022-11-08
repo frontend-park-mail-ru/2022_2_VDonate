@@ -8,6 +8,7 @@ import {
   PayloadChangeUserDataErrors} from '@actions/types/changeUserData';
 import {IObserver} from '@flux/types/observer';
 import store from '@app/store';
+import {PayloadUser} from '@actions/types/user';
 
 const popupContext = [
   {
@@ -89,8 +90,15 @@ export class Popup implements IObserver {
     form.addEventListener('submit', (e) => {
       console.log('subm');
       e.preventDefault();
-      changeUserData(
-        (e.target as HTMLFormElement).elements as ChangeUserDataForm);
+      const form = (e.target as HTMLFormElement).elements as ChangeUserDataForm;
+      const user = store.getState().user as PayloadUser;
+      changeUserData({
+        id: user.id,
+        username: form.username.value,
+        email: form.email.value,
+        password: form.password.value,
+        repeatPassword: form.repeatPassword.value,
+      });
     });
     store.registerObserver(this);
   }

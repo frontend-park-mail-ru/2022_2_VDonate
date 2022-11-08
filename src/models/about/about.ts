@@ -1,6 +1,6 @@
 import {Glass, GlassType} from '@components/glass/glass';
 import {IconButton} from '@components/icon_button/icon_button';
-import {Popup} from '../popup/post_and_about/popup';
+import {Popup} from '../popup/about/popup';
 import './about.styl';
 import editIcn from '@icon/edit.svg';
 import store from '@app/store';
@@ -36,14 +36,11 @@ export class About implements IObserver {
       const popup = new Popup(
           'Обо мне',
           '', // TODO потом придумать что с этим сделать
-          () => {
-            // TODO: вызвать изменение вместо пустой фунции
-            return true;
-          });
+      );
       redactBtn.element.onclick = () => {
         popup.element.style.display = 'flex';
       };
-      document.getElementById('entry')?.appendChild(popup.element);
+      document.body.appendChild(popup.element);
     }
     this.about = document.createElement('div');
     this.about.classList.add('about__text');

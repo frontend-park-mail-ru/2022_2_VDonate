@@ -102,6 +102,27 @@ export const auth = (): void => {
 };
 
 export const login = (props: LogInForm): void => {
+  // заглушка на логин
+  // store.dispatch({
+  //   type: ActionType.LOGIN_SUCCESS,
+  //   payload: {
+  //     user: {
+  //       id: 1,
+  //       avatar: '',
+  //       isAuthor: false,
+  //       username: 'Кодзима',
+  //       email: 'd',
+  //       countSubscriptions: 5,
+  //     },
+  //     location: {
+  //       type: router.go('/feed'),
+  //     },
+  //     formErrors: {
+  //       username: null,
+  //       password: null,
+  //     },
+  //   },
+  // });
   const usernameErr = usernameCheck(props.username.value);
   const passwordErr = passwordCheck(props.password.value);
   if (usernameErr || passwordErr) {

@@ -7,6 +7,7 @@ export interface PayloadChangeUserData {
   email?: string
   about?: string
   password?: string
+  repeatPassword?: string
   isAuthor?: string
 }
 
