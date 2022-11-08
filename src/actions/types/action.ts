@@ -1,4 +1,6 @@
-import {ActionChangeUserData} from './changeUserData';
+import {
+  ActionChangeUserDataFail,
+  ActionChangeUserDataSuccess} from './changeUserData';
 import {ActionGetProfileData} from './getProfileData';
 import {ActionSubscribe} from './subscribe';
 import {ActionNotice} from './notice';
@@ -19,7 +21,8 @@ export enum ActionType {
   SIGNUP_FAIL,
   AUTH,
   GETPROFILEDATA,
-  CHANGEUSERDATA,
+  CHANGEUSERDATA_SUCCESS,
+  CHANGEUSERDATA_FAIL,
   SUBSCRIBE,
   NOTICE,
   ROUTING,
@@ -33,7 +36,8 @@ export type Action =
   | ActionSignUpFail
   | ActionAuth
   | ActionGetProfileData
-  | ActionChangeUserData
+  | ActionChangeUserDataSuccess
+  | ActionChangeUserDataFail
   | ActionSubscribe
   | ActionNotice
   | ActionRouting

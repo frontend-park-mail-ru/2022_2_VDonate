@@ -127,24 +127,23 @@ export default class Api {
 
   /**
      * Интерфейс изменения данных пользователя
-     * @param id - ID
-     * @param username - псевдоним
-     * @param email - почта
-     * @param password - пароль
+     * @param data Обьект
      * @return объект ответа с полями {ok,status,body}
      */
-  putUserData(
+  putUserData(data: {
       id: number,
-      username: string,
-      email: string,
-      password: string,
-  ): Promise<ResponseData> {
-    return this.request(`/users/${id}`, Method.PUT, ContentType.formData, {
-      id,
-      email,
-      password,
-      username,
-    });
+      username?: string,
+      email?: string,
+      password?: string,
+      about?: string,
+      is_author?: boolean,
+  }): Promise<ResponseData> {
+    return this.request(
+        `/users/${data.id}`,
+        Method.PUT,
+        ContentType.formData,
+        data,
+    );
   }
 
   /**

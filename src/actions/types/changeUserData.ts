@@ -1,9 +1,20 @@
 import {IAction} from '@flux/types/actions';
 import {ActionType} from './action';
 
-interface PayloadChangeUserData {
-  success: boolean
-  error: string | undefined
+export interface PayloadChangeUserData {
+  id: number
+  username?: string
+  email?: string
+  about?: string
+  password?: string
+}
+
+/** Нагрузка в срез ошибок формы регистрации */
+export interface PayloadChangeUserDataErrors {
+  email: null | string
+  username: null | string
+  password: null | string
+  repeatPassword: null | string
 }
 
 export interface ChangeUserDataForm extends HTMLCollection {
@@ -13,7 +24,19 @@ export interface ChangeUserDataForm extends HTMLCollection {
   repeatPassword: HTMLInputElement
 }
 
-export interface ActionChangeUserData extends IAction {
-  type: ActionType.CHANGEUSERDATA
-  payload: PayloadChangeUserData
+/** Интерфейс действия успешной регистрации */
+export interface ActionChangeUserDataSuccess extends IAction {
+  type: ActionType.CHANGEUSERDATA_SUCCESS
+  payload: {
+    user: PayloadChangeUserData
+    formErrors: PayloadChangeUserDataErrors
+  }
 }
+
+/** Интерфейс действия провальной регистрации */
+export interface ActionChangeUserDataFail extends IAction {
+  type: ActionType.CHANGEUSERDATA_FAIL
+  payload: PayloadChangeUserDataErrors
+}
+
+
