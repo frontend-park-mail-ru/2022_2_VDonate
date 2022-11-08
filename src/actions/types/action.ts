@@ -12,6 +12,8 @@ import {
   ActionSignUpSuccess,
   ActionSignUpFail,
   ActionAuth,
+  ActionLogOutSuccess,
+  ActionLogOutFail,
 } from './user';
 /** Типы действий */
 export enum ActionType {
@@ -27,6 +29,8 @@ export enum ActionType {
   NOTICE,
   ROUTING,
   GET_POSTS,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAIL,
 }
 /** Объединение действий */
 export type Action =
@@ -34,6 +38,8 @@ export type Action =
   | ActionLogInFail
   | ActionSignUpSuccess
   | ActionSignUpFail
+  | ActionLogOutSuccess
+  | ActionLogOutFail
   | ActionAuth
   | ActionGetProfileData
   | ActionChangeUserDataSuccess

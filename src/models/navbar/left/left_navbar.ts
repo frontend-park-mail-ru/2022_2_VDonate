@@ -12,6 +12,7 @@ import {IObserver} from '@flux/types/observer';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
 import routing from '@actions/handlers/routing';
 import {PayloadUser} from '@actions/types/user';
+import {logout} from '@actions/handlers/user';
 
 
 const links = [
@@ -101,14 +102,14 @@ export class LeftNavbar implements IObserver {
       const popupEdit = new Popup();
       document.body.appendChild(popupEdit.element);
     };
-    const logout = new Button(ButtonType.outline, 'Выйти', 'button');
-    logout.element.classList.add('left-navbar__down_popup_btn');
-    logout.element.onclick = () => {
-      // TODO: вызов выхода
+    const logoutBtn = new Button(ButtonType.outline, 'Выйти', 'button');
+    logoutBtn.element.classList.add('left-navbar__down_popup_btn');
+    logoutBtn.element.onclick = () => {
+      logout();
     };
     popup.element.appendChild(profileLink.element);
     popup.element.appendChild(change.element);
-    popup.element.appendChild(logout.element);
+    popup.element.appendChild(logoutBtn.element);
     profileContainer.appendChild(icnbtn.element);
     profileContainer.appendChild(this.profile);
     glass.element.appendChild(profileContainer);

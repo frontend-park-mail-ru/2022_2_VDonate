@@ -286,3 +286,34 @@ export const signup = (props: SignUpForm): void => {
         });
       });
 };
+
+export const logout = (): void => {
+  api.logout()
+      .then((res: ResponseData) => {
+        if (res.ok) {
+          store.dispatch({
+            type: ActionType.LOGOUT_SUCCESS,
+            payload: {
+              location: {
+                type: router.go('/login'),
+              },
+            },
+          });
+        } else {
+          store.dispatch({
+            type: ActionType.LOGOUT_FAIL,
+            payload: {
+              message: res.body.message as string | 'Error',
+            },
+          });
+        }
+      })
+      .catch((err) => {
+        store.dispatch({
+          type: ActionType.NOTICE,
+          payload: {
+            message: err as string,
+          },
+        });
+      });
+};
