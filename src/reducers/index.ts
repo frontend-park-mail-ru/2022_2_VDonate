@@ -6,6 +6,7 @@ import noticeReducer from './notice';
 import postEditorReducer from './postEditor';
 import postsReducer from './posts';
 import profileReducer from './profile';
+import SubscribeReducer from './subscribe';
 import userReducer from './user';
 
 export default combineReducers<Action>({
@@ -16,4 +17,5 @@ export default combineReducers<Action>({
   posts: postsReducer,
   notice: noticeReducer,
   postEditor: postEditorReducer,
+  subscribe: SubscribeReducer,
 });

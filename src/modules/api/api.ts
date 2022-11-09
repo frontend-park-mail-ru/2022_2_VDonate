@@ -161,4 +161,18 @@ export default class Api {
       authorSubscriptionID,
     });
   }
+
+  /**
+   * @param authorID ID автора
+   * @param authorSubscriptionID ID подписки
+   * @return объект ответа с полями {ok,status,body}
+   */
+  unsubscribe(
+      authorID: number, authorSubscriptionID: number,
+  ): Promise<ResponseData> {
+    return this.request('/subscribers', Method.DELETE, ContentType.json, {
+      authorID,
+      authorSubscriptionID,
+    });
+  }
 }
