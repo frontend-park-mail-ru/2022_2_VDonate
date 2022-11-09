@@ -7,11 +7,11 @@ import subHbs from './sub.hbs';
 import subscribe from '@actions/handlers/subscribe';
 
 interface Data {
-  id: string,
+  id: number,
   subName: string,
-  lvl: string,
+  lvl: number,
   img: string,
-  price: string,
+  price: number,
   period: string,
   motivation: string,
 }

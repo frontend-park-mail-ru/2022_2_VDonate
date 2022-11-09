@@ -6,7 +6,7 @@ const profileReducer: Reducer<Action> =
   (state: PropTree, action: Action): PropTree => {
     switch (action.type) {
       case ActionType.GETPROFILEDATA:
-        return action.payload.profileData;
+        return action.payload;
       default:
         return state;
     }

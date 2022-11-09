@@ -109,8 +109,8 @@ export default class Api {
      * @return объект ответа с полями {ok,status,body}
      */
   getSubscritions(id: number): Promise<ResponseData> {
-    // TODO в свагере без id, хз как надо
-    return this.request(`/subscriptions/${id}`, Method.GET, ContentType.json);
+    return this.request(
+        `/subscriptions/${id}`, Method.GET, ContentType.json);
   }
 
   /**
@@ -120,8 +120,10 @@ export default class Api {
    */
   getAuthorSubscritions(id: number): Promise<ResponseData> {
     return this.request(
-        `/author/subscriptions/${id}`,
-        Method.GET, ContentType.json,
+        `/author/subscriptions`,
+        Method.GET, ContentType.json, {
+          author_id: id,
+        },
     );
   }
 

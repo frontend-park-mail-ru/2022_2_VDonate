@@ -122,19 +122,19 @@ export class LeftNavbar implements IObserver {
    */
   renderSubs() {
     this.subsList.innerHTML = '';
-    this.subs?.forEach(({img, title}) => {
-      const sub = document.createElement('a');
-      // sub.setAttribute('href', `/profile?id=${id}`);
-      // sub.setAttribute('data-link', '');
-      sub.classList.add('left-navbar__sub');
-      const avatar = new Image(ImageType.author, img);
-      avatar.element.classList.add('left-navbar__sub_avatar');
-      const usrname = document.createElement('span');
-      usrname.innerText = title;
-      sub.appendChild(avatar.element);
-      sub.appendChild(usrname);
-      this.subsList.appendChild(sub);
-    });
+    // this.subs?.forEach(({avatar, username, }) => {
+    //   const sub = document.createElement('a');
+    //   // sub.setAttribute('href', `/profile?id=${id}`);
+    //   // sub.setAttribute('data-link', '');
+    //   sub.classList.add('left-navbar__sub');
+    //   const avatar = new Image(ImageType.author, img);
+    //   avatar.element.classList.add('left-navbar__sub_avatar');
+    //   const usrname = document.createElement('span');
+    //   usrname.innerText = title;
+    //   sub.appendChild(avatar.element);
+    //   sub.appendChild(usrname);
+    //   this.subsList.appendChild(sub);
+    // });
   }
 
   /**
