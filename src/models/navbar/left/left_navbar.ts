@@ -8,11 +8,12 @@ import {Button, ButtonType} from '@components/button/button';
 import menuIcon from '@icon/menu.svg';
 import store from '@app/store';
 import {IObserver} from '@flux/types/observer';
-import {PayloadGetProfileData} from '@actions/types/getProfileData';
 import routing from '@actions/handlers/routing';
 import {PayloadUser} from '@actions/types/user';
 import {logout} from '@actions/handlers/user';
+import {Subscription} from '@actions/types/subscribe';
 import {openProfileEditor} from '@actions/handlers/editor';
+
 
 
 const links = [
@@ -45,7 +46,7 @@ export class LeftNavbar implements IObserver {
   private subsList: HTMLElement;
   private profile: HTMLElement;
   private user: PayloadUser | undefined;
-  private subs: PayloadGetProfileData['subscriptions'] | undefined;
+  private subs: Subscription[] | undefined;
   private navbarUnits: NavbarUnit[] = [];
   /**
    * Конструктор
@@ -126,19 +127,21 @@ export class LeftNavbar implements IObserver {
    */
   renderSubs() {
     this.subsList.innerHTML = '';
-    // this.subs?.forEach(({avatar, username, }) => {
-    //   const sub = document.createElement('a');
-    //   // sub.setAttribute('href', `/profile?id=${id}`);
-    //   // sub.setAttribute('data-link', '');
-    //   sub.classList.add('left-navbar__sub');
-    //   const avatar = new Image(ImageType.author, img);
-    //   avatar.element.classList.add('left-navbar__sub_avatar');
-    //   const usrname = document.createElement('span');
-    //   usrname.innerText = title;
-    //   sub.appendChild(avatar.element);
-    //   sub.appendChild(usrname);
-    //   this.subsList.appendChild(sub);
-    // });
+    this.subs?.forEach((subItem) => {
+      const sub = document.createElement('a');
+      if (subItem.author.id) {
+        sub.setAttribute('href', `/profile?id=${subItem.author.id}`);
+        sub.setAttribute('data-link', '');
+      }
+      sub.classList.add('left-navbar__sub');
+      const avatar = new Image(ImageType.author, subItem.author.avatar);
+      avatar.element.classList.add('left-navbar__sub_avatar');
+      const usrname = document.createElement('span');
+      usrname.innerText = subItem.author.username;
+      sub.appendChild(avatar.element);
+      sub.appendChild(usrname);
+      this.subsList.appendChild(sub);
+    });
   }
 
   /**
@@ -186,11 +189,10 @@ export class LeftNavbar implements IObserver {
       this.user = newUser;
       this.renderProfile();
     }
-    // TODO вызов среза подписок
-    // if (
-    //   JSON.stringify(newProfile.subscriptions) !== JSON.stringify(this.subs)
-    // ) {
-    //   this.subs = newProfile.subscriptions;
+    // const newSubscriptions =
+    //   store.getState().subscribe as PayloadGetSubscriptions;
+    // if (newSubscriptions.subscriptions !== this.subs) {
+    //   this.subs = newSubscriptions.subscriptions;
     //   this.renderSubs();
     // }
   }

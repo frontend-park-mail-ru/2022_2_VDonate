@@ -1,12 +1,13 @@
 import {Button, ButtonType} from '@components/button/button';
 import {Glass, GlassType} from '@components/glass/glass';
 import {Image, ImageType} from '@components/image/image';
-import {Popup} from '../popup/sub/popup';
+import {Popup, SubType} from '../popup/sub/popup';
 import './sub.styl';
 import subHbs from './sub.hbs';
-import subscribe from '@actions/handlers/subscribe';
 
 interface Data {
+  subType: SubType,
+  AuthorID: number,
   id: number,
   subName: string,
   lvl: number,
@@ -25,13 +26,38 @@ export class Sub {
    */
   readonly element: HTMLElement;
 
+  private button: Button;
   /**
    * @param data данные для генерации
    */
   constructor(data: Data) {
     const lvlImg = new Image(ImageType.sub, data.img);
     lvlImg.element.classList.add('sub__img');
-    const button = new Button(ButtonType.primary, 'Задонатить', 'button');
+    switch (data.subType) {
+      case SubType.SUBSCRIBE:
+        this.button = new Button(ButtonType.primary, 'Задонатить', 'button');
+        this.button.element.addEventListener('click', () => {
+          const popup = new Popup(data.AuthorID, data.id, data.subType);
+          document.body.appendChild(popup.element);
+        });
+        break;
+      case SubType.UNSUBSCRIBE:
+        this.button = new Button(ButtonType.primary, 'Отписаться', 'button');
+        this.button.element.addEventListener('click', () => {
+          const popup = new Popup(data.AuthorID, data.id, data.subType);
+          document.body.appendChild(popup.element);
+        });
+        break;
+      case SubType.EDITSUBSCRIBE:
+        this.button = new Button(ButtonType.primary, 'Задонатить', 'button');
+        this.button.element.addEventListener('click', () => {
+          // TODO вызвать эдитор для изменения подписки
+        });
+        break;
+      default:
+        break;
+    }
+    this.button = new Button(ButtonType.primary, 'Задонатить', 'button');
     const glass = new Glass(GlassType.mono);
     this.element = glass.element;
     this.element.innerHTML = subHbs({
@@ -41,7 +67,7 @@ export class Sub {
       subImg: lvlImg.element.outerHTML,
       price: data.price,
       period: data.period,
-      button: button.element.outerHTML,
+      button: this.button.element.outerHTML,
       motivation: data.motivation,
     });
     const motivation =
@@ -54,12 +80,5 @@ export class Sub {
       showMore.hidden = true;
     };
     this.element.firstChild?.appendChild(showMore);
-    this.element.getElementsByTagName('button')[0].onclick = () => {
-      const popupEdit = new Popup(() => {
-        // TODO вроде нет id подписки
-        subscribe(Number(new URL(location.href).searchParams.get('id')), 1);
-      });
-      document.body.appendChild(popupEdit.element);
-    };
   }
 }

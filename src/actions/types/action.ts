@@ -1,5 +1,8 @@
 import {ActionGetProfileData} from './getProfileData';
-import {ActionSubscribe} from './subscribe';
+import {
+  ActionGetSubscriptions,
+  ActionSubscribe,
+  ActionUnsubscribe} from './subscribe';
 import {ActionNotice} from './notice';
 import {ActionGetPosts} from './posts';
 import {ActionRouting} from './routing';
@@ -26,6 +29,8 @@ export enum ActionType {
   CHANGEUSERDATA_SUCCESS,
   CHANGEUSERDATA_FAIL,
   SUBSCRIBE,
+  UNSUBSCRIBE,
+  GETSUBSCRIPTIONS,
   NOTICE,
   ROUTING,
   GET_POSTS,
@@ -47,6 +52,8 @@ export type Action =
   | ActionEditUseDataSuccess
   | ActionEditUserFail
   | ActionSubscribe
+  | ActionUnsubscribe
+  | ActionGetSubscriptions
   | ActionNotice
   | ActionRouting
   | ActionGetPosts

@@ -3,6 +3,15 @@ import {Button, ButtonType} from '@components/button/button';
 import './popup.styl';
 import {IObserver} from '@flux/types/observer';
 import store from '@app/store';
+import {subscribe, unsubscribe} from '@actions/handlers/subscribe';
+import {PayloadSubscribe} from '@actions/types/subscribe';
+
+export enum SubType {
+  SUBSCRIBE,
+  UNSUBSCRIBE,
+  EDITSUBSCRIBE,
+}
+
 /**
  * Модель окна подтверждения подписки
  */
@@ -12,11 +21,17 @@ export class Popup implements IObserver {
    */
   readonly element: HTMLElement;
 
+  private changeBtn: Button;
+
   /**
-   * @param change Функция валидации и отправки на сервер
-  */
+   * @param authorID ID автора
+   * @param authorSubscriptionID ID подписки
+   * @param subType тип
+   */
   constructor(
-      change: () => void,
+      authorID: number,
+      authorSubscriptionID: number,
+      subType: SubType,
   ) {
     const popupGlass = new Glass(GlassType.lines);
     popupGlass.element.classList.add('sub-popup__glass');
@@ -26,7 +41,6 @@ export class Popup implements IObserver {
     this.element = darkening;
     const text = document.createElement('span');
     text.classList.add('sub-popup__text');
-    text.innerText = 'Вы действительно собиратесь задонатить';
     popupGlass.element.appendChild(text);
     const btnContainer = document.createElement('div');
     btnContainer.classList.add('sub-popup__btn-container');
@@ -34,21 +48,43 @@ export class Popup implements IObserver {
     cansel.element.onclick = () => {
       this.element.remove();
     };
-    const changeBtn = new Button(ButtonType.primary, 'Задонатить', 'submit');
-    changeBtn.element.onclick = () => {
-      change();
-      // это временно (после логики в notify удалить)
-      this.element.remove();
-    };
+    // const changeBtn = new Button(ButtonType.primary, 'Задонатить', 'submit');
+    switch (subType) {
+      case SubType.SUBSCRIBE:
+        this.changeBtn =
+          new Button(ButtonType.primary, 'Задонатить', 'button');
+        text.innerText = 'Вы действительно собиратесь задонатить?';
+        this.changeBtn.element.onclick = () => {
+          subscribe(authorID, authorSubscriptionID);
+        };
+        break;
+      case SubType.UNSUBSCRIBE:
+        this.changeBtn =
+          new Button(ButtonType.primary, 'Отписаться', 'button');
+        text.innerText = 'Вы действительно собиратесь отписаться?';
+        this.changeBtn.element.onclick = () => {
+          unsubscribe(authorID, authorSubscriptionID);
+        };
+        break;
+      default:
+        this.changeBtn =
+          new Button(ButtonType.primary, 'Вернуться', 'button');
+        text.innerText = 'Ошибка';
+        this.changeBtn.element.onclick = () => {
+          this.element.remove();
+        };
+    }
     btnContainer.appendChild(cansel.element);
-    btnContainer.appendChild(changeBtn.element);
+    btnContainer.appendChild(this.changeBtn.element);
     popupGlass.element.appendChild(btnContainer);
     store.registerObserver(this);
   }
 
   /** Callback метод обновления хранилища */
   notify(): void {
-    // TODO логика
-    this.element.remove();
+    const state = store.getState().subscribe as PayloadSubscribe;
+    if (!state.error && state.success) {
+      this.element.remove();
+    }
   }
 }

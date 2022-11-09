@@ -4,6 +4,10 @@ import {IconButton} from '@components/icon_button/icon_button';
 import {Sub} from '@models/sub/sub';
 import './subContainer.styl';
 import plusIcn from '@icon/plus.svg';
+import {SubType} from '@models/popup/sub/popup';
+import store from '@app/store';
+import {PayloadUser} from '@actions/types/user';
+import {PayloadGetSubscriptions} from '@actions/types/subscribe';
 
 /**
  * Модель поля подписок
@@ -46,8 +50,23 @@ export class SubContainer {
       return;
     }
     this.container.innerHTML = '';
+    const user = store.getState().user as PayloadUser;
+    const subscriptions =
+        store.getState().subscribe as PayloadGetSubscriptions | undefined;
     subs.forEach((sub) => {
+      let subType = SubType.UNSUBSCRIBE;
+      if (user.id == sub.author.id) {
+        subType = SubType.EDITSUBSCRIBE;
+      } else {
+        if (subscriptions &&
+           !subscriptions.error &&
+           !subscriptions.subscriptions.find((o) => o.id == sub.id)) {
+          subType = SubType.SUBSCRIBE;
+        }
+      }
       const subItem = new Sub({
+        AuthorID: sub.author.id,
+        subType: subType,
         id: sub.id,
         subName: sub.title,
         lvl: sub.tier,
