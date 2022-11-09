@@ -11,6 +11,8 @@ const combineReducers =
     (state: PropTree, action: A): PropTree => {
       Object.entries(reducers).forEach(
           ([key, reducer]) => {
+          // TODO возможно тут можно провести сравнение по полям,
+          // чтобы не менять ссылку на объект, если они равны
             state[key] = reducer(state[key] as PropTree, action);
           },
       );

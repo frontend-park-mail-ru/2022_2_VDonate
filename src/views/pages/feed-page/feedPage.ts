@@ -4,8 +4,11 @@ import store from '@app/store';
 import {IObserver} from '@flux/types/observer';
 import {IView} from '@flux/types/view';
 import {Post} from '@models/post/post';
-import avatar from '@img/2.jpg';
 import './feedPage.styl';
+// Временно
+import avatar from '@img/2.jpg';
+import {PayloadPostEditor} from '@actions/types/editor';
+import Editor, {EditorTitle} from '@models/editor/editor';
 /** Тип структорного представления страницы из компонентов */
 interface FeedModel {
   base: HTMLDivElement
@@ -14,12 +17,14 @@ interface FeedModel {
       el: HTMLDivElement
       posts: Post[]
     }
+    editor?: Editor
   }
 }
 /** Класс */
 export default class FeedPage implements IObserver, IView {
   private page: FeedModel;
-  private posts: PayloadPost[] | undefined;
+  private posts: PayloadPost[];
+  private postEditor: PayloadPostEditor;
   /** Конструктор */
   constructor() {
     const base = document.createElement('div');
@@ -29,7 +34,9 @@ export default class FeedPage implements IObserver, IView {
     content.classList.add('feed-page__content-area');
     base.appendChild(content);
 
-    this.posts = store.getState().posts as PayloadPost[];
+    const state = store.getState();
+    this.posts = state.posts as PayloadPost[];
+    this.postEditor = state.postEditor as PayloadPostEditor;
     this.page = {
       base,
       children: {
@@ -40,13 +47,36 @@ export default class FeedPage implements IObserver, IView {
       },
     };
     store.registerObserver(this);
-    getPosts(1);
+    getPosts(4);
   }
   /** */
   notify(): void {
-    this.posts = store.getState().posts as PayloadPost[];
-    console.log(this.posts);
-    this.rerender();
+    const state = store.getState();
+    const postsNew = state.posts as PayloadPost[];
+    const postEditorNew = state.postEditor as PayloadPostEditor;
+    if (JSON.stringify(postsNew) !== JSON.stringify(this.posts)) {
+      this.posts = postsNew;
+      this.rerender();
+    }
+    if (JSON.stringify(postEditorNew) !== JSON.stringify(this.postEditor)) {
+      this.postEditor = postEditorNew;
+      if (this.postEditor.id) {
+        const targetPost = this.posts.find(
+            (post: PayloadPost) => this.postEditor.id === post.postID,
+        );
+        if (targetPost) {
+          this.page.children.editor = new Editor({
+            editorTitle: EditorTitle.POST,
+            title: targetPost.title,
+            text: targetPost.text,
+          });
+          this.page.base.appendChild(this.page.children.editor.element);
+        }
+      } else {
+        this.page.children.editor?.element.remove();
+        this.page.children.editor = undefined;
+      }
+    }
   }
   /** */
   reset(): void {
@@ -65,49 +95,31 @@ export default class FeedPage implements IObserver, IView {
   rerender(): void {
     this.page.children.content.el.replaceChildren();
     this.page.children.content.posts = [];
-    if (this.posts) {
-      this.posts.forEach(
-          (postContext) => {
-            const post = new Post(
-                {
-                  author: {
-                    id: postContext.user_id,
-                    img: avatar,
-                    username: 'OnePunchMan',
-                  },
-                  commentCount: 10,
-                  content: postContext.text,
-                  date: new Date(Date.now()),
-                  isLikedByMe: false,
-                  likeCount: 5,
-                  postID: postContext.id,
+    this.posts.forEach(
+        (postContext) => {
+          const post = new Post(
+              {
+                author: {
+                  id: postContext.userID,
+                  img: avatar,
+                  username: 'OnePunchMan',
                 },
-            );
-            this.page.children.content.posts.push(post);
-            this.page.children.content.el.appendChild(post.element);
-          },
-      );
-      this.posts.forEach(
-          (postContext) => {
-            const post = new Post(
-                {
-                  author: {
-                    id: postContext.user_id,
-                    img: avatar,
-                    username: 'OnePunchMan',
-                  },
-                  commentCount: 10,
-                  content: postContext.text,
-                  date: new Date(Date.now()),
-                  isLikedByMe: false,
-                  likeCount: 5,
-                  postID: postContext.id,
+                commentCount: 10,
+                content: {
+                  title: postContext.title,
+                  img: postContext.img,
+                  text: postContext.text,
                 },
-            );
-            this.page.children.content.posts.push(post);
-            this.page.children.content.el.appendChild(post.element);
-          },
-      );
-    }
+                date: new Date(Date.now()),
+                isLikedByMe: false,
+                likeCount: 5,
+                postID: postContext.postID,
+                changable: true,
+              },
+          );
+          this.page.children.content.posts.push(post);
+          this.page.children.content.el.appendChild(post.element);
+        },
+    );
   }
 }
