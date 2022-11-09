@@ -2,12 +2,12 @@ import {Glass, GlassType} from '@components/glass/glass';
 import {Button, ButtonType} from '@components/button/button';
 import {InputField, InputType} from '@components/input-field/inputField';
 import './popup.styl';
-import changeUserData from '@actions/handlers/changeUserData';
-import {
-  ChangeUserDataForm,
-  PayloadChangeUserData,
-  PayloadChangeUserDataErrors} from '@actions/types/changeUserData';
-import {IObserver} from '@flux/types/observer';
+// import changeUserData from '@actions/handlers/changeUserData';
+// import {
+//   ChangeUserDataForm,
+//   PayloadChangeUserData} from '@actions/types/changeUserData';
+// PayloadChangeUserDataErrors} from '@actions/types/changeUserData';
+// import {IObserver} from '@flux/types/observer';
 import store from '@app/store';
 import {PayloadUser} from '@actions/types/user';
 
@@ -49,13 +49,13 @@ const popupContext = [
 /**
  * Модель изменяемого окна
  */
-export class Popup implements IObserver {
+export class Popup {// implements IObserver {
   /**
    * Актуальный контейнер
    */
   readonly element: HTMLElement;
 
-  private inputs: Input[] = [];
+  // private inputs: Input[] = [];
   private becomeAuthor: HTMLElement | undefined;
   /**
    * конструктор
@@ -78,7 +78,7 @@ export class Popup implements IObserver {
       const inputEl = new InputField(inputType, context);
       inputEl.element.classList.add('change-popup__input');
       form.appendChild(inputEl.element);
-      this.inputs.push(inputEl);
+      // this.inputs.push(inputEl);
     });
     const user = store.getState().user as PayloadUser | null;
     if (!user?.isAuthor) {
@@ -106,50 +106,51 @@ export class Popup implements IObserver {
     form.appendChild(btnContainer);
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const form = (e.target as HTMLFormElement).elements as ChangeUserDataForm;
-      const user = store.getState().user as PayloadUser;
-      const userData: PayloadChangeUserData = {
-        id: user.id,
-      };
-      if (form.username.value != '') {
-        userData.username = form.username.value;
-      }
-      if (form.email.value != '') {
-        userData.email = form.email.value;
-      }
-      if (form.password.value != '') {
-        userData.password = form.password.value;
-      }
-      if (form.repeatPassword.value != '') {
-        userData.repeatPassword = form.repeatPassword.value;
-      }
-      if (form.isAuthor?.checked) {
-        userData.isAuthor = true;
-      }
-      changeUserData(userData);
+      // const form =
+      // (e.target as HTMLFormElement).elements as ChangeUserDataForm;
+      // const user = store.getState().user as PayloadUser;
+      // const userData: PayloadChangeUserData = {
+      //   id: user.id,
+      // };
+    //   if (form.username.value != '') {
+    //     userData.username = form.username.value;
+    //   }
+    //   if (form.email.value != '') {
+    //     userData.email = form.email.value;
+    //   }
+    //   if (form.password.value != '') {
+    //     userData.password = form.password.value;
+    //   }
+    //   if (form.repeatPassword.value != '') {
+    //     userData.repeatPassword = form.repeatPassword.value;
+    //   }
+    //   if (form.isAuthor?.checked) {
+    //     userData.isAuthor = true;
+    //   }
+    //   changeUserData(userData);
     });
-    store.registerObserver(this);
+    // store.registerObserver(this);
   }
   /** Callback метод обновления хранилища */
-  notify(): void {
-    const err =
-      store.getState().formErrors as PayloadChangeUserDataErrors | null;
-    if (
-      !err?.email ||
-      !err.username ||
-      !err.password ||
-      !err.repeatPassword ||
-      !err.isAuthor) {
-      this.element.remove();
-    } else {
-      this.inputs[0].errorDetect(Boolean(err.email));
-      this.inputs[0].errorDetect(Boolean(err.username));
-      this.inputs[0].errorDetect(Boolean(err.password));
-      this.inputs[0].errorDetect(Boolean(err.repeatPassword));
-    }
-    const user = store.getState().user as PayloadUser | null;
-    if (user?.isAuthor) {
-      this.becomeAuthor?.remove();
-    }
-  }
+  // notify(): void {
+  //   const err =
+  //     store.getState().formErrors as PayloadChangeUserDataErrors | null;
+  //   if (
+  //     !err?.email ||
+  //     !err.username ||
+  //     !err.password ||
+  //     !err.repeatPassword ||
+  //     !err.isAuthor) {
+  //     this.element.remove();
+  //   } else {
+  //     this.inputs[0].errorDetect(Boolean(err.email));
+  //     this.inputs[0].errorDetect(Boolean(err.username));
+  //     this.inputs[0].errorDetect(Boolean(err.password));
+  //     this.inputs[0].errorDetect(Boolean(err.repeatPassword));
+  //   }
+  //   const user = store.getState().user as PayloadUser | null;
+  //   if (user?.isAuthor) {
+  //     this.becomeAuthor?.remove();
+  //   }
+  // }
 }
