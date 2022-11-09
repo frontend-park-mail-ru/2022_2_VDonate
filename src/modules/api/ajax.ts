@@ -3,7 +3,7 @@
  * @module Ajax
  */
 
-export type RequestData = Record<string, string | number | boolean | File>
+export type RequestData = Record<string, string | number | boolean | Blob>
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Body = Record<string, any>
@@ -100,7 +100,15 @@ export default async (
 
         for (const [name, value] of Object.entries(data)) {
           // eslint-disable-next-line @typescript-eslint/no-base-to-string
-          formData.append(name, value.toString());
+          switch (typeof value) {
+            case 'boolean':
+            case 'number':
+              formData.append(name, value.toString());
+              break;
+            default:
+              formData.append(name, value);
+              break;
+          }
         }
         options.body = formData;
         headers.delete('Content-Type');
