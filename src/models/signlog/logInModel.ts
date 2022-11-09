@@ -2,7 +2,7 @@ import {login, LogInForm} from '@actions/handlers/user';
 import {PayloadLogInErrors} from '@actions/types/user';
 import store from '@app/store';
 import {Button, ButtonType} from '@components/button/button';
-import {Input, InputType} from '@components/input/input';
+import {InputField, InputType} from '@components/input-field/inputField';
 import {IObserver} from '@flux/types/observer';
 import template from './signlog.hbs';
 import './signlog.styl';
@@ -37,7 +37,7 @@ export class LogInModel implements IObserver {
   /** Актуальный контейнер авторизации */
   readonly element: HTMLFormElement;
   /** Список компонентов ввода, используемых в текущем контейнере */
-  private inputs: Input[] = [];
+  private inputs: InputField[] = [];
   /** Сосотояние ошибок в форме */
   private formErrors: PayloadLogInErrors | undefined;
   /** Конструктор */
@@ -48,7 +48,7 @@ export class LogInModel implements IObserver {
     const inputsArea = this.element.querySelector('.signlog__inputs');
     if (inputsArea) {
       logInInputs.forEach(({inputType, context}, idx) => {
-        const input = new Input(inputType, context);
+        const input = new InputField(inputType, context);
         inputsArea.appendChild(input.element);
         this.inputs[idx] = input;
       });

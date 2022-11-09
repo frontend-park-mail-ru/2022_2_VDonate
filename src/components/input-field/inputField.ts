@@ -1,5 +1,6 @@
 import './input.styl';
-import input from './input.hbs';
+import templateInput from './input.hbs';
+import templateTextarea from './textarea.hbs';
 import userIcon from '@icon/user.svg';
 import emailIcon from '@icon/email.svg';
 import passwordIcon from '@icon/password.svg';
@@ -8,18 +9,22 @@ export enum InputType {
   username,
   email,
   password,
+  text,
+  textarea,
+  file,
 }
 
 interface InputContext {
   label: string
-  placeholder: string
   name: string
+  placeholder?: string
+  value?: string
 }
 
 /**
  * Компонент поля ввода
  */
-export class Input {
+export class InputField {
   readonly element: HTMLLabelElement;
 
   /**
@@ -28,7 +33,11 @@ export class Input {
    */
   constructor(type: InputType, context: InputContext) {
     this.element = document.createElement('label');
-    this.element.classList.add('input');
+    this.element.classList.add('input-field');
+    if (type === InputType.textarea) {
+      this.element.insertAdjacentHTML('afterbegin', templateTextarea(context));
+      return;
+    }
     const fullContext: InputContext & {
       type?: string
       icon?: string
@@ -46,10 +55,18 @@ export class Input {
         fullContext.type = 'password';
         fullContext.icon = passwordIcon;
         break;
-      default:
+      case InputType.text:
+        fullContext.type = 'text';
         break;
+      case InputType.file:
+        fullContext.type = 'file';
+        break;
+      default: {
+        const _exhaustiveCheck: never = type;
+        return _exhaustiveCheck;
+      }
     }
-    this.element.innerHTML += input(fullContext);
+    this.element.insertAdjacentHTML('beforeend', templateInput(fullContext));
   }
 
   /**
@@ -57,9 +74,9 @@ export class Input {
    * @param err флаг ошибки
    */
   errorDetect(err: boolean) {
-    const back = this.element.querySelector('div.input__back');
+    const back = this.element.querySelector('div.input-field__back');
     err ?
-      back?.classList.add('input__back_error') :
-      back?.classList.remove('input__back_error');
+      back?.classList.add('input-field__back_error') :
+      back?.classList.remove('input-field__back_error');
   }
 }

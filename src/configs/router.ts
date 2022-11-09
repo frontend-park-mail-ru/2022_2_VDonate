@@ -30,8 +30,4 @@ export const routes: RouteType[] = [
     path: /^\/feed$/,
     type: Pages.FEED,
   },
-  // {
-  //   path: /^\/logout$/,
-  //   render: logout,
-  // },
 ];

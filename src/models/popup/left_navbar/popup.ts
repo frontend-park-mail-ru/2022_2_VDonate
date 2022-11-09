@@ -1,6 +1,6 @@
 import {Glass, GlassType} from '@components/glass/glass';
 import {Button, ButtonType} from '@components/button/button';
-import {Input, InputType} from '@components/input/input';
+import {InputField, InputType} from '@components/input-field/inputField';
 import './popup.styl';
 import changeUserData from '@actions/handlers/changeUserData';
 import {ChangeUserDataForm} from '@actions/types/changeUserData';
@@ -70,7 +70,7 @@ export class Popup implements IObserver {
     head.innerText = 'Изменение данных';
     form.appendChild(head);
     popupContext.forEach(({inputType, context}) => {
-      const inputEl = new Input(inputType, context);
+      const inputEl = new InputField(inputType, context);
       inputEl.element.classList.add('change-popup__input');
       form.appendChild(inputEl.element);
     });

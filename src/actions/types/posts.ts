@@ -2,11 +2,11 @@ import {IAction} from '@flux/types/actions';
 import {ActionType} from './action';
 
 export interface PayloadPost {
-  id: number
+  postID: number
   img: string
   text: string
   title: string
-  user_id: number
+  userID: number
 }
 
 export interface ActionGetPosts extends IAction {
