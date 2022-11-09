@@ -2,7 +2,7 @@ import {signup, SignUpForm} from '@actions/handlers/user';
 import {PayloadSignUpErrors} from '@actions/types/user';
 import store from '@app/store';
 import {Button, ButtonType} from '@components/button/button';
-import {Input, InputType} from '@components/input/input';
+import {InputField, InputType} from '@components/input-field/inputField';
 import {IObserver} from '@flux/types/observer';
 import template from './signlog.hbs';
 import './signlog.styl';
@@ -53,7 +53,7 @@ export class SignUpModel implements IObserver {
   /** Актуальный контейнер регистрации */
   readonly element: HTMLFormElement;
   /** Список компонентов ввода, используемых в текущем контейнере */
-  private inputs: Input[] = [];
+  private inputs: InputField[] = [];
   /** Сосотояние ошибок в форме */
   private formErrors: PayloadSignUpErrors | undefined;
   /** Конструктор */
@@ -64,7 +64,7 @@ export class SignUpModel implements IObserver {
     const inputsArea = this.element.querySelector('.signlog__inputs');
     if (inputsArea) {
       signUpInputs.forEach(({inputType, context}, idx) => {
-        const input = new Input(inputType, context);
+        const input = new InputField(inputType, context);
         inputsArea.appendChild(input.element);
         this.inputs[idx] = input;
       });
@@ -84,10 +84,10 @@ export class SignUpModel implements IObserver {
     const formErrorsNew = store.getState().formErrors as PayloadSignUpErrors;
     if (JSON.stringify(formErrorsNew) !== JSON.stringify(this.formErrors)) {
       this.formErrors = formErrorsNew;
-      this.inputs[0].errorDetect(!!this.formErrors.email);
-      this.inputs[1].errorDetect(!!this.formErrors.username);
-      this.inputs[2].errorDetect(!!this.formErrors.password);
-      this.inputs[3].errorDetect(!!this.formErrors.repeatPassword);
+      this.inputs[0].errorDetect(Boolean(this.formErrors.email));
+      this.inputs[1].errorDetect(Boolean(this.formErrors.username));
+      this.inputs[2].errorDetect(Boolean(this.formErrors.password));
+      this.inputs[3].errorDetect(Boolean(this.formErrors.repeatPassword));
     }
   }
 }

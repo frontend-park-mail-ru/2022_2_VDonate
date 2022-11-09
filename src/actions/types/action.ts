@@ -15,6 +15,7 @@ import {
   ActionLogOutSuccess,
   ActionLogOutFail,
 } from './user';
+import {ActionPostEditor} from './editor';
 /** Типы действий */
 export enum ActionType {
   LOGIN_SUCCESS,
@@ -31,6 +32,7 @@ export enum ActionType {
   GET_POSTS,
   LOGOUT_SUCCESS,
   LOGOUT_FAIL,
+  POST_EDITOR,
 }
 /** Объединение действий */
 export type Action =
@@ -47,4 +49,5 @@ export type Action =
   | ActionSubscribe
   | ActionNotice
   | ActionRouting
-  | ActionGetPosts;
+  | ActionGetPosts
+  | ActionPostEditor;

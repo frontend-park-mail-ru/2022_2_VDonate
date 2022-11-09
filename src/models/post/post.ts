@@ -1,24 +1,30 @@
 import {ReactButton, ReactType} from '@components/reaction/reaction';
 import {Image, ImageType} from '@components/image/image';
 import {IconButton} from '@components/icon_button/icon_button';
-// import {Popup} from '../popup/about/popup';
-import template from './post.hbs';
+import templatePost from './post.hbs';
+import templateContent from './content.hbs';
 import editIcon from '@icon/edit.svg';
 import './post.styl';
-import store from '@app/store';
+
+import {postEditor} from '@actions/handlers/editor';
 
 interface PostContext {
-  postID: number,
+  postID: number
   author: {
-    id: number,
-    img: string,
-    username: string,
-  },
-  date: Date,
-  content: string,
-  likeCount: number,
-  isLikedByMe: boolean,
-  commentCount: number,
+    id: number
+    img: string
+    username: string
+  }
+  date: Date
+  content: {
+    title: string
+    img: string
+    text: string
+  }
+  likeCount: number
+  isLikedByMe: boolean
+  commentCount: number
+  changable: boolean
 }
 
 /**
@@ -59,28 +65,45 @@ export class Post {
     const post = document.createElement('div');
 
     post.classList.add('post', 'post__back');
-    post.innerHTML = template({
+    post.innerHTML = templatePost({
       username: context.author.username,
       date: context.date.toDateString(),
-      content: context.content,
     });
+    post.querySelector('.post__content')
+        ?.insertAdjacentHTML('afterbegin', templateContent({
+          title: context.content.title,
+          img: context.content.img,
+          text: context.content.text,
+        }));
+
     post.querySelector('.post__author-avatar')?.appendChild(avatarImg.element);
     post.querySelector('.post__reaction')
         ?.append(like.element, comment.element);
-    if ((store.getState().user as {id: number}).id === context.author.id) {
+    if (context.changable) {
       const editBtn = new IconButton(editIcon, 'button');
-      editBtn.element.classList.add('post__head_btn');
-      post.querySelector('post__head')?.appendChild(editBtn.element);
-      // TODO свой попап для поста (добавить возможность удаления)
+      editBtn.element.classList.add('post__header_btn');
+      post.querySelector('.post__header')?.appendChild(editBtn.element);
+      editBtn.element.addEventListener('click',
+          () => {
+            postEditor(context.postID);
+          });
       // const popup = new Popup(
       //     'Изменить пост',
-      //     context.content,
-      // );
-      // editBtn.element.addEventListener('click',
+      //     context.contentHTML,
       //     () => {
-      //       popup.element.style.display = 'flex';
+      //       // TODO: вызвать изменение вместо пустой фунции
       //     });
-      // document.body.appendChild(popup.element);
+
+      // const editor = new Editor({
+      //   title: context.content.title,
+      //   text: context.content.text,
+      // });
+      // editor.element.addEventListener('submit',
+      //     (e) => {
+      //       e.preventDefault();
+      //       console.warn((e.target as HTMLFormElement).elements);
+      //     });
+      // post.appendChild(editor.element);
     }
 
     this.element = post;
