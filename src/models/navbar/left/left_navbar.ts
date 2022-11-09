@@ -4,7 +4,6 @@ import {NavbarUnit, OrientType} from '@components/navbar_unit/navbar_unit';
 import {Logo} from '@components/logo/logo';
 import {Image, ImageType} from '@components/image/image';
 import {IconButton} from '@components/icon_button/icon_button';
-import {Popup} from '../../popup/left_navbar/popup';
 import {Button, ButtonType} from '@components/button/button';
 import menuIcon from '@icon/menu.svg';
 import store from '@app/store';
@@ -13,6 +12,7 @@ import {PayloadGetProfileData} from '@actions/types/getProfileData';
 import routing from '@actions/handlers/routing';
 import {PayloadUser} from '@actions/types/user';
 import {logout} from '@actions/handlers/user';
+import {openProfileEditor} from '@actions/handlers/editor';
 
 
 const links = [
@@ -98,10 +98,14 @@ export class LeftNavbar implements IObserver {
     };
     const change = new Button(ButtonType.outline, 'Изменить данные', 'button');
     change.element.classList.add('left-navbar__down_popup_btn');
-    change.element.onclick = () => {
-      const popupEdit = new Popup();
-      document.body.appendChild(popupEdit.element);
-    };
+    change.element.addEventListener('click',
+        () => {
+          openProfileEditor();
+        });
+    // change.element.onclick = () => {
+    //   const popupEdit = new Popup();
+    //   document.body.appendChild(popupEdit.element);
+    // };
     const logoutBtn = new Button(ButtonType.outline, 'Выйти', 'button');
     logoutBtn.element.classList.add('left-navbar__down_popup_btn');
     logoutBtn.element.onclick = () => {

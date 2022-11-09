@@ -1,5 +1,6 @@
 import {IAction} from '@flux/types/actions';
 import {ActionType} from './action';
+import {FormErrorType} from './formError';
 import {PayloadLocation} from './routing';
 /** Нагрузка в срез пользователя */
 export interface PayloadUser {
@@ -14,15 +15,38 @@ export interface PayloadUser {
 }
 /** Нагрузка в срез ошибок формы авторизации */
 export interface PayloadLogInErrors {
+  type: FormErrorType.LOGIN
   username: null | string
   password: null | string
 }
 /** Нагрузка в срез ошибок формы регистрации */
 export interface PayloadSignUpErrors {
+  type: FormErrorType.SIGNUP
   email: null | string
   username: null | string
   password: null | string
   repeatPassword: null | string
+}
+/** Нагрузка в срез пользователя при редактировании */
+export interface PayloadEditUser {
+  id: number
+  username?: string
+  email?: string
+  about?: string
+  password?: string
+  repeatPassword?: string
+  isAuthor?: boolean
+}
+/** Нагрузка в срез ошибок формы редактирования пользователя */
+export interface PayloadEditUserErrors {
+  type: FormErrorType.EDIT_USER
+  email: null | string
+  username: null | string
+  password: null | string
+  repeatPassword: null | string
+  about: null | string
+  isAuthor: null | string
+  avatar: null | string
 }
 /** Интерфейс действия аутификации */
 export interface ActionAuth extends IAction {
@@ -75,4 +99,16 @@ export interface ActionLogOutFail extends IAction {
     message: string
   }
 }
-
+/** Интерфейс действия успешной регистрации */
+export interface ActionEditUseDataSuccess extends IAction {
+  type: ActionType.CHANGEUSERDATA_SUCCESS
+  payload: {
+    user: PayloadEditUser
+    formErrors: PayloadEditUserErrors
+  }
+}
+/** Интерфейс действия провальной регистрации */
+export interface ActionEditUserFail extends IAction {
+  type: ActionType.CHANGEUSERDATA_FAIL
+  payload: PayloadEditUserErrors
+}

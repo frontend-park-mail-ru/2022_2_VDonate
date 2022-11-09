@@ -3,7 +3,7 @@ import combineReducers from '@flux/combineReducer';
 import formErrorsReducer from './form';
 import locationReducer from './location';
 import noticeReducer from './notice';
-import postEditorReducer from './postEditor';
+import editorReducer from './editor';
 import postsReducer from './posts';
 import profileReducer from './profile';
 import userReducer from './user';
@@ -15,5 +15,5 @@ export default combineReducers<Action>({
   formErrors: formErrorsReducer,
   posts: postsReducer,
   notice: noticeReducer,
-  postEditor: postEditorReducer,
+  editor: editorReducer,
 });

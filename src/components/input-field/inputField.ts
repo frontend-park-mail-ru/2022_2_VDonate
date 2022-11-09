@@ -12,6 +12,7 @@ export enum InputType {
   text,
   textarea,
   file,
+  checkbox,
 }
 
 interface InputContext {
@@ -34,10 +35,7 @@ export class InputField {
   constructor(type: InputType, context: InputContext) {
     this.element = document.createElement('label');
     this.element.classList.add('input-field');
-    if (type === InputType.textarea) {
-      this.element.insertAdjacentHTML('afterbegin', templateTextarea(context));
-      return;
-    }
+
     const fullContext: InputContext & {
       type?: string
       icon?: string
@@ -61,6 +59,15 @@ export class InputField {
       case InputType.file:
         fullContext.type = 'file';
         break;
+      case InputType.checkbox:
+        fullContext.type = 'checkbox';
+        break;
+      case InputType.textarea:
+        this.element.insertAdjacentHTML(
+            'afterbegin',
+            templateTextarea(context),
+        );
+        return;
       default: {
         const _exhaustiveCheck: never = type;
         return _exhaustiveCheck;

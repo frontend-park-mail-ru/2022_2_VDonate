@@ -1,4 +1,4 @@
-import {PayloadPostEditor} from '@actions/types/editor';
+import {PayloadEditor} from '@actions/types/editor';
 import {PayloadNotice} from '@actions/types/notice';
 import {PayloadPost} from '@actions/types/posts';
 import {PayloadLocation} from '@actions/types/routing';
@@ -8,7 +8,7 @@ const initinalState: {
   location: PayloadLocation,
   notice: PayloadNotice,
   posts: PayloadPost[],
-  postEditor: PayloadPostEditor,
+  editor: PayloadEditor,
 } = {
   location: {
     type: Pages.PRELOAD,
@@ -17,9 +17,7 @@ const initinalState: {
     message: null,
   },
   posts: [],
-  postEditor: {
-    id: null,
-  },
+  editor: {},
 };
 
 export default initinalState;
