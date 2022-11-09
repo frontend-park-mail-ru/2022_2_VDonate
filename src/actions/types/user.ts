@@ -36,6 +36,7 @@ export interface PayloadEditUser {
   password?: string
   repeatPassword?: string
   isAuthor?: boolean
+  avatar?: File
 }
 /** Нагрузка в срез ошибок формы редактирования пользователя */
 export interface PayloadEditUserErrors {

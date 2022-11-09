@@ -85,7 +85,7 @@ export default class ProfileEditor {
     }));
     this.inputs.push(new InputField(InputType.file, {
       label: 'Загрузите аватарку',
-      name: 'img',
+      name: 'avatar',
     }));
     this.inputs.forEach(
         (input) => inputsArea?.appendChild(input.element),

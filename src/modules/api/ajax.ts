@@ -3,7 +3,7 @@
  * @module Ajax
  */
 
-export type RequestData = Record<string, string | number | boolean>
+export type RequestData = Record<string, string | number | boolean | File>
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Body = Record<string, any>
@@ -42,8 +42,10 @@ const dataToQuery = (data: RequestData): string => {
   let queryString = '?';
   Object
       .entries(data)
+  // eslint-disable-next-line @typescript-eslint/no-base-to-string
       .forEach(([key, value]) => {
-        queryString += `${key}=${value}`;
+        // eslint-disable-next-line @typescript-eslint/no-base-to-string
+        queryString += `${key}=${value.toString()}`;
       });
   return queryString;
 };
@@ -97,6 +99,7 @@ export default async (
         const formData = new FormData();
 
         for (const [name, value] of Object.entries(data)) {
+          // eslint-disable-next-line @typescript-eslint/no-base-to-string
           formData.append(name, value.toString());
         }
         options.body = formData;

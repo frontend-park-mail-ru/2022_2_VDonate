@@ -15,7 +15,6 @@ import {Subscription} from '@actions/types/subscribe';
 import {openProfileEditor} from '@actions/handlers/editor';
 
 
-
 const links = [
   {
     icon: menuIcon,

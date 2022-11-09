@@ -139,6 +139,7 @@ export default class Api {
       password?: string,
       about?: string,
       isAuthor?: boolean,
+      avatar?: File,
   }): Promise<ResponseData> {
     return this.request(
         `/users/${data.id}`,
