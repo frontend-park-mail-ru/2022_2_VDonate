@@ -8,6 +8,7 @@ const locationReducer: Reducer<Action> =
       case ActionType.AUTH:
       case ActionType.LOGIN_SUCCESS:
       case ActionType.SIGNUP_SUCCESS:
+      case ActionType.LOGOUT_SUCCESS:
         return action.payload.location;
       case ActionType.ROUTING:
         return action.payload;

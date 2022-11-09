@@ -61,4 +61,18 @@ export interface ActionLogInFail extends IAction {
   payload: PayloadLogInErrors
 }
 
+/** Интерфейс действия успешного выхода */
+export interface ActionLogOutSuccess extends IAction {
+  type: ActionType.LOGOUT_SUCCESS
+  payload: {
+    location: PayloadLocation
+  }
+}
+/** Интерфейс действия провального выхода */
+export interface ActionLogOutFail extends IAction {
+  type: ActionType.LOGOUT_FAIL
+  payload: {
+    message: string
+  }
+}
 

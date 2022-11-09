@@ -10,9 +10,9 @@ import menuIcon from '@icon/menu.svg';
 import store from '@app/store';
 import {IObserver} from '@flux/types/observer';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
-import getProfile from '@actions/handlers/getProfileData';
 import routing from '@actions/handlers/routing';
 import {PayloadUser} from '@actions/types/user';
+import {logout} from '@actions/handlers/user';
 
 
 const links = [
@@ -44,7 +44,7 @@ export class LeftNavbar implements IObserver {
 
   private subsList: HTMLElement;
   private profile: HTMLElement;
-  private user: PayloadGetProfileData['profile'] | undefined;
+  private user: PayloadUser | undefined;
   private subs: PayloadGetProfileData['subscriptions'] | undefined;
   private navbarUnits: NavbarUnit[] = [];
   /**
@@ -98,25 +98,23 @@ export class LeftNavbar implements IObserver {
     };
     const change = new Button(ButtonType.outline, 'Изменить данные', 'button');
     change.element.classList.add('left-navbar__down_popup_btn');
-    const popupEdit = new Popup();
     change.element.onclick = () => {
-      popupEdit.element.style.display = 'flex';
+      const popupEdit = new Popup();
+      document.body.appendChild(popupEdit.element);
     };
-    document.body.appendChild(popupEdit.element);
-    const logout = new Button(ButtonType.outline, 'Выйти', 'button');
-    logout.element.classList.add('left-navbar__down_popup_btn');
-    logout.element.onclick = () => {
-      // TODO: вызов выхода
+    const logoutBtn = new Button(ButtonType.outline, 'Выйти', 'button');
+    logoutBtn.element.classList.add('left-navbar__down_popup_btn');
+    logoutBtn.element.onclick = () => {
+      logout();
     };
     popup.element.appendChild(profileLink.element);
     popup.element.appendChild(change.element);
-    popup.element.appendChild(logout.element);
+    popup.element.appendChild(logoutBtn.element);
     profileContainer.appendChild(icnbtn.element);
     profileContainer.appendChild(this.profile);
     glass.element.appendChild(profileContainer);
-    store.registerObserver(this);
     this.renderLocation();
-    getProfile(Number(new URL(location.href).searchParams.get('id')));
+    store.registerObserver(this);
   }
 
   /**
@@ -124,19 +122,19 @@ export class LeftNavbar implements IObserver {
    */
   renderSubs() {
     this.subsList.innerHTML = '';
-    this.subs?.forEach(({img, title}) => {
-      const sub = document.createElement('a');
-      // sub.setAttribute('href', `/profile?id=${id}`);
-      // sub.setAttribute('data-link', '');
-      sub.classList.add('left-navbar__sub');
-      const avatar = new Image(ImageType.author, img);
-      avatar.element.classList.add('left-navbar__sub_avatar');
-      const usrname = document.createElement('span');
-      usrname.innerText = title;
-      sub.appendChild(avatar.element);
-      sub.appendChild(usrname);
-      this.subsList.appendChild(sub);
-    });
+    // this.subs?.forEach(({avatar, username, }) => {
+    //   const sub = document.createElement('a');
+    //   // sub.setAttribute('href', `/profile?id=${id}`);
+    //   // sub.setAttribute('data-link', '');
+    //   sub.classList.add('left-navbar__sub');
+    //   const avatar = new Image(ImageType.author, img);
+    //   avatar.element.classList.add('left-navbar__sub_avatar');
+    //   const usrname = document.createElement('span');
+    //   usrname.innerText = title;
+    //   sub.appendChild(avatar.element);
+    //   sub.appendChild(usrname);
+    //   this.subsList.appendChild(sub);
+    // });
   }
 
   /**
@@ -148,7 +146,7 @@ export class LeftNavbar implements IObserver {
     }
     this.profile.innerHTML = '';
     const avatar = new Image(
-      this.user.is_author ? ImageType.author : ImageType.donater,
+      this.user.isAuthor ? ImageType.author : ImageType.donater,
       this.user.avatar,
     );
     avatar.element.classList.add('left-navbar__down_profile_img');
@@ -174,22 +172,22 @@ export class LeftNavbar implements IObserver {
   }
   /** функция показывающая navbar */
   showNavbar() {
-    this.element.style.display = 'block';
+    this.element.removeAttribute('style');
   }
   /** Callback метод обновления хранилища */
   notify(): void {
-    this.renderLocation();
-    const newProfile =
-    store.getState().profile as PayloadGetProfileData;
-    if (JSON.stringify(newProfile.profile) !== JSON.stringify(this.user)) {
-      this.user = newProfile.profile;
+    const newUser =
+      store.getState().user as PayloadUser;
+    if (JSON.stringify(newUser) !== JSON.stringify(this.user)) {
+      this.user = newUser;
       this.renderProfile();
     }
-    if (
-      JSON.stringify(newProfile.subscriptions) !== JSON.stringify(this.subs)
-    ) {
-      this.subs = newProfile.subscriptions;
-      this.renderSubs();
-    }
+    // TODO вызов среза подписок
+    // if (
+    //   JSON.stringify(newProfile.subscriptions) !== JSON.stringify(this.subs)
+    // ) {
+    //   this.subs = newProfile.subscriptions;
+    //   this.renderSubs();
+    // }
   }
 }

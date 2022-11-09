@@ -109,8 +109,8 @@ export default class Api {
      * @return объект ответа с полями {ok,status,body}
      */
   getSubscritions(id: number): Promise<ResponseData> {
-    // TODO в свагере без id, хз как надо
-    return this.request(`/subscriptions/${id}`, Method.GET, ContentType.json);
+    return this.request(
+        `/subscriptions/${id}`, Method.GET, ContentType.json);
   }
 
   /**
@@ -120,31 +120,32 @@ export default class Api {
    */
   getAuthorSubscritions(id: number): Promise<ResponseData> {
     return this.request(
-        `/author/subscriptions/${id}`,
-        Method.GET, ContentType.json,
+        `/author/subscriptions`,
+        Method.GET, ContentType.json, {
+          author_id: id,
+        },
     );
   }
 
   /**
      * Интерфейс изменения данных пользователя
-     * @param id - ID
-     * @param username - псевдоним
-     * @param email - почта
-     * @param password - пароль
+     * @param data Обьект
      * @return объект ответа с полями {ok,status,body}
      */
-  putUserData(
+  putUserData(data: {
       id: number,
-      username: string,
-      email: string,
-      password: string,
-  ): Promise<ResponseData> {
-    return this.request(`/users/${id}`, Method.PUT, ContentType.formData, {
-      id,
-      email,
-      password,
-      username,
-    });
+      username?: string,
+      email?: string,
+      password?: string,
+      about?: string,
+      isAuthor?: boolean,
+  }): Promise<ResponseData> {
+    return this.request(
+        `/users/${data.id}`,
+        Method.PUT,
+        ContentType.formData,
+        data,
+    );
   }
 
   /**

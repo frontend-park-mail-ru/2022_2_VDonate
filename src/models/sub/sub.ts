@@ -7,11 +7,11 @@ import subHbs from './sub.hbs';
 import subscribe from '@actions/handlers/subscribe';
 
 interface Data {
-  id: string,
+  id: number,
   subName: string,
-  lvl: string,
+  lvl: number,
   img: string,
-  price: string,
+  price: number,
   period: string,
   motivation: string,
 }
@@ -54,13 +54,12 @@ export class Sub {
       showMore.hidden = true;
     };
     this.element.firstChild?.appendChild(showMore);
-    const popupEdit = new Popup(() => {
-      // TODO вроде нет id подписки
-      subscribe(Number(new URL(location.href).searchParams.get('id')), 1);
-    });
     this.element.getElementsByTagName('button')[0].onclick = () => {
-      popupEdit.element.style.display = 'flex';
+      const popupEdit = new Popup(() => {
+        // TODO вроде нет id подписки
+        subscribe(Number(new URL(location.href).searchParams.get('id')), 1);
+      });
+      document.body.appendChild(popupEdit.element);
     };
-    document.body.appendChild(popupEdit.element);
   }
 }

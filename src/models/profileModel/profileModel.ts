@@ -1,6 +1,7 @@
-import getProfileData from '@actions/handlers/getProfileData';
-import {PayloadGetProfileData} from '@actions/types/getProfileData';
-import store from '@app/store';
+import {
+  PayloadAuthorSubscription,
+  PayloadProfileSubscription,
+  PayloadProfileUser} from '@actions/types/getProfileData';
 import {Glass, GlassType} from '@components/glass/glass';
 import {SubscriptionItem} from '@components/subscriptionItem/subscriptionItem';
 import {About} from '@models/about/about';
@@ -9,7 +10,7 @@ import {SubContainer} from '@models/subContainer/subContainer';
 import './profileModel.styl';
 
 /**
- * Модель поля подписок
+ * Модель Профиля
  */
 export class ProfileModel {
   /**
@@ -17,39 +18,76 @@ export class ProfileModel {
    */
   readonly element: HTMLElement;
 
+  private subContainer: SubContainer;
+  private about: About;
+  private head: HTMLElement;
+  private glass: Glass;
+  private rightNavbar: RightNavbar;
   /**
    * конструктор
-   * @param changeable ff
+   * @param changeable флаг возможности изменять данные
   */
   constructor(changeable: boolean) {
     this.element = document.createElement('div');
     this.element.classList.add('content');
-    const profile = store.getState().profile as PayloadGetProfileData;
-    if (profile.profile?.is_author) {
-      const subContainer = new SubContainer(changeable);
-      const about = new About(changeable);
-      this.element.appendChild(subContainer.element);
-      this.element.appendChild(about.element);
+    this.rightNavbar = new RightNavbar();
+    this.subContainer = new SubContainer(changeable);
+    this.about = new About(changeable);
+    this.head = document.createElement('div');
+    this.head.classList.add('content__head');
+    this.head.innerText = 'Подписки';
+    this.glass = new Glass(GlassType.mono);
+    this.glass.element.classList.add('content__glass');
+    this.element.appendChild(this.rightNavbar.element);
+  }
+
+  /**
+   * @param isAuthor является ли автором
+   */
+  setType(isAuthor: boolean) {
+    this.element.innerHTML = '';
+    if (isAuthor) {
+      this.element.append(this.subContainer.element, this.about.element);
     } else {
-      const head = document.createElement('div');
-      head.classList.add('content__head');
-      head.innerText = 'Подписки';
-      const glass = new Glass(GlassType.mono);
-      glass.element.classList.add('content__glass');
-      profile.subscriptions?.forEach((sub) => {
-        const subItem = new SubscriptionItem(
-            1, // TODO id вставить
-            sub.img,
-            sub.title,
-            sub.tier,
-        );
-        glass.element.appendChild(subItem.element);
-      });
-      this.element.appendChild(head);
-      this.element.appendChild(glass.element);
+      this.element.append(this.head, this.glass.element);
     }
-    const rightNavbar = new RightNavbar();
-    this.element.appendChild(rightNavbar.element);
-    getProfileData(Number(new URL(location.href).searchParams.get('id')));
+    this.element.appendChild(this.rightNavbar.element);
+  }
+  /**
+   * @param subscriptions список подписок пользователя
+   */
+  renderSubscriptions(subscriptions: PayloadProfileSubscription[]) {
+    this.glass.element.innerHTML = '';
+    subscriptions.forEach((sub) => {
+      const subItem = new SubscriptionItem(
+          // TODO раскоменитить если есть id автора
+          1, // sub.author.id,
+          sub.author.avatar,
+          sub.author.username,
+          sub.tier,
+      );
+      this.glass.element.appendChild(subItem.element);
+    });
+  }
+  /**
+   * @param subs Уровни подписок автора
+   */
+  renderSubContainer(subs: PayloadAuthorSubscription[] | undefined) {
+    this.subContainer.renderSubs(subs);
+  }
+
+  /**
+   * @param about новый текст об пользователе
+   */
+  renderAbout(about: string | undefined) {
+    this.about.setText(about);
+  }
+
+  /**
+   * @param user данные профиля
+   */
+  renderNavbar(user: PayloadProfileUser) {
+    user.isAuthor ? this.rightNavbar.authorRender(user) :
+      this.rightNavbar.donaterRender(user);
   }
 }

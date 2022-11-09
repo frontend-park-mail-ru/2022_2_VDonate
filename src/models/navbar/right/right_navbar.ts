@@ -1,28 +1,19 @@
 import './right_navbar.styl';
 import {Glass, GlassType} from '@components/glass/glass';
 import {Image, ImageType} from '@components/image/image';
-import store from '@app/store';
-import {IObserver} from '@flux/types/observer';
-import {PayloadGetProfileData} from '@actions/types/getProfileData';
+import {
+  PayloadProfileUser} from '@actions/types/getProfileData';
 
-interface Profile {
-  avatar: string,
-  is_author: boolean,
-  username: string,
-  subscriptionsCount: number,
-  subscribersCount: number,
-}
 /**
  * Модель правого навбара
  */
-export class RightNavbar implements IObserver {
+export class RightNavbar {
   /**
    * Актуальный контейнер правого навбара
    */
   readonly element: HTMLElement;
 
   private glass: HTMLElement;
-  private profile: Profile | undefined;
   /**
    * Конструктор
    */
@@ -31,26 +22,27 @@ export class RightNavbar implements IObserver {
     this.element.classList.add('right-navbar');
     this.glass = new Glass(GlassType.mono).element;
     this.glass.classList.add('right-navbar__glass');
+    this.glass.classList.add('right-navbar__profile');
     this.element.appendChild(this.glass);
-    store.registerObserver(this);
   }
 
   /**
-   * Конструктор для автора
+   * @param user данные пользователя
    */
-  authorConstruct() {
-    this.glass.classList.add('right-navbar__profile');
-    if (!this.profile) {
-      return;
-    }
+  authorRender(user: PayloadProfileUser) {
+    this.glass.innerHTML = '';
+
     const avatar = new Image(
         ImageType.author,
-        this.profile.avatar,
+        user.avatar,
     );
-    avatar.element.classList.add('right-navbar__img');
+    avatar.element.classList.add('right-navbar__profile_img');
+    avatar.element.addEventListener('click', () => {
+      // TODO создать попап отправки аватара
+    });
     const usrname = document.createElement('span');
     usrname.classList.add('right-navbar__profile_username');
-    usrname.innerText = this.profile.username;
+    usrname.innerText = user.username;
     const info = document.createElement('div');
     info.classList.add('right-navbar__profile_info');
     const donatersContainer = document.createElement('div');
@@ -60,7 +52,11 @@ export class RightNavbar implements IObserver {
     donaters.innerText = 'Донатеров';
     const donatersCount = document.createElement('span');
     donatersCount.classList.add('right-navbar__profile_info_count');
-    donatersCount.innerText = this.profile.subscribersCount.toString();
+    if (user.countSubscribers) {
+      donatersCount.innerText = user.countSubscribers.toString();
+    } else {
+      donatersCount.innerText = '0';
+    }
     donatersContainer.appendChild(donaters);
     donatersContainer.appendChild(donatersCount);
     const subsContainer = document.createElement('div');
@@ -70,7 +66,7 @@ export class RightNavbar implements IObserver {
     subs.innerText = 'Подписок';
     const subsCount = document.createElement('span');
     subsCount.classList.add('right-navbar__profile_info_count');
-    subsCount.innerText = this.profile.subscriptionsCount.toString();
+    subsCount.innerText = user.countSubscriptions.toString();
     subsContainer.appendChild(subs);
     subsContainer.appendChild(subsCount);
     info.appendChild(donatersContainer);
@@ -81,21 +77,18 @@ export class RightNavbar implements IObserver {
   }
 
   /**
-   * Конструктор для донатера
+   * @param user данные пользователя
    */
-  donaterConstruct() {
-    this.glass.classList.add('right-navbar__profile');
-    if (!this.profile) {
-      return;
-    }
+  donaterRender(user: PayloadProfileUser) {
+    this.glass.innerHTML = '';
     const avatar = new Image(
         ImageType.donater,
-        this.profile.avatar,
+        user.avatar,
     );
-    avatar.element.classList.add('right-navbar__img');
+    avatar.element.classList.add('right-navbar__profile_img');
     const usrname = document.createElement('span');
     usrname.classList.add('right-navbar__profile_username');
-    usrname.innerText = this.profile.username;
+    usrname.innerText = user.username;
     const info = document.createElement('div');
     info.classList.add('right-navbar__profile_info');
     const subsContainer = document.createElement('div');
@@ -105,37 +98,12 @@ export class RightNavbar implements IObserver {
     subs.innerText = 'Подписок';
     const subsCount = document.createElement('span');
     subsCount.classList.add('right-navbar__profile_info_count');
-    subsCount.innerText = this.profile.subscriptionsCount.toString();
+    subsCount.innerText = user.countSubscriptions.toString();
     subsContainer.appendChild(subs);
     subsContainer.appendChild(subsCount);
     info.appendChild(subsContainer);
     this.glass.appendChild(avatar.element);
     this.glass.appendChild(usrname);
     this.glass.appendChild(info);
-  }
-
-  /** Callback метод обновления хранилища */
-  notify(): void {
-    const profileStore = store.getState().profile as PayloadGetProfileData;
-    if (!profileStore.profile) {
-      return;
-    }
-    const profileNew: Profile = {
-      avatar: profileStore.profile.avatar,
-      is_author: profileStore.profile.is_author,
-      username: profileStore.profile.username,
-      subscriptionsCount:
-        profileStore.subscriptions ? profileStore.subscriptions.length : 0,
-      subscribersCount:
-        profileStore.subscribers ? profileStore.subscribers.length : 0,
-    };
-    if (JSON.stringify(profileNew) !== JSON.stringify(this.profile)) {
-      this.profile = profileNew;
-      if (this.profile.is_author) {
-        this.authorConstruct();
-      } else {
-        this.donaterConstruct();
-      }
-    }
   }
 }

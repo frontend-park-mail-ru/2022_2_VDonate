@@ -1,4 +1,6 @@
-import {ActionChangeUserData} from './changeUserData';
+import {
+  ActionChangeUserDataFail,
+  ActionChangeUserDataSuccess} from './changeUserData';
 import {ActionGetProfileData} from './getProfileData';
 import {ActionSubscribe} from './subscribe';
 import {ActionNotice} from './notice';
@@ -10,6 +12,8 @@ import {
   ActionSignUpSuccess,
   ActionSignUpFail,
   ActionAuth,
+  ActionLogOutSuccess,
+  ActionLogOutFail,
 } from './user';
 import {ActionPostEditor} from './editor';
 /** Типы действий */
@@ -20,11 +24,14 @@ export enum ActionType {
   SIGNUP_FAIL,
   AUTH,
   GETPROFILEDATA,
-  CHANGEUSERDATA,
+  CHANGEUSERDATA_SUCCESS,
+  CHANGEUSERDATA_FAIL,
   SUBSCRIBE,
   NOTICE,
   ROUTING,
   GET_POSTS,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAIL,
   POST_EDITOR,
 }
 /** Объединение действий */
@@ -33,9 +40,12 @@ export type Action =
   | ActionLogInFail
   | ActionSignUpSuccess
   | ActionSignUpFail
+  | ActionLogOutSuccess
+  | ActionLogOutFail
   | ActionAuth
   | ActionGetProfileData
-  | ActionChangeUserData
+  | ActionChangeUserDataSuccess
+  | ActionChangeUserDataFail
   | ActionSubscribe
   | ActionNotice
   | ActionRouting

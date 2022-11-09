@@ -2,42 +2,67 @@ import api from '@app/api';
 import {ResponseData} from '@api/ajax';
 import {ActionType} from '@actions/types/action';
 import store from '@app/store';
-import {ChangeUserDataForm} from '@actions/types/changeUserData';
-import {PayloadUser} from '@actions/types/user';
+import {PayloadChangeUserData} from '@actions/types/changeUserData';
+import {
+  emailCheck,
+  passwordCheck,
+  repeatPasswordCheck,
+  usernameCheck} from '@validation/validation';
 
-export default (props: ChangeUserDataForm): void => {
-  if (props.password !== props.password) {
+export default (props: PayloadChangeUserData): void => {
+  const emailErr = props.email ? emailCheck(props.email) : null;
+  const usernameErr =
+    props.username ? usernameCheck(props.username) : null;
+  const passwordErr =
+    props.password ? passwordCheck(props.password) : null;
+  const repeatPasswordErr =
+    props.password && props.repeatPassword ? repeatPasswordCheck(
+        props.password,
+        props.repeatPassword) : null;
+  if (emailErr || usernameErr || passwordErr || repeatPasswordErr) {
     store.dispatch({
-      type: ActionType.CHANGEUSERDATA,
+      type: ActionType.CHANGEUSERDATA_FAIL,
       payload: {
-        success: false,
-        error: 'Пароли не совпадают',
+        email: emailErr,
+        username: usernameErr,
+        password: passwordErr,
+        repeatPassword: repeatPasswordErr,
+        isAuthor: null,
+        about: null,
+        avatar: null,
       },
     });
     return;
   }
-  const user = store.getState().user as PayloadUser;
-  api.putUserData(
-      Number(user.id),
-      props.username.value,
-      props.email.value,
-      props.password.value,
-  )
+  api.putUserData(props)
       .then((res: ResponseData) => {
         if (res.ok) {
           store.dispatch({
-            type: ActionType.CHANGEUSERDATA,
+            type: ActionType.CHANGEUSERDATA_SUCCESS,
             payload: {
-              success: true,
-              error: undefined,
+              user: res.body as PayloadChangeUserData,
+              formErrors: {
+                email: null,
+                username: null,
+                password: null,
+                repeatPassword: null,
+                isAuthor: null,
+                about: null,
+                avatar: null,
+              },
             },
           });
         } else {
           store.dispatch({
-            type: ActionType.CHANGEUSERDATA,
+            type: ActionType.CHANGEUSERDATA_FAIL,
             payload: {
-              success: false,
-              error: res.body.message as string,
+              email: 'Неверная почта',
+              username: 'Неверный псевдоним или пароль',
+              password: 'Неверный псевдоним или пароль',
+              repeatPassword: null,
+              isAuthor: 'Error',
+              about: 'Error',
+              avatar: 'Error',
             },
           });
         }

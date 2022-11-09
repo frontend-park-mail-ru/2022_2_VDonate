@@ -54,7 +54,7 @@ const csrfField = 'csrf_token';
  * @returns успешное сохранение CSRF токена
  */
 export const saveCSRF = (): boolean => {
-  document.cookie = `${csrfField}=RxG10rldgZwVrvR6BAsJAq62omEaG4hG;`;
+  document.cookie = `${csrfField}=OjEM2QPpsGd8SjXybAtHwgENY8e3BFFz;`;
   const csrfCookie = document.cookie.match(
       new RegExp(`${csrfField}=([\\w-]+)`),
   );
