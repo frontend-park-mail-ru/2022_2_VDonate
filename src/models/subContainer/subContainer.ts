@@ -52,13 +52,15 @@ export class SubContainer {
     this.container.innerHTML = '';
     const user = store.getState().user as PayloadUser;
     const subscriptions =
-        store.getState().subscribe as PayloadGetSubscriptions;
+        store.getState().subscribe as PayloadGetSubscriptions | undefined;
     subs.forEach((sub) => {
       let subType = SubType.UNSUBSCRIBE;
       if (user.id == sub.author.id) {
         subType = SubType.EDITSUBSCRIBE;
       } else {
-        if (!subscriptions.subscriptions.find((o) => o.id == sub.id)) {
+        if (subscriptions &&
+           !subscriptions.error &&
+           !subscriptions.subscriptions.find((o) => o.id == sub.id)) {
           subType = SubType.SUBSCRIBE;
         }
       }

@@ -12,8 +12,7 @@ import {IObserver} from '@flux/types/observer';
 import routing from '@actions/handlers/routing';
 import {PayloadUser} from '@actions/types/user';
 import {logout} from '@actions/handlers/user';
-import {getSubscritions} from '@actions/handlers/subscribe';
-import {PayloadGetSubscriptions, Subscription} from '@actions/types/subscribe';
+import {Subscription} from '@actions/types/subscribe';
 
 
 const links = [
@@ -185,14 +184,11 @@ export class LeftNavbar implements IObserver {
       this.user = newUser;
       this.renderProfile();
     }
-    if (this.user?.id) {
-      getSubscritions(this.user.id);
-    }
-    const newSubscriptions =
-      store.getState().subscribe as PayloadGetSubscriptions;
-    if (newSubscriptions.subscriptions !== this.subs) {
-      this.subs = newSubscriptions.subscriptions;
-      this.renderSubs();
-    }
+    // const newSubscriptions =
+    //   store.getState().subscribe as PayloadGetSubscriptions;
+    // if (newSubscriptions.subscriptions !== this.subs) {
+    //   this.subs = newSubscriptions.subscriptions;
+    //   this.renderSubs();
+    // }
   }
 }

@@ -66,8 +66,8 @@ export class Popup implements IObserver {
   /** Callback метод обновления хранилища */
   notify(): void {
     const err =
-      store.getState().formErrors as PayloadChangeUserDataErrors | null;
-    if (!err?.about) {
+      store.getState().formErrors as PayloadChangeUserDataErrors;
+    if (!err.about) {
       this.element.remove();
     } else {
       // TODO отображение ошибок

@@ -9,8 +9,7 @@ import {
 
 const getAuthorSubscriptions = (
     id: number,
-    user: PayloadProfileUser,
-    subscriptions: PayloadProfileSubscription[] | string) => {
+    user: PayloadProfileUser) => {
   api.getAuthorSubscritions(id)
       .then((res: ResponseData) => {
         if (res.status == 200) {
@@ -19,7 +18,7 @@ const getAuthorSubscriptions = (
             type: ActionType.GETPROFILEDATA,
             payload: {
               user: user,
-              subscriptions: subscriptions,
+              subscriptions: 'not needed for Author',
               authorSubscriptions: authorSubscriptions,
             },
           });
@@ -28,7 +27,7 @@ const getAuthorSubscriptions = (
             type: ActionType.GETPROFILEDATA,
             payload: {
               user: user,
-              subscriptions: subscriptions,
+              subscriptions: 'not needed for Author',
               authorSubscriptions: res.body.message as string,
             },
           });
@@ -40,7 +39,7 @@ const getAuthorSubscriptions = (
           type: ActionType.GETPROFILEDATA,
           payload: {
             user: user,
-            subscriptions: subscriptions,
+            subscriptions: 'not needed for Author',
             authorSubscriptions: 'Error fetch',
           },
         });
@@ -53,12 +52,23 @@ const getSubscriptions = (id: number, user: PayloadProfileUser) => {
       .then((res: ResponseData) => {
         if (res.ok) {
           const subscriptions = res.body as PayloadProfileSubscription[];
-          if (user.isAuthor) {
-            return getAuthorSubscriptions(id, user, subscriptions);
-          }
-          // TODO dispatch
+          store.dispatch({
+            type: ActionType.GETPROFILEDATA,
+            payload: {
+              user: user,
+              subscriptions: subscriptions,
+              authorSubscriptions: 'not needed for Donater',
+            },
+          });
         } else {
-          return getAuthorSubscriptions(id, user, res.body.message as string);
+          store.dispatch({
+            type: ActionType.GETPROFILEDATA,
+            payload: {
+              user: user,
+              subscriptions: res.body.message as string,
+              authorSubscriptions: 'not needed for Donater',
+            },
+          });
         }
       },
       )
@@ -76,12 +86,72 @@ const getSubscriptions = (id: number, user: PayloadProfileUser) => {
 };
 
 export default (id: number): void => {
+  // заглушка на профиль
+  // {
+  //   const profileData: PayloadGetProfileData = {
+  //     user: {
+  //       avatar: '',
+  //       isAuthor: true,
+  //       username: 'Kodzima',
+  //       countSubscriptions: 5,
+  //       about: `Меня зовут Марина, мне 17 лет, я учусь
+  //       в 11 классе. Не могу сказать, что я обожаю ходить
+  //       в школу, но учусь я довольно таки не плохо. Мои любимые
+  //       предметы это литература, химия, биология, и физика. С самого
+  //       детства я ходила на разные кружки. Это баскетбол, восточные
+  //       танцы, гимнастика, хип – хоп, волейбол, и плаванье. Но, к
+  //       сожалению, я себя ни в чем не нашла...`,
+  //       countSubscribers: 10,
+  //     },
+  //     authorSubscriptions: [
+  //       {
+  //         author: {
+  //           id: 1,
+  //         },
+  //         id: 1,
+  //         img: '',
+  //         price: 1000,
+  //         text: `Участие в розыгрышах<br>
+  //         Доступ к эксклюзивным семплам<br>
+  //         Материалы со стримов <br>
+  //         Запись стримов<br>
+  //         Эксклюзивные посты<br>
+  //         30 минутный разговор<br>
+  //         Что-нибудь еще<br>
+  //         Третье<br>
+  //         Десятое<br>
+  //         Сто двадцать пятое`,
+  //         tier: 1,
+  //         title: 'Элитная подписка',
+  //       },
+  //     ],
+  //     subscriptions: [
+  //       {
+  //         author: {
+  //           id: 1,
+  //           avatar: '',
+  //           username: 'Кодзима',
+  //         },
+  //         tier: 1,
+  //       },
+  //     ],
+  //   };
+  //   store.dispatch({
+  //     type: ActionType.GETPROFILEDATA,
+  //     payload: profileData,
+  //   });
+  //   return;
+  // }
   api.getUser(id)
       .then(
           (res: ResponseData) => {
             if (res.ok) {
               const user = res.body as PayloadProfileUser;
-              return getSubscriptions(id, user);
+              if (user.isAuthor) {
+                return getAuthorSubscriptions(id, user);
+              } else {
+                return getSubscriptions(id, user);
+              }
             } else {
               store.dispatch({
                 type: ActionType.NOTICE,
