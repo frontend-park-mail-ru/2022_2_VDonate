@@ -1,10 +1,7 @@
 import {Glass, GlassType} from '@components/glass/glass';
 import {Button, ButtonType} from '@components/button/button';
 import './popup.styl';
-import changeUserData from '@actions/handlers/changeUserData';
-import {PayloadUser} from '@actions/types/user';
 import store from '@app/store';
-import {PayloadChangeUserDataErrors} from '@actions/types/changeUserData';
 import {IObserver} from '@flux/types/observer';
 /**
  * Модель изменяемого окна
@@ -47,13 +44,13 @@ export class Popup implements IObserver {
       this.element.remove();
     };
     const changeBtn = new Button(ButtonType.primary, 'Изменить', 'submit');
-    changeBtn.element.onclick = () => {
-      const user = store.getState().user as PayloadUser;
-      changeUserData({
-        id: user.id,
-        about: popupAbout.value,
-      });
-    };
+    // changeBtn.element.onclick = () => {
+    //   const user = store.getState().user as PayloadUser;
+    //   editUser({
+    //     id: user.id,
+    //     about: popupAbout.value,
+    //   });
+    // };
     btnContainer.appendChild(cansel.element);
     btnContainer.appendChild(changeBtn.element);
     popupGlass.element.appendChild(popupHead);
@@ -65,12 +62,12 @@ export class Popup implements IObserver {
 
   /** Callback метод обновления хранилища */
   notify(): void {
-    const err =
-      store.getState().formErrors as PayloadChangeUserDataErrors;
-    if (!err.about) {
-      this.element.remove();
-    } else {
-      // TODO отображение ошибок
-    }
+    // const err =
+    //   store.getState().formErrors;
+    // if (!err?.about) {
+    //   this.element.remove();
+    // } else {
+    //   // TODO отображение ошибок
+    // }
   }
 }
