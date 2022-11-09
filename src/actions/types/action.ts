@@ -1,6 +1,3 @@
-import {
-  ActionChangeUserDataFail,
-  ActionChangeUserDataSuccess} from './changeUserData';
 import {ActionGetProfileData} from './getProfileData';
 import {ActionSubscribe} from './subscribe';
 import {ActionNotice} from './notice';
@@ -14,8 +11,10 @@ import {
   ActionAuth,
   ActionLogOutSuccess,
   ActionLogOutFail,
+  ActionEditUseDataSuccess,
+  ActionEditUserFail,
 } from './user';
-import {ActionPostEditor} from './editor';
+import {ActionEditorClose, ActionEditorOpen} from './editor';
 /** Типы действий */
 export enum ActionType {
   LOGIN_SUCCESS,
@@ -32,7 +31,8 @@ export enum ActionType {
   GET_POSTS,
   LOGOUT_SUCCESS,
   LOGOUT_FAIL,
-  POST_EDITOR,
+  EDITOR_OPEN,
+  EDITOR_CLOSE,
 }
 /** Объединение действий */
 export type Action =
@@ -44,10 +44,11 @@ export type Action =
   | ActionLogOutFail
   | ActionAuth
   | ActionGetProfileData
-  | ActionChangeUserDataSuccess
-  | ActionChangeUserDataFail
+  | ActionEditUseDataSuccess
+  | ActionEditUserFail
   | ActionSubscribe
   | ActionNotice
   | ActionRouting
   | ActionGetPosts
-  | ActionPostEditor;
+  | ActionEditorOpen
+  | ActionEditorClose;

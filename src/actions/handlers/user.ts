@@ -1,6 +1,6 @@
 import {ResponseData, saveCSRF} from '@api/ajax';
 import {ActionType} from '@actions/types/action';
-import {PayloadUser} from '@actions/types/user';
+import {PayloadEditUser, PayloadUser} from '@actions/types/user';
 import router from '@app/router';
 import store from '@app/store';
 import api from '@app/api';
@@ -10,6 +10,7 @@ import {
   passwordCheck,
   repeatPasswordCheck,
   usernameCheck} from '@validation/validation';
+import {FormErrorType} from '@actions/types/formError';
 
 
 export interface SignUpForm extends HTMLCollection {
@@ -22,6 +23,15 @@ export interface SignUpForm extends HTMLCollection {
 export interface LogInForm extends HTMLCollection {
   username: HTMLInputElement
   password: HTMLInputElement
+}
+
+export interface EditUserForm extends HTMLCollection {
+  email: HTMLInputElement
+  username: HTMLInputElement
+  password: HTMLInputElement
+  repeatPassword: HTMLInputElement
+  isAuthor?: HTMLInputElement
+  about?: HTMLTextAreaElement
 }
 
 const getUser = (id: number, dispatch: (user: PayloadUser) => void) => {
@@ -108,6 +118,7 @@ export const login = (props: LogInForm): void => {
     store.dispatch({
       type: ActionType.LOGIN_FAIL,
       payload: {
+        type: FormErrorType.LOGIN,
         username: usernameErr,
         password: passwordErr,
       },
@@ -138,6 +149,7 @@ export const login = (props: LogInForm): void => {
                         type: router.go('/feed'),
                       },
                       formErrors: {
+                        type: FormErrorType.LOGIN,
                         username: null,
                         password: null,
                       },
@@ -148,6 +160,7 @@ export const login = (props: LogInForm): void => {
             store.dispatch({
               type: ActionType.LOGIN_FAIL,
               payload: {
+                type: FormErrorType.LOGIN,
                 username: 'Неверный псевдоним или пароль',
                 password: 'Неверный псевдоним или пароль',
               },
@@ -189,6 +202,7 @@ export const signup = (props: SignUpForm): void => {
     store.dispatch({
       type: ActionType.SIGNUP_FAIL,
       payload: {
+        type: FormErrorType.SIGNUP,
         email: emailErr,
         username: usernameErr,
         password: passwordErr,
@@ -221,6 +235,7 @@ export const signup = (props: SignUpForm): void => {
                       type: router.go('/feed'),
                     },
                     formErrors: {
+                      type: FormErrorType.SIGNUP,
                       email: null,
                       username: null,
                       password: null,
@@ -233,6 +248,7 @@ export const signup = (props: SignUpForm): void => {
             store.dispatch({
               type: ActionType.SIGNUP_FAIL,
               payload: {
+                type: FormErrorType.SIGNUP,
                 email: 'Неверная почта',
                 username: 'Неверный псевдоним или пароль',
                 password: 'Неверный псевдоним или пароль',
@@ -292,6 +308,94 @@ export const logout = (): void => {
           type: ActionType.NOTICE,
           payload: {
             message: err as string,
+          },
+        });
+      });
+};
+
+export const editUser = (id: number, form: EditUserForm): void => {
+  const userData: PayloadEditUser = {
+    id: id,
+  };
+  if (form.username.value != '') {
+    userData.username = form.username.value;
+  }
+  if (form.email.value != '') {
+    userData.email = form.email.value;
+  }
+  if (form.password.value != '') {
+    userData.password = form.password.value;
+    userData.repeatPassword = form.repeatPassword.value;
+  }
+  if (form.isAuthor?.checked) {
+    userData.isAuthor = true;
+  }
+  userData.about = form.about?.value;
+  const emailErr = userData.email ? emailCheck(userData.email) : null;
+  const usernameErr =
+    userData.username ? usernameCheck(userData.username) : null;
+  const passwordErr =
+    userData.password ? passwordCheck(userData.password) : null;
+  const repeatPasswordErr =
+    userData.password ? repeatPasswordCheck(
+        userData.password,
+        userData.repeatPassword ?? '') : null;
+  if (emailErr || usernameErr || passwordErr || repeatPasswordErr) {
+    store.dispatch({
+      type: ActionType.CHANGEUSERDATA_FAIL,
+      payload: {
+        type: FormErrorType.EDIT_USER,
+        email: emailErr,
+        username: usernameErr,
+        password: passwordErr,
+        repeatPassword: repeatPasswordErr,
+        isAuthor: null,
+        about: null,
+        avatar: null,
+      },
+    });
+    return;
+  }
+  api.putUserData(userData)
+      .then((res: ResponseData) => {
+        if (res.ok) {
+          store.dispatch({
+            type: ActionType.CHANGEUSERDATA_SUCCESS,
+            payload: {
+              user: res.body as PayloadEditUser,
+              formErrors: {
+                type: FormErrorType.EDIT_USER,
+                email: null,
+                username: null,
+                password: null,
+                repeatPassword: null,
+                isAuthor: null,
+                about: null,
+                avatar: null,
+              },
+            },
+          });
+        } else {
+          store.dispatch({
+            type: ActionType.CHANGEUSERDATA_FAIL,
+            payload: {
+              type: FormErrorType.EDIT_USER,
+              email: 'Неверная почта',
+              username: 'Неверный псевдоним или пароль',
+              password: 'Неверный псевдоним или пароль',
+              repeatPassword: null,
+              isAuthor: 'Error',
+              about: 'Error',
+              avatar: 'Error',
+            },
+          });
+        }
+      })
+      .catch(() => {
+        store.dispatch({
+          type: ActionType.NOTICE,
+          payload: {
+            message: 'error fetch',
           },
         });
       });

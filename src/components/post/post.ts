@@ -6,7 +6,7 @@ import templateContent from './content.hbs';
 import editIcon from '@icon/edit.svg';
 import './post.styl';
 
-import {postEditor} from '@actions/handlers/editor';
+import {openPostEditor} from '@actions/handlers/editor';
 
 interface PostContext {
   postID: number
@@ -31,9 +31,7 @@ interface PostContext {
  * Модель поста
  */
 export class Post {
-  /**
-   * Актуальный контейнер поста
-   */
+  /** Актуальный контейнер поста */
   readonly element: HTMLElement;
 
   /**
@@ -85,25 +83,8 @@ export class Post {
       post.querySelector('.post__header')?.appendChild(editBtn.element);
       editBtn.element.addEventListener('click',
           () => {
-            postEditor(context.postID);
+            openPostEditor(context.postID);
           });
-      // const popup = new Popup(
-      //     'Изменить пост',
-      //     context.contentHTML,
-      //     () => {
-      //       // TODO: вызвать изменение вместо пустой фунции
-      //     });
-
-      // const editor = new Editor({
-      //   title: context.content.title,
-      //   text: context.content.text,
-      // });
-      // editor.element.addEventListener('submit',
-      //     (e) => {
-      //       e.preventDefault();
-      //       console.warn((e.target as HTMLFormElement).elements);
-      //     });
-      // post.appendChild(editor.element);
     }
 
     this.element = post;

@@ -1,0 +1,21 @@
+.notice
+  position: fixed
+  bottom: 0
+  right: 0
+  &__back
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    width: 100px
+    position relative
+    &:before
+      content: ""
+      position: absolute
+      inset: 0
+      background: rgba(0.2,0.2,0.2,0.2)
+  &__msg
+    font-16()
+    color: color-font-light
+  // &__btn
+  //   &_close
+      

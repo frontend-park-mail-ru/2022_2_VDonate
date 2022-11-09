@@ -2,14 +2,17 @@ import {Action, ActionType} from '@actions/types/action';
 import {Reducer} from '@flux/types/reducer';
 import {PropTree} from '@flux/types/store';
 
-const postEditorReducer: Reducer<Action> =
+const editorReducer: Reducer<Action> =
   (state: PropTree, action: Action): PropTree => {
     switch (action.type) {
-      case ActionType.POST_EDITOR:
+      case ActionType.EDITOR_OPEN:
+      case ActionType.EDITOR_CLOSE:
         return action.payload;
+      case ActionType.CHANGEUSERDATA_SUCCESS:
+        return {};
       default:
         return state;
     }
   };
 
-export default postEditorReducer;
+export default editorReducer;
