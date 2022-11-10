@@ -12,8 +12,10 @@ import ProfilePage from './pages/profilePage';
 import {LeftNavbar} from '@models/navbar/left/left_navbar';
 import {auth} from '@actions/handlers/user';
 import {PayloadEditor} from '@actions/types/editor';
-import {EditorContainer} from './containers/editor';
+import {EditorContainer} from './containers/editor/editor';
 import {FormErrorType, PayloadFormError} from '@actions/types/formError';
+import notice from '@actions/handlers/notice';
+import {NoticeContainer} from './containers/notice/notice';
 /** Тип структорного представления страницы из компонентов */
 interface RootModel {
   root: HTMLElement
@@ -21,7 +23,7 @@ interface RootModel {
     leftNavBar: LeftNavbar
     main?: IView
     editor: EditorContainer
-    // notice: NoticeContainer
+    notice: NoticeContainer
   }
 }
 /** Класс корневой вьюшки */
@@ -47,12 +49,14 @@ export default class Root implements IView, IObserver {
       children: {
         leftNavBar: new LeftNavbar(),
         editor: new EditorContainer(),
+        notice: new NoticeContainer(),
       },
     };
 
     rootElement.append(
         this.page.children.leftNavBar.element,
         this.page.children.editor.element,
+        this.page.children.notice.element,
         this.render(),
     );
 
@@ -64,11 +68,14 @@ export default class Root implements IView, IObserver {
     const state = store.getState();
 
     const noticeStateNew = state.notice as PayloadNotice;
+    // TODO вызов оповещений ошибок
     if (JSON.stringify(noticeStateNew) !== JSON.stringify(this.noticeState)) {
       this.noticeState = noticeStateNew;
-      // TODO вызов оповещений ошибок
-      console.warn(this.noticeState.message);
+      if (this.noticeState.message) {
+        this.page.children.notice.addNotice(this.noticeState.message);
+      }
     }
+    // console.warn(this.noticeState.message);
 
     const formErrorsNew = state.formErrors as PayloadFormError;
     if (JSON.stringify(formErrorsNew) !== JSON.stringify(this.formErrors)) {
@@ -78,10 +85,16 @@ export default class Root implements IView, IObserver {
         case FormErrorType.EDIT_USER:
           this.page.children.editor.displayErrors(this.formErrors);
           break;
-
         default:
           break;
       }
+      Object.values(this.formErrors ?? {}).forEach(
+          (error) => {
+            if (typeof error === 'string') {
+              notice(error);
+            }
+          },
+      );
     }
 
     const editorNew = state.editor as PayloadEditor;

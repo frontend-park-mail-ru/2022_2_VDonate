@@ -1,21 +1,27 @@
+@require '@style/const.styl'
+
 .notice
-  position: fixed
-  bottom: 0
-  right: 0
   &__back
+    padding: 5px 10px
     display: flex
     flex-direction: row
     justify-content: space-between
-    width: 100px
+    align-items: center
     position relative
+    gap: 5px
     &:before
+      z-index: -1
       content: ""
       position: absolute
+      border-radius: 10px
+      outline: 1px solid gray
       inset: 0
-      background: rgba(0.2,0.2,0.2,0.2)
+      background: linear-gradient(200.72deg, rgba(255, 255, 255, 0.15) 1.79%, rgba(255, 255, 255, 0) 100%)
+      backdrop-filter: blur(40px)
   &__msg
+    flex: 1
     font-16()
     color: color-font-light
-  // &__btn
-  //   &_close
+  // &__btn-close
+
       

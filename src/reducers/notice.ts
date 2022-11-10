@@ -6,7 +6,10 @@ const noticeReducer: Reducer<Action> =
   (state: PropTree, action: Action): PropTree => {
     switch (action.type) {
       case ActionType.NOTICE:
-        return action.payload;
+        return {
+          timestamp: performance.now(),
+          ...action.payload,
+        };
       default:
         return state;
     }

@@ -1,6 +1,5 @@
 import store from '@app/store';
 import {IView} from '@flux/types/view';
-import {IObserver} from '@flux/types/observer';
 import './entryPage.styl';
 import {SignUpModel} from '@models/signlog/signUpModel';
 import {LogInModel} from '@models/signlog/logInModel';
@@ -25,7 +24,7 @@ interface LoginModel {
   }
 }
 /** Реализация интерфейса *IView* для страницы входа */
-export default class LoginPage implements IView, IObserver {
+export default class LoginPage implements IView {
   /** Структорное представление страницы из компонентов */
   private page: LoginModel;
   /** Сосотояние ошибок в форме */
@@ -74,19 +73,9 @@ export default class LoginPage implements IView, IObserver {
       },
     };
     this.formErrors = store.getState().formErrors as PayloadSignUpErrors;
-    store.registerObserver(this);
-  }
-  /** Оповещение об изменением хранилища */
-  notify(): void {
-    const formErrorsNew = store.getState().formErrors as PayloadSignUpErrors;
-    if (JSON.stringify(formErrorsNew) !== JSON.stringify(this.formErrors)) {
-      this.formErrors = formErrorsNew;
-      this.rerender();
-    }
   }
   /** Сброс страницы, отключение от хранилища */
   reset(): void {
-    store.removeObserver(this);
     this.page.base.remove();
   }
   /**
@@ -95,9 +84,5 @@ export default class LoginPage implements IView, IObserver {
    */
   render(): HTMLElement {
     return this.page.base;
-  }
-  /** Перерисовка страницы по текущему состоянию хранилища */
-  rerender(): void {
-    console.warn(this.formErrors);
   }
 }
