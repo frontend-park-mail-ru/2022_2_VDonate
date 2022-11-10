@@ -39,6 +39,7 @@ export class InputField {
     const fullContext: InputContext & {
       type?: string
       icon?: string
+      withAccept?: string
     } = context;
     switch (type) {
       case InputType.username:
@@ -58,6 +59,7 @@ export class InputField {
         break;
       case InputType.file:
         fullContext.type = 'file';
+        fullContext.withAccept = 'image/*';
         break;
       case InputType.checkbox:
         fullContext.type = 'checkbox';

@@ -1,5 +1,5 @@
 import './image.styl';
-// import altImg from '@img/0.jpg';
+import altAvatar from '@img/altAvatar.jpg';
 
 /**
  * Перечисление типов аватара
@@ -42,10 +42,10 @@ export class Image {
       default:
         break;
     }
-    // if (image) {
-    this.element.setAttribute('src', image);
-    // } else {
-    //   this.element.setAttribute('src', altImg);
-    // }
+    if (image) {
+      this.element.setAttribute('src', image);
+    } else {
+      this.element.setAttribute('src', altAvatar);
+    }
   }
 }
