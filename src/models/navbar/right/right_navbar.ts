@@ -37,9 +37,6 @@ export class RightNavbar {
         user.avatar,
     );
     avatar.element.classList.add('right-navbar__profile_img');
-    avatar.element.addEventListener('click', () => {
-      // TODO создать попап отправки аватара
-    });
     const usrname = document.createElement('span');
     usrname.classList.add('right-navbar__profile_username');
     usrname.innerText = user.username;

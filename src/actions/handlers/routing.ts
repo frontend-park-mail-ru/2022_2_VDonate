@@ -15,8 +15,7 @@ export default (loc: string): void => {
   switch (action.payload.type) {
     case Pages.PROFILE:
       action.payload.options = {
-        // TODO при деплое норм адрес написать
-        id: new URL(loc, 'http://localhost:4200').searchParams.get('id'),
+        id: new URL(loc, 'http://vdonate.ml').searchParams.get('id'),
       };
       break;
   }

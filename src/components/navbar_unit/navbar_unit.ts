@@ -50,14 +50,14 @@ export class NavbarUnit {
     this.element.appendChild(ico);
     this.element.appendChild(context);
   }
-  /**
-   * @param selected флаг выбора
-   */
-  setSelect(selected: boolean) {
-    if (selected) {
-      this.element.classList.add('navbar-unit__choosen');
-    } else {
-      this.element.classList.remove('navbar-unit__choosen');
-    }
-  }
+  // /**
+  //  * @param selected флаг выбора
+  //  */
+  // setSelect(selected: boolean) {
+  //   if (selected) {
+  //     this.element.classList.add('navbar-unit__choosen');
+  //   } else {
+  //     this.element.classList.remove('navbar-unit__choosen');
+  //   }
+  // }
 }

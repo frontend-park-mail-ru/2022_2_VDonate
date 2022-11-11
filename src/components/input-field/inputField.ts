@@ -83,7 +83,7 @@ export class InputField {
    * @param err флаг ошибки
    */
   errorDetect(err: boolean) {
-    const back = this.element.querySelector('div.input-field__back');
+    const back = this.element.querySelector('.input-field__back');
     err ?
       back?.classList.add('input-field__back_error') :
       back?.classList.remove('input-field__back_error');

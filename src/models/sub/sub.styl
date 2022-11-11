@@ -1,15 +1,18 @@
 @require '@style/const.styl'
 
 .sub
-  max-width: 300px
+  width: 18vw
+  max-width: 160px
   display: flex
   flex-direction: column
   align-items: center
+  white-space: normal
   &__img
     width: 96px
   &__name
     font-21()
     color: color-font-light
+    text-align: center
   &__lvl
     font-16()
     color: color-font-secondary
@@ -25,7 +28,11 @@
     &_period
       font-12()
       color: color-font-secondary
+  &__button
+    width: 16vw
+    max-width: 160px
   &__motivation
+    max-width: 16vw
     padding: 12px
     font-12()
     color: color-font-light

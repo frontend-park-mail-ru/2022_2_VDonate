@@ -1,6 +1,6 @@
 import './image.styl';
 import altAvatar from '@img/altAvatar.jpg';
-
+import altAuthorSub from '@img/altAuthorSub.jpg';
 /**
  * Перечисление типов аватара
  */
@@ -45,7 +45,8 @@ export class Image {
     if (image) {
       this.element.setAttribute('src', image);
     } else {
-      this.element.setAttribute('src', altAvatar);
+      this.element.setAttribute(
+          'src', viewType == ImageType.sub ? altAuthorSub : altAvatar);
     }
   }
 }

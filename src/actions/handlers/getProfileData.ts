@@ -156,7 +156,7 @@ export default (id: number): void => {
               store.dispatch({
                 type: ActionType.NOTICE,
                 payload: {
-                  message: res.body.message as string,
+                  message: 'Ошибка получения профиля',
                 },
               });
               return;
