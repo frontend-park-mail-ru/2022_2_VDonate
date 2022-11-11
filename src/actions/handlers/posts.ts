@@ -175,12 +175,7 @@ export const getFeed = () => {
           const posts = (res.body as PostResponse[]).map(
               (postResponse) => {
                 const post: PayloadPost = {
-                  // FIXME Ждем исправления get post
-                  author: {
-                    id: 1,
-                    imgPath: '',
-                    username: 'qwe',
-                  }, // postResponse.author,
+                  author: postResponse.author,
                   postID: postResponse.postID,
                   content: {
                     img: postResponse.img,
