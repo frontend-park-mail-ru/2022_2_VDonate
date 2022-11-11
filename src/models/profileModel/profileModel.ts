@@ -77,9 +77,9 @@ export class ProfileModel {
     this.glass.element.innerHTML = '';
     subscriptions.forEach((sub) => {
       const subItem = new SubscriptionItem(
-          sub.author.id,
-          sub.author.avatar,
-          sub.author.username,
+          sub.authorID,
+          sub.img,
+          sub.title,
           sub.tier,
       );
       this.glass.element.appendChild(subItem.element);

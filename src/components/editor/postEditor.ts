@@ -1,6 +1,8 @@
 import {closeEditor} from '@actions/handlers/editor';
 import {createPost, PostForm, updatePost} from '@actions/handlers/posts';
 import {PayloadFormError} from '@actions/types/formError';
+import {PayloadUser} from '@actions/types/user';
+import store from '@app/store';
 import {Button, ButtonType} from '@components/button/button';
 import {InputField, InputType} from '@components/input-field/inputField';
 import template from './editor.hbs';
@@ -70,12 +72,19 @@ export default class PostEditor {
         (e) => {
           e.preventDefault();
           // TODO экшен изменения поста
-          data ?
+          if (data) {
             updatePost(
                 data.id,
-              (e.target as HTMLFormElement).elements as PostForm,
-            ) :
-            createPost((e.target as HTMLFormElement).elements as PostForm);
+            (e.target as HTMLFormElement).elements as PostForm,
+            );
+          } else {
+            const user = (store.getState().user as PayloadUser);
+            createPost({
+              id: user.id,
+              img: user.avatar,
+              username: user.username,
+            }, (e.target as HTMLFormElement).elements as PostForm);
+          }
         },
     );
   }

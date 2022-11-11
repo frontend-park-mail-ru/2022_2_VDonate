@@ -88,7 +88,7 @@ export const auth = (): void => {
                 payload: {
                   user,
                   location: {
-                    type: router.go(location.pathname + location.search),
+                    type: router.go(`/profile?=${user.id}`),
                   },
                 },
               });
@@ -170,7 +170,7 @@ export const login = (props: LogInForm): void => {
                     payload: {
                       user,
                       location: {
-                        type: router.go('/feed'),
+                        type: router.go(`/profile?=${user.id}`),
                       },
                       formErrors: {
                         type: FormErrorType.LOGIN,
@@ -256,7 +256,7 @@ export const signup = (props: SignUpForm): void => {
                   payload: {
                     user,
                     location: {
-                      type: router.go('/feed'),
+                      type: router.go(`/profile?=${user.id}`),
                     },
                     formErrors: {
                       type: FormErrorType.SIGNUP,

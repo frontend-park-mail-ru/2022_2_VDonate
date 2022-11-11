@@ -12,12 +12,15 @@ export interface PayloadProfileUser {
 }
 
 export interface PayloadProfileSubscription {
-  author: {
-    id: number,
-    avatar: string,
-    username: string,
-  },
-  tier: number,
+  authorID: number
+  avatar?: string
+  username?: string
+  id?: number
+  img: string
+  price: number
+  text: string
+  tier: number
+  title: string
 }
 
 export interface PayloadAuthorSubscription {

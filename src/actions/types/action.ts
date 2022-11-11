@@ -6,7 +6,7 @@ import {
   ActionSubscribe,
   ActionUnsubscribe} from './subscribe';
 import {ActionNotice} from './notice';
-import {ActionGetPosts, ActionUpdatePost} from './posts';
+import {ActionCreatePost, ActionGetPosts, ActionUpdatePost} from './posts';
 import {ActionRouting} from './routing';
 import {
   ActionLogInSuccess,
@@ -43,6 +43,7 @@ export enum ActionType {
   EDITOR_OPEN,
   EDITOR_CLOSE,
   UPDATE_POST,
+  CREATE_POST,
 }
 /** Объединение действий */
 export type Action =
@@ -66,4 +67,5 @@ export type Action =
   | ActionGetPosts
   | ActionEditorOpen
   | ActionEditorClose
-  | ActionUpdatePost;
+  | ActionUpdatePost
+  | ActionCreatePost;

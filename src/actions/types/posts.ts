@@ -40,3 +40,8 @@ export interface ActionUpdatePost extends IAction {
   type: ActionType.UPDATE_POST
   payload: PayloadPostUpdate
 }
+
+export interface ActionCreatePost extends IAction {
+  type: ActionType.CREATE_POST
+  payload: PayloadPost
+}

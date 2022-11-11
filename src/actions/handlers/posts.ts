@@ -1,5 +1,6 @@
 import {ActionType} from '@actions/types/action';
 import {PayloadNotice} from '@actions/types/notice';
+import {PayloadPost} from '@actions/types/posts';
 import api from '@app/api';
 import store from '@app/store';
 
@@ -9,14 +10,36 @@ export interface PostForm extends HTMLCollection {
   img?: HTMLInputElement
 }
 
-export const createPost = (form: PostForm) => {
+interface PostCreateResponse {
+  imgPath: string
+  postID: number
+}
+
+export const createPost = (author: PayloadPost['author'], form: PostForm) => {
   api.createPost({
     title: form.title.value,
     text: form.text.value,
     file: form.img?.files?.item(0) ?? undefined,
   })
-      .then(() => {
-        // TODO
+      .then((res) => {
+        if (res.ok) {
+          store.dispatch({
+            type: ActionType.CREATE_POST,
+            payload: {
+              author,
+              postID: (res.body as PostCreateResponse).postID,
+              commentsNum: 0,
+              date: new Date(Date.now()),
+              content: {
+                img: (res.body as PostCreateResponse).imgPath,
+                text: form.text.value,
+                title: form.title.value,
+              },
+              isLiked: false,
+              likesNum: 0,
+            },
+          });
+        }
       },
       )
       .catch((err) => {
