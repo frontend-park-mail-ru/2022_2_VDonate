@@ -3,13 +3,40 @@ import {ActionType} from './action';
 
 export interface PayloadPost {
   postID: number
-  img: string
-  text: string
-  title: string
-  userID: number
+  author: {
+    id: number
+    img: string
+    username: string
+  }
+  date: Date
+  content: {
+    title: string
+    img: string
+    text: string
+  }
+  likesNum: number
+  isLiked: boolean
+  commentsNum: number
+}
+
+export interface PayloadPostUpdate {
+  postID: number
+  content?: {
+    title: string
+    img: string
+    text: string
+  }
+  likesNum?: number
+  isLiked?: boolean
+  commentsNum?: number
 }
 
 export interface ActionGetPosts extends IAction {
   type: ActionType.GET_POSTS
   payload: PayloadPost[]
+}
+
+export interface ActionUpdatePost extends IAction {
+  type: ActionType.UPDATE_POST
+  payload: PayloadPostUpdate
 }

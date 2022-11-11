@@ -2,7 +2,7 @@ import {ActionType} from '@actions/types/action';
 import {EditorType} from '@actions/types/editor';
 import store from '@app/store';
 
-export const openPostEditor = (id: number) =>
+export const openPostEditor = (id?: number) =>
   store.dispatch({
     type: ActionType.EDITOR_OPEN,
     payload: {

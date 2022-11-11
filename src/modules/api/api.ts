@@ -90,7 +90,7 @@ export default class Api {
      * @param id id автора
      * @return объект ответа с полями {ok,status,body}
      */
-  getAllPosts(id: number): Promise<ResponseData> {
+  getAuthorPosts(id: number): Promise<ResponseData> {
     return this.request(`/posts?user_id=${id}`, Method.GET, ContentType.json);
   }
 
@@ -108,7 +108,7 @@ export default class Api {
      * @param id id автора
      * @return объект ответа с полями {ok,status,body}
      */
-  getSubscritions(id: number): Promise<ResponseData> {
+  getSubscriptions(id: number): Promise<ResponseData> {
     return this.request(
         `/subscriptions`, Method.GET, ContentType.json, {
           user_id: id,
@@ -120,7 +120,7 @@ export default class Api {
    * @param id id автора
    * @return объект ответа с полями {ok,status,body}
    */
-  getAuthorSubscritions(id: number): Promise<ResponseData> {
+  getAuthorSubscriptions(id: number): Promise<ResponseData> {
     return this.request(
         `/subscriptions/author`,
         Method.GET, ContentType.json, {
@@ -178,7 +178,55 @@ export default class Api {
       authorSubscriptionID,
     });
   }
+  
+  /**
+   *
+   * @param data -
+   * @returns dfd
+   */
+  createPost(data: {
+    title: string,
+    text: string,
+    file?: File,
+  }): Promise<ResponseData> {
+    return this.request('/posts', Method.POST, ContentType.formData, data);
+  }
+  /**
+   *
+   * @param id -
+   * @param data -
+   * @returns dfd
+   */
+  updatePost(id: number, data: {
+    title: string,
+    text: string,
+    file?: File,
+  }): Promise<ResponseData> {
+    return this.request(
+        `/posts/${id}`,
+        Method.PUT,
+        ContentType.formData,
+        data,
+    );
+  }
 
+  /**
+   *
+   * @param id -
+   * @returns d
+   */
+  likePost(id: number): Promise<ResponseData> {
+    return this.request(`/posts/${id}/likes`, Method.POST, ContentType.json);
+  }
+
+  /**
+   *
+   * @param id -
+   * @returns d
+   */
+  unlikePost(id: number): Promise<ResponseData> {
+    return this.request(`/posts/${id}/likes`, Method.DELETE, ContentType.json);
+  }
   /**
    * @param data -Обьект
    * @return объект ответа с полями {ok,status,body}
@@ -215,4 +263,4 @@ export default class Api {
         ContentType.formData,
         data);
   }
-}
+

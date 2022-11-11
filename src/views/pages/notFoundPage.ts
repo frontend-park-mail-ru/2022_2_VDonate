@@ -10,6 +10,9 @@ export default class NotFoundPage implements IView {
   /** Контруктор */
   constructor() {
     this.image = document.createElement('img');
+    this.image.style.position = 'absolute';
+    this.image.style.width = '50vw';
+    this.image.style.left = '25vw';
   }
   /** Сброс страницы */
   reset(): void {

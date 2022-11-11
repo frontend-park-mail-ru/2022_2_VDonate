@@ -37,34 +37,33 @@ export interface EditUserForm extends HTMLCollection {
 
 const getUser = (id: number, dispatch: (user: PayloadUser) => void) => {
   return api.getUser(id)
-      .then(
-          (res: ResponseData) => {
-            if (res.ok) {
-              const payload: PayloadUser = {
-                id: id,
-                avatar: res.body.avatar as PayloadUser['avatar'],
-                isAuthor: res.body.isAuthor as PayloadUser['isAuthor'],
-                username: res.body.username as PayloadUser['username'],
-                email: res.body.email as PayloadUser['email'],
-                countSubscriptions:
+      .then((res: ResponseData) => {
+        if (res.ok) {
+          const payload: PayloadUser = {
+            id: id,
+            avatar: res.body.avatar as PayloadUser['avatar'],
+            isAuthor: res.body.isAuthor as PayloadUser['isAuthor'],
+            username: res.body.username as PayloadUser['username'],
+            email: res.body.email as PayloadUser['email'],
+            countSubscriptions:
               res.body.countSubscriptions as PayloadUser['countSubscriptions'],
-              };
-              if (res.body.isAuthor) {
-                payload.countSubscribers =
+          };
+          if (res.body.isAuthor) {
+            payload.countSubscribers =
                   res.body.countSubscribers as PayloadUser['countSubscribers'];
-                payload.about =
+            payload.about =
                   res.body.about as PayloadUser['about'];
-              }
-              dispatch(payload);
-            } else {
-              store.dispatch({
-                type: ActionType.NOTICE,
-                payload: {
-                  message: res.body.message as string,
-                },
-              });
-            }
-          },
+          }
+          dispatch(payload);
+        } else {
+          store.dispatch({
+            type: ActionType.NOTICE,
+            payload: {
+              message: res.body.message as string,
+            },
+          });
+        }
+      },
       );
 };
 
@@ -297,11 +296,11 @@ export const signup = (props: SignUpForm): void => {
             break;
         }
       })
-      .catch(() => {
+      .catch((err) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: 'error fetch',
+            message: err as string,
           },
         });
       });
@@ -419,11 +418,11 @@ export const editUser = (id: number, form: EditUserForm): void => {
           });
         }
       })
-      .catch(() => {
+      .catch((err) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: 'error fetch',
+            message: err as string,
           },
         });
       });

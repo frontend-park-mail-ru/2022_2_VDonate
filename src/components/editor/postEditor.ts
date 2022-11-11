@@ -1,11 +1,12 @@
 import {closeEditor} from '@actions/handlers/editor';
-import {PayloadFormError} from '@actions/types/formError';
+import {createPost, PostForm, updatePost} from '@actions/handlers/posts';
 import {Button, ButtonType} from '@components/button/button';
 import {InputField, InputType} from '@components/input-field/inputField';
 import template from './editor.hbs';
 import './editor.styl';
 
 interface EditorPostData {
+  id: number
   title: string
   text: string
 }
@@ -18,7 +19,7 @@ export default class PostEditor {
    * Конструктор
    * @param data - контекст редактора
    */
-  constructor(data: EditorPostData) {
+  constructor(data?: EditorPostData) {
     const back = document.createElement('div');
     back.classList.add('editor', 'editor__back');
     this.element = back;
@@ -27,7 +28,7 @@ export default class PostEditor {
     form.className = 'editor__form';
     form.insertAdjacentHTML(
         'afterbegin',
-        template({title: 'Редактирование поста'}),
+        template({title: data ? 'Редактирование поста' : 'Создание поста'}),
     );
     back.appendChild(form);
 
@@ -46,13 +47,13 @@ export default class PostEditor {
       label: 'Заголовок',
       name: 'title',
       placeholder: 'Придумайте заголовок для поста',
-      value: data.title,
+      value: data?.title,
     });
     const textInput = new InputField(InputType.textarea, {
       label: 'Основной текст',
       name: 'text',
       placeholder: 'Место для основного текста',
-      value: data.text,
+      value: data?.text,
     });
     const fileInput = new InputField(InputType.file, {
       label: 'Загрузите картинку',
@@ -68,6 +69,12 @@ export default class PostEditor {
         (e) => {
           e.preventDefault();
           // TODO экшен изменения поста
+          data ?
+            updatePost(
+                data.id,
+              (e.target as HTMLFormElement).elements as PostForm,
+            ) :
+            createPost((e.target as HTMLFormElement).elements as PostForm);
         },
     );
   }

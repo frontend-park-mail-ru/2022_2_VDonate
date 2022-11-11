@@ -9,6 +9,7 @@ const editorReducer: Reducer<Action> =
       case ActionType.EDITOR_CLOSE:
         return action.payload;
       case ActionType.CHANGEUSERDATA_SUCCESS:
+      case ActionType.UPDATE_POST:
         return {};
       default:
         return state;
