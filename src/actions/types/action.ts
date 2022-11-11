@@ -4,7 +4,7 @@ import {
   ActionSubscribe,
   ActionUnsubscribe} from './subscribe';
 import {ActionNotice} from './notice';
-import {ActionGetPosts} from './posts';
+import {ActionGetPosts, ActionUpdatePost} from './posts';
 import {ActionRouting} from './routing';
 import {
   ActionLogInSuccess,
@@ -38,6 +38,7 @@ export enum ActionType {
   LOGOUT_FAIL,
   EDITOR_OPEN,
   EDITOR_CLOSE,
+  UPDATE_POST,
 }
 /** Объединение действий */
 export type Action =
@@ -58,4 +59,5 @@ export type Action =
   | ActionRouting
   | ActionGetPosts
   | ActionEditorOpen
-  | ActionEditorClose;
+  | ActionEditorClose
+  | ActionUpdatePost;

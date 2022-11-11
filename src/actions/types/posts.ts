@@ -19,7 +19,24 @@ export interface PayloadPost {
   commentsNum: number
 }
 
+export interface PayloadPostUpdate {
+  postID: number
+  content?: {
+    title: string
+    img: string
+    text: string
+  }
+  likesNum?: number
+  isLiked?: boolean
+  commentsNum?: number
+}
+
 export interface ActionGetPosts extends IAction {
   type: ActionType.GET_POSTS
   payload: PayloadPost[]
+}
+
+export interface ActionUpdatePost extends IAction {
+  type: ActionType.UPDATE_POST
+  payload: PayloadPostUpdate
 }

@@ -1,17 +1,7 @@
 import {ActionType} from '@actions/types/action';
-import {PayloadPost} from '@actions/types/posts';
+import {PayloadNotice} from '@actions/types/notice';
 import api from '@app/api';
 import store from '@app/store';
-
-export interface PostResponse {
-  img: string
-  likesNum: number
-  postID: 1
-  text: string
-  title: string
-  userID: number
-  isLiked: boolean
-}
 
 export interface PostForm extends HTMLCollection {
   title: HTMLInputElement
@@ -19,81 +9,24 @@ export interface PostForm extends HTMLCollection {
   img?: HTMLInputElement
 }
 
-export const getPostsByAuthor = (author: PayloadPost['author']) => {
-  api.getAuthorPosts(author.id)
-      .then(
-          (res) => {
-            switch (res.status) {
-              case 200: {
-                const posts: PayloadPost[] = (res.body as PostResponse[]).map(
-                    (postResponse) => {
-                      const post: PayloadPost = {
-                        author,
-                        postID: postResponse.postID,
-                        content: {
-                          img: postResponse.img,
-                          text: postResponse.text,
-                          title: postResponse.title,
-                        },
-                        likesNum: postResponse.likesNum,
-                        isLiked: false, // TODO получать из запроса
-                        commentsNum: 0, // TODO получать из запроса
-                        date: new Date(Date.now()), // TODO получать из запроса
-                      };
-                      return post;
-                    },
-                );
-                store.dispatch({
-                  type: ActionType.GET_POSTS,
-                  payload: posts,
-                });
-                break;
-              }
-              default:
-                store.dispatch({
-                  type: ActionType.NOTICE,
-                  payload: {
-                    message:
-                      `Запрос со статусом ${res.status} 
-                      ошибкой ${(res.body as { message: string }).message}`,
-                  },
-                });
-                break;
-            }
-          },
-      )
-      .catch(
-          () => {
-            store.dispatch({
-              type: ActionType.NOTICE,
-              payload: {
-                message: 'error fetch',
-              },
-            });
-          },
-      );
-};
-
 export const createPost = (form: PostForm) => {
   api.createPost({
     title: form.title.value,
     text: form.text.value,
     file: form.img?.files?.item(0) ?? undefined,
   })
-      .then(
-          () => {
-            // TODO
-          },
+      .then(() => {
+        // TODO
+      },
       )
-      .catch(
-          () => {
-            store.dispatch({
-              type: ActionType.NOTICE,
-              payload: {
-                message: 'error fetch',
-              },
-            });
+      .catch((err) => {
+        store.dispatch({
+          type: ActionType.NOTICE,
+          payload: {
+            message: err as string,
           },
+        });
+      },
       );
 };
 
@@ -103,57 +36,91 @@ export const updatePost = (id: number, form: PostForm) => {
     text: form.text.value,
     file: form.img?.files?.item(0) ?? undefined,
   })
-      .then(
-          () => {
-            // TODO
-          },
-      )
-      .catch(
-          () => {
-            store.dispatch({
-              type: ActionType.NOTICE,
-              payload: {
-                message: 'error fetch',
+      .then((res) => {
+        if (res.ok) {
+          store.dispatch({
+            type: ActionType.UPDATE_POST,
+            payload: {
+              postID: id,
+              content: {
+                title: form.title.value,
+                text: form.text.value,
+                img: (res.body as {imgPath: string}).imgPath,
               },
-            });
+            },
+          });
+        } else {
+          store.dispatch({
+            type: ActionType.NOTICE,
+            payload: res.body as PayloadNotice,
+          });
+        }
+      })
+      .catch((err) => {
+        store.dispatch({
+          type: ActionType.NOTICE,
+          payload: {
+            message: err as string,
           },
+        });
+      },
       );
 };
 
 export const likePost = (id: number) => {
   api.likePost(id)
-      .then(
-          () => {
-            // TODO
+      .then((res) => {
+        if (res.ok) {
+          store.dispatch({
+            type: ActionType.UPDATE_POST,
+            payload: {
+              postID: id,
+              isLiked: true,
+            },
+          });
+        } else {
+          store.dispatch({
+            type: ActionType.NOTICE,
+            payload: res.body as PayloadNotice,
+          });
+        }
+      })
+      .catch((err) => {
+        store.dispatch({
+          type: ActionType.NOTICE,
+          payload: {
+            message: err as string,
           },
-      )
-      .catch(
-          () => {
-            store.dispatch({
-              type: ActionType.NOTICE,
-              payload: {
-                message: 'error fetch',
-              },
-            });
-          },
+        });
+      },
       );
 };
 
 export const unlikePost = (id: number) => {
   api.unlikePost(id)
-      .then(
-          () => {
-            // TODO
+      .then((res) => {
+        if (res.ok) {
+          store.dispatch({
+            type: ActionType.UPDATE_POST,
+            payload: {
+              postID: id,
+              isLiked: false,
+            },
+          });
+        } else {
+          store.dispatch({
+            type: ActionType.NOTICE,
+            payload: res.body as PayloadNotice,
+          });
+        }
+      })
+      .catch((err) => {
+        store.dispatch({
+          type: ActionType.NOTICE,
+          payload: {
+            message: err as string,
           },
-      )
-      .catch(
-          () => {
-            store.dispatch({
-              type: ActionType.NOTICE,
-              payload: {
-                message: 'error fetch',
-              },
-            });
-          },
+        });
+      },
       );
 };

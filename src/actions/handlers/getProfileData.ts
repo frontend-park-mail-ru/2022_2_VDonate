@@ -7,7 +7,16 @@ import {
   PayloadProfileSubscription,
   PayloadProfileUser} from '@actions/types/getProfileData';
 import {PayloadPost} from '@actions/types/posts';
-import {PostResponse} from './posts';
+
+interface PostResponse {
+  img: string
+  likesNum: number
+  postID: 1
+  text: string
+  title: string
+  userID: number
+  isLiked: boolean
+}
 
 const getAuthorData = async (id: number, user: PayloadProfileUser) => {
   const getSubscriptionsRes = await api.getAuthorSubscriptions(id);
@@ -49,7 +58,7 @@ const getAuthorData = async (id: number, user: PayloadProfileUser) => {
   });
 };
 
-const getDonater = async (id: number, user: PayloadProfileUser) => {
+const getDonaterData = async (id: number, user: PayloadProfileUser) => {
   const getSubscriptionsRes = await api.getSubscriptions(id);
   const subscriptions = getSubscriptionsRes.ok ?
     getSubscriptionsRes.body as PayloadProfileSubscription[] :
@@ -66,33 +75,31 @@ const getDonater = async (id: number, user: PayloadProfileUser) => {
 
 export default (id: number): void => {
   api.getUser(id)
-      .then(
-          (res: ResponseData) => {
-            if (res.ok) {
-              const user = res.body as PayloadProfileUser;
-              return user.isAuthor ?
+      .then((res: ResponseData) => {
+        if (res.ok) {
+          const user = res.body as PayloadProfileUser;
+          return user.isAuthor ?
                 getAuthorData(id, user) :
-                getDonater(id, user);
-            } else {
-              store.dispatch({
-                type: ActionType.NOTICE,
-                payload: {
-                  message: res.body.message as string,
-                },
-              });
-              return;
-            }
-          },
+                getDonaterData(id, user);
+        } else {
+          store.dispatch({
+            type: ActionType.NOTICE,
+            payload: {
+              message: res.body.message as string,
+            },
+          });
+          return;
+        }
+      },
       )
-      .catch(
-          (err) => {
-            store.dispatch({
-              type: ActionType.NOTICE,
-              payload: {
-                message: err as string,
-              },
-            });
-            return;
+      .catch((err) => {
+        store.dispatch({
+          type: ActionType.NOTICE,
+          payload: {
+            message: err as string,
           },
+        });
+        return;
+      },
       );
 };

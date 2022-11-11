@@ -42,10 +42,10 @@ export class PostsContaner implements IObserver {
     const state = store.getState();
     const postsNew = state.posts as PayloadPost[];
 
-    if (JSON.stringify(postsNew) !== JSON.stringify(this.posts)) {
-      this.posts = postsNew;
-      this.setNewPosts(...this.posts);
-    }
+    // if (JSON.stringify(postsNew) !== JSON.stringify(this.posts)) {
+    this.posts = postsNew;
+    this.setNewPosts(...this.posts);
+    // }
   }
   /**
    *
@@ -54,6 +54,8 @@ export class PostsContaner implements IObserver {
   private setNewPosts(...newPosts: PayloadPost[]) {
     const el = this.element.querySelector('.posts-container__posts-area');
     if (!el) return;
+    el.replaceChildren();
+    const postArr: Post[] = [];
     newPosts.forEach(
         (postContext) => {
           const post = new Post(
@@ -61,7 +63,8 @@ export class PostsContaner implements IObserver {
               (store.getState().user as PayloadUser)
                   .id === postContext.author.id,
           );
-          el.appendChild(post.element);
+          postArr[postContext.postID] = post;
         });
+    postArr.reverse().forEach((post) => el.appendChild(post.element));
   }
 }
