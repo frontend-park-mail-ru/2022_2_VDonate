@@ -1,8 +1,5 @@
 import {Glass, GlassType} from '@components/glass/glass';
-import {IconButton} from '@components/icon_button/icon_button';
-import {Popup} from '../popup/about/popup';
 import './about.styl';
-import editIcn from '@icon/edit.svg';
 
 /**
  * Модель поля 'Обо мне'
@@ -16,9 +13,9 @@ export class About {
   private about: HTMLElement;
   private textAbout: string | undefined;
   /**
-   * @param changeable возможность изменять текст
+   * Конструктор
    */
-  constructor(changeable: boolean) {
+  constructor() {
     const glass = new Glass(GlassType.mono);
     this.element = glass.element;
     this.element.classList.add('about');
@@ -27,18 +24,6 @@ export class About {
     head.innerText = 'Обо мне';
     this.about = document.createElement('div');
     this.about.classList.add('about__text');
-    if (changeable) {
-      const redactBtn = new IconButton(editIcn, 'button');
-      redactBtn.element.classList.add('about__head_btn');
-      head.appendChild(redactBtn.element);
-      redactBtn.element.onclick = () => {
-        const popup = new Popup(
-            'Обо мне',
-            this.textAbout,
-        );
-        document.body.appendChild(popup.element);
-      };
-    }
     this.element.appendChild(head);
     this.element.appendChild(this.about);
   }

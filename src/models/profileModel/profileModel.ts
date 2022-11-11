@@ -32,7 +32,7 @@ export class ProfileModel {
     this.element.classList.add('content');
     this.rightNavbar = new RightNavbar();
     this.subContainer = new SubContainer(changeable);
-    this.about = new About(changeable);
+    this.about = new About();
     this.head = document.createElement('div');
     this.head.classList.add('content__head');
     this.head.innerText = 'Подписки';
