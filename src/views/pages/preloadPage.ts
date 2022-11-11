@@ -6,7 +6,7 @@ export default class PreloadPage implements IView {
   private page: HTMLHeadingElement;
   /** Конструктор */
   constructor() {
-    this.page = document.createElement('h1');
+    this.page = document.createElement('div');
   }
   /** Сброс страницы */
   reset(): void {
@@ -17,7 +17,6 @@ export default class PreloadPage implements IView {
    * @returns Элемент-страница
    */
   render(): HTMLElement {
-    this.page.textContent = 'Жду ЧУДА!';
     return this.page;
   }
 }
