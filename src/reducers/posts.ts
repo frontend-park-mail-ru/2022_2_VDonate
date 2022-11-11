@@ -25,6 +25,9 @@ const postsReducer: Reducer<Action> =
         }
         return state;
       }
+      case ActionType.CREATE_POST:
+        (state as PayloadPost[]).push(action.payload);
+        return state;
       default:
         return state;
     }

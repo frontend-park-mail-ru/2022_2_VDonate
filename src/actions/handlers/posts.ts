@@ -39,6 +39,11 @@ export const createPost = (author: PayloadPost['author'], form: PostForm) => {
               likesNum: 0,
             },
           });
+        } else {
+          store.dispatch({
+            type: ActionType.NOTICE,
+            payload: res.body as PayloadNotice,
+          });
         }
       },
       )
