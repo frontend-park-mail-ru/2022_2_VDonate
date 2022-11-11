@@ -8,6 +8,7 @@ import {SubType} from '@models/popup/sub/popup';
 import store from '@app/store';
 import {PayloadUser} from '@actions/types/user';
 import {PayloadGetSubscriptions} from '@actions/types/subscribe';
+import {openSubscribtionEditor} from '@actions/handlers/editor';
 
 /**
  * Модель поля подписок
@@ -19,7 +20,6 @@ export class SubContainer {
   readonly element: HTMLElement;
 
   private container: HTMLElement;
-  private subs: PayloadAuthorSubscription[] | undefined;
 
   /** конструктор
    * @param changeable возможность добавить подписку
@@ -33,6 +33,9 @@ export class SubContainer {
     if (changeable) {
       const redactBtn = new IconButton(plusIcn, 'button');
       redactBtn.element.classList.add('sub-container__head_btn');
+      redactBtn.element.addEventListener('click', () => {
+        openSubscribtionEditor();
+      });
       head.appendChild(redactBtn.element);
     }
     this.container = document.createElement('div');

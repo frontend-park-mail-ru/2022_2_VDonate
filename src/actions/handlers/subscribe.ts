@@ -2,7 +2,9 @@ import api from '@app/api';
 import {ResponseData} from '@api/ajax';
 import {ActionType} from '@actions/types/action';
 import store from '@app/store';
-import {Subscription} from '@actions/types/subscribe';
+import {
+  PayloadAuthorSubscription,
+  Subscription} from '@actions/types/subscribe';
 
 export const subscribe = (
     authorID: number,
@@ -93,6 +95,96 @@ export const getSubscritions = (id: number) => {
             },
           });
         }
+      })
+      .catch(() => {
+        store.dispatch({
+          type: ActionType.NOTICE,
+          payload: {
+            message: 'error fetch',
+          },
+        });
+      });
+};
+
+export interface AuthorSubscrptionForm extends HTMLCollection {
+  title: HTMLInputElement
+  price: HTMLInputElement
+  tier: HTMLInputElement
+  text: HTMLInputElement
+  file: HTMLInputElement
+}
+
+export const editAuthorSubscription = (
+    subId: number,
+    form: AuthorSubscrptionForm) => {
+  const subData: {
+    id: number,
+    price?: number,
+    text?: string,
+    tier?: number,
+    title?: string,
+    file?: File,
+  } = {
+    id: subId,
+  };
+  if (typeof form.tier.value != 'number' ||
+    typeof form.price.value != 'number') {
+    return; // TODO норм валидацию допилить
+  }
+  if (form.price.value != '') {
+    subData.price = form.price.value;
+  }
+  if (form.text.value != '') {
+    subData.text = form.text.value;
+  }
+  if (form.tier.value != '') {
+    subData.tier = form.tier.value;
+  }
+  if (form.title.value != '') {
+    subData.title = form.title.value;
+  }
+  if (form.file.files) {
+    subData.file = form.file.files[0];
+  }
+  api.editAuthorSubscription(subData)
+      .then((res: ResponseData) => {
+        store.dispatch({
+          type: ActionType.EDITAUTHORSUBSRIPTION,
+          payload: res.body as PayloadAuthorSubscription,
+        });
+      })
+      .catch(() => {
+        store.dispatch({
+          type: ActionType.NOTICE,
+          payload: {
+            message: 'error fetch',
+          },
+        });
+      });
+};
+
+export const createAuthorSubscription = (form: AuthorSubscrptionForm) => {
+  if (
+    form.price.value == '' ||
+    form.text.value == '' ||
+    form.tier.value == '' ||
+    form.title.value == '' ||
+    !form.file.files) {
+    // TODO норм валидация
+    return;
+  }
+  api.createAuthorSubscription({
+    price: Number(form.price.value),
+    text: form.text.value,
+    tier: Number(form.tier.value),
+    title: form.title.value,
+    file: form.file.files[0],
+  })
+      .then((res: ResponseData) => {
+        store.dispatch({
+          type: ActionType.EDITAUTHORSUBSRIPTION,
+          payload: res.body as PayloadAuthorSubscription,
+        });
       })
       .catch(() => {
         store.dispatch({

@@ -176,4 +176,41 @@ export default class Api {
       authorSubscriptionID,
     });
   }
+
+  /**
+   * @param data -Обьект
+   * @return объект ответа с полями {ok,status,body}
+   */
+  editAuthorSubscription(data: {
+    id: number,
+    price?: number,
+    text?: string,
+    tier?: number,
+    title?: string,
+    file?: File,
+  }): Promise<ResponseData> {
+    return this.request(
+        `/author/subscriptions/${data.id}`,
+        Method.PUT,
+        ContentType.formData,
+        data);
+  }
+
+  /**
+   * @param data -Обьект
+   * @return объект ответа с полями {ok,status,body}
+   */
+  createAuthorSubscription(data: {
+    price: number,
+    text: string,
+    tier: number,
+    title: string,
+    file?: File,
+  }): Promise<ResponseData> {
+    return this.request(
+        `/author/subscriptions`,
+        Method.POST,
+        ContentType.formData,
+        data);
+  }
 }

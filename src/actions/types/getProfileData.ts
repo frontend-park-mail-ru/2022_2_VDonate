@@ -12,7 +12,7 @@ export interface PayloadProfileUser {
 
 export interface PayloadProfileSubscription {
   author: {
-    id?: number,
+    id: number,
     avatar: string,
     username: string,
   },

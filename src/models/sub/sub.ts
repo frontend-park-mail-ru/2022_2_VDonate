@@ -4,6 +4,7 @@ import {Image, ImageType} from '@components/image/image';
 import {Popup, SubType} from '../popup/sub/popup';
 import './sub.styl';
 import subHbs from './sub.hbs';
+import {openSubscribtionEditor} from '@actions/handlers/editor';
 
 interface Data {
   subType: SubType,
@@ -51,7 +52,7 @@ export class Sub {
       case SubType.EDITSUBSCRIBE:
         this.button = new Button(ButtonType.primary, 'Задонатить', 'button');
         this.button.element.addEventListener('click', () => {
-          // TODO вызвать эдитор для изменения подписки
+          openSubscribtionEditor(data.id);
         });
         break;
       default:

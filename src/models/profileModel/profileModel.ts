@@ -60,8 +60,7 @@ export class ProfileModel {
     this.glass.element.innerHTML = '';
     subscriptions.forEach((sub) => {
       const subItem = new SubscriptionItem(
-          // TODO раскоменитить если есть id автора
-          1, // sub.author.id,
+          sub.author.id,
           sub.author.avatar,
           sub.author.username,
           sub.tier,

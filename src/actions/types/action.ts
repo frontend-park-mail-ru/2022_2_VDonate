@@ -1,5 +1,7 @@
 import {ActionGetProfileData} from './getProfileData';
 import {
+  ActionCreateAuthorSubscription,
+  ActionEditAuthorSubscription,
   ActionGetSubscriptions,
   ActionSubscribe,
   ActionUnsubscribe} from './subscribe';
@@ -31,6 +33,8 @@ export enum ActionType {
   SUBSCRIBE,
   UNSUBSCRIBE,
   GETSUBSCRIPTIONS,
+  EDITAUTHORSUBSRIPTION,
+  CREATEAUTHORSUBSRIPTION,
   NOTICE,
   ROUTING,
   GET_POSTS,
@@ -54,6 +58,8 @@ export type Action =
   | ActionSubscribe
   | ActionUnsubscribe
   | ActionGetSubscriptions
+  | ActionEditAuthorSubscription
+  | ActionCreateAuthorSubscription
   | ActionNotice
   | ActionRouting
   | ActionGetPosts

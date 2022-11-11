@@ -25,6 +25,13 @@ export interface PayloadGetSubscriptions {
   error: string | undefined
 }
 
+export interface PayloadAuthorSubscription {
+  imgPath?: string
+  subscriptionId?: number
+  message?: string
+}
+
+
 export interface ActionSubscribe extends IAction {
   type: ActionType.SUBSCRIBE
   payload: PayloadSubscribe
@@ -38,4 +45,14 @@ export interface ActionUnsubscribe extends IAction {
 export interface ActionGetSubscriptions extends IAction {
   type: ActionType.GETSUBSCRIPTIONS
   payload: PayloadGetSubscriptions
+}
+
+export interface ActionEditAuthorSubscription extends IAction {
+  type: ActionType.EDITAUTHORSUBSRIPTION
+  payload: PayloadAuthorSubscription
+}
+
+export interface ActionCreateAuthorSubscription extends IAction {
+  type: ActionType.CREATEAUTHORSUBSRIPTION
+  payload: PayloadAuthorSubscription
 }

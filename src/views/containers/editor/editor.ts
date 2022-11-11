@@ -1,4 +1,5 @@
 import {EditorType, PayloadEditor} from '@actions/types/editor';
+import {PayloadGetProfileData} from '@actions/types/getProfileData';
 import {PayloadPost} from '@actions/types/posts';
 import {PayloadEditUserErrors, PayloadUser} from '@actions/types/user';
 import store from '@app/store';
@@ -52,7 +53,26 @@ export class EditorContainer {
         break;
       }
       case EditorType.SUBSCRIBTION: {
-      // TODO редактирование подписок
+        const SubID = editorData.id;
+        if (SubID) {
+          const subs = (
+            store.getState().profile as PayloadGetProfileData
+          ).authorSubscriptions;
+          if (subs && typeof subs != 'string') {
+            const targetSub = subs.find((sub) => SubID === sub.id);
+            if (targetSub) {
+              this.currentEditor = new SubscriptionEditor({
+                id: SubID,
+                title: targetSub.title,
+                price: targetSub.price,
+                tier: targetSub.tier,
+                text: targetSub.text,
+              });
+            } // TODO может тут ошибку кинуть?
+          }
+        } else {
+          this.currentEditor = new SubscriptionEditor();
+        }
         break;
       }
       default:
