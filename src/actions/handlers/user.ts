@@ -88,7 +88,7 @@ export const auth = (): void => {
                 payload: {
                   user,
                   location: {
-                    type: router.go(`/profile?=${user.id}`),
+                    type: router.go(location.pathname + location.search),
                   },
                 },
               });
@@ -112,30 +112,6 @@ export const auth = (): void => {
 };
 
 export const login = (props: LogInForm): void => {
-  // заглушка на логин
-  // {
-  //   store.dispatch({
-  //     type: ActionType.LOGIN_SUCCESS,
-  //     payload: {
-  //       user: {
-  //         id: 1,
-  //         avatar: '',
-  //         isAuthor: false,
-  //         username: 'Кодзима',
-  //         email: 'd',
-  //         countSubscriptions: 5,
-  //       },
-  //       location: {
-  //         type: router.go('/feed'),
-  //       },
-  //       formErrors: {
-  //         username: null,
-  //         password: null,
-  //       },
-  //     },
-  //   });
-  //   return;
-  // }
   const usernameErr = usernameCheck(props.username.value);
   const passwordErr = passwordCheck(props.password.value);
   if (usernameErr || passwordErr) {
@@ -170,7 +146,7 @@ export const login = (props: LogInForm): void => {
                     payload: {
                       user,
                       location: {
-                        type: router.go(`/profile?=${user.id}`),
+                        type: router.go('/feed'),
                       },
                       formErrors: {
                         type: FormErrorType.LOGIN,
@@ -256,7 +232,7 @@ export const signup = (props: SignUpForm): void => {
                   payload: {
                     user,
                     location: {
-                      type: router.go(`/profile?=${user.id}`),
+                      type: router.go('/feed'),
                     },
                     formErrors: {
                       type: FormErrorType.SIGNUP,
