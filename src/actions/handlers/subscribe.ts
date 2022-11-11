@@ -74,7 +74,7 @@ export const unsubscribe = (
  * @param id id пользователя
  */
 export const getSubscritions = (id: number) => {
-  api.getSubscritions(id)
+  api.getSubscriptions(id)
       .then((res: ResponseData) => {
         if (res.ok) {
           store.dispatch({

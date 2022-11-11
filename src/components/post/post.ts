@@ -7,25 +7,8 @@ import editIcon from '@icon/edit.svg';
 import './post.styl';
 
 import {openPostEditor} from '@actions/handlers/editor';
-
-interface PostContext {
-  postID: number
-  author: {
-    id: number
-    img: string
-    username: string
-  }
-  date: Date
-  content: {
-    title: string
-    img: string
-    text: string
-  }
-  likeCount: number
-  isLikedByMe: boolean
-  commentCount: number
-  changable: boolean
-}
+import {PayloadPost} from '@actions/types/posts';
+import {unlikePost, likePost} from '@actions/handlers/posts';
 
 /**
  * Модель поста
@@ -33,27 +16,34 @@ interface PostContext {
 export class Post {
   /** Актуальный контейнер поста */
   readonly element: HTMLElement;
+  private isLiked: boolean;
 
   /**
    * @param context данные для генерации поста
+   * @param changable -
    */
-  constructor(context: PostContext) {
+  constructor(context: PayloadPost, changable: boolean) {
+    this.isLiked = context.isLiked;
     const avatarImg = new Image(ImageType.author, context.author.img);
     avatarImg.element.classList.add('post__img');
     const like = new ReactButton(
         ReactType.likes,
-        context.likeCount.toString(),
+        context.likesNum.toString(),
         'button',
-        context.isLikedByMe);
+        context.isLiked);
 
     like.element.addEventListener('click',
         () => {
-          // TODO экшен на лайки
+          if (this.isLiked) {
+            unlikePost(context.postID);
+          } else {
+            likePost(context.postID);
+          }
         });
 
     const comment = new ReactButton(
         ReactType.comments,
-        context.commentCount.toString(),
+        context.commentsNum.toString(),
         'button', false);
     comment.element.addEventListener('click',
         () => {
@@ -77,7 +67,7 @@ export class Post {
     post.querySelector('.post__author-avatar')?.appendChild(avatarImg.element);
     post.querySelector('.post__reaction')
         ?.append(like.element, comment.element);
-    if (context.changable) {
+    if (changable) {
       const editBtn = new IconButton(editIcon, 'button');
       editBtn.element.classList.add('post__header_btn');
       post.querySelector('.post__header')?.appendChild(editBtn.element);

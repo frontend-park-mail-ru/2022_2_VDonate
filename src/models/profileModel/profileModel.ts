@@ -2,11 +2,14 @@ import {
   PayloadAuthorSubscription,
   PayloadProfileSubscription,
   PayloadProfileUser} from '@actions/types/getProfileData';
+import {PayloadUser} from '@actions/types/user';
+import store from '@app/store';
 import {Glass, GlassType} from '@components/glass/glass';
 import {SubscriptionItem} from '@components/subscriptionItem/subscriptionItem';
 import {About} from '@models/about/about';
 import {RightNavbar} from '@models/navbar/right/right_navbar';
 import {SubContainer} from '@models/subContainer/subContainer';
+import {PostsContaner} from '@views/containers/posts/posts';
 import './profileModel.styl';
 
 /**
@@ -23,6 +26,8 @@ export class ProfileModel {
   private head: HTMLElement;
   private glass: Glass;
   private rightNavbar: RightNavbar;
+
+  private postContaner: PostsContaner;
   /**
    * конструктор
    * @param changeable флаг возможности изменять данные
@@ -39,6 +44,14 @@ export class ProfileModel {
     this.glass = new Glass(GlassType.mono);
     this.glass.element.classList.add('content__glass');
     this.element.appendChild(this.rightNavbar.element);
+
+    const user = store.getState().user as PayloadUser;
+    this.postContaner = new PostsContaner(changeable && user.isAuthor);
+    // getPostsByAuthor({
+    //   id: user.id,
+    //   username: user.username,
+    //   img: user.avatar,
+    // });
   }
 
   /**
@@ -47,7 +60,11 @@ export class ProfileModel {
   setType(isAuthor: boolean) {
     this.element.innerHTML = '';
     if (isAuthor) {
-      this.element.append(this.subContainer.element, this.about.element);
+      this.element.append(
+          this.subContainer.element,
+          this.about.element,
+          this.postContaner.element,
+      );
     } else {
       this.element.append(this.head, this.glass.element);
     }

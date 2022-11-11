@@ -29,13 +29,18 @@ export class EditorContainer {
         break;
       case EditorType.POST: {
         const postID = editorData.id;
+        if (!postID) {
+          this.currentEditor = new PostEditor();
+          break;
+        }
         const targetPost = (store.getState().posts as PayloadPost[]).find(
             (post) => postID === post.postID,
         );
         if (targetPost) {
           this.currentEditor = new PostEditor({
-            title: targetPost.title,
-            text: targetPost.text,
+            id: postID,
+            title: targetPost.content.title,
+            text: targetPost.content.text,
           });
         }
         break;

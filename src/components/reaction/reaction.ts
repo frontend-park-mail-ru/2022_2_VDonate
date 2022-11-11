@@ -24,13 +24,13 @@ export class ReactButton {
    * @param reactType дизайн кнопки
    * @param content текст в кнопке
    * @param actionType тип дейсмтвия
-   * @param like состояние лайка
+   * @param isActive состояние кнопки
    */
   constructor(
       reactType: ReactType,
       content: string,
       actionType: string,
-      like: boolean,
+      isActive: boolean,
   ) {
     this.element = document.createElement('button');
     this.element.setAttribute('type', actionType);
@@ -47,7 +47,7 @@ export class ReactButton {
         break;
       case ReactType.likes:
         innerIcon.src = likeIcon;
-        if (like) {
+        if (isActive) {
           this.element.classList.add('reaction__like');
         }
         this.element.appendChild(innerIcon);

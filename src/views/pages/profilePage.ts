@@ -64,7 +64,7 @@ export default class ProfilePage implements IView, IObserver {
         // TODO попап ошибки
         console.warn(profileNew.subscriptions);
       } else {
-        this.components.renderSubscriptions(profileNew.subscriptions);
+        this.components.renderSubscriptions(profileNew.subscriptions ?? []);
       }
     }
     if (profileNew.user !== this.profile?.user) {

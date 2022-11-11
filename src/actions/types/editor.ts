@@ -9,7 +9,7 @@ export enum EditorType {
 
 interface PayloadPostEditor {
   type: EditorType.POST
-  id: number
+  id?: number
 }
 
 interface PayloadProfileEditor {

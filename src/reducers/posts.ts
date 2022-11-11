@@ -7,6 +7,8 @@ const postsReducer: Reducer<Action> =
     switch (action.type) {
       case ActionType.GET_POSTS:
         return action.payload;
+      case ActionType.GETPROFILEDATA:
+        return action.payload.posts ?? [];
       default:
         return state;
     }

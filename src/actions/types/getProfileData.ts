@@ -1,5 +1,6 @@
 import {IAction} from '@flux/types/actions';
 import {ActionType} from './action';
+import {PayloadPost} from './posts';
 
 export interface PayloadProfileUser {
   avatar: string,
@@ -34,8 +35,9 @@ export interface PayloadAuthorSubscription {
 /** Результат успешной аутификации */
 export interface PayloadGetProfileData {
   user: PayloadProfileUser,
-  subscriptions: PayloadProfileSubscription[] | string,
-  authorSubscriptions?: PayloadAuthorSubscription[] | string,
+  subscriptions?: PayloadProfileSubscription[],
+  authorSubscriptions?: PayloadAuthorSubscription[],
+  posts?: PayloadPost[],
 }
 
 /** Действие аутификации */

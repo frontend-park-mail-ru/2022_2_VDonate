@@ -6,7 +6,6 @@ import {IView} from '@flux/types/view';
 import PreloadPage from './pages/preloadPage';
 import EntryPage, {EntryFormType} from './pages/entry-page/entryPage';
 import NotFoundPage from './pages/notFoundPage';
-import FeedPage from './pages/feed-page/feedPage';
 import {PayloadNotice} from '@actions/types/notice';
 import ProfilePage from './pages/profilePage';
 import {LeftNavbar} from '@models/navbar/left/left_navbar';
@@ -136,16 +135,14 @@ export default class Root implements IView, IObserver {
         this.page.children.leftNavBar.hideNavbar();
         this.page.children.main = new EntryPage(EntryFormType.signUp);
         return this.page.children.main.render();
-      case Pages.FEED:
-        this.page.children.leftNavBar.showNavbar();
-        this.page.children.main = new FeedPage();
-        return this.page.children.main.render();
       case Pages.PROFILE:
         this.page.children.leftNavBar.showNavbar();
         this.page.children.main = new ProfilePage();
         return this.page.children.main.render();
+      case Pages.FEED:
       case Pages.SEARCH:
       case Pages.NOT_FOUND:
+        this.page.children.leftNavBar.showNavbar();
         this.page.children.main = new NotFoundPage();
         return this.page.children.main.render();
     }
