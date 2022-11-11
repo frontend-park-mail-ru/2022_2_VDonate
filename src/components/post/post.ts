@@ -24,7 +24,7 @@ export class Post {
    */
   constructor(context: PayloadPost, changable: boolean) {
     this.isLiked = context.isLiked;
-    const avatarImg = new Image(ImageType.author, context.author.img);
+    const avatarImg = new Image(ImageType.author, context.author.imgPath);
     avatarImg.element.classList.add('post__img');
     const like = new ReactButton(
         ReactType.likes,

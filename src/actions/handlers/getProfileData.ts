@@ -7,16 +7,8 @@ import {
   PayloadProfileSubscription,
   PayloadProfileUser} from '@actions/types/getProfileData';
 import {PayloadPost} from '@actions/types/posts';
+import {PostResponse} from './posts';
 
-interface PostResponse {
-  img: string
-  likesNum: number
-  postID: 1
-  text: string
-  title: string
-  userID: number
-  isLiked: boolean
-}
 
 const getAuthorData = async (id: number, user: PayloadProfileUser) => {
   const getSubscriptionsRes = await api.getAuthorSubscriptions(id);
@@ -31,7 +23,7 @@ const getAuthorData = async (id: number, user: PayloadProfileUser) => {
             author: {
               id,
               username: user.username,
-              img: user.avatar,
+              imgPath: user.avatar,
             },
             postID: postResponse.postID,
             content: {

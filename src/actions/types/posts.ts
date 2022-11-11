@@ -5,7 +5,7 @@ export interface PayloadPost {
   postID: number
   author: {
     id: number
-    img: string
+    imgPath: string
     username: string
   }
   date: Date

@@ -17,6 +17,7 @@ import notice from '@actions/handlers/notice';
 import {NoticeContainer} from './containers/notice/notice';
 import {getSubscritions} from '@actions/handlers/subscribe';
 import {PayloadUser} from '@actions/types/user';
+import FeedPage from './pages/feed-page/feedPage';
 /** Тип структорного представления страницы из компонентов */
 interface RootModel {
   root: HTMLElement
@@ -149,6 +150,9 @@ export default class Root implements IView, IObserver {
         this.page.children.main = new ProfilePage();
         return this.page.children.main.render();
       case Pages.FEED:
+        this.page.children.leftNavBar.showNavbar();
+        this.page.children.main = new FeedPage();
+        return this.page.children.main.render();
       case Pages.SEARCH:
       case Pages.NOT_FOUND:
         this.page.children.leftNavBar.showNavbar();

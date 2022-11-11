@@ -15,6 +15,21 @@ interface PostCreateResponse {
   postID: number
 }
 
+export interface PostResponse {
+  author: {
+    id: number
+    username: string
+    imgPath: string
+  }
+  img: string
+  likesNum: number
+  postID: 1
+  text: string
+  title: string
+  userID: number
+  isLiked: boolean
+}
+
 export const createPost = (author: PayloadPost['author'], form: PostForm) => {
   api.createPost({
     title: form.title.value,
@@ -134,6 +149,55 @@ export const unlikePost = (id: number) => {
               postID: id,
               isLiked: false,
             },
+          });
+        } else {
+          store.dispatch({
+            type: ActionType.NOTICE,
+            payload: res.body as PayloadNotice,
+          });
+        }
+      })
+      .catch((err) => {
+        store.dispatch({
+          type: ActionType.NOTICE,
+          payload: {
+            message: err as string,
+          },
+        });
+      },
+      );
+};
+
+export const getFeed = () => {
+  api.getFeed()
+      .then((res) => {
+        if (res.ok) {
+          const posts = (res.body as PostResponse[]).map(
+              (postResponse) => {
+                const post: PayloadPost = {
+                  // FIXME Ждем исправления get post
+                  author: {
+                    id: 1,
+                    imgPath: '',
+                    username: 'qwe',
+                  }, // postResponse.author,
+                  postID: postResponse.postID,
+                  content: {
+                    img: postResponse.img,
+                    text: postResponse.text,
+                    title: postResponse.title,
+                  },
+                  likesNum: postResponse.likesNum,
+                  isLiked: postResponse.isLiked,
+                  commentsNum: 0, // TODO получать из запроса
+                  date: new Date(Date.now()), // TODO получать из запроса
+                };
+                return post;
+              },
+          );
+          store.dispatch({
+            type: ActionType.GET_POSTS,
+            payload: posts,
           });
         } else {
           store.dispatch({

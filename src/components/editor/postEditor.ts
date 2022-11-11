@@ -81,7 +81,7 @@ export default class PostEditor {
             const user = (store.getState().user as PayloadUser);
             createPost({
               id: user.id,
-              img: user.avatar,
+              imgPath: user.avatar,
               username: user.username,
             }, (e.target as HTMLFormElement).elements as PostForm);
           }

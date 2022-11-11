@@ -263,4 +263,15 @@ export default class Api {
         ContentType.formData,
         data);
   }
+  /**
+   *
+   * @returns ll
+   */
+  getFeed(): Promise<ResponseData> {
+    return this.request(
+        // FIXME Ждем исправления get post
+        '/posts?user_id=1&filter=subscriptions',
+        Method.GET,
+        ContentType.json);
+  }
 }
