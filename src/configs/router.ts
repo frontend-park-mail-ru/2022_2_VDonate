@@ -27,7 +27,7 @@ export const routes: RouteType[] = [
     type: Pages.SIGNUP,
   },
   {
-    path: /^\/feed?$/,
+    path: /^\/(feed)?$/,
     type: Pages.FEED,
   },
 ];
