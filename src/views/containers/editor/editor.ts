@@ -1,7 +1,8 @@
 import {EditorType, PayloadEditor} from '@actions/types/editor';
+import {FormErrorType, PayloadFormError} from '@actions/types/formError';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
 import {PayloadPost} from '@actions/types/posts';
-import {PayloadEditUserErrors, PayloadUser} from '@actions/types/user';
+import {PayloadUser} from '@actions/types/user';
 import store from '@app/store';
 import PostEditor from '@components/editor/postEditor';
 import ProfileEditor from '@components/editor/profileEditor';
@@ -68,7 +69,7 @@ export class EditorContainer {
                 tier: targetSub.tier,
                 text: targetSub.text,
               });
-            } // TODO может тут ошибку кинуть?
+            }
           }
         } else {
           this.currentEditor = new SubscriptionEditor();
@@ -86,8 +87,12 @@ export class EditorContainer {
    *
    * @param errors -
    */
-  displayErrors(errors: PayloadEditUserErrors) {
-    if (this.currentEditor instanceof ProfileEditor) {
+  displayErrors(errors: PayloadFormError) {
+    if (this.currentEditor instanceof ProfileEditor &&
+      errors?.type == FormErrorType.EDIT_USER) {
+      this.currentEditor.errorDisplay(errors);
+    } else if (this.currentEditor instanceof SubscriptionEditor &&
+      errors?.type == FormErrorType.AUTHOR_SUBSCRIPTION) {
       this.currentEditor.errorDisplay(errors);
     } else {
       console.warn(`Вызов displayErrors в конейнере эдиторов, 

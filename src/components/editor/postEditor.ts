@@ -1,4 +1,5 @@
 import {closeEditor} from '@actions/handlers/editor';
+import {PayloadFormError} from '@actions/types/formError';
 import {Button, ButtonType} from '@components/button/button';
 import {InputField, InputType} from '@components/input-field/inputField';
 import template from './editor.hbs';
@@ -69,5 +70,14 @@ export default class PostEditor {
           // TODO экшен изменения поста
         },
     );
+  }
+  /**
+   *
+   * @param errors -
+   */
+  errorDisplay(errors: PayloadFormError) {
+    if (!errors) {
+      return;
+    }
   }
 }

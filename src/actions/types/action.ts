@@ -45,6 +45,7 @@ export enum ActionType {
 }
 /** Объединение действий */
 export type Action =
+  | ActionEditAuthorSubscription
   | ActionLogInSuccess
   | ActionLogInFail
   | ActionSignUpSuccess
@@ -58,7 +59,6 @@ export type Action =
   | ActionSubscribe
   | ActionUnsubscribe
   | ActionGetSubscriptions
-  | ActionEditAuthorSubscription
   | ActionCreateAuthorSubscription
   | ActionNotice
   | ActionRouting

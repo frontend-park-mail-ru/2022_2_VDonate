@@ -33,6 +33,12 @@ const links = [
   },
 ];
 
+export enum ChoosenLink {
+  FEED,
+  SEARCH,
+  SUBSCRIBTIONS,
+  OTHER,
+}
 /**
  * Модель левого навбара
  */
@@ -113,8 +119,8 @@ export class LeftNavbar implements IObserver {
     profileContainer.appendChild(icnbtn.element);
     profileContainer.appendChild(this.profile);
     glass.element.appendChild(profileContainer);
-    this.renderLocation();
     store.registerObserver(this);
+    this.renderLocation(ChoosenLink.FEED);
   }
 
   /**
@@ -124,15 +130,15 @@ export class LeftNavbar implements IObserver {
     this.subsList.innerHTML = '';
     this.subs?.forEach((subItem) => {
       const sub = document.createElement('a');
-      if (subItem.author.id) {
-        sub.setAttribute('href', `/profile?id=${subItem.author.id}`);
+      if (subItem.authorID) {
+        sub.setAttribute('href', `/profile?id=${subItem.authorID}`);
         sub.setAttribute('data-link', '');
       }
       sub.classList.add('left-navbar__sub');
-      const avatar = new Image(ImageType.author, subItem.author.avatar);
+      const avatar = new Image(ImageType.author, subItem.img);
       avatar.element.classList.add('left-navbar__sub_avatar');
       const usrname = document.createElement('span');
-      usrname.innerText = subItem.author.username;
+      usrname.innerText = subItem.title;
       sub.appendChild(avatar.element);
       sub.appendChild(usrname);
       this.subsList.appendChild(sub);
@@ -159,14 +165,31 @@ export class LeftNavbar implements IObserver {
 
   /**
    * рендер выбора локации
+   * @param page -
    */
-  renderLocation() {
-    this.navbarUnits.forEach((navbarUnit: NavbarUnit) =>{
-      navbarUnit.setSelect(
-          navbarUnit.element.getAttribute('href') ==
-          location.href,
-      );
-    });
+  renderLocation(page: ChoosenLink) {
+    switch (page) {
+      case ChoosenLink.FEED:
+        this.navbarUnits[0].element.classList.add('navbar-unit__choosen');
+        this.navbarUnits[1].element.classList.remove('navbar-unit__choosen');
+        this.navbarUnits[2].element.classList.remove('navbar-unit__choosen');
+        break;
+      case ChoosenLink.SEARCH:
+        this.navbarUnits[0].element.classList.remove('navbar-unit__choosen');
+        this.navbarUnits[1].element.classList.add('navbar-unit__choosen');
+        this.navbarUnits[2].element.classList.remove('navbar-unit__choosen');
+        break;
+      case ChoosenLink.SUBSCRIBTIONS:
+        this.navbarUnits[0].element.classList.remove('navbar-unit__choosen');
+        this.navbarUnits[1].element.classList.remove('navbar-unit__choosen');
+        this.navbarUnits[2].element.classList.add('navbar-unit__choosen');
+        break;
+      default:
+        this.navbarUnits[0].element.classList.remove('navbar-unit__choosen');
+        this.navbarUnits[1].element.classList.remove('navbar-unit__choosen');
+        this.navbarUnits[2].element.classList.remove('navbar-unit__choosen');
+        break;
+    }
   }
   /** функция скрывающая navbar */
   hideNavbar() {
@@ -184,11 +207,11 @@ export class LeftNavbar implements IObserver {
       this.user = newUser;
       this.renderProfile();
     }
-    // const newSubscriptions =
-    //   store.getState().subscribe as PayloadGetSubscriptions;
-    // if (newSubscriptions.subscriptions !== this.subs) {
-    //   this.subs = newSubscriptions.subscriptions;
-    //   this.renderSubs();
-    // }
+    const newSubscriptions =
+      store.getState().userSubscribers as Subscription[];
+    if (newSubscriptions !== this.subs) {
+      this.subs = newSubscriptions;
+      this.renderSubs();
+    }
   }
 }

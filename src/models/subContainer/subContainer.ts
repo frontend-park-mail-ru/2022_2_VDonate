@@ -7,7 +7,7 @@ import plusIcn from '@icon/plus.svg';
 import {SubType} from '@models/popup/sub/popup';
 import store from '@app/store';
 import {PayloadUser} from '@actions/types/user';
-import {PayloadGetSubscriptions} from '@actions/types/subscribe';
+import {Subscription} from '@actions/types/subscribe';
 import {openSubscribtionEditor} from '@actions/handlers/editor';
 
 /**
@@ -55,20 +55,18 @@ export class SubContainer {
     this.container.innerHTML = '';
     const user = store.getState().user as PayloadUser;
     const subscriptions =
-        store.getState().subscribe as PayloadGetSubscriptions | undefined;
+        store.getState().userSubscribers as Subscription[];
     subs.forEach((sub) => {
-      let subType = SubType.UNSUBSCRIBE;
-      if (user.id == sub.author.id) {
+      let subType = SubType.SUBSCRIBE;
+      if (user.id == sub.authorID) {
         subType = SubType.EDITSUBSCRIBE;
       } else {
-        if (subscriptions &&
-           !subscriptions.error &&
-           !subscriptions.subscriptions.find((o) => o.id == sub.id)) {
-          subType = SubType.SUBSCRIBE;
+        if (subscriptions.find((o) => o.id == sub.id)) {
+          subType = SubType.UNSUBSCRIBE;
         }
       }
       const subItem = new Sub({
-        AuthorID: sub.author.id,
+        AuthorID: sub.authorID,
         subType: subType,
         id: sub.id,
         subName: sub.title,

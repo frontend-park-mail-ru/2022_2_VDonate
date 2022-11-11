@@ -16,6 +16,8 @@ import {EditorContainer} from './containers/editor/editor';
 import {FormErrorType, PayloadFormError} from '@actions/types/formError';
 import notice from '@actions/handlers/notice';
 import {NoticeContainer} from './containers/notice/notice';
+import {getSubscritions} from '@actions/handlers/subscribe';
+import {PayloadUser} from '@actions/types/user';
 /** Тип структорного представления страницы из компонентов */
 interface RootModel {
   root: HTMLElement
@@ -34,6 +36,7 @@ export default class Root implements IView, IObserver {
   private noticeState: PayloadNotice;
   private formErrors: PayloadFormError;
   private editorState: PayloadEditor;
+  private user: PayloadUser | undefined;
   /**
    * Конструктор
    * @param rootElement - корневой элемент для вставки страницы
@@ -67,6 +70,11 @@ export default class Root implements IView, IObserver {
   notify(): void {
     const state = store.getState();
 
+    const newUser = store.getState().user as PayloadUser;
+    if (newUser !== this.user) {
+      this.user = newUser;
+      getSubscritions(newUser.id);
+    }
     const noticeStateNew = state.notice as PayloadNotice;
     // TODO вызов оповещений ошибок
     if (JSON.stringify(noticeStateNew) !== JSON.stringify(this.noticeState)) {
@@ -83,6 +91,7 @@ export default class Root implements IView, IObserver {
       // TODO вызов отображения ошибок
       switch (this.formErrors?.type) {
         case FormErrorType.EDIT_USER:
+        case FormErrorType.AUTHOR_SUBSCRIPTION:
           this.page.children.editor.displayErrors(this.formErrors);
           break;
         default:

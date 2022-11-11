@@ -27,7 +27,7 @@ export class Sub {
    */
   readonly element: HTMLElement;
 
-  private button: Button;
+  private button: Button | undefined;
   /**
    * @param data данные для генерации
    */
@@ -50,7 +50,7 @@ export class Sub {
         });
         break;
       case SubType.EDITSUBSCRIBE:
-        this.button = new Button(ButtonType.primary, 'Задонатить', 'button');
+        this.button = new Button(ButtonType.primary, 'Изменить', 'button');
         this.button.element.addEventListener('click', () => {
           openSubscribtionEditor(data.id);
         });
@@ -58,7 +58,7 @@ export class Sub {
       default:
         break;
     }
-    this.button = new Button(ButtonType.primary, 'Задонатить', 'button');
+    this.button?.element.classList.add('sub__button');
     const glass = new Glass(GlassType.mono);
     this.element = glass.element;
     this.element.innerHTML = subHbs({
@@ -68,18 +68,45 @@ export class Sub {
       subImg: lvlImg.element.outerHTML,
       price: data.price,
       period: data.period,
-      button: this.button.element.outerHTML,
+      button: this.button?.element.outerHTML,
       motivation: data.motivation,
     });
+    switch (data.subType) {
+      case SubType.SUBSCRIBE:
+        this.element.getElementsByTagName('button')[0]
+            .addEventListener('click', () => {
+              const popup = new Popup(data.AuthorID, data.id, data.subType);
+              document.body.appendChild(popup.element);
+            });
+        break;
+      case SubType.UNSUBSCRIBE:
+        this.element.getElementsByTagName('button')[0]
+            .addEventListener('click', () => {
+              const popup = new Popup(data.AuthorID, data.id, data.subType);
+              document.body.appendChild(popup.element);
+            });
+        break;
+      case SubType.EDITSUBSCRIBE:
+        this.element.getElementsByTagName('button')[0]
+            .addEventListener('click', () => {
+              openSubscribtionEditor(data.id);
+            });
+        break;
+      default:
+        break;
+    }
     const motivation =
         this.element.getElementsByClassName('sub__motivation').item(0);
-    const showMore = document.createElement('a');
-    showMore.classList.add('sub__more');
-    showMore.textContent = 'показать еще';
-    showMore.addEventListener('click', () => {
-      motivation?.classList.remove('sub__motivation_part');
-      showMore.hidden = true;
-    });
-    this.element.firstChild?.appendChild(showMore);
+    if (motivation && motivation.innerHTML.length >= 60) {
+      motivation.classList.add('sub__motivation_part');
+      const showMore = document.createElement('a');
+      showMore.classList.add('sub__more');
+      showMore.textContent = 'показать еще';
+      showMore.addEventListener('click', () => {
+        motivation.classList.remove('sub__motivation_part');
+        showMore.hidden = true;
+      });
+      this.element.firstChild?.appendChild(showMore);
+    }
   }
 }

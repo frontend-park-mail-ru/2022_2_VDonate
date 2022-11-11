@@ -5,6 +5,12 @@ import store from '@app/store';
 import {
   PayloadAuthorSubscription,
   Subscription} from '@actions/types/subscribe';
+import {FormErrorType} from '@actions/types/formError';
+import {
+  priceCheck,
+  textCheck,
+  tierCheck,
+  titleCheck} from '@validation/validation';
 
 export const subscribe = (
     authorID: number,
@@ -117,41 +123,79 @@ export interface AuthorSubscrptionForm extends HTMLCollection {
 export const editAuthorSubscription = (
     subId: number,
     form: AuthorSubscrptionForm) => {
+  const priceErr = priceCheck(form.price.value);
+  const textErr = textCheck(form.text.value);
+  const tierErr = tierCheck(form.tier.value);
+  const titleErr = titleCheck(form.title.value);
+  if (priceErr || textErr || tierErr || titleErr) {
+    store.dispatch({
+      type: ActionType.EDITAUTHORSUBSRIPTION,
+      payload: {
+        message: null,
+        formErrors: {
+          type: FormErrorType.AUTHOR_SUBSCRIPTION,
+          price: priceErr,
+          text: textErr,
+          tier: tierErr,
+          title: titleErr,
+          file: null,
+        },
+      },
+    });
+    return;
+  }
   const subData: {
     id: number,
-    price?: number,
-    text?: string,
-    tier?: number,
-    title?: string,
+    price: number,
+    text: string,
+    tier: number,
+    title: string,
     file?: File,
   } = {
     id: subId,
+    price: Number(form.price.value),
+    text: form.text.value,
+    tier: Number(form.tier.value),
+    title: form.title.value,
   };
-  if (typeof form.tier.value != 'number' ||
-    typeof form.price.value != 'number') {
-    return; // TODO норм валидацию допилить
-  }
-  if (form.price.value != '') {
-    subData.price = form.price.value;
-  }
-  if (form.text.value != '') {
-    subData.text = form.text.value;
-  }
-  if (form.tier.value != '') {
-    subData.tier = form.tier.value;
-  }
-  if (form.title.value != '') {
-    subData.title = form.title.value;
-  }
   if (form.file.files) {
     subData.file = form.file.files[0];
   }
+
   api.editAuthorSubscription(subData)
       .then((res: ResponseData) => {
-        store.dispatch({
-          type: ActionType.EDITAUTHORSUBSRIPTION,
-          payload: res.body as PayloadAuthorSubscription,
-        });
+        if (res.ok) {
+          store.dispatch({
+            type: ActionType.EDITAUTHORSUBSRIPTION,
+            payload: {
+              subscription: res.body as PayloadAuthorSubscription,
+              message: null,
+              formErrors: {
+                type: FormErrorType.AUTHOR_SUBSCRIPTION,
+                price: null,
+                text: null,
+                tier: null,
+                title: null,
+                file: null,
+              },
+            },
+          });
+        } else {
+          store.dispatch({
+            type: ActionType.EDITAUTHORSUBSRIPTION,
+            payload: {
+              message: res.body.message as string,
+              formErrors: {
+                type: FormErrorType.AUTHOR_SUBSCRIPTION,
+                price: null,
+                text: null,
+                tier: null,
+                title: null,
+                file: null,
+              },
+            },
+          });
+        }
       })
       .catch(() => {
         store.dispatch({
@@ -164,13 +208,25 @@ export const editAuthorSubscription = (
 };
 
 export const createAuthorSubscription = (form: AuthorSubscrptionForm) => {
-  if (
-    form.price.value == '' ||
-    form.text.value == '' ||
-    form.tier.value == '' ||
-    form.title.value == '' ||
-    !form.file.files) {
-    // TODO норм валидация
+  const priceErr = priceCheck(form.price.value);
+  const textErr = textCheck(form.text.value);
+  const tierErr = tierCheck(form.tier.value);
+  const titleErr = titleCheck(form.title.value);
+  if (priceErr || textErr || tierErr || titleErr) {
+    store.dispatch({
+      type: ActionType.EDITAUTHORSUBSRIPTION,
+      payload: {
+        message: null,
+        formErrors: {
+          type: FormErrorType.AUTHOR_SUBSCRIPTION,
+          price: priceErr,
+          text: textErr,
+          tier: tierErr,
+          title: titleErr,
+          file: null,
+        },
+      },
+    });
     return;
   }
   api.createAuthorSubscription({
@@ -178,13 +234,41 @@ export const createAuthorSubscription = (form: AuthorSubscrptionForm) => {
     text: form.text.value,
     tier: Number(form.tier.value),
     title: form.title.value,
-    file: form.file.files[0],
+    file: form.file.files ? form.file.files[0] : undefined,
   })
       .then((res: ResponseData) => {
-        store.dispatch({
-          type: ActionType.EDITAUTHORSUBSRIPTION,
-          payload: res.body as PayloadAuthorSubscription,
-        });
+        if (res.ok) {
+          store.dispatch({
+            type: ActionType.EDITAUTHORSUBSRIPTION,
+            payload: {
+              subscription: res.body as PayloadAuthorSubscription,
+              message: null,
+              formErrors: {
+                type: FormErrorType.AUTHOR_SUBSCRIPTION,
+                price: null,
+                text: null,
+                tier: null,
+                title: null,
+                file: null,
+              },
+            },
+          });
+        } else {
+          store.dispatch({
+            type: ActionType.EDITAUTHORSUBSRIPTION,
+            payload: {
+              message: res.body.message as string,
+              formErrors: {
+                type: FormErrorType.AUTHOR_SUBSCRIPTION,
+                price: null,
+                text: null,
+                tier: null,
+                title: null,
+                file: null,
+              },
+            },
+          });
+        }
       })
       .catch(() => {
         store.dispatch({

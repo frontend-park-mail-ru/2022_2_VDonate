@@ -110,7 +110,9 @@ export default class Api {
      */
   getSubscritions(id: number): Promise<ResponseData> {
     return this.request(
-        `/subscriptions/${id}`, Method.GET, ContentType.json);
+        `/subscriptions`, Method.GET, ContentType.json, {
+          user_id: id,
+        });
   }
 
   /**
@@ -120,7 +122,7 @@ export default class Api {
    */
   getAuthorSubscritions(id: number): Promise<ResponseData> {
     return this.request(
-        `/author/subscriptions`,
+        `/subscriptions/author`,
         Method.GET, ContentType.json, {
           author_id: id,
         },
@@ -190,7 +192,7 @@ export default class Api {
     file?: File,
   }): Promise<ResponseData> {
     return this.request(
-        `/author/subscriptions/${data.id}`,
+        `/subscriptions/author/${data.id}`,
         Method.PUT,
         ContentType.formData,
         data);
@@ -208,7 +210,7 @@ export default class Api {
     file?: File,
   }): Promise<ResponseData> {
     return this.request(
-        `/author/subscriptions`,
+        `/subscriptions/author`,
         Method.POST,
         ContentType.formData,
         data);

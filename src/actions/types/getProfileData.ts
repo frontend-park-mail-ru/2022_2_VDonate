@@ -20,9 +20,7 @@ export interface PayloadProfileSubscription {
 }
 
 export interface PayloadAuthorSubscription {
-  author: {
-    id: number,
-  }
+  authorID: number,
   id: number,
   img: string,
   price: number,

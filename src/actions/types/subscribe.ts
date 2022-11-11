@@ -1,5 +1,6 @@
 import {IAction} from '@flux/types/actions';
 import {ActionType} from './action';
+import {FormErrorType} from './formError';
 
 export interface PayloadSubscribe {
   success: boolean
@@ -7,11 +8,9 @@ export interface PayloadSubscribe {
 }
 
 export interface Subscription {
-  author: {
-    id?: number
-    avatar: string
-    username: string
-  }
+  authorID: number
+  avatar?: string
+  username?: string
   id?: number
   img: string
   price: number
@@ -26,9 +25,8 @@ export interface PayloadGetSubscriptions {
 }
 
 export interface PayloadAuthorSubscription {
-  imgPath?: string
-  subscriptionId?: number
-  message?: string
+  imgPath: string
+  subscriptionId: number
 }
 
 
@@ -47,12 +45,29 @@ export interface ActionGetSubscriptions extends IAction {
   payload: PayloadGetSubscriptions
 }
 
+export interface PayloadAuthorSubscriptionErrors {
+  type: FormErrorType.AUTHOR_SUBSCRIPTION
+  price: null | string
+  text: null | string
+  tier: null | string
+  title: null | string
+  file: null | string
+}
+
 export interface ActionEditAuthorSubscription extends IAction {
   type: ActionType.EDITAUTHORSUBSRIPTION
-  payload: PayloadAuthorSubscription
+  payload: {
+    subscription?: PayloadAuthorSubscription
+    message: string | null
+    formErrors: PayloadAuthorSubscriptionErrors
+  }
 }
 
 export interface ActionCreateAuthorSubscription extends IAction {
   type: ActionType.CREATEAUTHORSUBSRIPTION
-  payload: PayloadAuthorSubscription
+  payload: {
+    subscrption: PayloadAuthorSubscription
+    message: string | null
+    formErrors: PayloadAuthorSubscriptionErrors
+  }
 }

@@ -3,6 +3,7 @@ import {
   AuthorSubscrptionForm,
   createAuthorSubscription,
   editAuthorSubscription} from '@actions/handlers/subscribe';
+import {PayloadAuthorSubscriptionErrors} from '@actions/types/subscribe';
 import {Button, ButtonType} from '@components/button/button';
 import {InputField, InputType} from '@components/input-field/inputField';
 import template from './editor.hbs';
@@ -102,15 +103,22 @@ export default class SubscriptionEditor {
     this.element.querySelector('form')?.addEventListener('submit',
         (e) => {
           e.preventDefault();
-          if (data) {
-            editAuthorSubscription(data.id,
-              (e.target as HTMLFormElement).elements as AuthorSubscrptionForm,
-            );
-          } else {
+          data ? editAuthorSubscription(
+              data.id,
+              (e.target as HTMLFormElement).elements as AuthorSubscrptionForm) :
             createAuthorSubscription(
-              (e.target as HTMLFormElement).elements as AuthorSubscrptionForm,
-            );
-          }
+              (e.target as HTMLFormElement).elements as AuthorSubscrptionForm);
         });
+  }
+
+  /**
+   *
+   * @param errors -
+   */
+  errorDisplay(errors: PayloadAuthorSubscriptionErrors) {
+    this.inputs[0].errorDetect(Boolean(errors.title));
+    this.inputs[1].errorDetect(Boolean(errors.price));
+    this.inputs[2].errorDetect(Boolean(errors.tier));
+    this.inputs[3].errorDetect(Boolean(errors.text));
   }
 }
