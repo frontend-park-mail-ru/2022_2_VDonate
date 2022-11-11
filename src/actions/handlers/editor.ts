@@ -19,7 +19,7 @@ export const openProfileEditor = () =>
     },
   });
 
-export const openSubscribtionEditor = (id: number) =>
+export const openSubscribtionEditor = (id?: number) =>
   store.dispatch({
     type: ActionType.EDITOR_OPEN,
     payload: {

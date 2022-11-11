@@ -110,7 +110,9 @@ export default class Api {
      */
   getSubscriptions(id: number): Promise<ResponseData> {
     return this.request(
-        `/subscriptions/${id}`, Method.GET, ContentType.json);
+        `/subscriptions`, Method.GET, ContentType.json, {
+          user_id: id,
+        });
   }
 
   /**
@@ -120,7 +122,7 @@ export default class Api {
    */
   getAuthorSubscriptions(id: number): Promise<ResponseData> {
     return this.request(
-        `/author/subscriptions`,
+        `/subscriptions/author`,
         Method.GET, ContentType.json, {
           author_id: id,
         },
@@ -176,6 +178,7 @@ export default class Api {
       authorSubscriptionID,
     });
   }
+  
   /**
    *
    * @param data -
@@ -224,4 +227,40 @@ export default class Api {
   unlikePost(id: number): Promise<ResponseData> {
     return this.request(`/posts/${id}/likes`, Method.DELETE, ContentType.json);
   }
-}
+  /**
+   * @param data -Обьект
+   * @return объект ответа с полями {ok,status,body}
+   */
+  editAuthorSubscription(data: {
+    id: number,
+    price?: number,
+    text?: string,
+    tier?: number,
+    title?: string,
+    file?: File,
+  }): Promise<ResponseData> {
+    return this.request(
+        `/subscriptions/author/${data.id}`,
+        Method.PUT,
+        ContentType.formData,
+        data);
+  }
+
+  /**
+   * @param data -Обьект
+   * @return объект ответа с полями {ok,status,body}
+   */
+  createAuthorSubscription(data: {
+    price: number,
+    text: string,
+    tier: number,
+    title: string,
+    file?: File,
+  }): Promise<ResponseData> {
+    return this.request(
+        `/subscriptions/author`,
+        Method.POST,
+        ContentType.formData,
+        data);
+  }
+

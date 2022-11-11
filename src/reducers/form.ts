@@ -8,6 +8,8 @@ const formErrorsReducer: Reducer<Action> =
       case ActionType.LOGIN_SUCCESS:
       case ActionType.SIGNUP_SUCCESS:
       case ActionType.CHANGEUSERDATA_SUCCESS:
+      case ActionType.CREATEAUTHORSUBSRIPTION:
+      case ActionType.EDITAUTHORSUBSRIPTION:
         return action.payload.formErrors;
       case ActionType.LOGIN_FAIL:
       case ActionType.SIGNUP_FAIL:

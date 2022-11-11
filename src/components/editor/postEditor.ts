@@ -78,4 +78,13 @@ export default class PostEditor {
         },
     );
   }
+  /**
+   *
+   * @param errors -
+   */
+  errorDisplay(errors: PayloadFormError) {
+    if (!errors) {
+      return;
+    }
+  }
 }

@@ -18,7 +18,7 @@ interface PayloadProfileEditor {
 
 interface PayloadSubscribtionEditor {
   type: EditorType.SUBSCRIBTION
-  id: number
+  id?: number
 }
 
 type PayloadOpenEditor =

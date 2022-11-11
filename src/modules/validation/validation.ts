@@ -33,6 +33,22 @@ const sizes = {
     min: 5,
     max: 30,
   },
+  title: {
+    min: 5,
+    max: 30,
+  },
+  text: {
+    min: 10,
+    max: 250,
+  },
+  tier: {
+    min: 1,
+    max: 10,
+  },
+  price: {
+    min: 3,
+    max: 9,
+  },
 };
 
 /**
@@ -145,3 +161,76 @@ export const repeatPasswordCheck = (
 
   return null;
 };
+
+/**
+ * @param tier строка для валидации
+ * @returns null или сообщение об ошибке
+ */
+export const tierCheck = (tier: string): null | string => {
+  if (tier.length < sizes.tier.min) {
+    return `Символов в уровне меньше ${sizes.tier.min}`;
+  }
+  if (tier.length > sizes.tier.max) {
+    return `Символов в уровне больше ${sizes.tier.max}`;
+  }
+  const tierReg = /^[0-9]+$/;
+  if (!tierReg.test(tier)) {
+    return 'Укажите уровень используя только цифры';
+  }
+  return null;
+};
+
+/**
+ * @param price строка для валидации
+ * @returns null или сообщение об ошибке
+ */
+export const priceCheck = (price: string): null | string => {
+  if (price.length < sizes.price.min) {
+    return `Символов в цене меньше ${sizes.price.min}`;
+  }
+  if (price.length > sizes.price.max) {
+    return `Символов в цене больше ${sizes.price.max}`;
+  }
+  const priceReg = /^[0-9]+$/;
+  if (!priceReg.test(price)) {
+    return 'Укажите  используя только цифры';
+  }
+  return null;
+};
+
+/**
+ * Проверка строки ввода заголовка
+ * @param title - строка для валидации псевдонима
+ * @return null или сообщение об ошибке
+ */
+export const titleCheck = (title: string): null | string => {
+  if (title.length < sizes.title.min) {
+    return `Символов в заголовке меньше ${sizes.title.min}`;
+  }
+  if (title.length > sizes.title.max) {
+    return `Символов в заголовке больше ${sizes.title.max}`;
+  }
+  const titleReg = /^[\d\wа-яёА-ЯЁ]+( [\d\wа-яёА-ЯЁ]+)*$/;
+  if (!titleReg.test(title)) {
+    return `Разрешены латиница, кириллица, числа, знак нижнего подчеркивания и 
+    пробел между словами`;
+  }
+  return null;
+};
+
+/**
+ * Проверка строки ввода текста мотивации
+ * @param text - строка для валидации текста
+ * @return null или сообщение об ошибке
+ */
+export const textCheck = (text: string): null | string => {
+  if (text.length < sizes.text.min) {
+    return `Символов в тексте мотивации меньше ${sizes.text.min}`;
+  }
+  if (text.length > sizes.text.max) {
+    return `Символов в тексте мотивации больше ${sizes.text.max}`;
+  }
+  return null;
+};
+
+
