@@ -51,7 +51,7 @@ export class LeftNavbar implements IObserver {
   private subsList: HTMLElement;
   private profile: HTMLElement;
   private user: PayloadUser | undefined;
-  private subs: Subscription[] | undefined;
+  private subs: Subscription[] = [];
   private navbarUnits: NavbarUnit[] = [];
   /**
    * Конструктор
@@ -128,7 +128,7 @@ export class LeftNavbar implements IObserver {
    */
   renderSubs() {
     this.subsList.innerHTML = '';
-    this.subs?.forEach((subItem) => {
+    this.subs.forEach((subItem) => {
       const sub = document.createElement('a');
       if (subItem.authorID) {
         sub.setAttribute('href', `/profile?id=${subItem.authorID}`);
@@ -209,7 +209,7 @@ export class LeftNavbar implements IObserver {
     }
     const newSubscriptions =
       store.getState().userSubscribers as Subscription[];
-    if (newSubscriptions !== this.subs) {
+    if (JSON.stringify(newSubscriptions) !== JSON.stringify(this.subs)) {
       this.subs = newSubscriptions;
       this.renderSubs();
     }

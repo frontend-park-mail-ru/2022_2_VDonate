@@ -15,7 +15,7 @@ export interface RouteType {
 
 export const routes: RouteType[] = [
   {
-    path: /^\/(profile(\?id=\d+)?)?$/,
+    path: /^\/profile\?id=\d+$/,
     type: Pages.PROFILE,
   },
   {
@@ -27,7 +27,7 @@ export const routes: RouteType[] = [
     type: Pages.SIGNUP,
   },
   {
-    path: /^\/feed$/,
+    path: /^\/(feed)?$/,
     type: Pages.FEED,
   },
 ];

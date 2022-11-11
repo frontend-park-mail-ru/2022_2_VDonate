@@ -1,5 +1,6 @@
 import {closeEditor} from '@actions/handlers/editor';
 import {createPost, PostForm, updatePost} from '@actions/handlers/posts';
+import {PayloadFormError} from '@actions/types/formError';
 import {Button, ButtonType} from '@components/button/button';
 import {InputField, InputType} from '@components/input-field/inputField';
 import template from './editor.hbs';

@@ -135,13 +135,13 @@ export default class Api {
      * @return объект ответа с полями {ok,status,body}
      */
   putUserData(data: {
-      id: number,
-      username?: string,
-      email?: string,
-      password?: string,
-      about?: string,
-      isAuthor?: boolean,
-      file?: File,
+    id: number,
+    username?: string,
+    email?: string,
+    password?: string,
+    about?: string,
+    isAuthor?: boolean,
+    file?: File,
   }): Promise<ResponseData> {
     return this.request(
         `/users/${data.id}`,
@@ -178,7 +178,7 @@ export default class Api {
       authorSubscriptionID,
     });
   }
-  
+
   /**
    *
    * @param data -
@@ -263,4 +263,4 @@ export default class Api {
         ContentType.formData,
         data);
   }
-
+}

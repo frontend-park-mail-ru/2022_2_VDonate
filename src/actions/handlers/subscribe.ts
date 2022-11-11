@@ -35,11 +35,11 @@ export const subscribe = (
           });
         }
       })
-      .catch(() => {
+      .catch((err) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: 'error fetch',
+            message: err as string,
           },
         });
       });
@@ -68,11 +68,11 @@ export const unsubscribe = (
           });
         }
       })
-      .catch(() => {
+      .catch((err) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: 'error fetch',
+            message: err as string,
           },
         });
       });
@@ -102,11 +102,11 @@ export const getSubscritions = (id: number) => {
           });
         }
       })
-      .catch(() => {
+      .catch((err) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: 'error fetch',
+            message: err as string,
           },
         });
       });
@@ -197,11 +197,11 @@ export const editAuthorSubscription = (
           });
         }
       })
-      .catch(() => {
+      .catch((err) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: 'error fetch',
+            message: err as string,
           },
         });
       });
@@ -270,11 +270,11 @@ export const createAuthorSubscription = (form: AuthorSubscrptionForm) => {
           });
         }
       })
-      .catch(() => {
+      .catch((err) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: 'error fetch',
+            message: err as string,
           },
         });
       });
