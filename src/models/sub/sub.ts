@@ -75,10 +75,10 @@ export class Sub {
     const showMore = document.createElement('a');
     showMore.classList.add('sub__more');
     showMore.textContent = 'показать еще';
-    showMore.onclick = ()=> {
+    showMore.addEventListener('click', () => {
       motivation?.classList.remove('sub__motivation_part');
       showMore.hidden = true;
-    };
+    });
     this.element.firstChild?.appendChild(showMore);
   }
 }

@@ -45,34 +45,33 @@ export class Popup implements IObserver {
     const btnContainer = document.createElement('div');
     btnContainer.classList.add('sub-popup__btn-container');
     const cansel = new Button(ButtonType.outline, 'Отмена', 'button');
-    cansel.element.onclick = () => {
+    cansel.element.addEventListener('click', () => {
       this.element.remove();
-    };
-    // const changeBtn = new Button(ButtonType.primary, 'Задонатить', 'submit');
+    });
     switch (subType) {
       case SubType.SUBSCRIBE:
         this.changeBtn =
           new Button(ButtonType.primary, 'Задонатить', 'button');
         text.innerText = 'Вы действительно собиратесь задонатить?';
-        this.changeBtn.element.onclick = () => {
+        this.changeBtn.element.addEventListener('click', () => {
           subscribe(authorID, authorSubscriptionID);
-        };
+        });
         break;
       case SubType.UNSUBSCRIBE:
         this.changeBtn =
           new Button(ButtonType.primary, 'Отписаться', 'button');
         text.innerText = 'Вы действительно собиратесь отписаться?';
-        this.changeBtn.element.onclick = () => {
+        this.changeBtn.element.addEventListener('click', () => {
           unsubscribe(authorID, authorSubscriptionID);
-        };
+        });
         break;
       default:
         this.changeBtn =
           new Button(ButtonType.primary, 'Вернуться', 'button');
         text.innerText = 'Ошибка';
-        this.changeBtn.element.onclick = () => {
+        this.changeBtn.element.addEventListener('click', () => {
           this.element.remove();
-        };
+        });
     }
     btnContainer.appendChild(cansel.element);
     btnContainer.appendChild(this.changeBtn.element);

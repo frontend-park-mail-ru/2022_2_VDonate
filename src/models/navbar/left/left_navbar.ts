@@ -81,36 +81,32 @@ export class LeftNavbar implements IObserver {
     profileContainer.appendChild(popup.element);
     const icnbtn = new IconButton(menuIcon, 'button');
     icnbtn.element.classList.add('left-navbar__down_btn');
-    icnbtn.element.onclick = () => {
+    icnbtn.element.addEventListener('click', () => {
       if (popup.element.style.display == 'none') {
         popup.element.style.display = 'flex';
       } else {
         popup.element.style.display = 'none';
       }
-    };
+    });
     popup.element.style.display = 'none';
     popup.element.classList.add('left-navbar__down_popup');
     const profileLink = new Button(ButtonType.outline, 'Профиль', 'button');
     profileLink.element.classList.add('left-navbar__down_popup_btn');
-    profileLink.element.onclick = () => {
+    profileLink.element.addEventListener('click', () => {
       const user = store.getState().user as PayloadUser;
       routing(`/profile?id=${user.id}`);
-    };
+    });
     const change = new Button(ButtonType.outline, 'Изменить данные', 'button');
     change.element.classList.add('left-navbar__down_popup_btn');
     change.element.addEventListener('click',
         () => {
           openProfileEditor();
         });
-    // change.element.onclick = () => {
-    //   const popupEdit = new Popup();
-    //   document.body.appendChild(popupEdit.element);
-    // };
     const logoutBtn = new Button(ButtonType.outline, 'Выйти', 'button');
     logoutBtn.element.classList.add('left-navbar__down_popup_btn');
-    logoutBtn.element.onclick = () => {
+    logoutBtn.element.addEventListener('click', () => {
       logout();
-    };
+    });
     popup.element.appendChild(profileLink.element);
     popup.element.appendChild(change.element);
     popup.element.appendChild(logoutBtn.element);
