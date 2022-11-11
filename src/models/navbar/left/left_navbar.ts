@@ -82,6 +82,10 @@ export class LeftNavbar implements IObserver {
     profileContainer.innerHTML += '<hr>';
     this.profile = document.createElement('div');
     this.profile.classList.add('left-navbar__down_profile');
+    this.profile.addEventListener('click', () => {
+      const user = store.getState().user as PayloadUser;
+      routing(`/profile?id=${user.id}`);
+    });
     const popup = new Glass(GlassType.lines);
     popup.element.style.display = 'none';
     profileContainer.appendChild(popup.element);
