@@ -269,8 +269,7 @@ export default class Api {
    */
   getFeed(): Promise<ResponseData> {
     return this.request(
-        // FIXME Ждем исправления get post
-        '/posts?user_id=1&filter=subscriptions',
+        '/posts?filter=subscriptions',
         Method.GET,
         ContentType.json);
   }
