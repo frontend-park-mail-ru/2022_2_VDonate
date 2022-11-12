@@ -101,6 +101,9 @@ export class SubContainer {
     });
     subItem.element.classList.add('sub-container__card');
     subItem.element.id = `sub-card_${sub.subscriptionId}`;
+    if (this.container.innerHTML == 'Пока что тут пусто') {
+      this.container.innerHTML = '';
+    }
     const subEl = document.getElementById(`sub-card_${sub.subscriptionId}`);
     if (subEl) {
       subEl.parentNode?.replaceChild(subItem.element, subEl);

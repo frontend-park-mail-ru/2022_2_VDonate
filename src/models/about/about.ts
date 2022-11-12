@@ -32,10 +32,10 @@ export class About {
    * @param about текст об авторе
    */
   setText(about: string | undefined) {
-    if (!about || about.length == 0) {
+    if (!about || about == 'undefined' || about.length == 0) {
       this.about.innerHTML = 'Пользователь пока что не расказал о себе';
     } else {
-      this.about.innerHTML = about;
+      this.about.innerText = about;
     }
   }
 }
