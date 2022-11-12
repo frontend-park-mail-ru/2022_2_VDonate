@@ -46,7 +46,7 @@ export default class LoginPage implements IView {
     base.appendChild(formArea);
 
     const content = document.createElement('span');
-    content.innerHTML = '<i>Тут Нужен Kонтент!</i>';
+    // content.innerHTML = '<i>Тут Нужен Kонтент!</i>';
     contentArea.appendChild(content);
 
     let form: LogInModel | SignUpModel;
