@@ -57,6 +57,7 @@ export class SubContainer {
     const user = store.getState().user as PayloadUser;
     const subscriptions =
         store.getState().userSubscribers as Subscription[];
+    subs.sort((a, b) => a.tier - b.tier);
     subs.forEach((sub) => {
       let subType = SubType.SUBSCRIBE;
       if (user.id == sub.authorID) {

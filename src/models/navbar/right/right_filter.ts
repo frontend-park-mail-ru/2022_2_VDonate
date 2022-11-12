@@ -2,13 +2,11 @@ import './right_navbar.styl';
 import {Glass, GlassType} from '@components/glass/glass';
 import {NavbarUnit, OrientType} from '@components/navbar_unit/navbar_unit';
 import icon from '@icon/menu.svg';
-import store from '@app/store';
-import {IObserver} from '@flux/types/observer';
 
 /**
  * Модель правого навбара
  */
-export class RightFilter implements IObserver {
+export class RightFilter {
   /**
    * Актуальный контейнер правого навбара
    */
@@ -31,12 +29,5 @@ export class RightFilter implements IObserver {
     this.glass.appendChild(item.element);
     item = new NavbarUnit(icon, 'Понравилось', '/', OrientType.right);
     this.glass.appendChild(item.element);
-    store.registerObserver(this);
-  }
-  /**
-   * Callback метод обновления хранилища
-   */
-  notify(): void {
-    console.log('5');
   }
 }
