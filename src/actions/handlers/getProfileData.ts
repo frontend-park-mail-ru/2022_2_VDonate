@@ -8,6 +8,7 @@ import {
   PayloadProfileUser} from '@actions/types/getProfileData';
 import {PayloadPost} from '@actions/types/posts';
 import {PostResponse} from './posts';
+import {Pages} from '@configs/router';
 
 
 const getAuthorData = async (id: number, user: PayloadProfileUser) => {
@@ -74,6 +75,14 @@ export default (id: number): void => {
                 getAuthorData(id, user) :
                 getDonaterData(id, user);
         } else {
+          if (res.status === 404) {
+            store.dispatch({
+              type: ActionType.ROUTING,
+              payload: {
+                type: Pages.NOT_FOUND,
+              },
+            });
+          }
           store.dispatch({
             type: ActionType.NOTICE,
             payload: {
