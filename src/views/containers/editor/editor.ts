@@ -60,24 +60,24 @@ export class EditorContainer {
       }
       case EditorType.SUBSCRIBTION: {
         const SubID = editorData.id;
-        if (SubID) {
-          const subs = (
-            store.getState().profile as PayloadGetProfileData
-          ).authorSubscriptions;
-          if (subs && typeof subs != 'string') {
-            const targetSub = subs.find((sub) => SubID === sub.id);
-            if (targetSub) {
-              this.currentEditor = new SubscriptionEditor({
-                id: SubID,
-                title: targetSub.title,
-                price: targetSub.price,
-                tier: targetSub.tier,
-                text: targetSub.text,
-              });
-            }
-          }
-        } else {
+        if (!SubID) {
           this.currentEditor = new SubscriptionEditor();
+          break;
+        }
+        const subs = (
+          store.getState().profile as PayloadGetProfileData
+        ).authorSubscriptions;
+        if (subs && typeof subs != 'string') {
+          const targetSub = subs.find((sub) => SubID === sub.id);
+          if (targetSub) {
+            this.currentEditor = new SubscriptionEditor({
+              id: SubID,
+              title: targetSub.title,
+              price: targetSub.price,
+              tier: targetSub.tier,
+              text: targetSub.text,
+            });
+          }
         }
         break;
       }
