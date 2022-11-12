@@ -13,10 +13,10 @@ import {auth} from '@actions/handlers/user';
 import {PayloadEditor} from '@actions/types/editor';
 import {EditorContainer} from './containers/editor/editor';
 import {FormErrorType, PayloadFormError} from '@actions/types/formError';
-import notice from '@actions/handlers/notice';
 import {NoticeContainer} from './containers/notice/notice';
 import {getSubscritions} from '@actions/handlers/subscribe';
 import {PayloadUser} from '@actions/types/user';
+import FeedPage from './pages/feed-page/feedPage';
 /** Тип структорного представления страницы из компонентов */
 interface RootModel {
   root: HTMLElement
@@ -78,11 +78,16 @@ export default class Root implements IView, IObserver {
     // TODO вызов оповещений ошибок
     if (JSON.stringify(noticeStateNew) !== JSON.stringify(this.noticeState)) {
       this.noticeState = noticeStateNew;
-      if (this.noticeState.message) {
+      if (typeof this.noticeState.message === 'string' &&
+        /^[а-яёА-ЯЁ]/.test(this.noticeState.message)) {
         this.page.children.notice.addNotice(this.noticeState.message);
       }
+      if (Array.isArray(this.noticeState.message)) {
+        this.noticeState.message.forEach(
+            (message) => this.page.children.notice.addNotice(message),
+        );
+      }
     }
-    // console.warn(this.noticeState.message);
 
     const formErrorsNew = state.formErrors as PayloadFormError;
     if (JSON.stringify(formErrorsNew) !== JSON.stringify(this.formErrors)) {
@@ -96,13 +101,6 @@ export default class Root implements IView, IObserver {
         default:
           break;
       }
-      Object.values(this.formErrors ?? {}).forEach(
-          (error) => {
-            if (typeof error === 'string') {
-              notice(error);
-            }
-          },
-      );
     }
 
     const editorNew = state.editor as PayloadEditor;
@@ -149,6 +147,9 @@ export default class Root implements IView, IObserver {
         this.page.children.main = new ProfilePage();
         return this.page.children.main.render();
       case Pages.FEED:
+        this.page.children.leftNavBar.showNavbar();
+        this.page.children.main = new FeedPage();
+        return this.page.children.main.render();
       case Pages.SEARCH:
       case Pages.NOT_FOUND:
         this.page.children.leftNavBar.showNavbar();

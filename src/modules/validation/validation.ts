@@ -59,41 +59,44 @@ const sizes = {
 export const emailCheck = (email: string): string | null => {
   const emailSplit = email.split('@');
   if (emailSplit.length != 2) {
-    return 'Пример: name@email.ru';
+    return 'Неверная почта. Пример: name@email.ru';
   }
 
   const local = emailSplit[0];
   if (local.length < sizes.localEmail.min) {
-    return `Символов до @ меньше ${sizes.localEmail.min}`;
+    return `Неверная почта. Символов до @ меньше ${sizes.localEmail.min}`;
   }
   if (local.length > sizes.localEmail.max) {
-    return `Символов до @ больше ${sizes.localEmail.max}`;
+    return `Неверная почта. Символов до @ больше ${sizes.localEmail.max}`;
   }
 
   const domain = emailSplit[1];
   const domainLables = domain.split('.');
   if (domainLables.length < 2) {
-    return 'После @ должно быть минимум 2 подуровня';
+    return 'Неверная почта. После @ должно быть минимум 2 подуровня';
   }
   if (domainLables.reduce((prev, current) => prev ||
     current.length < sizes.domainLable.min, false)) {
-    return `Символов после @ в одном подуровне меньше ${sizes.domainLable.min}`;
+    return `Неверная почта. 
+    Символов после @ в одном подуровне меньше ${sizes.domainLable.min}`;
   }
   if (domainLables.reduce((prev, current) => prev ||
     current.length > sizes.domainLable.max, false)) {
-    return `Символов после @ в одном подуровне больше ${sizes.domainLable.max}`;
+    return `Неверная почта. 
+    Символов после @ в одном подуровне больше ${sizes.domainLable.max}`;
   }
 
   const localReg =
     /^[\w\d!#$%&'*+\-/=?^`{|}~]+(\.[\w\d!#$%&'*+\-/=?^`{|}~]+)*$/;
   if (!localReg.test(local)) {
-    return `До @ разрешены латиница, числа, символы !#$%&'*+-/=?^_\`{|}~ и 
-    точка-разделитель`;
+    return `Неверная почта. До @ разрешены латиница, числа, символы 
+    !#$%&'*+-/=?^_\`{|}~ и точка-разделитель`;
   }
 
   const domainReg = /[0-9a-zA-Z]+([.-]?[0-9a-zA-Z]+)*(\.[0-9a-zA-Z]+)$/;
   if (!domainReg.test(domain)) {
-    return 'После @ разрешены латиница, числа и точка-разделитель';
+    return `Неверная почта. После @ разрешены латиница, 
+    числа и точка-разделитель`;
   }
 
   return null;
@@ -115,8 +118,8 @@ export const usernameCheck = (username: string): null | string => {
 
   const usernameReg = /^[\d\wа-яёА-ЯЁ]+( [\d\wа-яёА-ЯЁ]+)*$/;
   if (!usernameReg.test(username)) {
-    return `Разрешены латиница, кириллица, числа, знак нижнего подчеркивания и 
-    пробел между словами`;
+    return `В псевдониме разрешены латиница, кириллица, числа, знак нижнего 
+    подчеркивания и пробел между словами`;
   }
 
 
@@ -137,7 +140,8 @@ export const passwordCheck = (password: string): null | string => {
   }
   const passwordReg = /^[\w!@#$%^&* ]+$/;
   if (!passwordReg.test(password)) {
-    return 'Только латинца, числа, символы !@#$%^&*_ и пробелы';
+    return `В пароле разрешены только латинца, числа, символы !@#$%^&*_ и 
+    пробелы`;
   }
 
   return null;
@@ -153,10 +157,10 @@ export const repeatPasswordCheck = (
     origin: string,
     repeat: string): null | string => {
   if (repeat.length === 0) {
-    return 'Поле не может быть пустым';
+    return 'Поле повторного пароля не может быть пустым';
   }
   if (origin !== repeat) {
-    return 'Должно совпадать полем пароля';
+    return 'Поле повторного пароля должно совпадать полем пароля';
   }
 
   return null;
@@ -212,8 +216,8 @@ export const titleCheck = (title: string): null | string => {
   }
   const titleReg = /^[\d\wа-яёА-ЯЁ]+( [\d\wа-яёА-ЯЁ]+)*$/;
   if (!titleReg.test(title)) {
-    return `Разрешены латиница, кириллица, числа, знак нижнего подчеркивания и 
-    пробел между словами`;
+    return `В заголовке разрешены латиница, кириллица, числа, знак нижнего 
+    подчеркивания и пробел между словами`;
   }
   return null;
 };

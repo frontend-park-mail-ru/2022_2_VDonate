@@ -3,7 +3,7 @@ import {ActionType} from './action';
 import {FormErrorType} from './formError';
 
 export interface PayloadSubscribe {
-  success: boolean
+  authorSubscriptionID?: number
   error: string | undefined
 }
 
@@ -27,6 +27,10 @@ export interface PayloadGetSubscriptions {
 export interface PayloadAuthorSubscription {
   imgPath: string
   subscriptionId: number
+  price: number
+  text: string
+  tier: number
+  title: string
 }
 
 
@@ -58,7 +62,6 @@ export interface ActionEditAuthorSubscription extends IAction {
   type: ActionType.EDITAUTHORSUBSRIPTION
   payload: {
     subscription?: PayloadAuthorSubscription
-    message: string | null
     formErrors: PayloadAuthorSubscriptionErrors
   }
 }
@@ -66,8 +69,7 @@ export interface ActionEditAuthorSubscription extends IAction {
 export interface ActionCreateAuthorSubscription extends IAction {
   type: ActionType.CREATEAUTHORSUBSRIPTION
   payload: {
-    subscrption: PayloadAuthorSubscription
-    message: string | null
+    subscrption?: PayloadAuthorSubscription
     formErrors: PayloadAuthorSubscriptionErrors
   }
 }

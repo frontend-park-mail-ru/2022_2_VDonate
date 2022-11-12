@@ -10,7 +10,21 @@ const editorReducer: Reducer<Action> =
         return action.payload;
       case ActionType.CHANGEUSERDATA_SUCCESS:
       case ActionType.UPDATE_POST:
+      case ActionType.CREATE_POST:
         return {};
+      case ActionType.CREATEAUTHORSUBSRIPTION:
+      case ActionType.EDITAUTHORSUBSRIPTION: {
+        let errorFounded = false;
+        Object.entries(action.payload.formErrors).forEach(
+            ([, value]) => {
+              if (typeof value === 'string') {
+                errorFounded = true;
+              }
+            },
+        );
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        return errorFounded ? state : {};
+      }
       default:
         return state;
     }

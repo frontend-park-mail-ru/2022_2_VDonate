@@ -82,6 +82,10 @@ export class LeftNavbar implements IObserver {
     profileContainer.innerHTML += '<hr>';
     this.profile = document.createElement('div');
     this.profile.classList.add('left-navbar__down_profile');
+    this.profile.addEventListener('click', () => {
+      const user = store.getState().user as PayloadUser;
+      routing(`/profile?id=${user.id}`);
+    });
     const popup = new Glass(GlassType.lines);
     popup.element.style.display = 'none';
     profileContainer.appendChild(popup.element);
@@ -135,7 +139,7 @@ export class LeftNavbar implements IObserver {
         sub.setAttribute('data-link', '');
       }
       sub.classList.add('left-navbar__sub');
-      const avatar = new Image(ImageType.author, subItem.img);
+      const avatar = new Image(ImageType.sub, subItem.img);
       avatar.element.classList.add('left-navbar__sub_avatar');
       const usrname = document.createElement('span');
       usrname.innerText = subItem.title;

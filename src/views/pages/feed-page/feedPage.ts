@@ -1,68 +1,55 @@
-import {PayloadPost} from '@actions/types/posts';
 import store from '@app/store';
-import {IObserver} from '@flux/types/observer';
 import {IView} from '@flux/types/view';
-import {Post} from '@components/post/post';
 import './feedPage.styl';
+import {PostsContaner} from '@views/containers/posts/posts';
+import {PayloadUser} from '@actions/types/user';
+import {getFeed} from '@actions/handlers/posts';
 /** Тип структорного представления страницы из компонентов */
 interface FeedModel {
-  base: HTMLDivElement
-  children: {
-    content: {
-      el: HTMLDivElement
-      posts: Post[]
-    }
+  el: HTMLDivElement
+  content: {
+    el: HTMLDivElement
+    posts: PostsContaner
   }
 }
 /** Класс */
-export default class FeedPage implements IObserver, IView {
+export default class FeedPage implements IView {
   private page: FeedModel;
-  private posts: PayloadPost[];
 
   /** Конструктор */
   constructor() {
-    const base = document.createElement('div');
-    base.classList.add('feed-page');
+    const el = document.createElement('div');
+    el.classList.add('feed-page');
 
     const content = document.createElement('div');
     content.classList.add('feed-page__content-area');
-    base.appendChild(content);
+    el.appendChild(content);
 
     const state = store.getState();
-    this.posts = state.posts as PayloadPost[];
+    const user = state.user as PayloadUser;
+
+    const posts = new PostsContaner(user.isAuthor);
+    content.appendChild(posts.element);
 
     this.page = {
-      base,
-      children: {
-        content: {
-          el: content,
-          posts: [],
-        },
+      el,
+      content: {
+        el: content,
+        posts,
       },
     };
-    store.registerObserver(this);
-  }
-  /** */
-  notify(): void {
-    const state = store.getState();
-    const postsNew = state.posts as PayloadPost[];
 
-    if (JSON.stringify(postsNew) !== JSON.stringify(this.posts)) {
-      this.posts = postsNew;
-      this.page.children.content.el.replaceChildren();
-      this.page.children.content.posts = [];
-    }
+    getFeed();
   }
   /** */
   reset(): void {
-    store.removeObserver(this);
-    this.page.base.remove();
+    this.page.el.remove();
   }
   /**
    *
    * @returns dfd
    */
   render(): HTMLElement {
-    return this.page.base;
+    return this.page.el;
   }
 }

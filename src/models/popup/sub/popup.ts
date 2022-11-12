@@ -82,7 +82,7 @@ export class Popup implements IObserver {
   /** Callback метод обновления хранилища */
   notify(): void {
     const state = store.getState().subscribe as PayloadSubscribe;
-    if (!state.error && state.success) {
+    if (!state.error) {
       this.element.remove();
     }
   }

@@ -2,6 +2,9 @@ import {
   PayloadAuthorSubscription,
   PayloadProfileSubscription,
   PayloadProfileUser} from '@actions/types/getProfileData';
+import {
+  PayloadAuthorSubscription as authorSubscription,
+} from '@actions/types/subscribe';
 import {PayloadUser} from '@actions/types/user';
 import store from '@app/store';
 import {Glass, GlassType} from '@components/glass/glass';
@@ -105,5 +108,20 @@ export class ProfileModel {
   renderNavbar(user: PayloadProfileUser) {
     user.isAuthor ? this.rightNavbar.authorRender(user) :
       this.rightNavbar.donaterRender(user);
+  }
+
+  /**
+   * @param sub - данные измененной/созданной сабки
+   */
+  renderAuthorSubscription(sub: authorSubscription) {
+    this.subContainer.renderSub(sub);
+  }
+
+  /**
+   * @param subId - id подписки
+   * @param authorID id автора
+   */
+  renderSubscribe(subId: number, authorID: number) {
+    this.subContainer.renderSubscribeBtn(subId, authorID);
   }
 }

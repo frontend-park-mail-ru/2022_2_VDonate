@@ -12,7 +12,6 @@ import {openPostEditor} from '@actions/handlers/editor';
 /** */
 export class PostsContaner implements IObserver {
   readonly element: HTMLElement;
-  // private postsArea: Element;
   private posts: PayloadPost[] = [];
   /**
    *
@@ -23,18 +22,14 @@ export class PostsContaner implements IObserver {
     this.element.className = 'posts-container';
     this.element.innerHTML = template({});
     if (withCreate) {
-      // TODO  добавить кнопку создани я постов
       const createPostBtn = new IconButton(plusIcon, 'button');
       createPostBtn.element.addEventListener('click',
           () => {
-            // TODO экшен создания поста
             openPostEditor();
           });
       this.element.querySelector('.posts-container__title-area')
           ?.appendChild(createPostBtn.element);
     }
-    // this.postsArea =
-    //   this.element.getElementsByClassName('posts-container__posts-area')[0];
     store.registerObserver(this);
   }
   /** */
