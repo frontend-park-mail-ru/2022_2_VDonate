@@ -10,6 +10,24 @@ const noticeReducer: Reducer<Action> =
           timestamp: performance.now(),
           ...action.payload,
         };
+      case ActionType.LOGIN_FAIL:
+      case ActionType.SIGNUP_FAIL:
+      case ActionType.CHANGEUSERDATA_FAIL:
+      // TODO добавить обработку формы подписок
+      {
+        const msgArr = Array<string>();
+        Object.entries(action.payload).forEach(
+            ([, value]) => {
+              if (typeof value === 'string') {
+                msgArr.push(value);
+              }
+            },
+        );
+        return {
+          timestamp: performance.now(),
+          message: msgArr,
+        };
+      }
       default:
         return state;
     }
