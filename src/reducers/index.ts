@@ -9,6 +9,7 @@ import profileReducer from './profile';
 import SubscribeReducer from './subscribe';
 import userReducer from './user';
 import UserSubscribersReducer from './userSubscribers';
+import authorSubscriptionsReducer from './authorSubscriptions';
 
 export default combineReducers<Action>({
   location: locationReducer,
@@ -20,4 +21,5 @@ export default combineReducers<Action>({
   subscribe: SubscribeReducer,
   userSubscribers: UserSubscribersReducer,
   editor: editorReducer,
+  authorSubscriptionChange: authorSubscriptionsReducer,
 });

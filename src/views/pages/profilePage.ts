@@ -5,71 +5,88 @@ import {ProfileModel} from '@models/profileModel/profileModel';
 import {PayloadUser} from '@actions/types/user';
 import getProfile from '@actions/handlers/getProfileData';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
+import {PayloadAuthorSubscription,
+  PayloadSubscribe} from '@actions/types/subscribe';
 
 /** Реализация интерфейса *IView* для страницы профиля */
 export default class ProfilePage implements IView, IObserver {
   /** Структорное представление страницы из компонентов */
-  private components: ProfileModel;
+  private element: ProfileModel;
   private profile: PayloadGetProfileData | undefined;
+  private authorSubscription: PayloadAuthorSubscription | undefined;
+  private authorSubscriptionID: number | undefined;
+  private locId: string | null;
   /** Конструктор */
   constructor() {
     const user = store.getState().user as PayloadUser;
-    const locId = new URL(location.href).searchParams.get('id');
-    this.components = new ProfileModel(
-        user.id.toString() == locId,
+    this.locId = new URL(location.href).searchParams.get('id');
+    this.element = new ProfileModel(
+        user.id.toString() == this.locId,
     );
     store.registerObserver(this);
     getProfile(Number(new URL(location.href).searchParams.get('id')));
   }
   /** Оповещение об изменением хранилища */
   notify(): void {
-    this.rerender();
+    const profileNew = store.getState().profile as PayloadGetProfileData;
+    if (JSON.stringify(profileNew) != JSON.stringify(this.profile)) {
+      if (profileNew.user.isAuthor !== this.profile?.user.isAuthor) {
+        this.element.setType(profileNew.user.isAuthor);
+      }
+      if (
+        profileNew.authorSubscriptions !== this.profile?.authorSubscriptions) {
+        if (typeof profileNew.authorSubscriptions == 'string') {
+          console.warn(profileNew.authorSubscriptions);
+        } else {
+          this.element.renderSubContainer(profileNew.authorSubscriptions);
+        }
+      }
+      if (profileNew.user.about !== this.profile?.user.about) {
+        this.element.renderAbout(profileNew.user.about);
+      }
+      if (profileNew.subscriptions !== this.profile?.subscriptions) {
+        if (typeof profileNew.subscriptions == 'string') {
+          console.warn(profileNew.subscriptions);
+        } else {
+          this.element.renderSubscriptions(profileNew.subscriptions ?? []);
+        }
+      }
+      if (profileNew.user !== this.profile?.user) {
+        this.element.renderNavbar(profileNew.user);
+      }
+      this.profile = profileNew;
+    }
+
+    const newAuthorSubscription =
+      store.getState().authorSubscriptionChange as {
+        subscription?: PayloadAuthorSubscription
+      } | undefined;
+    if (newAuthorSubscription?.subscription &&
+        newAuthorSubscription.subscription != this.authorSubscription) {
+      this.authorSubscription = newAuthorSubscription.subscription;
+      this.element.renderAuthorSubscription(newAuthorSubscription.subscription);
+    }
+
+    const newSubscribe =
+      store.getState().subscribe as PayloadSubscribe | undefined;
+    if (newSubscribe?.authorSubscriptionID) {
+      this.authorSubscriptionID = newSubscribe.authorSubscriptionID;
+      this.element.renderSubscribe(this.authorSubscriptionID,
+          Number(this.locId));
+    }
   }
   /** Сброс страницы, отключение от хранилища */
   reset(): void {
     store.removeObserver(this);
-    this.components.element.remove();
+    this.element.element.remove();
   }
   /**
    * Создание страницы профиля
    * @returns Страница-элемент
    */
   render(): HTMLElement {
-    this.components.renderAbout(undefined);
-    this.components.renderSubContainer(undefined);
-    return this.components.element;
-  }
-  /** Перерисовка страницы по текущему состоянию хранилища */
-  rerender(): void {
-    const profileNew = store.getState().profile as PayloadGetProfileData;
-    if (JSON.stringify(profileNew) == JSON.stringify(this.profile)) {
-      return;
-    }
-    if (profileNew.user.isAuthor !== this.profile?.user.isAuthor) {
-      this.components.setType(profileNew.user.isAuthor);
-    }
-    if (profileNew.authorSubscriptions !== this.profile?.authorSubscriptions) {
-      if (typeof profileNew.authorSubscriptions == 'string') {
-        // TODO попап ошибки
-        console.warn(profileNew.authorSubscriptions);
-      } else {
-        this.components.renderSubContainer(profileNew.authorSubscriptions);
-      }
-    }
-    if (profileNew.user.about !== this.profile?.user.about) {
-      this.components.renderAbout(profileNew.user.about);
-    }
-    if (profileNew.subscriptions !== this.profile?.subscriptions) {
-      if (typeof profileNew.subscriptions == 'string') {
-        // TODO попап ошибки
-        console.warn(profileNew.subscriptions);
-      } else {
-        this.components.renderSubscriptions(profileNew.subscriptions ?? []);
-      }
-    }
-    if (profileNew.user !== this.profile?.user) {
-      this.components.renderNavbar(profileNew.user);
-    }
-    this.profile = profileNew;
+    this.element.renderAbout(undefined);
+    this.element.renderSubContainer(undefined);
+    return this.element.element;
   }
 }

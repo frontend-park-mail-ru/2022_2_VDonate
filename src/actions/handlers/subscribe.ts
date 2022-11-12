@@ -22,7 +22,7 @@ export const subscribe = (
           store.dispatch({
             type: ActionType.SUBSCRIBE,
             payload: {
-              success: true,
+              authorSubscriptionID,
               error: undefined,
             },
           });
@@ -30,8 +30,7 @@ export const subscribe = (
           store.dispatch({
             type: ActionType.SUBSCRIBE,
             payload: {
-              success: false,
-              error: res.body.message as string,
+              error: 'Ошибка при попытке подписаться',
             },
           });
         }
@@ -55,7 +54,7 @@ export const unsubscribe = (
           store.dispatch({
             type: ActionType.UNSUBSCRIBE,
             payload: {
-              success: true,
+              authorSubscriptionID,
               error: undefined,
             },
           });
@@ -63,8 +62,7 @@ export const unsubscribe = (
           store.dispatch({
             type: ActionType.UNSUBSCRIBE,
             payload: {
-              success: false,
-              error: res.body.message as string,
+              error: 'Ошибка при попытке отписаться',
             },
           });
         }
@@ -168,7 +166,16 @@ export const editAuthorSubscription = (
           store.dispatch({
             type: ActionType.EDITAUTHORSUBSRIPTION,
             payload: {
-              subscription: res.body as PayloadAuthorSubscription,
+              subscription: {
+                imgPath:
+                  res.body.imgPath as PayloadAuthorSubscription['imgPath'],
+                subscriptionId:
+      res.body.subscriptionID as PayloadAuthorSubscription['subscriptionId'],
+                price: Number(form.price.value),
+                text: form.text.value,
+                tier: Number(form.tier.value),
+                title: form.title.value,
+              },
               formErrors: {
                 type: FormErrorType.AUTHOR_SUBSCRIPTION,
                 price: null,
@@ -229,7 +236,16 @@ export const createAuthorSubscription = (form: AuthorSubscrptionForm) => {
           store.dispatch({
             type: ActionType.EDITAUTHORSUBSRIPTION,
             payload: {
-              subscription: res.body as PayloadAuthorSubscription,
+              subscription: {
+                imgPath:
+                  res.body.imgPath as PayloadAuthorSubscription['imgPath'],
+                subscriptionId:
+      res.body.subscriptionID as PayloadAuthorSubscription['subscriptionId'],
+                price: Number(form.price.value),
+                text: form.text.value,
+                tier: Number(form.tier.value),
+                title: form.title.value,
+              },
               formErrors: {
                 type: FormErrorType.AUTHOR_SUBSCRIPTION,
                 price: null,

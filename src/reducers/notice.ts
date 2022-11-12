@@ -13,7 +13,6 @@ const noticeReducer: Reducer<Action> =
       case ActionType.LOGIN_FAIL:
       case ActionType.SIGNUP_FAIL:
       case ActionType.CHANGEUSERDATA_FAIL:
-      // TODO добавить обработку формы подписок
       {
         const msgArr = Array<string>();
         Object.entries(action.payload).forEach(
@@ -44,6 +43,16 @@ const noticeReducer: Reducer<Action> =
           message: msgArr,
         };
       }
+      case ActionType.SUBSCRIBE:
+      case ActionType.UNSUBSCRIBE:
+        if (action.payload.error) {
+          return {
+            timestamp: performance.now(),
+            message: [action.payload.error],
+          };
+        } else {
+          return state;
+        }
       default:
         return state;
     }
