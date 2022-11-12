@@ -28,6 +28,22 @@ const noticeReducer: Reducer<Action> =
           message: msgArr,
         };
       }
+      case ActionType.EDITAUTHORSUBSRIPTION:
+      case ActionType.CREATEAUTHORSUBSRIPTION:
+      {
+        const msgArr = Array<string>();
+        Object.entries(action.payload.formErrors).forEach(
+            ([, value]) => {
+              if (typeof value === 'string') {
+                msgArr.push(value);
+              }
+            },
+        );
+        return {
+          timestamp: performance.now(),
+          message: msgArr,
+        };
+      }
       default:
         return state;
     }
