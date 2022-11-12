@@ -58,7 +58,6 @@ export interface ActionEditAuthorSubscription extends IAction {
   type: ActionType.EDITAUTHORSUBSRIPTION
   payload: {
     subscription?: PayloadAuthorSubscription
-    message: string | null
     formErrors: PayloadAuthorSubscriptionErrors
   }
 }
@@ -66,8 +65,7 @@ export interface ActionEditAuthorSubscription extends IAction {
 export interface ActionCreateAuthorSubscription extends IAction {
   type: ActionType.CREATEAUTHORSUBSRIPTION
   payload: {
-    subscrption: PayloadAuthorSubscription
-    message: string | null
+    subscrption?: PayloadAuthorSubscription
     formErrors: PayloadAuthorSubscriptionErrors
   }
 }
