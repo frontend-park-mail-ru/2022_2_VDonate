@@ -25,7 +25,7 @@ export class SubscriptionItem {
     this.element.setAttribute('href', `/profile?id=${id}`);
     this.element.setAttribute('data-link', '');
     this.element.classList.add('subscriptions-item');
-    const avatar = new Image(ImageType.author, img);
+    const avatar = new Image(ImageType.sub, img);
     avatar.element.classList.add('subscriptions-item__img');
     const user = document.createElement('div');
     user.classList.add('subscriptions-item__username');
