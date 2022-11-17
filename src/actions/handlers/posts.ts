@@ -110,6 +110,35 @@ export const updatePost = (id: number, form: PostForm) => {
       );
 };
 
+export const deletePost = (postID: number) => {
+  api.deletePost(postID)
+      .then((res) => {
+        if (res.ok) {
+          store.dispatch({
+            type: ActionType.DELETE_POST,
+            payload: {
+              postID,
+            },
+          });
+        } else {
+          store.dispatch({
+            type: ActionType.NOTICE,
+            payload: res.body as PayloadNotice,
+          });
+        }
+      },
+      )
+      .catch((err) => {
+        store.dispatch({
+          type: ActionType.NOTICE,
+          payload: {
+            message: err as string,
+          },
+        });
+      },
+      );
+};
+
 export const likePost = (id: number) => {
   api.likePost(id)
       .then((res) => {

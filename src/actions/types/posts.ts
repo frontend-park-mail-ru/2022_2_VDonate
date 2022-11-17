@@ -31,6 +31,10 @@ export interface PayloadPostUpdate {
   commentsNum?: number
 }
 
+export interface PayloadPostDelete {
+  postID: number
+}
+
 export interface ActionGetPosts extends IAction {
   type: ActionType.GET_POSTS
   payload: PayloadPost[]
@@ -44,4 +48,9 @@ export interface ActionUpdatePost extends IAction {
 export interface ActionCreatePost extends IAction {
   type: ActionType.CREATE_POST
   payload: PayloadPost
+}
+
+export interface ActionDeletePost extends IAction {
+  type: ActionType.DELETE_POST
+  payload: PayloadPostDelete
 }

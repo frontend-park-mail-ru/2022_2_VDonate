@@ -273,4 +273,12 @@ export default class Api {
         Method.GET,
         ContentType.json);
   }
+
+  deletePost(id: number): Promise<ResponseData> {
+    return this.request(
+        `/posts/${id}`,
+        Method.DELETE,
+        ContentType.json,
+    );
+  }
 }

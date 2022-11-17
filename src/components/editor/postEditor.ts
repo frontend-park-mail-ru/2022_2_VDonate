@@ -1,5 +1,10 @@
 import {closeEditor} from '@actions/handlers/editor';
-import {createPost, PostForm, updatePost} from '@actions/handlers/posts';
+import {
+  createPost,
+  deletePost,
+  PostForm,
+  updatePost,
+} from '@actions/handlers/posts';
 import {PayloadFormError} from '@actions/types/formError';
 import {PayloadUser} from '@actions/types/user';
 import store from '@app/store';
@@ -34,17 +39,36 @@ export default class PostEditor {
         template({title: data ? 'Редактирование поста' : 'Создание поста'}),
     );
     back.appendChild(form);
+    if (data) {
+      const submitBtn = new Button(ButtonType.primary, 'Изменить', 'submit');
+      const canselBtn = new Button(ButtonType.outline, 'Отмена', 'button');
+      const deleteBtn = new Button(ButtonType.outline, 'Удалить', 'button');
+      canselBtn.element.addEventListener('click',
+          () => {
+            closeEditor();
+          });
+      deleteBtn.element.addEventListener('click',
+          () => {
+            deletePost(data.id);
+          });
+      form.querySelector('.editor__btn-area')?.append(
+          submitBtn.element,
+          canselBtn.element,
+          deleteBtn.element,
+      );
+    } else {
+      const submitBtn = new Button(ButtonType.primary, 'Создать', 'submit');
+      const canselBtn = new Button(ButtonType.outline, 'Отмена', 'button');
+      canselBtn.element.addEventListener('click',
+          () => {
+            closeEditor();
+          });
+      form.querySelector('.editor__btn-area')?.append(
+          submitBtn.element,
+          canselBtn.element,
+      );
+    }
 
-    const submitBtn = new Button(ButtonType.primary, 'Изменить', 'submit');
-    const canselBtn = new Button(ButtonType.outline, 'Отмена', 'button');
-    canselBtn.element.addEventListener('click',
-        () => {
-          closeEditor();
-        });
-    form.querySelector('.editor__btn-area')?.append(
-        submitBtn.element,
-        canselBtn.element,
-    );
     const inputsArea = form.querySelector('.editor__inputs');
     const titleInput = new InputField(InputType.text, {
       label: 'Заголовок',

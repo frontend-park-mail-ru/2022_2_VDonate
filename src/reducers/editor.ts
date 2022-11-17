@@ -11,6 +11,7 @@ const editorReducer: Reducer<Action> =
       case ActionType.CHANGEUSERDATA_SUCCESS:
       case ActionType.UPDATE_POST:
       case ActionType.CREATE_POST:
+      case ActionType.DELETE_POST:
         return {};
       case ActionType.CREATEAUTHORSUBSRIPTION:
       case ActionType.EDITAUTHORSUBSRIPTION: {
