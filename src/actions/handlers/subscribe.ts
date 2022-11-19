@@ -210,7 +210,7 @@ export const createAuthorSubscription = (form: AuthorSubscrptionForm) => {
   const titleErr = titleCheck(form.title.value);
   if (priceErr || textErr || tierErr || titleErr) {
     store.dispatch({
-      type: ActionType.EDITAUTHORSUBSRIPTION,
+      type: ActionType.CREATEAUTHORSUBSRIPTION,
       payload: {
         formErrors: {
           type: FormErrorType.AUTHOR_SUBSCRIPTION,
@@ -234,7 +234,7 @@ export const createAuthorSubscription = (form: AuthorSubscrptionForm) => {
       .then((res: ResponseData) => {
         if (res.ok) {
           store.dispatch({
-            type: ActionType.EDITAUTHORSUBSRIPTION,
+            type: ActionType.CREATEAUTHORSUBSRIPTION,
             payload: {
               subscription: {
                 imgPath:
@@ -254,6 +254,33 @@ export const createAuthorSubscription = (form: AuthorSubscrptionForm) => {
                 title: null,
                 file: null,
               },
+            },
+          });
+        } else {
+          store.dispatch({
+            type: ActionType.NOTICE,
+            payload: res.body as PayloadNotice,
+          });
+        }
+      })
+      .catch((err) => {
+        store.dispatch({
+          type: ActionType.NOTICE,
+          payload: {
+            message: err as string,
+          },
+        });
+      });
+};
+
+export const deleteAuthorSubscription = (id: number) => {
+  api.deleteAuthorSubscription(id)
+      .then((res: ResponseData) => {
+        if (res.ok) {
+          store.dispatch({
+            type: ActionType.DELETEAUTHORSUBSCRIPTION,
+            payload: {
+              id,
             },
           });
         } else {

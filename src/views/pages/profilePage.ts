@@ -5,17 +5,14 @@ import {ProfileModel} from '@models/profileModel/profileModel';
 import {PayloadUser} from '@actions/types/user';
 import getProfile from '@actions/handlers/getProfileData';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
-import {PayloadAuthorSubscription,
-  PayloadSubscribe} from '@actions/types/subscribe';
+import {Subscription} from '@actions/types/subscribe';
 
 /** Реализация интерфейса *IView* для страницы профиля */
 export default class ProfilePage implements IView, IObserver {
   /** Структорное представление страницы из компонентов */
   private element: ProfileModel;
-  private profile: PayloadGetProfileData | undefined;
-  private authorSubscription: PayloadAuthorSubscription | undefined;
-  private authorSubscriptionID: number | undefined;
   private locId: string | null;
+  private subsIds: number[] = [];
   /** Конструктор */
   constructor() {
     const user = store.getState().user as PayloadUser;
@@ -28,51 +25,30 @@ export default class ProfilePage implements IView, IObserver {
   }
   /** Оповещение об изменением хранилища */
   notify(): void {
-    const profileNew = store.getState().profile as PayloadGetProfileData;
-    if (JSON.stringify(profileNew) != JSON.stringify(this.profile)) {
-      if (profileNew.user.isAuthor !== this.profile?.user.isAuthor) {
-        this.element.setType(profileNew.user.isAuthor);
-      }
-      if (
-        profileNew.authorSubscriptions !== this.profile?.authorSubscriptions) {
-        if (typeof profileNew.authorSubscriptions == 'string') {
-          console.warn(profileNew.authorSubscriptions);
-        } else {
-          this.element.renderSubContainer(profileNew.authorSubscriptions);
-        }
-      }
-      if (profileNew.user.about !== this.profile?.user.about) {
-        this.element.renderAbout(profileNew.user.about);
-      }
-      if (profileNew.subscriptions !== this.profile?.subscriptions) {
-        if (typeof profileNew.subscriptions == 'string') {
-          console.warn(profileNew.subscriptions);
-        } else {
-          this.element.renderSubscriptions(profileNew.subscriptions ?? []);
-        }
-      }
-      if (profileNew.user !== this.profile?.user) {
-        this.element.renderNavbar(profileNew.user);
-      }
-      this.profile = profileNew;
+    const profileNew =
+      store.getState().profile as PayloadGetProfileData | undefined;
+    if (!profileNew) {
+      return;
     }
-
-    const newAuthorSubscription =
-      store.getState().authorSubscriptionChange as {
-        subscription?: PayloadAuthorSubscription
-      } | undefined;
-    if (newAuthorSubscription?.subscription &&
-        newAuthorSubscription.subscription != this.authorSubscription) {
-      this.authorSubscription = newAuthorSubscription.subscription;
-      this.element.renderAuthorSubscription(newAuthorSubscription.subscription);
-    }
-
-    const newSubscribe =
-      store.getState().subscribe as PayloadSubscribe | undefined;
-    if (newSubscribe?.authorSubscriptionID) {
-      this.authorSubscriptionID = newSubscribe.authorSubscriptionID;
-      this.element.renderSubscribe(this.authorSubscriptionID,
-          Number(this.locId));
+    this.element.setType(profileNew.user.isAuthor);
+    this.element.renderNavbar(profileNew.user);
+    if (profileNew.user.isAuthor) {
+      this.element.renderAbout(profileNew.user.about);
+      this.element.renderSubContainer(profileNew.authorSubscriptions);
+      const subs =
+        store.getState().userSubscribers as Subscription[] | undefined;
+      if (subs) {
+        const subsIds: number[] = [];
+        subs.forEach((sub) => sub.id ? subsIds.push(sub.id) : null);
+        subsIds.filter((x) => !this.subsIds.includes(x)).forEach((id) =>
+          this.element.renderSubscribe(id, Number(this.locId)));
+        this.subsIds.filter((x) => !subsIds.includes(x)).forEach((id) =>
+          this.element.renderUnsubscribe(id, Number(this.locId)));
+        console.log(this.subsIds, subsIds);
+        this.subsIds = subsIds;
+      }
+    } else {
+      this.element.renderSubscriptions(profileNew.subscriptions);
     }
   }
   /** Сброс страницы, отключение от хранилища */

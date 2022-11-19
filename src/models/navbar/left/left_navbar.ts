@@ -207,13 +207,11 @@ export class LeftNavbar implements IObserver {
   notify(): void {
     const newUser =
       store.getState().user as PayloadUser;
-    if (JSON.stringify(newUser) !== JSON.stringify(this.user)) {
-      this.user = newUser;
-      this.renderProfile();
-    }
+    this.user = newUser;
+    this.renderProfile();
     const newSubscriptions =
-      store.getState().userSubscribers as Subscription[];
-    if (JSON.stringify(newSubscriptions) !== JSON.stringify(this.subs)) {
+      store.getState().userSubscribers as Subscription[] | undefined;
+    if (newSubscriptions) {
       this.subs = newSubscriptions;
       this.renderSubs();
     }

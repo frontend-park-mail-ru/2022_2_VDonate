@@ -1,6 +1,9 @@
 import {ResponseData, saveCSRF} from '@api/ajax';
 import {ActionType} from '@actions/types/action';
-import {PayloadEditUser, PayloadUser} from '@actions/types/user';
+import {
+  PayloadEditUser,
+  PayloadEditUserSucces,
+  PayloadUser} from '@actions/types/user';
 import router from '@app/router';
 import store from '@app/store';
 import api from '@app/api';
@@ -362,10 +365,28 @@ export const editUser = (id: number, form: EditUserForm): void => {
   api.putUserData(userData)
       .then((res: ResponseData) => {
         if (res.ok) {
+          const user: PayloadEditUserSucces = {
+            id: userData.id,
+          };
+          if (res.body.imgPath && res.body.imgPath !== '') {
+            user.avatar = res.body.imgPath as string;
+          }
+          if (userData.username) {
+            user.username = userData.username;
+          }
+          if (userData.email) {
+            user.email = userData.email;
+          }
+          if (userData.isAuthor) {
+            user.isAuthor = userData.isAuthor;
+          }
+          if (userData.about) {
+            user.about = userData.about;
+          }
           store.dispatch({
             type: ActionType.CHANGEUSERDATA_SUCCESS,
             payload: {
-              user: res.body as PayloadEditUser,
+              user,
               formErrors: {
                 type: FormErrorType.EDIT_USER,
                 email: null,

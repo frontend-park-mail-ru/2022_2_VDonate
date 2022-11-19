@@ -263,6 +263,15 @@ export default class Api {
         ContentType.formData,
         data);
   }
+
+  deleteAuthorSubscription(id: number): Promise<ResponseData> {
+    return this.request(
+        `/subscriptions/author/${id}`,
+        Method.DELETE,
+        ContentType.json,
+    );
+  }
+
   /**
    *
    * @returns ll
