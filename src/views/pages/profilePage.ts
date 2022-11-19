@@ -44,7 +44,6 @@ export default class ProfilePage implements IView, IObserver {
           this.element.renderSubscribe(id, Number(this.locId)));
         this.subsIds.filter((x) => !subsIds.includes(x)).forEach((id) =>
           this.element.renderUnsubscribe(id, Number(this.locId)));
-        console.log(this.subsIds, subsIds);
         this.subsIds = subsIds;
       }
     } else {
