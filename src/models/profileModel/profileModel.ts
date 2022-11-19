@@ -80,7 +80,7 @@ export class ProfileModel {
    */
   renderSubscriptions(subscriptions: PayloadProfileSubscription[] | undefined) {
     if (!subscriptions || subscriptions.length == 0) {
-      this.glass.element.innerHTML = 'Пока что тут пусто';
+      this.glass.element.innerHTML = 'Донатер пока никого не поддерживает';
       return;
     }
     this.glass.element.innerHTML = '';
