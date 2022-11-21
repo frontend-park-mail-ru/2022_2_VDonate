@@ -30,6 +30,9 @@ export class ProfileModel {
   private glass: Glass;
   private rightNavbar: RightNavbar;
 
+  private isAuthor: boolean | undefined;
+  private aboutText: string | undefined;
+
   private postContaner: PostsContaner;
   /**
    * конструктор
@@ -50,17 +53,16 @@ export class ProfileModel {
 
     const user = store.getState().user as PayloadUser;
     this.postContaner = new PostsContaner(changeable && user.isAuthor);
-    // getPostsByAuthor({
-    //   id: user.id,
-    //   username: user.username,
-    //   img: user.avatar,
-    // });
   }
 
   /**
    * @param isAuthor является ли автором
    */
   setType(isAuthor: boolean) {
+    if (this.isAuthor == isAuthor) {
+      return;
+    }
+    this.isAuthor = isAuthor;
     this.element.innerHTML = '';
     if (isAuthor) {
       this.element.append(
@@ -76,13 +78,17 @@ export class ProfileModel {
   /**
    * @param subscriptions список подписок пользователя
    */
-  renderSubscriptions(subscriptions: PayloadProfileSubscription[]) {
+  renderSubscriptions(subscriptions: PayloadProfileSubscription[] | undefined) {
+    if (!subscriptions || subscriptions.length == 0) {
+      this.glass.element.innerHTML = 'Донатер пока никого не поддерживает';
+      return;
+    }
     this.glass.element.innerHTML = '';
     subscriptions.forEach((sub) => {
       const subItem = new SubscriptionItem(
           sub.authorID,
-          sub.img,
-          sub.title,
+          sub.img, // LATER sub.avatar
+          sub.title, // LATER sub.username
           sub.tier,
       );
       this.glass.element.appendChild(subItem.element);
@@ -99,15 +105,17 @@ export class ProfileModel {
    * @param about новый текст об пользователе
    */
   renderAbout(about: string | undefined) {
-    this.about.setText(about);
+    if (about != this.aboutText) {
+      this.about.setText(about);
+      this.aboutText = about;
+    }
   }
 
   /**
    * @param user данные профиля
    */
   renderNavbar(user: PayloadProfileUser) {
-    user.isAuthor ? this.rightNavbar.authorRender(user) :
-      this.rightNavbar.donaterRender(user);
+    this.rightNavbar.render(user);
   }
 
   /**
@@ -123,5 +131,12 @@ export class ProfileModel {
    */
   renderSubscribe(subId: number, authorID: number) {
     this.subContainer.renderSubscribeBtn(subId, authorID);
+  }
+  /**
+   * @param subId - id подписки
+   * @param authorID id автора
+   */
+  renderUnsubscribe(subId: number, authorID: number) {
+    this.subContainer.renderUnsubscribeBtn(subId, authorID);
   }
 }

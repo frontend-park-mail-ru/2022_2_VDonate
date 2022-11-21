@@ -4,7 +4,7 @@ import './popup.styl';
 import {IObserver} from '@flux/types/observer';
 import store from '@app/store';
 import {subscribe, unsubscribe} from '@actions/handlers/subscribe';
-import {PayloadSubscribe} from '@actions/types/subscribe';
+import {Subscription} from '@actions/types/subscribe';
 
 export enum SubType {
   SUBSCRIBE,
@@ -22,7 +22,7 @@ export class Popup implements IObserver {
   readonly element: HTMLElement;
 
   private changeBtn: Button;
-
+  private authorSubscriptionID: number;
   /**
    * @param authorID ID автора
    * @param authorSubscriptionID ID подписки
@@ -33,6 +33,7 @@ export class Popup implements IObserver {
       authorSubscriptionID: number,
       subType: SubType,
   ) {
+    this.authorSubscriptionID = authorSubscriptionID;
     const popupGlass = new Glass(GlassType.lines);
     popupGlass.element.classList.add('sub-popup__glass');
     const darkening = document.createElement('div');
@@ -81,9 +82,32 @@ export class Popup implements IObserver {
 
   /** Callback метод обновления хранилища */
   notify(): void {
-    const state = store.getState().subscribe as PayloadSubscribe;
-    if (!state.error) {
-      this.element.remove();
+    const idx =
+      (store.getState().userSubscribers as Subscription[])
+          .findIndex((sub) => sub.id == this.authorSubscriptionID);
+    switch (this.changeBtn.element.firstElementChild?.innerHTML) {
+      case 'Задонатить':
+        // if (idx && idx > -1) {
+        //   this.element.remove();
+        //   store.removeObserver(this);
+        // } else {
+        //   console.warn('Ошибка при донате');
+        // }
+        this.element.remove();
+        store.removeObserver(this);
+        break;
+      case 'Отписаться':
+        if (!idx || idx == -1) {
+          this.element.remove();
+          store.removeObserver(this);
+        } else {
+          console.warn('Ошибка при отписке');
+        }
+        break;
+      default:
+        this.element.remove();
+        store.removeObserver(this);
+        break;
     }
   }
 }

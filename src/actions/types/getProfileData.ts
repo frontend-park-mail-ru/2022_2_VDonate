@@ -3,6 +3,7 @@ import {ActionType} from './action';
 import {PayloadPost} from './posts';
 
 export interface PayloadProfileUser {
+  id: number,
   avatar: string,
   isAuthor: boolean,
   username: string,

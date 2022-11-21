@@ -1,4 +1,5 @@
 import routing from '@actions/handlers/routing';
+import {RouteType} from '@actions/types/routing';
 import {Pages, routes} from '@configs/router';
 
 /** Роутинг урлов */
@@ -9,12 +10,13 @@ class Router {
       const target = (e.target as Element).closest('a[data-link]');
       if (target !== null) {
         e.preventDefault();
-        routing(target.getAttribute('href') ?? '/');
+        routing(target.getAttribute('href') ?? '/', RouteType.STANDART);
       }
     });
 
     window.addEventListener('popstate', () => {
-      routing(window.location.pathname);
+      routing(window.location.pathname +
+        window.location.search, RouteType.POPSTATE);
     });
   }
 
@@ -24,7 +26,6 @@ class Router {
    * @returns TODO
    */
   go(loc: string): Pages {
-    window.history.pushState(null, '', loc);
     return routes.find((obj) => loc.match(obj.path))?.type ?? Pages.NOT_FOUND;
   }
 }

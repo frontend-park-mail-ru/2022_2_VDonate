@@ -6,10 +6,8 @@ import noticeReducer from './notice';
 import editorReducer from './editor';
 import postsReducer from './posts';
 import profileReducer from './profile';
-import SubscribeReducer from './subscribe';
 import userReducer from './user';
 import UserSubscribersReducer from './userSubscribers';
-import authorSubscriptionsReducer from './authorSubscriptions';
 
 export default combineReducers<Action>({
   location: locationReducer,
@@ -18,8 +16,6 @@ export default combineReducers<Action>({
   formErrors: formErrorsReducer,
   posts: postsReducer,
   notice: noticeReducer,
-  subscribe: SubscribeReducer,
   userSubscribers: UserSubscribersReducer,
   editor: editorReducer,
-  authorSubscriptionChange: authorSubscriptionsReducer,
 });

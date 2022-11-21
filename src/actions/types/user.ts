@@ -38,6 +38,15 @@ export interface PayloadEditUser {
   isAuthor?: boolean
   file?: File
 }
+
+export interface PayloadEditUserSucces {
+  id: number
+  avatar?: string
+  isAuthor?: boolean
+  username?: string
+  email?: string
+  about?: string
+}
 /** Нагрузка в срез ошибок формы редактирования пользователя */
 export interface PayloadEditUserErrors {
   type: FormErrorType.EDIT_USER
@@ -104,7 +113,7 @@ export interface ActionLogOutFail extends IAction {
 export interface ActionEditUseDataSuccess extends IAction {
   type: ActionType.CHANGEUSERDATA_SUCCESS
   payload: {
-    user: PayloadEditUser
+    user: PayloadEditUserSucces
     formErrors: PayloadEditUserErrors
   }
 }

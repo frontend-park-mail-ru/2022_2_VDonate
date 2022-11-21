@@ -127,31 +127,40 @@ export class SubContainer {
       // Тоже ошибку вызвать, но по идее сюда не должно падать
       return;
     }
-    switch (subBtnText.innerHTML) {
-      case 'Задонатить':
-        subBtnText.innerHTML = 'Отписаться';
-        // TODO наверно не понравится никому,
-        // но зато по памяти так лучше чем хранить эти кнопки и эвенты
-        // eslint-disable-next-line no-self-assign
-        subBtn.outerHTML = subBtn.outerHTML;
-        document.getElementById(`sub-card_${subId}`)?.
-            querySelector('.button')?.addEventListener('click', () => {
-              const popup = new Popup(authorID, subId, SubType.UNSUBSCRIBE);
-              document.body.appendChild(popup.element);
-            });
-        break;
-      case 'Отписаться':
-        subBtnText.innerHTML = 'Задонатить';
-        // eslint-disable-next-line no-self-assign
-        subBtn.outerHTML = subBtn.outerHTML;
-        document.getElementById(`sub-card_${subId}`)?.
-            querySelector('.button')?.addEventListener('click', () => {
-              const popup = new Popup(authorID, subId, SubType.SUBSCRIBE);
-              document.body.appendChild(popup.element);
-            });
-        break;
-      default:
-        break;
+    subBtnText.innerHTML = 'Отписаться';
+    // TODO наверно не понравится никому,
+    // но зато по памяти так лучше чем хранить эти кнопки и эвенты
+    // eslint-disable-next-line no-self-assign
+    subBtn.outerHTML = subBtn.outerHTML;
+    document.getElementById(`sub-card_${subId}`)
+        ?.querySelector('.button')?.addEventListener('click', () => {
+          const popup = new Popup(authorID, subId, SubType.UNSUBSCRIBE);
+          document.body.appendChild(popup.element);
+        });
+  }
+  /**
+   * @param subId id подписки
+   * @param authorID id автора
+   */
+  renderUnsubscribeBtn(subId: number, authorID: number) {
+    const subBtn = document.getElementById(`sub-card_${subId}`)?.
+        querySelector('.button');
+    if (!subBtn) {
+      // TODO вызвать ошибку
+      return;
     }
+    const subBtnText = subBtn.querySelector('span.button__text');
+    if (!subBtnText) {
+      // Тоже ошибку вызвать, но по идее сюда не должно падать
+      return;
+    }
+    subBtnText.innerHTML = 'Задонатить';
+    // eslint-disable-next-line no-self-assign
+    subBtn.outerHTML = subBtn.outerHTML;
+    document.getElementById(`sub-card_${subId}`)
+        ?.querySelector('.button')?.addEventListener('click', () => {
+          const popup = new Popup(authorID, subId, SubType.SUBSCRIBE);
+          document.body.appendChild(popup.element);
+        });
   }
 }

@@ -13,6 +13,7 @@ import {PayloadUser} from '@actions/types/user';
 import {logout} from '@actions/handlers/user';
 import {Subscription} from '@actions/types/subscribe';
 import {openProfileEditor} from '@actions/handlers/editor';
+import {RouteType} from '@actions/types/routing';
 
 
 const links = [
@@ -84,7 +85,7 @@ export class LeftNavbar implements IObserver {
     this.profile.classList.add('left-navbar__down_profile');
     this.profile.addEventListener('click', () => {
       const user = store.getState().user as PayloadUser;
-      routing(`/profile?id=${user.id}`);
+      routing(`/profile?id=${user.id}`, RouteType.STANDART);
     });
     const popup = new Glass(GlassType.lines);
     popup.element.style.display = 'none';
@@ -104,7 +105,7 @@ export class LeftNavbar implements IObserver {
     profileLink.element.classList.add('left-navbar__down_popup_btn');
     profileLink.element.addEventListener('click', () => {
       const user = store.getState().user as PayloadUser;
-      routing(`/profile?id=${user.id}`);
+      routing(`/profile?id=${user.id}`, RouteType.STANDART);
     });
     const change = new Button(ButtonType.outline, 'Изменить данные', 'button');
     change.element.classList.add('left-navbar__down_popup_btn');
@@ -139,10 +140,11 @@ export class LeftNavbar implements IObserver {
         sub.setAttribute('data-link', '');
       }
       sub.classList.add('left-navbar__sub');
+      // LATER subItem.avatar
       const avatar = new Image(ImageType.sub, subItem.img);
       avatar.element.classList.add('left-navbar__sub_avatar');
       const usrname = document.createElement('span');
-      usrname.innerText = subItem.title;
+      usrname.innerText = subItem.title; // LATER subItem.username
       sub.appendChild(avatar.element);
       sub.appendChild(usrname);
       this.subsList.appendChild(sub);
@@ -207,13 +209,11 @@ export class LeftNavbar implements IObserver {
   notify(): void {
     const newUser =
       store.getState().user as PayloadUser;
-    if (JSON.stringify(newUser) !== JSON.stringify(this.user)) {
-      this.user = newUser;
-      this.renderProfile();
-    }
+    this.user = newUser;
+    this.renderProfile();
     const newSubscriptions =
-      store.getState().userSubscribers as Subscription[];
-    if (JSON.stringify(newSubscriptions) !== JSON.stringify(this.subs)) {
+      store.getState().userSubscribers as Subscription[] | undefined;
+    if (newSubscriptions) {
       this.subs = newSubscriptions;
       this.renderSubs();
     }

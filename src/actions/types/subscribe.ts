@@ -11,7 +11,7 @@ export interface Subscription {
   authorID: number
   avatar?: string
   username?: string
-  id?: number
+  id: number
   img: string
   price: number
   text: string
@@ -69,7 +69,14 @@ export interface ActionEditAuthorSubscription extends IAction {
 export interface ActionCreateAuthorSubscription extends IAction {
   type: ActionType.CREATEAUTHORSUBSRIPTION
   payload: {
-    subscrption?: PayloadAuthorSubscription
+    subscription?: PayloadAuthorSubscription
     formErrors: PayloadAuthorSubscriptionErrors
+  }
+}
+
+export interface ActionDeleteAuthorSubscription extends IAction {
+  type: ActionType.DELETEAUTHORSUBSCRIPTION
+  payload: {
+    id: number,
   }
 }
