@@ -86,6 +86,9 @@ export const auth = (): void => {
           return getUser(
             res.body.id as number,
             (user: PayloadUser) => {
+              if (location.pathname === '/') {
+                history.replaceState(null, '', '/feed');
+              }
               store.dispatch({
                 type: ActionType.AUTH,
                 payload: {

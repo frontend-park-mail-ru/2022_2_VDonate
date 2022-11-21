@@ -140,10 +140,11 @@ export class LeftNavbar implements IObserver {
         sub.setAttribute('data-link', '');
       }
       sub.classList.add('left-navbar__sub');
+      // LATER subItem.avatar
       const avatar = new Image(ImageType.sub, subItem.img);
       avatar.element.classList.add('left-navbar__sub_avatar');
       const usrname = document.createElement('span');
-      usrname.innerText = subItem.title;
+      usrname.innerText = subItem.title; // LATER subItem.username
       sub.appendChild(avatar.element);
       sub.appendChild(usrname);
       this.subsList.appendChild(sub);

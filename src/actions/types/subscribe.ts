@@ -11,7 +11,7 @@ export interface Subscription {
   authorID: number
   avatar?: string
   username?: string
-  id?: number
+  id: number
   img: string
   price: number
   text: string
