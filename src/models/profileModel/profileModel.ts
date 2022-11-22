@@ -85,7 +85,7 @@ export class ProfileModel {
           sub.authorID,
           sub.authorAvatar ?? '',
           sub.authorName ?? sub.title,
-          sub.tier,
+          `Уровень ${sub.tier}`,
       );
       this.glass.element.appendChild(subItem.element);
     });

@@ -19,7 +19,7 @@ export class SubscriptionItem {
       id: number,
       img: string,
       username: string,
-      tier: number,
+      tier: string,
   ) {
     this.element = document.createElement('a');
     this.element.setAttribute('href', `/profile?id=${id}`);
@@ -32,7 +32,7 @@ export class SubscriptionItem {
     user.innerText = username;
     const lvl = document.createElement('div');
     lvl.classList.add('subscriptions-item__tier');
-    lvl.innerText = `Уровень ${tier}`;
+    lvl.innerText = tier;
     this.element.appendChild(avatar.element);
     this.element.appendChild(user);
     this.element.appendChild(lvl);
