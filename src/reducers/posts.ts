@@ -28,6 +28,14 @@ const postsReducer: Reducer<Action> =
       case ActionType.CREATE_POST:
         (state as PayloadPost[]).push(action.payload);
         return state;
+      case ActionType.DELETE_POST: {
+        const idx = (state as PayloadPost[])
+            .findIndex((post) => post.postID === action.payload.postID);
+        if (idx > -1) {
+          (state as PayloadPost[]).splice(idx);
+        }
+        return state;
+      }
       default:
         return state;
     }
