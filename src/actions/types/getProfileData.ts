@@ -1,6 +1,7 @@
 import {IAction} from '@flux/types/actions';
 import {ActionType} from './action';
 import {PayloadPost} from './posts';
+import {Subscription} from './subscribe';
 
 export interface PayloadProfileUser {
   id: number,
@@ -12,33 +13,11 @@ export interface PayloadProfileUser {
   countSubscribers?: number,
 }
 
-export interface PayloadProfileSubscription {
-  authorID: number
-  avatar?: string
-  username?: string
-  id?: number
-  img: string
-  price: number
-  text: string
-  tier: number
-  title: string
-}
-
-export interface PayloadAuthorSubscription {
-  authorID: number,
-  id: number,
-  img: string,
-  price: number,
-  text: string,
-  tier: number,
-  title: string,
-}
-
 /** Результат успешной аутификации */
 export interface PayloadGetProfileData {
   user: PayloadProfileUser,
-  subscriptions?: PayloadProfileSubscription[],
-  authorSubscriptions?: PayloadAuthorSubscription[],
+  subscriptions?: Subscription[],
+  authorSubscriptions?: Subscription[],
   posts?: PayloadPost[],
 }
 

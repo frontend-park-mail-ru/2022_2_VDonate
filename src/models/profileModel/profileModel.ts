@@ -1,10 +1,6 @@
 import {
-  PayloadAuthorSubscription,
-  PayloadProfileSubscription,
   PayloadProfileUser} from '@actions/types/getProfileData';
-import {
-  PayloadAuthorSubscription as authorSubscription,
-} from '@actions/types/subscribe';
+import {Subscription} from '@actions/types/subscribe';
 import {PayloadUser} from '@actions/types/user';
 import store from '@app/store';
 import {Glass, GlassType} from '@components/glass/glass';
@@ -78,7 +74,7 @@ export class ProfileModel {
   /**
    * @param subscriptions список подписок пользователя
    */
-  renderSubscriptions(subscriptions: PayloadProfileSubscription[] | undefined) {
+  renderSubscriptions(subscriptions: Subscription[] | undefined) {
     if (!subscriptions || subscriptions.length == 0) {
       this.glass.element.innerHTML = 'Донатер пока никого не поддерживает';
       return;
@@ -87,8 +83,8 @@ export class ProfileModel {
     subscriptions.forEach((sub) => {
       const subItem = new SubscriptionItem(
           sub.authorID,
-          sub.img, // LATER sub.avatar
-          sub.title, // LATER sub.username
+          sub.authorAvatar ?? '',
+          sub.authorName ?? sub.title,
           sub.tier,
       );
       this.glass.element.appendChild(subItem.element);
@@ -97,7 +93,7 @@ export class ProfileModel {
   /**
    * @param subs Уровни подписок автора
    */
-  renderSubContainer(subs: PayloadAuthorSubscription[] | undefined) {
+  renderSubContainer(subs: Subscription[] | undefined) {
     this.subContainer.renderSubs(subs);
   }
 
@@ -121,7 +117,7 @@ export class ProfileModel {
   /**
    * @param sub - данные измененной/созданной сабки
    */
-  renderAuthorSubscription(sub: authorSubscription) {
+  renderAuthorSubscription(sub: Subscription) {
     this.subContainer.renderSub(sub);
   }
 

@@ -15,18 +15,14 @@ export class RightNavbar {
 
   private glass: HTMLElement;
 
-  private avatar: string;
-  private username: string;
-  private countSubscribers: number;
-  private countSubscriptions: number;
+  private avatar: string | undefined;
+  private username: string | undefined;
+  private countSubscribers: number | undefined;
+  private countSubscriptions: number | undefined;
   /**
    * Конструктор
    */
   constructor() {
-    this.avatar = '';
-    this.username = '';
-    this.countSubscribers = -1;
-    this.countSubscriptions = -1;
     this.element = document.createElement('div');
     this.element.classList.add('right-navbar');
     this.glass = new Glass(GlassType.mono).element;

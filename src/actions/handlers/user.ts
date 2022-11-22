@@ -339,7 +339,9 @@ export const editUser = (id: number, form: EditUserForm): void => {
   if (form.avatar?.files) {
     userData.file = form.avatar.files[0];
   }
-  userData.about = form.about?.value;
+  if (form.about) {
+    userData.about = form.about.value;
+  }
   const emailErr = userData.email ? emailCheck(userData.email) : null;
   const usernameErr =
     userData.username ? usernameCheck(userData.username) : null;
