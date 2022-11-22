@@ -16,19 +16,19 @@ import {
 import {FormErrorType} from '@actions/types/formError';
 
 
-export interface SignUpForm extends HTMLCollection {
+export interface SignUpFormElements extends HTMLCollection {
   email: HTMLInputElement
   username: HTMLInputElement
   password: HTMLInputElement
   repeatPassword: HTMLInputElement
 }
 
-export interface LogInForm extends HTMLCollection {
+export interface LogInFormElements extends HTMLCollection {
   username: HTMLInputElement
   password: HTMLInputElement
 }
 
-export interface EditUserForm extends HTMLCollection {
+export interface EditUserFormElements extends HTMLCollection {
   email: HTMLInputElement
   username: HTMLInputElement
   password: HTMLInputElement
@@ -117,7 +117,7 @@ export const auth = (): void => {
       });
 };
 
-export const login = (props: LogInForm): void => {
+export const login = (props: LogInFormElements): void => {
   const usernameErr = usernameCheck(props.username.value);
   const passwordErr = passwordCheck(props.password.value);
   if (usernameErr || passwordErr) {
@@ -197,7 +197,7 @@ export const login = (props: LogInForm): void => {
         });
       });
 };
-export const signup = (props: SignUpForm): void => {
+export const signup = (props: SignUpFormElements): void => {
   const emailErr = emailCheck(props.email.value);
   const usernameErr = usernameCheck(props.username.value);
   const passwordErr = passwordCheck(props.password.value);
@@ -319,7 +319,7 @@ export const logout = (): void => {
       });
 };
 
-export const editUser = (id: number, form: EditUserForm): void => {
+export const editUser = (id: number, form: EditUserFormElements): void => {
   const userData: PayloadEditUser = {
     id: id,
   };

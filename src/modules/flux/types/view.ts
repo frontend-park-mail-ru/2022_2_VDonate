@@ -1,12 +1,9 @@
+import ComponentBase from './component';
+import {IObserver} from './observer';
+
 /** Интерфейс вьюшки. */
-export interface IView {
-  /** Метод сброса вьюшки */
-  reset(): void
-  /** Метод первичной отрисовки с отдачей корневого элемента */
-  render(): HTMLElement
-  /**
-   * Метод перерисовки текущей вьюшки.
-   * Если вьюшка не зависит отдейсвтий, то метод можно опустить
-   */
-  rerender?(): void
+export default abstract class ViewBase<P>
+  extends ComponentBase<HTMLDivElement, P> implements IObserver {
+  abstract erase(): void;
+  abstract notify(): void;
 }

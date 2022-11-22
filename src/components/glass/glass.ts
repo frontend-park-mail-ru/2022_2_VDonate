@@ -16,7 +16,7 @@ export class Glass {
   /**
    * Актуальный контейнер стекла
    */
-  readonly element: HTMLElement;
+  readonly element: HTMLDivElement;
 
   /**
    * @param viewType дизайн стекла
