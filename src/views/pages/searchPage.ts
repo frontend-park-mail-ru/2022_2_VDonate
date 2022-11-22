@@ -21,7 +21,7 @@ export default class SearchPage implements IView {
                 17,
                 res.body.avatar as string,
                 res.body.username as string,
-                `донатеров ${res.body.countSubscribers as number}`);
+                `Донатеров ${res.body.countSubscribers as number}`);
             glass.element.appendChild(sub.element);
           }
         })
