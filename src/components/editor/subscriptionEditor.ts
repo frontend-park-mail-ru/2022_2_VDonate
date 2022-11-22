@@ -2,6 +2,7 @@ import {closeEditor} from '@actions/handlers/editor';
 import {
   AuthorSubscrptionForm,
   createAuthorSubscription,
+  deleteAuthorSubscription,
   editAuthorSubscription} from '@actions/handlers/subscribe';
 import {PayloadAuthorSubscriptionErrors} from '@actions/types/subscribe';
 import {Button, ButtonType} from '@components/button/button';
@@ -52,11 +53,22 @@ export default class SubscriptionEditor {
         () => {
           closeEditor();
         });
-    form.querySelector('.editor__btn-area')?.append(
-        this.submitBtn.element,
-        canselBtn.element,
-    );
-
+    const deleteBtn = new Button(ButtonType.primary, 'Удалить', 'button');
+    if (data) {
+      deleteBtn.element.addEventListener('click', () => {
+        deleteAuthorSubscription(data.id);
+      });
+      form.querySelector('.editor__btn-area')?.append(
+          this.submitBtn.element,
+          canselBtn.element,
+          deleteBtn.element,
+      );
+    } else {
+      form.querySelector('.editor__btn-area')?.append(
+          this.submitBtn.element,
+          canselBtn.element,
+      );
+    }
     const inputsArea = this.element.querySelector('.editor__inputs');
     const titleInput = new InputField(InputType.text, {
       label: 'Заголовок',

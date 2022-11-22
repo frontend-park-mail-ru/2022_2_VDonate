@@ -3,7 +3,6 @@ import {ResponseData} from '@api/ajax';
 import {ActionType} from '@actions/types/action';
 import store from '@app/store';
 import {
-  PayloadAuthorSubscription,
   Subscription} from '@actions/types/subscribe';
 import {FormErrorType} from '@actions/types/formError';
 import {
@@ -167,10 +166,11 @@ export const editAuthorSubscription = (
             type: ActionType.EDITAUTHORSUBSRIPTION,
             payload: {
               subscription: {
-                imgPath:
-                  res.body.imgPath as PayloadAuthorSubscription['imgPath'],
-                subscriptionId:
-      res.body.subscriptionID as PayloadAuthorSubscription['subscriptionId'],
+                authorID: res.body.authorID as number,
+                authorAvatar: res.body.authorAvatar as string,
+                authorName: res.body.authorName as string,
+                id: res.body.subscriptionID as number,
+                img: res.body.imgPath as string,
                 price: Number(form.price.value),
                 text: form.text.value,
                 tier: Number(form.tier.value),
@@ -210,7 +210,7 @@ export const createAuthorSubscription = (form: AuthorSubscrptionForm) => {
   const titleErr = titleCheck(form.title.value);
   if (priceErr || textErr || tierErr || titleErr) {
     store.dispatch({
-      type: ActionType.EDITAUTHORSUBSRIPTION,
+      type: ActionType.CREATEAUTHORSUBSRIPTION,
       payload: {
         formErrors: {
           type: FormErrorType.AUTHOR_SUBSCRIPTION,
@@ -234,13 +234,14 @@ export const createAuthorSubscription = (form: AuthorSubscrptionForm) => {
       .then((res: ResponseData) => {
         if (res.ok) {
           store.dispatch({
-            type: ActionType.EDITAUTHORSUBSRIPTION,
+            type: ActionType.CREATEAUTHORSUBSRIPTION,
             payload: {
               subscription: {
-                imgPath:
-                  res.body.imgPath as PayloadAuthorSubscription['imgPath'],
-                subscriptionId:
-      res.body.subscriptionID as PayloadAuthorSubscription['subscriptionId'],
+                authorID: res.body.authorID as number,
+                authorAvatar: res.body.authorAvatar as string,
+                authorName: res.body.authorName as string,
+                id: res.body.subscriptionID as number,
+                img: res.body.imgPath as string,
                 price: Number(form.price.value),
                 text: form.text.value,
                 tier: Number(form.tier.value),
@@ -254,6 +255,33 @@ export const createAuthorSubscription = (form: AuthorSubscrptionForm) => {
                 title: null,
                 file: null,
               },
+            },
+          });
+        } else {
+          store.dispatch({
+            type: ActionType.NOTICE,
+            payload: res.body as PayloadNotice,
+          });
+        }
+      })
+      .catch((err) => {
+        store.dispatch({
+          type: ActionType.NOTICE,
+          payload: {
+            message: err as string,
+          },
+        });
+      });
+};
+
+export const deleteAuthorSubscription = (id: number) => {
+  api.deleteAuthorSubscription(id)
+      .then((res: ResponseData) => {
+        if (res.ok) {
+          store.dispatch({
+            type: ActionType.DELETEAUTHORSUBSCRIPTION,
+            payload: {
+              id,
             },
           });
         } else {

@@ -8,10 +8,10 @@ export interface PayloadSubscribe {
 }
 
 export interface Subscription {
+  authorAvatar?: string
   authorID: number
-  avatar?: string
-  username?: string
-  id?: number
+  authorName?: string
+  id: number
   img: string
   price: number
   text: string
@@ -23,16 +23,6 @@ export interface PayloadGetSubscriptions {
   subscriptions: Subscription[]
   error: string | undefined
 }
-
-export interface PayloadAuthorSubscription {
-  imgPath: string
-  subscriptionId: number
-  price: number
-  text: string
-  tier: number
-  title: string
-}
-
 
 export interface ActionSubscribe extends IAction {
   type: ActionType.SUBSCRIBE
@@ -61,7 +51,7 @@ export interface PayloadAuthorSubscriptionErrors {
 export interface ActionEditAuthorSubscription extends IAction {
   type: ActionType.EDITAUTHORSUBSRIPTION
   payload: {
-    subscription?: PayloadAuthorSubscription
+    subscription?: Subscription
     formErrors: PayloadAuthorSubscriptionErrors
   }
 }
@@ -69,7 +59,14 @@ export interface ActionEditAuthorSubscription extends IAction {
 export interface ActionCreateAuthorSubscription extends IAction {
   type: ActionType.CREATEAUTHORSUBSRIPTION
   payload: {
-    subscrption?: PayloadAuthorSubscription
+    subscription?: Subscription
     formErrors: PayloadAuthorSubscriptionErrors
+  }
+}
+
+export interface ActionDeleteAuthorSubscription extends IAction {
+  type: ActionType.DELETEAUTHORSUBSCRIPTION
+  payload: {
+    id: number,
   }
 }

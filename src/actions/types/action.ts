@@ -1,6 +1,7 @@
 import {ActionGetProfileData} from './getProfileData';
 import {
   ActionCreateAuthorSubscription,
+  ActionDeleteAuthorSubscription,
   ActionEditAuthorSubscription,
   ActionGetSubscriptions,
   ActionSubscribe,
@@ -40,6 +41,7 @@ export enum ActionType {
   GETSUBSCRIPTIONS,
   EDITAUTHORSUBSRIPTION,
   CREATEAUTHORSUBSRIPTION,
+  DELETEAUTHORSUBSCRIPTION,
   NOTICE,
   ROUTING,
   GET_POSTS,
@@ -54,6 +56,7 @@ export enum ActionType {
 /** Объединение действий */
 export type Action =
   | ActionEditAuthorSubscription
+  | ActionDeleteAuthorSubscription
   | ActionLogInSuccess
   | ActionLogInFail
   | ActionSignUpSuccess
