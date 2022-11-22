@@ -1,8 +1,8 @@
 /* eslint-disable no-case-declarations */
 import {Action, ActionType} from '@actions/types/action';
 import {
-  PayloadAuthorSubscription,
   PayloadGetProfileData} from '@actions/types/getProfileData';
+import {Subscription} from '@actions/types/subscribe';
 import {Reducer} from '@flux/types/reducer';
 import {PropTree} from '@flux/types/store';
 
@@ -15,24 +15,16 @@ const profileReducer: Reducer<Action> =
         if (!action.payload.subscription) {
           return state;
         }
-        const newSub: PayloadAuthorSubscription = {
-          authorID: (state as PayloadGetProfileData).user.id,
-          id: action.payload.subscription.subscriptionId,
-          img: action.payload.subscription.imgPath,
-          price: action.payload.subscription.price,
-          text: action.payload.subscription.text,
-          tier: action.payload.subscription.tier,
-          title: action.payload.subscription.title,
-        };
+        const newSub: Subscription = action.payload.subscription;
         (state as PayloadGetProfileData).authorSubscriptions?.push(newSub);
         return state;
       case ActionType.EDITAUTHORSUBSRIPTION:
         const authorSub = (state as PayloadGetProfileData).authorSubscriptions
             ?.find((sub) =>
-              sub.id == action.payload.subscription?.subscriptionId);
+              sub.id == action.payload.subscription?.id);
         const payload = action.payload.subscription;
         if (payload && authorSub) {
-          authorSub.img = payload.imgPath;
+          authorSub.img = payload.img;
           authorSub.price = payload.price;
           authorSub.text = payload.text;
           authorSub.tier = payload.tier;

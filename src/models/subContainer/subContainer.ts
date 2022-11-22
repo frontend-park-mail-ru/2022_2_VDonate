@@ -1,5 +1,3 @@
-import {
-  PayloadAuthorSubscription} from '@actions/types/getProfileData';
 import {IconButton} from '@components/icon_button/icon_button';
 import {Sub} from '@models/sub/sub';
 import './subContainer.styl';
@@ -7,8 +5,7 @@ import plusIcn from '@icon/plus.svg';
 import {Popup, SubType} from '@models/popup/sub/popup';
 import store from '@app/store';
 import {PayloadUser} from '@actions/types/user';
-import {PayloadAuthorSubscription as authorSubscription,
-  Subscription} from '@actions/types/subscribe';
+import {Subscription} from '@actions/types/subscribe';
 import {openSubscribtionEditor} from '@actions/handlers/editor';
 
 /**
@@ -48,7 +45,7 @@ export class SubContainer {
   /**
    * @param subs элементы подписок
    */
-  renderSubs(subs: PayloadAuthorSubscription[] | undefined) {
+  renderSubs(subs: Subscription[] | undefined) {
     if (!subs || subs.length == 0) {
       this.container.innerHTML = 'Пока что тут пусто';
       return;
@@ -86,25 +83,25 @@ export class SubContainer {
   /**
    * @param sub данные измененной/созданной сабки
    */
-  renderSub(sub: authorSubscription) {
+  renderSub(sub: Subscription) {
     const user = store.getState().user as PayloadUser;
     const subItem = new Sub({
       AuthorID: user.id,
       subType: SubType.EDITSUBSCRIBE,
-      id: sub.subscriptionId,
+      id: sub.id,
       subName: sub.title,
       lvl: sub.tier,
-      img: sub.imgPath,
+      img: sub.img,
       price: sub.price,
       period: 'за неделю',
       motivation: sub.text,
     });
     subItem.element.classList.add('sub-container__card');
-    subItem.element.id = `sub-card_${sub.subscriptionId}`;
+    subItem.element.id = `sub-card_${sub.id}`;
     if (this.container.innerHTML == 'Пока что тут пусто') {
       this.container.innerHTML = '';
     }
-    const subEl = document.getElementById(`sub-card_${sub.subscriptionId}`);
+    const subEl = document.getElementById(`sub-card_${sub.id}`);
     if (subEl) {
       subEl.parentNode?.replaceChild(subItem.element, subEl);
     } else {

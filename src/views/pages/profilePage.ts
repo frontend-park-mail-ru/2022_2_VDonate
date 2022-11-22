@@ -37,7 +37,7 @@ export default class ProfilePage implements IView, IObserver {
       this.element.renderSubContainer(profileNew.authorSubscriptions);
       const subs =
         store.getState().userSubscribers as Subscription[] | undefined;
-      if (subs) {
+      if (subs && profileNew.user.id !== Number(this.locId)) {
         const subsIds: number[] = [];
         subs.forEach((sub) => sub.id ? subsIds.push(sub.id) : null);
         subsIds.filter((x) => !this.subsIds.includes(x)).forEach((id) =>
