@@ -18,23 +18,22 @@ interface ProfileEditorOptions {
 
 /** */
 export default
-class ProfileEditor
-  extends ComponentBase<HTMLDivElement, PayloadEditUserErrors> {
+class ProfileEditor extends ComponentBase <'div', PayloadEditUserErrors> {
   private inputs: InputField[] = [];
-  private formErrors: PayloadEditUserErrors;
+  private formErrors: PayloadEditUserErrors = {
+    type: FormErrorType.EDIT_USER,
+    email: null,
+    username: null,
+    password: null,
+    repeatPassword: null,
+    about: null,
+    isAuthor: null,
+    avatar: null,
+  };
 
-  constructor(element: HTMLElement, private options: ProfileEditorOptions) {
-    super(element);
-    this.formErrors = {
-      type: FormErrorType.EDIT_USER,
-      email: null,
-      username: null,
-      password: null,
-      repeatPassword: null,
-      about: null,
-      isAuthor: null,
-      avatar: null,
-    };
+  constructor(el: HTMLElement, private options: ProfileEditorOptions) {
+    super();
+    this.renderTo(el);
   }
 
   protected render(): HTMLDivElement {

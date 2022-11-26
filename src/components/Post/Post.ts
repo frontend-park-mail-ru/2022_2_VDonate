@@ -18,9 +18,10 @@ type PostOptions = PayloadPost & {
  * Модель поста
  */
 export default
-class Post extends ComponentBase <HTMLDivElement, PayloadPost > {
-  constructor(element: HTMLElement, private options: PostOptions) {
-    super(element);
+class Post extends ComponentBase<'div', PayloadPost> {
+  constructor(el: HTMLElement, private options: PostOptions) {
+    super();
+    this.renderTo(el);
   }
 
   protected render(): HTMLDivElement {
@@ -36,7 +37,7 @@ post.querySelector<HTMLElement>('.post__author-avatar');
     if (!avatarArea) throw new Error('Нет элемента с .post__author-avatar');
     const avatar = new Avatar(avatarArea, {
       image: this.options.author.imgPath,
-      viewType: AvatarType.author,
+      viewType: AvatarType.AUTHOR,
     });
     avatar.addClassNames('post__img');
 

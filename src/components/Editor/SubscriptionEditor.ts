@@ -22,14 +22,12 @@ interface SubscriptionEditorOptions {
 /** */
 export default
 class SubscriptionEditor
-  extends ComponentBase<HTMLDivElement, PayloadAuthorSubscriptionErrors> {
+  extends ComponentBase <'div', PayloadAuthorSubscriptionErrors> {
   private inputs: InputField[] = [];
 
-  constructor(
-      element: HTMLElement,
-    private options?: SubscriptionEditorOptions,
-  ) {
-    super(element);
+  constructor(el: HTMLElement, private options?: SubscriptionEditorOptions) {
+    super();
+    this.renderTo(el);
   }
 
   protected render(): HTMLDivElement {

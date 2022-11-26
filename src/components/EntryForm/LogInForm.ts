@@ -6,8 +6,8 @@ import InputField, {
   InputType,
 } from '@components/InputField/InputField';
 import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
-import template from './signlog.hbs';
-import './signlog.styl';
+import template from './entry-form.hbs';
+import './entry-form.styl';
 /** Контекст для шаблона */
 const logInContext = {
   title: 'Вход',
@@ -32,9 +32,15 @@ const logInInputs: InputOptions[] = [
 ];
 /** Модель формы входа */
 export default
-class LogInForm extends ComponentBase<HTMLFormElement, PayloadLogInErrors> {
+class LogInForm
+  extends ComponentBase<'form', PayloadLogInErrors> {
   /** Список компонентов ввода, используемых в текущем контейнере */
   private inputs = new Map<string, InputField>();
+
+  constructor(el: HTMLElement) {
+    super();
+    this.renderTo(el);
+  }
 
   protected render(): HTMLFormElement {
     const form = document.createElement('form');

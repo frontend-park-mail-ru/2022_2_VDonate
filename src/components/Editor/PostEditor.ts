@@ -21,11 +21,12 @@ interface PostEditorOptions {
 
 /** */
 export default class PostEditor
-  extends ComponentBase<HTMLDivElement, never> {
+  extends ComponentBase<'div'> {
   private inputs: InputField[] = [];
 
-  constructor(element: HTMLElement, private options?: PostEditorOptions) {
-    super(element);
+  constructor(el: HTMLElement, private options?: PostEditorOptions) {
+    super();
+    this.renderTo(el);
   }
 
   protected render(): HTMLDivElement {

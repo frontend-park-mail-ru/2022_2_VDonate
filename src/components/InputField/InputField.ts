@@ -1,4 +1,4 @@
-import './input.styl';
+import './input-field.styl';
 import templateInput from './input.hbs';
 import templateTextarea from './textarea.hbs';
 import userIcon from '@icon/user.svg';
@@ -28,9 +28,10 @@ export interface InputOptions {
  * Компонент поля ввода
  */
 export default
-class InputField extends ComponentBase<HTMLLabelElement, boolean> {
+class InputField extends ComponentBase<'label', boolean> {
   constructor(element: HTMLElement, private options: InputOptions) {
-    super(element);
+    super();
+    this.renderTo(element);
   }
 
   render(): HTMLLabelElement {

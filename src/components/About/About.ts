@@ -9,11 +9,13 @@ interface AboutOptions {
 /**
  * Модель поля 'Обо мне'
  */
-export default class About extends ComponentBase<HTMLDivElement, string> {
+export default
+class About extends ComponentBase<'div', string> {
   private content!: HTMLDivElement;
 
-  constructor(element: HTMLElement, private options: AboutOptions) {
-    super(element);
+  constructor(el: HTMLElement, private options: AboutOptions) {
+    super();
+    this.renderTo(el);
   }
 
   protected render(): HTMLDivElement {

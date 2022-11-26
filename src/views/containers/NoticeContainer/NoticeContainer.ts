@@ -1,22 +1,19 @@
 import {PayloadNotice} from '@actions/types/notice';
 import store from '@app/store';
+import ViewBaseExtended from '@app/view';
 import Notice from '@components/Notice/Notice';
-import ViewBase from '@flux/types/view';
 import './notice.styl';
 /** */
-export default class NoticeContainer extends ViewBase<string> {
+export default class NoticeContainer extends ViewBaseExtended<string> {
   private notices = new Set<Notice>();
   private noticeState?: PayloadNotice;
 
-  constructor(element: HTMLElement) {
-    super(element);
+  constructor(el: HTMLElement) {
+    super();
+    this.renderTo(el);
     this.notify();
-    store.registerObserver(this);
   }
-  erase(): void {
-    store.removeObserver(this);
-    this.remove();
-  }
+
   protected render(): HTMLDivElement {
     const container = document.createElement('div');
     container.className = 'notice-container';

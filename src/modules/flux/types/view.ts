@@ -3,7 +3,7 @@ import {IObserver} from './observer';
 
 /** Интерфейс вьюшки. */
 export default abstract class ViewBase<P>
-  extends ComponentBase<HTMLDivElement, P> implements IObserver {
+  extends ComponentBase<'div', P> implements IObserver {
   abstract erase(): void;
   abstract notify(): void;
 }

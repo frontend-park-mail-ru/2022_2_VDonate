@@ -34,12 +34,10 @@ type ButtonOptions = SimpleButtonOptions | IconButtonOptions
 /**
  * Компонент кнопка
  */
-export default class Button extends ComponentBase<HTMLButtonElement, string> {
-  constructor(element: HTMLElement, private options: ButtonOptions) {
-    super(element);
-    if (options.clickCallback) {
-      this.domElement.addEventListener('click', options.clickCallback);
-    }
+export default class Button extends ComponentBase<'button', string> {
+  constructor(el: HTMLElement, private options: ButtonOptions) {
+    super();
+    this.renderTo(el);
   }
 
   update(text: string): void {
@@ -50,6 +48,10 @@ export default class Button extends ComponentBase<HTMLButtonElement, string> {
   protected render(): HTMLButtonElement {
     const button = document.createElement('button');
     button.setAttribute('type', this.options.actionType);
+    if (this.options.clickCallback) {
+      button.addEventListener('click', this.options.clickCallback);
+    }
+
     if (this.options.viewType === ButtonType.icon) {
       button.classList.add(
           'icon-button',
@@ -62,6 +64,7 @@ export default class Button extends ComponentBase<HTMLButtonElement, string> {
       button.appendChild(innerIcon);
       return button;
     }
+
     button.classList.add(
         'button',
         'button__back');

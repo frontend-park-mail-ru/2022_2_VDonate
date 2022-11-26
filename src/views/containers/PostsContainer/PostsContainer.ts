@@ -6,28 +6,25 @@ import plusIcon from '@icon/plus.svg';
 import './posts.styl';
 import template from './posts.hbs';
 import {openPostEditor} from '@actions/handlers/editor';
-import ViewBase from '@flux/types/view';
 import {querySelectorWithThrow} from '@flux/types/component';
 import Button, {ButtonType} from '@components/Button/Button';
+import ViewBaseExtended from '@app/view';
 
 interface PostsContainerOptions {
   withCreateBtn: boolean
 }
 type PostsUpdateData = (PayloadPost & { isDelete?: true })[];
 /** */
-export default class PostsContainer extends ViewBase<PostsUpdateData> {
+export default
+class PostsContainer
+  extends ViewBaseExtended<PostsUpdateData> {
   private postsState?: PayloadPost[];
   private posts = new Map<number, Post>();
 
-  constructor(element: HTMLElement, private options: PostsContainerOptions) {
-    super(element);
+  constructor(el: HTMLElement, private options: PostsContainerOptions) {
+    super();
+    this.renderTo(el);
     this.notify();
-    store.registerObserver(this);
-  }
-
-  erase(): void {
-    store.removeObserver(this);
-    this.remove();
   }
 
   protected render(): HTMLDivElement {

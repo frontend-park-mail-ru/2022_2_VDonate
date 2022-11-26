@@ -4,10 +4,10 @@ import {PayloadGetProfileData} from '@actions/types/getProfileData';
 import {PayloadPost} from '@actions/types/posts';
 import {PayloadUser} from '@actions/types/user';
 import store from '@app/store';
+import ViewBaseExtended from '@app/view';
 import PostEditor from '@components/Editor/PostEditor';
 import ProfileEditor from '@components/Editor/ProfileEditor';
 import SubscriptionEditor from '@components/Editor/SubscriptionEditor';
-import ViewBase from '@flux/types/view';
 
 interface EditorUpdateData {
   newEditor?: PayloadEditor
@@ -16,22 +16,18 @@ interface EditorUpdateData {
 
 /** */
 export default
-class EditorContainer extends ViewBase<PayloadEditor | EditorUpdateData> {
+class EditorContainer
+  extends ViewBaseExtended<PayloadEditor | EditorUpdateData> {
   private editorState?: PayloadEditor;
   private currentEditor?:
     | PostEditor
     | ProfileEditor
     | SubscriptionEditor;
 
-  constructor(element: HTMLElement) {
-    super(element);
+  constructor(el: HTMLElement) {
+    super();
+    this.renderTo(el);
     this.notify();
-    store.registerObserver(this);
-  }
-
-  erase(): void {
-    store.removeObserver(this);
-    this.remove();
   }
 
   protected render(): HTMLDivElement {

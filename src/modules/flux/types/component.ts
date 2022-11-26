@@ -1,8 +1,9 @@
 export default
-abstract class ComponentBase<DomElement extends HTMLElement, Data> {
-  protected domElement: DomElement;
+abstract class ComponentBase
+  <Tag extends keyof HTMLElementTagNameMap, Data = never> {
+  protected domElement!: HTMLElementTagNameMap[Tag];
 
-  constructor(element: HTMLElement) {
+  renderTo(element: HTMLElement) {
     this.domElement = this.render();
     element.appendChild(this.domElement);
   }
@@ -17,7 +18,7 @@ abstract class ComponentBase<DomElement extends HTMLElement, Data> {
 
   abstract update(data: Data): void;
 
-  protected abstract render(): DomElement;
+  protected abstract render(): HTMLElementTagNameMap[Tag];
 }
 
 export const querySelectorWithThrow =

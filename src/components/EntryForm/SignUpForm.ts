@@ -6,8 +6,8 @@ import InputField, {
   InputType,
 } from '@components/InputField/InputField';
 import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
-import template from './signlog.hbs';
-import './signlog.styl';
+import template from './entry-form.hbs';
+import './entry-form.styl';
 /** Контекст для шаблона */
 const signUpContext = {
   title: 'Регистрация',
@@ -44,9 +44,15 @@ const signUpInputs: InputOptions[] = [
 ];
 /** Модель формы регистрации */
 export default
-class SignUpForm extends ComponentBase<HTMLFormElement, PayloadSignUpErrors> {
+class SignUpForm
+  extends ComponentBase<'form', PayloadSignUpErrors> {
   /** Список компонентов ввода, используемых в текущем контейнере */
   private inputs = new Map<string, InputField>();
+
+  constructor(el: HTMLElement) {
+    super();
+    this.renderTo(el);
+  }
 
   protected render(): HTMLFormElement {
     const form = document.createElement('form');
