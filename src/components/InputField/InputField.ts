@@ -91,8 +91,7 @@ class InputField extends ComponentBase<'label', boolean> {
 
   update(isError: boolean): void {
     const back = this.domElement.querySelector('.input-field__back');
-    isError ?
-      back?.classList.add('input-field__back_error') :
-      back?.classList.remove('input-field__back_error');
+    if (isError) back?.classList.add('input-field__back_error');
+    else back?.classList.remove('input-field__back_error');
   }
 }

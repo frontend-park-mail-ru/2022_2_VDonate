@@ -14,14 +14,40 @@ import PostAction, {PostActionType} from '@components/PostAction/PostAction';
 type PostOptions = PayloadPost & {
   changable: boolean
 }
+
+export interface PostUpdateContext {
+  content?: {
+    title: string
+    img: string
+    text: string
+  }
+  isLiked?: boolean
+}
+
 /**
  * Модель поста
  */
 export default
-class Post extends ComponentBase<'div', PayloadPost> {
+class Post extends ComponentBase<'div', PostUpdateContext> {
+  private likeBtn!: PostAction;
+
   constructor(el: HTMLElement, private options: PostOptions) {
     super();
     this.renderTo(el);
+  }
+
+  update(data: PostUpdateContext): void {
+    if (data.isLiked !== undefined) {
+      this.likeBtn.update(data.isLiked);
+    }
+    if (data.content) {
+      querySelectorWithThrow(this.domElement, '.post__content').innerHTML =
+          templateContent({
+            title: data.content.title,
+            img: data.content.img,
+            text: data.content.text,
+          });
+    }
   }
 
   protected render(): HTMLDivElement {
@@ -56,7 +82,7 @@ post.querySelector<HTMLElement>('.post__author-avatar');
         actionType: 'button',
         innerIcon: editIcon,
         clickCallback: openPostEditor.bind(this, this.options.postID),
-        viewType: ButtonType.icon,
+        viewType: ButtonType.ICON,
       });
       editBtn.addClassNames('post__header_btn');
     }
@@ -66,7 +92,7 @@ post.querySelector<HTMLElement>('.post__author-avatar');
 
   private addReactionBtn(post: HTMLElement) {
     const reactionArea = querySelectorWithThrow(post, '.post__reaction');
-    new PostAction(reactionArea, {
+    this.likeBtn = new PostAction(reactionArea, {
       reactType: PostActionType.LIKE,
       content: this.options.likesNum.toString(),
       isActive: this.options.isLiked,
@@ -86,14 +112,5 @@ post.querySelector<HTMLElement>('.post__author-avatar');
         // TODO экшен на открытие комментариев
       },
     });
-  }
-
-  update(data: PayloadPost): void {
-    querySelectorWithThrow(this.domElement, '.post__content').innerHTML =
-      templateContent({
-        title: data.content.title,
-        img: data.content.img,
-        text: data.content.text,
-      });
   }
 }

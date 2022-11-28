@@ -1,5 +1,4 @@
 import {login, LogInFormElements} from '@actions/handlers/user';
-import {PayloadLogInErrors} from '@actions/types/user';
 import Button, {ButtonType} from '@components/Button/Button';
 import InputField, {
   InputOptions,
@@ -30,16 +29,25 @@ const logInInputs: InputOptions[] = [
     name: 'password',
   },
 ];
+
+type LogInInputsErrors = Map<'username' | 'password', boolean>;
+
 /** Модель формы входа */
 export default
 class LogInForm
-  extends ComponentBase<'form', PayloadLogInErrors> {
+  extends ComponentBase<'form', LogInInputsErrors> {
   /** Список компонентов ввода, используемых в текущем контейнере */
   private inputs = new Map<string, InputField>();
 
   constructor(el: HTMLElement) {
     super();
     this.renderTo(el);
+  }
+
+  update(errors: LogInInputsErrors): void {
+    errors.forEach((isError, name) => {
+      this.inputs.get(name)?.update(isError);
+    });
   }
 
   protected render(): HTMLFormElement {
@@ -58,15 +66,9 @@ class LogInForm
     new Button(querySelectorWithThrow(form, '.signlog__submit'), {
       actionType: 'submit',
       innerText: 'Войти',
-      viewType: ButtonType.primary,
+      viewType: ButtonType.PRIMARY,
     });
 
     return form;
-  }
-
-  update(errors: PayloadLogInErrors): void {
-    this.inputs.forEach((input, name) => {
-      input.update(Boolean(errors[name as keyof PayloadLogInErrors]));
-    });
   }
 }

@@ -22,10 +22,16 @@ interface PostActionOptions {
  * Компонент кнопка
  */
 export default
-class PostAction extends ComponentBase<'button'> {
+class PostAction extends ComponentBase<'button', boolean> {
   constructor(el: HTMLElement, private options: PostActionOptions) {
     super();
     this.renderTo(el);
+  }
+
+  update(isActive: boolean): void {
+    if (this.options.reactType === PostActionType.COMMENT) return;
+    if (isActive) this.domElement.classList.add('reaction__like');
+    else this.domElement.classList.remove('reaction__like');
   }
 
   protected render(): HTMLButtonElement {
@@ -59,9 +65,5 @@ class PostAction extends ComponentBase<'button'> {
     button.appendChild(innerText);
 
     return button;
-  }
-
-  update(data: never): void {
-    return data;
   }
 }

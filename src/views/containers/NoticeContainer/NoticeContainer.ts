@@ -2,7 +2,7 @@ import {PayloadNotice} from '@actions/types/notice';
 import store from '@app/store';
 import ViewBaseExtended from '@app/view';
 import Notice from '@components/Notice/Notice';
-import './notice.styl';
+import './notice-container.styl';
 /** */
 export default class NoticeContainer extends ViewBaseExtended<string> {
   private notices = new Set<Notice>();
@@ -20,12 +20,13 @@ export default class NoticeContainer extends ViewBaseExtended<string> {
 
     return container;
   }
+
   notify(): void {
     const noticeStateNew = store.getState().notice as PayloadNotice;
-    if (JSON.stringify(noticeStateNew) !== JSON.stringify(this.noticeState)) {
+    if (this.noticeState?.timestamp !== noticeStateNew.timestamp) {
       this.noticeState = noticeStateNew;
-      if (typeof this.noticeState.message === 'string' &&
-        /^[а-яёА-ЯЁ]/.test(this.noticeState.message)) {
+      if (typeof this.noticeState.message === 'string' /* &&
+        /^[а-яёА-ЯЁ]/.test(this.noticeState.message)*/) {
         this.update(this.noticeState.message);
       }
       if (Array.isArray(this.noticeState.message)) {
@@ -35,11 +36,12 @@ export default class NoticeContainer extends ViewBaseExtended<string> {
       }
     }
   }
+
   update(message: string) {
     const timeoutID = setTimeout(
         () => {
           this.removeNotice(notice);
-        }, 5000,
+        }, 10000,
     );
     const notice = new Notice(this.domElement, {
       message,
@@ -50,6 +52,7 @@ export default class NoticeContainer extends ViewBaseExtended<string> {
     });
     this.notices.add(notice);
   }
+
   private removeNotice(target: Notice) {
     target.remove();
     this.notices.delete(target);

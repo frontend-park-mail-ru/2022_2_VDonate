@@ -2,7 +2,7 @@ import ViewBase from '@flux/types/view';
 import store from './store';
 
 export default
-abstract class ViewBaseExtended<P> extends ViewBase<P> {
+abstract class ViewBaseExtended<D> extends ViewBase<D> {
   constructor() {
     super();
     store.registerObserver(this);

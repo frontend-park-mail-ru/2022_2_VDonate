@@ -1,4 +1,4 @@
-import ComponentBase from '@flux/types/component';
+import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 import './button.styl';
 import './icon_button.styl';
 
@@ -6,24 +6,24 @@ import './icon_button.styl';
  * Перчисление типов кнопок
  */
 export enum ButtonType {
-  primary,
-  outline,
-  fingers,
-  icon,
+  PRIMARY,
+  OUTLINE,
+  FINGERS,
+  ICON,
 }
 
 interface SimpleButtonOptions {
   viewType:
-    | ButtonType.primary
-    | ButtonType.outline
-    | ButtonType.fingers
+    | ButtonType.PRIMARY
+    | ButtonType.OUTLINE
+    | ButtonType.FINGERS
   innerText: string
   actionType: 'submit' | 'button'
   clickCallback?: () => void
 }
 
 interface IconButtonOptions {
-  viewType: ButtonType.icon
+  viewType: ButtonType.ICON
   innerIcon: string
   actionType: 'button'
   clickCallback: () => void
@@ -31,18 +31,31 @@ interface IconButtonOptions {
 
 type ButtonOptions = SimpleButtonOptions | IconButtonOptions
 
+interface ButtonUpdateContext {
+  innerText?: string
+  callback?: () => void
+}
+
 /**
  * Компонент кнопка
  */
-export default class Button extends ComponentBase<'button', string> {
+export default
+class Button extends ComponentBase<'button', ButtonUpdateContext> {
   constructor(el: HTMLElement, private options: ButtonOptions) {
     super();
     this.renderTo(el);
   }
 
-  update(text: string): void {
-    this.domElement.getElementsByClassName('button__text')[0]
-        .textContent = text;
+  update(data: ButtonUpdateContext): void {
+    if (data.innerText) {
+      querySelectorWithThrow(this.domElement, '.button__text').textContent =
+        data.innerText;
+    }
+    if (this.options.clickCallback && data.callback) {
+      this.domElement.removeEventListener('click', this.options.clickCallback);
+      this.options.clickCallback = data.callback;
+      this.domElement.addEventListener('click', this.options.clickCallback);
+    }
   }
 
   protected render(): HTMLButtonElement {
@@ -52,7 +65,7 @@ export default class Button extends ComponentBase<'button', string> {
       button.addEventListener('click', this.options.clickCallback);
     }
 
-    if (this.options.viewType === ButtonType.icon) {
+    if (this.options.viewType === ButtonType.ICON) {
       button.classList.add(
           'icon-button',
           'icon-button__back',
@@ -69,13 +82,13 @@ export default class Button extends ComponentBase<'button', string> {
         'button',
         'button__back');
     switch (this.options.viewType) {
-      case ButtonType.primary:
+      case ButtonType.PRIMARY:
         button.classList.add('button__back_primary');
         break;
-      case ButtonType.outline:
+      case ButtonType.OUTLINE:
         button.classList.add('button__back_outline');
         break;
-      case ButtonType.fingers:
+      case ButtonType.FINGERS:
         button.classList.add('button__back_fingers');
         break;
       default: {

@@ -7,7 +7,7 @@ import {Pages} from './router';
 const initinalState: {
   location: PayloadLocation,
   notice: PayloadNotice,
-  posts: PayloadPost[],
+  posts: Map<number, PayloadPost>,
   editor: PayloadEditor,
 } = {
   location: {
@@ -16,7 +16,7 @@ const initinalState: {
   notice: {
     message: null,
   },
-  posts: [],
+  posts: new Map<number, PayloadPost>(),
   editor: {},
 };
 

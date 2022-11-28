@@ -26,7 +26,7 @@ class Notice extends ComponentBase<'div'> {
     notice.appendChild(message);
 
     const closeBtn = new Button(notice, {
-      viewType: ButtonType.icon,
+      viewType: ButtonType.ICON,
       innerIcon: closeIcon,
       actionType: 'button',
       clickCallback: this.options.onDelete,

@@ -9,16 +9,17 @@ import {openPostEditor} from '@actions/handlers/editor';
 import {querySelectorWithThrow} from '@flux/types/component';
 import Button, {ButtonType} from '@components/Button/Button';
 import ViewBaseExtended from '@app/view';
+import specialCompare from '@specialCompare/specialCompare';
 
 interface PostsContainerOptions {
   withCreateBtn: boolean
 }
-type PostsUpdateData = (PayloadPost & { isDelete?: true })[];
+
 /** */
 export default
 class PostsContainer
-  extends ViewBaseExtended<PostsUpdateData> {
-  private postsState?: PayloadPost[];
+  extends ViewBaseExtended<Map<number, PayloadPost>> {
+  private postsState = new Map<number, PayloadPost>();
   private posts = new Map<number, Post>();
 
   constructor(el: HTMLElement, private options: PostsContainerOptions) {
@@ -35,7 +36,7 @@ class PostsContainer
       new Button(
           querySelectorWithThrow(container, '.posts-container__title-area'),
           {
-            viewType: ButtonType.icon,
+            viewType: ButtonType.ICON,
             actionType: 'button',
             innerIcon: plusIcon,
             clickCallback: openPostEditor,
@@ -45,39 +46,47 @@ class PostsContainer
   }
 
   notify(): void {
-    const postsNew = store.getState().posts as PayloadPost[];
-
-    // if (JSON.stringify(postsNew) !== JSON.stringify(this.posts)) {
-    this.postsState = postsNew;
-    this.update(this.postsState);
-    // }
+    this.update(store.getState().posts as Map<number, PayloadPost>);
   }
 
-  update(newPosts: PostsUpdateData): void {
+  update(newPostsState: Map<number, PayloadPost>): void {
+    this.postsState.forEach((_, postID) => {
+      if (!newPostsState.has(postID)) {
+        this.deletePost(postID);
+      }
+    });
+
+    newPostsState.forEach(
+        (postPayload, postID) => {
+          const oldPost = this.postsState.get(postID);
+          if (oldPost) {
+            this.posts.get(postID)?.update({
+              isLiked: specialCompare(oldPost.isLiked, postPayload.isLiked),
+              content: specialCompare(oldPost.content, postPayload.content),
+            });
+          } else {
+            this.addPost(postPayload);
+          }
+        },
+    );
+
+    Object.assign(this.postsState, newPostsState);
+  }
+
+  private deletePost(postID: number) {
+    this.posts.get(postID)?.remove();
+    this.posts.delete(postID);
+  }
+
+  private addPost(postPayload: PayloadPost) {
     const postsArea = querySelectorWithThrow(
         this.domElement,
         '.posts-container__posts-area',
     );
-
-    newPosts.forEach(
-        (postContext) => {
-          if (this.posts.has(postContext.postID)) {
-            if (postContext.isDelete) {
-              this.posts.get(postContext.postID)?.remove();
-              this.posts.delete(postContext.postID);
-            } else {
-              this.posts.get(postContext.postID)?.update(postContext);
-            }
-          } else {
-            this.posts.set(postContext.postID, new Post(
-                postsArea,
-                {
-                  ...postContext,
-                  changable: (store.getState().user as PayloadUser)
-                      .id === postContext.author.id,
-                },
-            ));
-          }
-        });
+    this.posts.set(postPayload.postID, new Post(postsArea, {
+      ...postPayload,
+      changable: (store.getState().user as PayloadUser)
+          .id === postPayload.author.id,
+    }));
   }
 }

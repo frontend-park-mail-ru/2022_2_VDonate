@@ -1,3 +1,3 @@
-// // import Root from '@views/app';
+import Root from '@views/Root';
 
-// // new Root(document.body);
+new Root(document.body);

@@ -17,8 +17,8 @@ interface EditorUpdateData {
 /** */
 export default
 class EditorContainer
-  extends ViewBaseExtended<PayloadEditor | EditorUpdateData> {
-  private editorState?: PayloadEditor;
+  extends ViewBaseExtended<EditorUpdateData> {
+  private editorState: PayloadEditor;
   private currentEditor?:
     | PostEditor
     | ProfileEditor
@@ -27,7 +27,10 @@ class EditorContainer
   constructor(el: HTMLElement) {
     super();
     this.renderTo(el);
-    this.notify();
+    this.editorState = store.getState().editor as PayloadEditor;
+    this.update({
+      newEditor: this.editorState,
+    });
   }
 
   protected render(): HTMLDivElement {
@@ -38,9 +41,16 @@ class EditorContainer
   }
 
   notify(): void {
-    const editorNew = store.getState().editor as PayloadEditor;
-    if (JSON.stringify(editorNew) !== JSON.stringify(this.editorState)) {
-      this.editorState = editorNew;
+    const editorStateNew = store.getState().editor as PayloadEditor;
+    if (this.editorState.type && editorStateNew.type) {
+      this.editorState = editorStateNew;
+      this.update({
+        newEditor: this.editorState,
+      });
+    }
+
+    if (JSON.stringify(editorStateNew) !== JSON.stringify(this.editorState)) {
+      this.editorState = editorStateNew;
       this.update({
         newEditor: this.editorState,
       });
@@ -123,10 +133,21 @@ class EditorContainer
   private displayErrors(errors: PayloadFormError) {
     if (this.currentEditor instanceof ProfileEditor &&
       errors?.type == FormErrorType.EDIT_USER) {
-      this.currentEditor.update(errors);
+      this.currentEditor.update({
+        username: errors.username ? true : undefined,
+        email: errors.email ? true : undefined,
+        password: errors.password ? true : undefined,
+        repeatPassword: errors.repeatPassword ? true : undefined,
+        about: errors.about ? true : undefined,
+      });
     } else if (this.currentEditor instanceof SubscriptionEditor &&
       errors?.type == FormErrorType.AUTHOR_SUBSCRIPTION) {
-      this.currentEditor.update(errors);
+      this.currentEditor.update({
+        price: errors.price ? true : undefined,
+        title: errors.title ? true : undefined,
+        text: errors.text ? true : undefined,
+        tier: errors.tier ? true : undefined,
+      });
     } else {
       throw new Error(`displayErrors вызван с разногласиями в типе ошибок 
       и типе редактора`);

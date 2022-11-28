@@ -36,11 +36,8 @@ class NavbarLink
     return link;
   }
 
-  update(status: boolean): void {
-    if (status) {
-      this.domElement.classList.add('navbar-unit__choosen');
-    } else {
-      this.domElement.classList.remove('navbar-unit__choosen');
-    }
+  update(isChoosed: boolean): void {
+    if (isChoosed) this.domElement.classList.add('navbar-unit__choosen');
+    else this.domElement.classList.remove('navbar-unit__choosen');
   }
 }
