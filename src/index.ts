@@ -1,3 +1,4 @@
+import './style/index.styl';
 // // import Root from '@views/app';
 
 // import Button, {ButtonType} from '@components/Button/Button';
