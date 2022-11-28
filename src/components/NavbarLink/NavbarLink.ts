@@ -20,7 +20,7 @@ class NavbarLink extends ComponentBase<HTMLAnchorElement, boolean> {
     const link = document.createElement('a');
     link.setAttribute('href', this.options.href);
     link.setAttribute('data-link', '');
-    link.classList.add('navbar-unit');
+    link.classList.add('navbar-unit navbar-unit__navbar-unit');
 
     const ico = document.createElement('img');
     ico.classList.add('navbar-unit__icon');
@@ -36,9 +36,9 @@ class NavbarLink extends ComponentBase<HTMLAnchorElement, boolean> {
 
   update(status: boolean): void {
     if (status) {
-      this.domElement.classList.add('navbar-unit__choosen');
+      this.domElement.classList.add('navbar-unit__navbar-unit_choosen');
     } else {
-      this.domElement.classList.remove('navbar-unit__choosen');
+      this.domElement.classList.remove('navbar-unit__navbar-unit_choosen');
     }
   }
 }

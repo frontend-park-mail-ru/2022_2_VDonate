@@ -1,13 +1,14 @@
 @require '@style/const.styl'
 
 .sub
-  width: 18vw
-  max-width: 160px
-  min-height: 320px
   display: flex
   flex-direction: column
   align-items: center
   white-space: normal
+  &__sub
+    width: 18vw
+    max-width: 160px
+    min-height: 320px
   &__img
     width: 96px
   &__name
@@ -18,18 +19,6 @@
   &__lvl
     font-16()
     color: color-font-secondary
-  &__price
-    display: flex
-    flex-direction: column
-    justify-content: center
-    align-items: center
-    padding: 6px
-    &_count
-      font-16()
-      color: color-font-light
-    &_period
-      font-12()
-      color: color-font-secondary
   &__button
     width: 16vw
     max-width: 160px
@@ -47,3 +36,16 @@
     font-12()
     color: color-primary-light-2
     cursor: pointer
+
+.price
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+  padding: 6px
+  &__count
+    font-16()
+    color: color-font-light
+  &__period
+    font-12()
+    color: color-font-secondary

@@ -27,14 +27,13 @@
 //     this.element = document.createElement('div');
 //     this.element.classList.add('right-navbar');
 //     this.glass = new Glass(GlassType.mono).element;
-//     this.glass.classList.add('right-navbar__glass');
-//     this.glass.classList.add('right-navbar__profile');
+//     this.glass.classList.add('right-navbar__back');
 //     const avatar = document.createElement('div');
-//     avatar.classList.add('right-navbar__profile_img');
+//     avatar.classList.add('right-navbar__img');
 //     const usrname = document.createElement('span');
-//     usrname.classList.add('right-navbar__profile_username');
+//     usrname.classList.add('right-navbar__username');
 //     const info = document.createElement('div');
-//     info.classList.add('right-navbar__profile_info');
+//     info.classList.add('profile-info');
 //     this.glass.append(avatar, usrname, info);
 //     this.element.appendChild(this.glass);
 //   }
@@ -45,34 +44,34 @@
 //   render(user: PayloadProfileUser) {
 //     if (user.avatar != this.avatar) {
 //       const avatarEl =
-//         document.getElementsByClassName('right-navbar__profile_img');
+//         document.getElementsByClassName('right-navbar__img');
 //       const avatar = new Avatar();
 //       //   new Image(
 //       //     user.isAuthor ? ImageType.author : ImageType.donater,
 //       //     user.avatar,
 //       // );
-//       avatar.element.classList.add('right-navbar__profile_img');
+//       avatar.element.classList.add('right-navbar__img');
 //       this.glass.replaceChild(avatar.element, avatarEl[0]);
 //     }
 //     if (user.username != this.username) {
-//       document.getElementsByClassName('right-navbar__profile_username')[0]
+//       document.getElementsByClassName('right-navbar__username')[0]
 //           .innerHTML = user.username;
 //       this.username = user.username;
 //     }
 //     if (user.countSubscriptions != this.countSubscriptions ||
 //         user.countSubscribers != this.countSubscribers) {
 //       const info =
-//         document.getElementsByClassName('right-navbar__profile_info');
+//         document.getElementsByClassName('profile-info');
 //       info[0].innerHTML = '';
 //       if (user.isAuthor) {
 //         const donatersContainer = document.createElement('div');
 //         donatersContainer.classList
-// .add('right-navbar__profile_info_container');
+// .add('profile-info__container');
 //         const donaters = document.createElement('span');
-//         donaters.classList.add('right-navbar__profile_info_donaters');
+//         donaters.classList.add(''profile-info__donaters');
 //         donaters.innerText = 'Донатеров';
 //         const donatersCount = document.createElement('span');
-//         donatersCount.classList.add('right-navbar__profile_info_count');
+//         donatersCount.classList.add(''profile-info__count');
 //         if (user.countSubscribers) {
 //           donatersCount.innerText = user.countSubscribers.toString();
 //           this.countSubscribers = user.countSubscribers;
@@ -84,12 +83,12 @@
 //         info[0].appendChild(donatersContainer);
 //       }
 //       const subsContainer = document.createElement('div');
-//       subsContainer.classList.add('right-navbar__profile_info_container');
+//       subsContainer.classList.add(''profile-info__container');
 //       const subs = document.createElement('span');
-//       subs.classList.add('right-navbar__profile_info_subs');
+//       subs.classList.add(''profile-info__subs');
 //       subs.innerText = 'Подписок';
 //       const subsCount = document.createElement('span');
-//       subsCount.classList.add('right-navbar__profile_info_count');
+//       subsCount.classList.add(''profile-info__count');
 //       subsCount.innerText = user.countSubscriptions.toString();
 //       this.countSubscriptions = user.countSubscriptions;
 //       subsContainer.appendChild(subs);

@@ -19,7 +19,7 @@ export default class NoticeContainer extends ViewBase<string> {
   }
   protected render(): HTMLDivElement {
     const container = document.createElement('div');
-    container.className = 'notice-container';
+    container.className = 'notice-container notice-container__notice';
 
     return container;
   }

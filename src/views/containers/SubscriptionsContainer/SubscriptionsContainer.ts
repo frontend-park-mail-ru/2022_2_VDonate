@@ -30,7 +30,7 @@
 //     head.innerText = 'Уровни подписок';
 //     if (changeable) {
 //       const redactBtn = new IconButton(plusIcn, 'button');
-//       redactBtn.element.classList.add('sub-container__head_btn');
+//       redactBtn.element.classList.add('sub-container__head-btn');
 //       redactBtn.element.addEventListener('click', () => {
 //         openSubscribtionEditor();
 //       });

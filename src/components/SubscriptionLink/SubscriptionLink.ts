@@ -22,7 +22,8 @@
 //     const subscription = document.createElement('a');
 //     subscription.setAttribute('href', `/profile?id=${this.options.id}`);
 //     subscription.setAttribute('data-link', '');
-//     subscription.classList.add('subscriptions-item');
+//     subscription.classList
+//         .add('subscriptions-item subscriptions-item__subscriptions-item');
 
 //     const avatar = new Image(subscription, {
 //       image: this.options.imgPath,

@@ -80,7 +80,8 @@
 //     glass.element.appendChild(this.subsList);
 //     const profileContainer = document.createElement('div');
 //     profileContainer.classList.add('left-navbar__down');
-//     profileContainer.innerHTML += '<hr>';
+//     profileContainer.innerHTML +=
+//         '<hr class="navbar-hr navbar-hr__navbar-hr">';
 //     this.profile = document.createElement('div');
 //     this.profile.classList.add('left-navbar__down_profile');
 //     this.profile.addEventListener('click', () => {

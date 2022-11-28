@@ -27,13 +27,13 @@ export default class Avatar extends ComponentBase<HTMLImageElement, never> {
     image.classList.add('image');
     switch (this.options.viewType) {
       case AvatarType.author:
-        image.classList.add('image__author');
+        image.classList.add('image_style_author');
         break;
       case AvatarType.donater:
-        image.classList.add('image__donater');
+        image.classList.add('image_style_donater');
         break;
       case AvatarType.sub:
-        image.classList.add('image__sub');
+        image.classList.add('image_style_sub');
         break;
       default:
         break;

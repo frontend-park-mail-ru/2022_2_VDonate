@@ -54,7 +54,6 @@ export default class Button extends ComponentBase<HTMLButtonElement, string> {
       button.classList.add(
           'icon-button',
           'icon-button__back',
-          'icon-button__back_fing',
       );
       const innerIcon = document.createElement('img');
       innerIcon.className = 'icon-button__icon';
@@ -67,13 +66,13 @@ export default class Button extends ComponentBase<HTMLButtonElement, string> {
         'button__back');
     switch (this.options.viewType) {
       case ButtonType.primary:
-        button.classList.add('button__back_primary');
+        button.classList.add('button__back_style_primary');
         break;
       case ButtonType.outline:
-        button.classList.add('button__back_outline');
+        button.classList.add('button__back_style_outline');
         break;
       case ButtonType.fingers:
-        button.classList.add('button__back_fingers');
+        button.classList.add('button__back_style_fingers');
         break;
       default: {
         const _: never = this.options;
