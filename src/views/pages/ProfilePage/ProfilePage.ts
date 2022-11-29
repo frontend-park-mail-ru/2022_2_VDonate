@@ -1,121 +1,131 @@
-// import store from '@app/store';
-// import {IView} from '@flux/types/view';
-// import {IObserver} from '@flux/types/observer';
-// import {ProfileModel} from '@views/pages/profile/profileModel/profileModel';
-// import {PayloadUser} from '@actions/types/user';
-// import getProfile from '@actions/handlers/getProfileData';
-// import {PayloadGetProfileData} from '@actions/types/getProfileData';
-// import {Subscription} from '@actions/types/subscribe';
-// import ViewBaseExtended from '@app/view';
-// import About from '@components/About/About';
-// import ProfileInfo from '@components/ProfileInfo/ProfileInfo';
-// import SubscriptionsContainer
-// from '@views/containers/SubscriptionsContainer/SubscriptionsContainer';
+import store from '@app/store';
+import {PayloadUser} from '@actions/types/user';
+import getProfile from '@actions/handlers/getProfileData';
+import {PayloadGetProfileData} from '@actions/types/getProfileData';
+import ViewBaseExtended from '@app/view';
+import About from '@components/About/About';
+import ProfileInfo from '@components/ProfileInfo/ProfileInfo';
+import SubscriptionsContainer
+  from '@views/containers/SubscriptionsContainer/SubscriptionsContainer';
+import PostsContainer from '@views/containers/PostsContainer/PostsContainer';
+import {Glass, GlassType} from '@components/glass/glass';
+import SubscriptionLink from '@components/SubscriptionLink/SubscriptionLink';
+import './profile-page.styl';
 
-// interface ProfileEditorOptions {
-//   profileID: number
-//   changeable: boolean
-// }
-// // Number(new URL(location.href).searchParams.get('id'))
-// export default class ProfilePage extends ViewBaseExtended<never> {
-//   // /** Структорное представление страницы из компонентов */
-//   // private element: ProfileModel;
-//   // private locId: string | null;
-//   // private subsIds: number[] = [];
-//   private about!: About;
-//   private profileInfo!: ProfileInfo;
-//   private subConatainer!: SubscriptionsContainer;
-//   private profileState: PayloadGetProfileData;
+interface ProfileEditorOptions {
+  profileID: number
+  changeable: boolean
+}
 
+export default class ProfilePage extends ViewBaseExtended<never> {
+  private authorContent: HTMLDivElement = document.createElement('div');
+  private donaterContent: HTMLDivElement = document.createElement('div');
+  private about!: About;
+  private profileInfo!: ProfileInfo;
+  private glass: Glass = new Glass(GlassType.mono);
+  private profileState: PayloadGetProfileData;
 
-//   constructor(el: HTMLElement, private options: ProfileEditorOptions) {
-//     super();
-//     this.profileState = store.getState().profile as PayloadGetProfileData;
-//     this.renderTo(el);
-//     getProfile(this.options.profileID);
+  constructor(el: HTMLElement, private options: ProfileEditorOptions) {
+    super();
+    this.profileState = store.getState().profile as PayloadGetProfileData;
+    this.renderTo(el);
+    getProfile(this.options.profileID);
+  }
 
+  // protected beforeRegisterStore(): void {
+  //   getProfile(Number(new URL(location.href).searchParams.get('id')));
+  // }
 
-//     // const user = store.getState().user as PayloadUser;
-//     // this.locId = new URL(location.href).searchParams.get('id');
-//     // this.element = new ProfileModel(
-//     //     user.id.toString() == this.locId,
-//     // );
-//   }
-//   protected beforeRegisterStore(): void {
-//     getProfile(this.options.profileID);
-//   }
-//   /** Оповещение об изменением хранилища */
-//   notify(): void {
-//     const profileNew =
-//       store.getState().profile as PayloadGetProfileData | undefined;
-//     if (!profileNew) {
-//       return;
-//     }
-//     this.element.setType(profileNew.user.isAuthor);
-//     this.element.renderNavbar(profileNew.user);
-//     if (profileNew.user.isAuthor) {
-//       this.element.renderAbout(profileNew.user.about);
-//       this.element.renderSubContainer(profileNew.authorSubscriptions);
-//       const subs =
-//         store.getState().userSubscribers as Subscription[] | undefined;
-//       if (subs && profileNew.user.id !== Number(this.locId)) {
-//         const subsIds: number[] = [];
-//         subs.forEach((sub) => sub.id ? subsIds.push(sub.id) : null);
-//         subsIds.filter((x) => !this.subsIds.includes(x)).forEach((id) =>
-//           this.element.renderSubscribe(id, Number(this.locId)));
-//         this.subsIds.filter((x) => !subsIds.includes(x)).forEach((id) =>
-//           this.element.renderUnsubscribe(id, Number(this.locId)));
-//         this.subsIds = subsIds;
-//       }
-//     } else {
-//       this.element.renderSubscriptions(profileNew.subscriptions);
-//     }
-//   }
+  /** Оповещение об изменением хранилища */
+  notify(): void {
+    const profileNew =
+      store.getState().profile as PayloadGetProfileData | undefined;
+    if (!profileNew) {
+      return;
+    }
 
-//   protected render(): HTMLDivElement {
-//     const page = document.createElement('div');
-//     page.classList.add('content');
+    if (profileNew.user.isAuthor) {
+      this.authorContent.hidden = false;
+      this.donaterContent.hidden = true;
+    } else {
+      this.authorContent.hidden = true;
+      this.donaterContent.hidden = false;
+    }
+    const profileInfoNew: {
+      isAuthor?: true
+      avatar: string
+      username: string
+      countSubscriptions: number
+      countDonaters?: number
+    } = {
+      avatar: profileNew.user.avatar,
+      username: profileNew.user.username,
+      countSubscriptions: profileNew.user.countSubscriptions,
+    };
+    if (profileNew.user.isAuthor) {
+      profileInfoNew.countDonaters = profileNew.user.countSubscribers;
+      if (this.profileState.user.isAuthor !== profileNew.user.isAuthor) {
+        profileInfoNew.isAuthor = true;
+        this.profileState.user.isAuthor = profileNew.user.isAuthor;
+      }
+    }
+    this.profileInfo.update(profileInfoNew);
+    if (this.profileState.user.about !== profileNew.user.about) {
+      this.about.update(profileNew.user.about ?? '');
+    }
+    if (!profileNew.user.isAuthor) {
+      if (!profileNew.subscriptions ||
+          profileNew.subscriptions.length == 0) {
+        this.glass.element.innerHTML = 'Донатер пока никого не поддерживает';
+      } else {
+        this.glass.element.innerHTML = '';
+        profileNew.subscriptions.forEach((sub) => {
+          new SubscriptionLink(this.glass.element, {
+            id: sub.id,
+            imgPath: sub.authorAvatar ?? sub.img,
+            username: sub.authorName ?? sub.title,
+            tier: `Уровень ${sub.tier}`,
+          });
+        });
+      }
+    }
+  }
 
-//     this.profileInfo = new ProfileInfo(page, {
-//       avatar: this.profileState.user.avatar,
-//       countSubscriptions: this.profileState.user.countSubscriptions,
-//       isAuthor: this.profileState.user.isAuthor,
-//       username: this.profileState.user.username,
-//       countDonaters: this.profileState.user.countSubscribers,
-//     });
+  protected render(): HTMLDivElement {
+    const page = document.createElement('div');
+    page.classList.add('profile-page');
+    this.authorContent.classList.add('profile-page__content');
+    this.profileInfo = new ProfileInfo(page, {
+      avatar: this.profileState.user.avatar,
+      countSubscriptions: this.profileState.user.countSubscriptions,
+      isAuthor: this.profileState.user.isAuthor,
+      username: this.profileState.user.username,
+      countDonaters: this.profileState.user.countSubscribers,
+    });
 
-//     this.subConatainer = new SubscriptionsContainer(page, {
-//       changeable: this.options.changeable,
-//     });
+    new SubscriptionsContainer(this.authorContent, {
+      changeable: this.options.changeable,
+    });
 
-//     this.about = new About(page, {
-//       aboutTextHtml: this.profileState.user.about ??
-//         'Пользователь пока ничего о себе не написал',
-//     });
+    this.about = new About(this.authorContent, {
+      aboutTextHtml: this.profileState.user.about ??
+      'Пользователь пока ничего о себе не написал',
+    });
+    const user = store.getState().user as PayloadUser;
+    new PostsContainer(this.authorContent, {
+      withCreateBtn: this.options.changeable && user.isAuthor,
+    });
+    this.donaterContent.classList.add('profile-page__content');
+    const head = document.createElement('div');
+    head.classList.add('profile-page__head');
+    head.innerText = 'Подписки';
+    this.glass.element.classList.add('profile-page__glass');
+    this.donaterContent.append(head, this.glass.element);
+    page.append(this.authorContent, this.donaterContent);
+    return page;
+  }
 
-
-//     // this.rightNavbar = new RightNavbar();
-//     // this.subContainer = new SubContainer(changeable);
-//     // this.about = new About();
-//     this.head = document.createElement('div');
-//     this.head.classList.add('content__head');
-//     this.head.innerText = 'Подписки';
-//     this.glass = new Glass(GlassType.mono);
-//     this.glass.element.classList.add('content__glass');
-//     this.element.appendChild(this.rightNavbar.element);
-
-//     const user = store.getState().user as PayloadUser;
-//     this.postContaner = new PostsContaner(changeable && user.isAuthor);
-
-//     return page;
-//   }
-//   // /**
-//   //  * Создание страницы профиля
-//   //  * @returns Страница-элемент
-//   //  */
-//   // render(): HTMLElement {
-//   //   this.element.renderAbout(undefined);
-//   //   this.element.renderSubContainer(undefined);
-//   //   return this.element.element;
-//   // }
-// }
+  update(): void {
+    //
+  }
+}

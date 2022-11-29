@@ -16,11 +16,7 @@ type PostOptions = PayloadPost & {
 }
 
 export interface PostUpdateContext {
-  content?: {
-    title: string
-    img: string
-    text: string
-  }
+  content?: string
   isLiked?: boolean
 }
 
@@ -43,9 +39,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     if (data.content) {
       querySelectorWithThrow(this.domElement, '.post__content').innerHTML =
           templateContent({
-            title: data.content.title,
-            img: data.content.img,
-            text: data.content.text,
+            text: data.content,
           });
     }
   }
@@ -55,7 +49,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     post.classList.add('post', 'post__back');
     post.innerHTML = templatePost({
       username: this.options.author.username,
-      date: this.options.date.toDateString(),
+      date: this.options.dateCreated,
     });
 
     const avatarArea =
@@ -69,9 +63,7 @@ post.querySelector<HTMLElement>('.post__author-avatar');
 
     post.querySelector('.post__content')
         ?.insertAdjacentHTML('afterbegin', templateContent({
-          title: this.options.content.title,
-          img: this.options.content.img,
-          text: this.options.content.text,
+          text: this.options.content,
         }));
 
     this.addReactionBtn(post);
@@ -106,7 +98,7 @@ post.querySelector<HTMLElement>('.post__author-avatar');
     });
     new PostAction(reactionArea, {
       reactType: PostActionType.COMMENT,
-      content: this.options.commentsNum.toString(),
+      content: '0', // this.options.commentsNum.toString(),
       isActive: false,
       clickCallback: () => {
         // TODO экшен на открытие комментариев

@@ -1,5 +1,4 @@
 import {PayloadPost} from '@actions/types/posts';
-import {PayloadUser} from '@actions/types/user';
 import store from '@app/store';
 import Post from '@components/Post/Post';
 import plusIcon from '@icon/plus.svg';
@@ -55,7 +54,8 @@ class PostsContainer
         this.deletePost(postID);
       }
     });
-
+    console.log(newPostsState);
+    console.log(this.postsState);
     newPostsState.forEach(
         (postPayload, postID) => {
           const oldPost = this.postsState.get(postID);
@@ -70,7 +70,7 @@ class PostsContainer
         },
     );
 
-    Object.assign(this.postsState, newPostsState);
+    this.postsState = new Map(newPostsState);
   }
 
   private deletePost(postID: number) {
@@ -83,10 +83,10 @@ class PostsContainer
         this.domElement,
         '.posts-container__posts-area',
     );
+    console.log(postPayload);
     this.posts.set(postPayload.postID, new Post(postsArea, {
       ...postPayload,
-      changable: (store.getState().user as PayloadUser)
-          .id === postPayload.author.id,
+      changable: postPayload.userID == postPayload.author.userID,
     }));
   }
 }

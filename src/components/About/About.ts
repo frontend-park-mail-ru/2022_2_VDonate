@@ -20,7 +20,7 @@ class About extends ComponentBase<'div', string> {
 
   protected render(): HTMLDivElement {
     const about = new Glass(GlassType.mono).element;
-    about.classList.add('about about__about');
+    about.classList.add('about', 'about__about');
 
     const head = document.createElement('div');
     head.classList.add('about__head');

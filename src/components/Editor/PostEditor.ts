@@ -15,7 +15,6 @@ import './editor.styl';
 
 interface PostEditorOptions {
   id: number
-  title: string
   text: string
 }
 
@@ -102,7 +101,7 @@ export default class PostEditor
           } else {
             const user = (store.getState().user as PayloadUser);
             createPost({
-              id: user.id,
+              userID: user.id,
               imgPath: user.avatar,
               username: user.username,
             }, (e.target as HTMLFormElement).elements as PostForm);
@@ -122,13 +121,6 @@ export default class PostEditor
     //   }));
     // });
     this.inputs
-        .set('title', new InputField(inputsArea, {
-          kind: InputType.text,
-          label: 'Заголовок',
-          name: 'title',
-          placeholder: 'Придумайте заголовок для поста',
-          value: this.options?.title,
-        }))
         .set('text', new InputField(inputsArea, {
           kind: InputType.textarea,
           label: 'Основной текст',

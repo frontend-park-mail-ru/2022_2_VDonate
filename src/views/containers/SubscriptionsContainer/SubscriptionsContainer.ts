@@ -1,180 +1,127 @@
-// import {IconButton} from '@components/icon_button/icon_button';
-// import {Sub} from '@models/subscription-card/sub';
-// import './subContainer.styl';
-// import plusIcon from '@icon/plus.svg';
-// import {Popup, SubType} from '@models/popup/sub/popup';
-// import store from '@app/store';
-// import {PayloadUser} from '@actions/types/user';
-// import {Subscription} from '@actions/types/subscribe';
-// import {openSubscribtionEditor} from '@actions/handlers/editor';
-// import ViewBaseExtended from '@app/view';
-// import Button, {ButtonType} from '@components/Button/Button';
+import SubscriptionCard,
+{SubscriptionCardStatus} from '@components/SubscriptionCard/SubscriptionCard';
+import './subscriptions-container.styl';
+import plusIcon from '@icon/plus.svg';
+import store from '@app/store';
+import {Subscription} from '@actions/types/subscribe';
+import {openSubscribtionEditor} from '@actions/handlers/editor';
+import ViewBaseExtended from '@app/view';
+import Button, {ButtonType} from '@components/Button/Button';
+import {PayloadGetProfileData} from '@actions/types/getProfileData';
 
-// interface SubscriptionsContainerOptions {
-//   changeable: boolean
-// }
+interface SubscriptionsContainerOptions {
+  changeable: boolean
+}
 
-// /**
-//  * Модель поля подписок
-//  */
-// export default class SubscriptionsContainer extends ViewBaseExtended<never> {
-//   /**
-//    * Актуальный контейнер
-//    */
-//   // readonly element: HTMLElement;
+/**
+ * Модель поля подписок
+ */
+export default class SubscriptionsContainer
+  extends ViewBaseExtended<Map<number, Subscription>> {
+  private subscriptionsState = new Map<number, Subscription>();
+  private subscriptionCards = new Map<number, SubscriptionCard>();
+  constructor(el: HTMLElement,
+    private options: SubscriptionsContainerOptions) {
+    super();
+    this.renderTo(el);
+    this.notify();
+  }
+  private container: HTMLElement = document.createElement('div');
 
-//   private container: HTMLElement;
+  protected render(): HTMLDivElement {
+    const container = document.createElement('div');
+    container.classList.add('sub-container');
 
+    const head = document.createElement('div');
+    head.classList.add('sub-container__head');
+    head.innerText = 'Уровни подписок';
+    if (this.options.changeable) {
+      const editBtn = new Button(head, {
+        viewType: ButtonType.ICON,
+        innerIcon: plusIcon,
+        actionType: 'button',
+        clickCallback: () => {
+          openSubscribtionEditor();
+        },
+      });
+      editBtn.addClassNames('sub-container__head_btn');
+    }
+    this.container.classList.add('sub-container__container');
+    container.append(head, this.container);
 
-//   constructor(el: HTMLElement,
-// private options: SubscriptionsContainerOptions) {
-//     super();
-//     this.renderTo(el);
-//     this.notify();
-//   }
+    return container;
+  }
 
-//   protected render(): HTMLDivElement {
-//     const container = document.createElement('div');
-//     container.classList.add('sub-container');
+  notify(): void {
+    const SubscriptionsMap = new Map<number, Subscription>();
+    (store.getState().profile as PayloadGetProfileData)
+        .authorSubscriptions?.forEach((sub) => {
+          SubscriptionsMap.set(sub.id, sub);
+        });
+    this.update(SubscriptionsMap);
+  }
+  update(newSubscriptionsState: Map<number, Subscription>): void {
+    this.subscriptionsState.forEach((_, subID) => {
+      if (!newSubscriptionsState.has(subID)) {
+        this.deleteSubscriptionCard(subID);
+      }
+    });
 
-//     const head = document.createElement('div');
-//     head.classList.add('sub-container__head');
-//     head.innerText = 'Уровни подписок';
-//     if (this.options.changeable) {
-//       const editBtn = new Button(head, {
-//         viewType: ButtonType.ICON,
-//         innerIcon: plusIcon,
-//         actionType: 'button',
-//         clickCallback: () => {
-//           openSubscribtionEditor();
-//         },
-//       });
-//       editBtn.addClassNames('sub-container__head_btn');
-//     }
-//     this.container = document.createElement('div');
-//     this.container.classList.add('sub-container__container');
-//     container.append(head, this.container);
+    newSubscriptionsState.forEach(
+        (subcription, subID) => {
+          const oldSubscriptionCard = this.subscriptionsState.get(subID);
+          if (oldSubscriptionCard) {
+            let status: SubscriptionCardStatus;
+            if (this.options.changeable) status = SubscriptionCardStatus.AUTHOR;
+            else {
+              const userSubscriptions =
+                store.getState().userSubscribers as Subscription[] | undefined;
+              const idx = userSubscriptions
+                  ?.findIndex((sub) => sub.id === subID);
+              status = (idx && idx > -1) ? SubscriptionCardStatus.OWNER :
+              SubscriptionCardStatus.DONATER;
+            }
 
-//     return container;
-//   }
+            this.subscriptionCards.get(subID)?.update({
+              subscriptionStatus: status,
+              subscriptionName: subcription.title,
+              lvl: subcription.tier,
+              img: subcription.img,
+              price: subcription.price,
+              description: subcription.text,
+            });
+          } else {
+            this.addSubcriptionCard(subcription);
+          }
+        },
+    );
+  }
+  addSubcriptionCard(sub: Subscription) {
+    let status: SubscriptionCardStatus;
+    if (this.options.changeable) status = SubscriptionCardStatus.AUTHOR;
+    else {
+      const userSubscriptions =
+          store.getState().userSubscribers as Subscription[] | undefined;
+      const idx = userSubscriptions
+          ?.findIndex((o) => sub.id === o.id);
+      status = (idx && idx > -1) ? SubscriptionCardStatus.OWNER :
+          SubscriptionCardStatus.DONATER;
+    }
+    this.subscriptionCards.set(sub.id,
+        new SubscriptionCard(this.container, {
+          subscriptionStatus: status,
+          authorID: sub.authorID,
+          subscriptionID: sub.id,
+          subscriptionName: sub.title,
+          lvl: sub.tier,
+          img: sub.img,
+          price: sub.price,
+          description: sub.text,
+        }));
+  }
 
-
-//   /**
-//    * @param subs элементы подписок
-//    */
-//   renderSubs(subs: Subscription[] | undefined) {
-//     if (!subs || subs.length == 0) {
-//       this.container.innerHTML = 'Пока что тут пусто';
-//       return;
-//     }
-//     this.container.innerHTML = '';
-//     const user = store.getState().user as PayloadUser;
-//     const subscriptions =
-//       store.getState().userSubscribers as Subscription[];
-//     subs.sort((a, b) => a.tier - b.tier);
-//     subs.forEach((sub) => {
-//       let subType = SubType.SUBSCRIBE;
-//       if (user.id == sub.authorID) {
-//         subType = SubType.EDITSUBSCRIBE;
-//       } else {
-//         if (subscriptions.find((o) => o.id == sub.id)) {
-//           subType = SubType.UNSUBSCRIBE;
-//         }
-//       }
-//       const subItem = new Sub({
-//         AuthorID: sub.authorID,
-//         subType: subType,
-//         id: sub.id,
-//         subName: sub.title,
-//         lvl: sub.tier,
-//         img: sub.img,
-//         price: sub.price,
-//         period: 'за неделю',
-//         motivation: sub.text,
-//       });
-//       subItem.element.classList.add('sub-container__card');
-//       subItem.element.id = `sub-card_${sub.id}`;
-//       this.container.appendChild(subItem.element);
-//     });
-//   }
-//   // /**
-//   //  * @param sub данные измененной/созданной сабки
-//   //  */
-//   // renderSub(sub: Subscription) {
-//   //   const user = store.getState().user as PayloadUser;
-//   //   const subItem = new Sub({
-//   //     AuthorID: user.id,
-//   //     subType: SubType.EDITSUBSCRIBE,
-//   //     id: sub.id,
-//   //     subName: sub.title,
-//   //     lvl: sub.tier,
-//   //     img: sub.img,
-//   //     price: sub.price,
-//   //     period: 'за неделю',
-//   //     motivation: sub.text,
-//   //   });
-//   //   subItem.element.classList.add('sub-container__card');
-//   //   subItem.element.id = `sub-card_${sub.id}`;
-//   //   if (this.container.innerHTML == 'Пока что тут пусто') {
-//   //     this.container.innerHTML = '';
-//   //   }
-//   //   const subEl = document.getElementById(`sub-card_${sub.id}`);
-//   //   if (subEl) {
-//   //     subEl.parentNode?.replaceChild(subItem.element, subEl);
-//   //   } else {
-//   //     this.container.appendChild(subItem.element);
-//   //   }
-//   // }
-//   // /**
-//   //  * @param subId id подписки
-//   //  * @param authorID id автора
-//   //  */
-//   // renderSubscribeBtn(subId: number, authorID: number) {
-//   //   const subBtn = document.getElementById(`sub-card_${subId}`)?.
-//   //       querySelector('.button');
-//   //   if (!subBtn) {
-//   //     // TODO вызвать ошибку
-//   //     return;
-//   //   }
-//   //   const subBtnText = subBtn.querySelector('span.button__text');
-//   //   if (!subBtnText) {
-//   //     // Тоже ошибку вызвать, но по идее сюда не должно падать
-//   //     return;
-//   //   }
-//   //   subBtnText.innerHTML = 'Отписаться';
-//   //   // TODO наверно не понравится никому,
-//   //   // но зато по памяти так лучше чем хранить эти кнопки и эвенты
-//   //   // eslint-disable-next-line no-self-assign
-//   //   subBtn.outerHTML = subBtn.outerHTML;
-//   //   document.getElementById(`sub-card_${subId}`)
-//   //       ?.querySelector('.button')?.addEventListener('click', () => {
-//   //         const popup = new Popup(authorID, subId, SubType.UNSUBSCRIBE);
-//   //         document.body.appendChild(popup.element);
-//   //       });
-//   // }
-//   // /**
-//   //  * @param subId id подписки
-//   //  * @param authorID id автора
-//   //  */
-//   // renderUnsubscribeBtn(subId: number, authorID: number) {
-//   //   const subBtn = document.getElementById(`sub-card_${subId}`)?.
-//   //       querySelector('.button');
-//   //   if (!subBtn) {
-//   //     // TODO вызвать ошибку
-//   //     return;
-//   //   }
-//   //   const subBtnText = subBtn.querySelector('span.button__text');
-//   //   if (!subBtnText) {
-//   //     // Тоже ошибку вызвать, но по идее сюда не должно падать
-//   //     return;
-//   //   }
-//   //   subBtnText.innerHTML = 'Задонатить';
-//   //   // eslint-disable-next-line no-self-assign
-//   //   subBtn.outerHTML = subBtn.outerHTML;
-//   //   document.getElementById(`sub-card_${subId}`)
-//   //       ?.querySelector('.button')?.addEventListener('click', () => {
-//   //         const popup = new Popup(authorID, subId, SubType.SUBSCRIBE);
-//   //         document.body.appendChild(popup.element);
-//   //       });
-//   // }
-// }
+  private deleteSubscriptionCard(subID: number) {
+    this.subscriptionCards.get(subID)?.remove();
+    this.subscriptionCards.delete(subID);
+  }
+}

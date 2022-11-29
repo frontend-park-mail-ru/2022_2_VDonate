@@ -10,6 +10,9 @@ import NoticeContainer from './containers/NoticeContainer/NoticeContainer';
 import ViewBaseExtended from '@app/view';
 import Navbar from './containers/Navbar/Navbar';
 import SearchPage from './pages/SearchPage/searchPage';
+import ProfilePage from './pages/ProfilePage/ProfilePage';
+import {PayloadUser} from '@actions/types/user';
+import FeedPage from './pages/FeedPage/FeedPage';
 
 /** Класс корневой вьюшки */
 export default class Root extends ViewBaseExtended<PayloadLocation> {
@@ -21,19 +24,23 @@ export default class Root extends ViewBaseExtended<PayloadLocation> {
     | NotFoundPage
     | PreloadPage
     | EntryPage
-    | SearchPage;
+    | SearchPage
+    | ProfilePage
+    | FeedPage;
 
   constructor(el: HTMLElement) {
     super();
     this.locationState = store.getState().location as PayloadLocation;
     this.renderTo(el);
+    this.update(this.locationState);
     auth();
   }
 
   /** Оповещение об изменением хранилища */
   notify(): void {
     const locationNew = store.getState().location as PayloadLocation;
-    if (locationNew.type !== this.locationState.type) {
+    if (locationNew.type !== this.locationState.type ||
+        locationNew.options?.id != this.locationState.options?.id) {
       this.locationState = locationNew;
       this.update(this.locationState);
     }
@@ -63,7 +70,19 @@ export default class Root extends ViewBaseExtended<PayloadLocation> {
         this.currentPage = new SearchPage(this.domElement);
         break;
       case Pages.PROFILE:
+        this.navbar.showNavbar();
+        this.currentPage = new ProfilePage(this.domElement, {
+          profileID:
+            Number(new URL(window.location.href).searchParams.get('id')),
+          changeable:
+          Number(new URL(window.location.href).searchParams.get('id')) ==
+              (store.getState().user as PayloadUser).id,
+        });
+        break;
       case Pages.FEED:
+        this.navbar.showNavbar();
+        this.currentPage = new FeedPage(this.domElement);
+        break;
       case Pages.NOT_FOUND:
         this.navbar.showNavbar();
         this.currentPage = new NotFoundPage(this.domElement);
@@ -82,7 +101,7 @@ export default class Root extends ViewBaseExtended<PayloadLocation> {
     this.navbar = new Navbar(root);
     new EditorContainer(root);
     new NoticeContainer(root);
-    this.update(this.locationState);
+    // this.update(this.locationState);
 
     return root;
   }

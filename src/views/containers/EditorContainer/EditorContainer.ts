@@ -74,15 +74,13 @@ class EditorContainer
           this.currentEditor = new PostEditor(this.domElement);
           break;
         }
-        const targetPost = (store.getState().posts as PayloadPost[]).find(
-            (post) => postID === post.postID,
-        );
+        const postsStore = store.getState().posts as Map<number, PayloadPost>;
+        const targetPost = postsStore.get(postID);
         if (targetPost) {
           this.currentEditor = new PostEditor(this.domElement,
               {
                 id: postID,
-                title: targetPost.content.title,
-                text: targetPost.content.text,
+                text: targetPost.content,
               });
         }
         break;
