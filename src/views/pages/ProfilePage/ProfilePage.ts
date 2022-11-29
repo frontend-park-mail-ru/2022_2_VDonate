@@ -2,7 +2,6 @@ import store from '@app/Store';
 import {PayloadUser} from '@actions/types/user';
 import getProfile from '@actions/handlers/getProfileData';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
-import ViewBaseExtended from '@app/Page';
 import About from '@components/About/About';
 import ProfileInfo from '@components/ProfileInfo/ProfileInfo';
 import SubscriptionsContainer

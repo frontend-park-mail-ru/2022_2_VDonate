@@ -1,6 +1,5 @@
 import store from '@app/Store';
 import './entry-page.styl';
-import {PayloadSignUpErrors} from '@actions/types/user';
 import LogInForm from '@components/EntryForm/LogInForm';
 import SignUpForm from '@components/EntryForm/SignUpForm';
 import PageBase from '@app/Page';

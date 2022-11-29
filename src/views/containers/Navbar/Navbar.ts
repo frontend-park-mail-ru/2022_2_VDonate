@@ -8,7 +8,6 @@ import {logout} from '@actions/handlers/user';
 import {Subscription} from '@actions/types/subscribe';
 import {openProfileEditor} from '@actions/handlers/editor';
 import {RouteType} from '@actions/types/routing';
-import ViewBaseExtended from '@app/Page';
 import Logo from '@components/Logo/Logo';
 import NavbarLink from '@components/NavbarLink/NavbarLink';
 import Button, {ButtonType} from '@components/Button/Button';
