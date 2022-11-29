@@ -81,7 +81,7 @@ export default class ProfilePage extends ViewBaseExtended<never> {
         this.glass.element.innerHTML = '';
         profileNew.subscriptions.forEach((sub) => {
           new SubscriptionLink(this.glass.element, {
-            id: sub.id,
+            id: sub.authorID,
             imgPath: sub.authorAvatar ?? sub.img,
             username: sub.authorName ?? sub.title,
             tier: `Уровень ${sub.tier}`,

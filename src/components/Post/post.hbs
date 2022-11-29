@@ -3,6 +3,9 @@
   <span class="post__author-name">{{username}}</span>
   <span class="post__date-created">{{date}}</span>
 </div>
+{{#if isAllowed}}
 <div class="post__content post-content"></div>
-{{#if notAllowed}}<div class="post__not-allowed">Нужен донат {{tier}} уровня</div>{{/if}}
+{{else}}
+<div class="post__not-allowed">Нужен донат {{tier}} уровня</div>
+{{/if}}
 <div class="post__reaction"></div>

@@ -55,7 +55,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     post.innerHTML = templatePost({
       username: this.options.author.username,
       date: this.options.dateCreated,
-      notAllowed: !this.options.isAllowed,
+      isAllowed: this.options.isAllowed,
       tier: this.options.tier,
     });
 
