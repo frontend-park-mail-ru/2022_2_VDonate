@@ -81,7 +81,6 @@ export default class SubscriptionsContainer
               status = (idx && idx > -1) ? SubscriptionCardStatus.OWNER :
               SubscriptionCardStatus.DONATER;
             }
-
             this.subscriptionCards.get(subID)?.update({
               subscriptionStatus: status,
               subscriptionName: subcription.title,
@@ -96,6 +95,7 @@ export default class SubscriptionsContainer
         },
     );
   }
+
   addSubcriptionCard(sub: Subscription) {
     let status: SubscriptionCardStatus;
     if (this.options.changeable) status = SubscriptionCardStatus.AUTHOR;
@@ -107,21 +107,24 @@ export default class SubscriptionsContainer
       status = (idx && idx > -1) ? SubscriptionCardStatus.OWNER :
           SubscriptionCardStatus.DONATER;
     }
-    this.subscriptionCards.set(sub.id,
-        new SubscriptionCard(this.container, {
-          subscriptionStatus: status,
-          authorID: sub.authorID,
-          subscriptionID: sub.id,
-          subscriptionName: sub.title,
-          lvl: sub.tier,
-          img: sub.img,
-          price: sub.price,
-          description: sub.text,
-        }));
+    const card = new SubscriptionCard(this.container, {
+      subscriptionStatus: status,
+      authorID: sub.authorID,
+      subscriptionID: sub.id,
+      subscriptionName: sub.title,
+      lvl: sub.tier,
+      img: sub.img,
+      price: sub.price,
+      description: sub.text,
+    });
+    card.addClassNames('sub-container__card');
+    this.subscriptionCards.set(sub.id, card);
+    this.subscriptionsState.set(sub.id, sub);
   }
 
   private deleteSubscriptionCard(subID: number) {
     this.subscriptionCards.get(subID)?.remove();
     this.subscriptionCards.delete(subID);
+    this.subscriptionsState.delete(subID);
   }
 }

@@ -106,6 +106,8 @@ class SubscriptionCard
 
   protected render(): HTMLDivElement {
     const card = new Glass(GlassType.mono).element;
+    card.classList.add('sub', 'sub__sub');
+    card.id = `sub_${this.options.subscriptionID}`;
     card.innerHTML = template({
       id: this.options.subscriptionID,
       subName: this.options.subscriptionName,
@@ -125,7 +127,7 @@ class SubscriptionCard
     this.avatar.addClassNames('sub__img');
 
     this.addButton(card);
-    this.price = querySelectorWithThrow(card, '.sub__count');
+    this.price = querySelectorWithThrow(card, '.price__count');
     this.description = querySelectorWithThrow(card, '.sub__motivation');
     if (this.options.description.length >= 60) {
       this.description.classList.add('sub__motivation_part');

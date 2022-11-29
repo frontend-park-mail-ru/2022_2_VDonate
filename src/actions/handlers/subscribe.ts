@@ -115,7 +115,7 @@ export interface AuthorSubscrptionForm extends HTMLCollection {
   price: HTMLInputElement
   tier: HTMLInputElement
   text: HTMLInputElement
-  file: HTMLInputElement
+  file?: HTMLInputElement
 }
 
 export const editAuthorSubscription = (
@@ -155,7 +155,7 @@ export const editAuthorSubscription = (
     tier: Number(form.tier.value),
     title: form.title.value,
   };
-  if (form.file.files) {
+  if (form.file?.files) {
     subData.file = form.file.files[0];
   }
 
@@ -229,7 +229,7 @@ export const createAuthorSubscription = (form: AuthorSubscrptionForm) => {
     text: form.text.value,
     tier: Number(form.tier.value),
     title: form.title.value,
-    file: form.file.files ? form.file.files[0] : undefined,
+    file: form.file?.files ? form.file.files[0] : undefined,
   })
       .then((res: ResponseData) => {
         if (res.ok) {
