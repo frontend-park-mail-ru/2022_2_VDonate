@@ -1,4 +1,5 @@
 import {ActionType} from '@actions/types/action';
+import {PayloadGetProfileData} from '@actions/types/getProfileData';
 import {PayloadNotice} from '@actions/types/notice';
 import {PayloadPost} from '@actions/types/posts';
 import {PayloadUser} from '@actions/types/user';
@@ -6,33 +7,26 @@ import api from '@app/api';
 import store from '@app/store';
 
 export interface PostForm extends HTMLCollection {
-  // title: HTMLInputElement
   text: HTMLTextAreaElement
-  // img?: HTMLInputElement
+  tier: HTMLInputElement
 }
 
-// interface PostCreateResponse {
-//   imgPath: string
-//   postID: number
-// }
-
-// export interface PostResponse {
-//   author: {
-//     id: number
-//     username: string
-//     imgPath: string
-//   }
-//   img: string
-//   likesNum: number
-//   postID: 1
-//   text: string
-//   title: string
-//   userID: number
-//   isLiked: boolean
-// }
-
 export const createPost = (author: PayloadPost['author'], form: PostForm) => {
+  const tierIdx = (store.getState().profile as PayloadGetProfileData)
+      .authorSubscriptions?.map((sub) => {
+        return sub.tier;
+      }).findIndex((tier) => tier == Number(form.tier.value));
+  if (!tierIdx && tierIdx == -1) {
+    store.dispatch({
+      type: ActionType.NOTICE,
+      payload: {
+        message: 'Вы указали несуществующий уровень подписки',
+      },
+    });
+    return;
+  }
   api.createPost({
+    tier: Number(form.tier.value),
     content: form.text.value,
   })
       .then((res) => {
@@ -78,7 +72,21 @@ export const createPost = (author: PayloadPost['author'], form: PostForm) => {
 };
 
 export const updatePost = (id: number, form: PostForm) => {
+  const tierIdx = (store.getState().profile as PayloadGetProfileData)
+      .authorSubscriptions?.map((sub) => {
+        return sub.tier;
+      }).findIndex((tier) => tier == Number(form.tier.value));
+  if (!tierIdx && tierIdx == -1) {
+    store.dispatch({
+      type: ActionType.NOTICE,
+      payload: {
+        message: 'Вы указали несуществующий уровень подписки',
+      },
+    });
+    return;
+  }
   api.updatePost(id, {
+    tier: Number(form.tier.value),
     content: form.text.value,
   })
       .then((res) => {
@@ -237,4 +245,31 @@ export const getFeed = () => {
         });
       },
       );
+};
+
+export const putImage = (file: File) => {
+  api.putImage(file)
+      .then((res) => {
+        if (res.ok) {
+          store.dispatch({
+            type: ActionType.PUT_IMAGE,
+            payload: {
+              url: res.body.url as string,
+            },
+          });
+        } else {
+          store.dispatch({
+            type: ActionType.NOTICE,
+            payload: res.body as PayloadNotice,
+          });
+        }
+      })
+      .catch((err) => {
+        store.dispatch({
+          type: ActionType.NOTICE,
+          payload: {
+            message: err as string,
+          },
+        });
+      });
 };

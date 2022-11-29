@@ -8,10 +8,12 @@ import ViewBaseExtended from '@app/view';
 import PostEditor from '@components/Editor/PostEditor';
 import ProfileEditor from '@components/Editor/ProfileEditor';
 import SubscriptionEditor from '@components/Editor/SubscriptionEditor';
+import {querySelectorWithThrow} from '@flux/types/component';
 
 interface EditorUpdateData {
   newEditor?: PayloadEditor
   errors?: PayloadFormError
+  image?: string
 }
 
 /** */
@@ -23,6 +25,7 @@ class EditorContainer
     | PostEditor
     | ProfileEditor
     | SubscriptionEditor;
+  private editorType!: EditorType;
 
   constructor(el: HTMLElement) {
     super();
@@ -55,11 +58,28 @@ class EditorContainer
         newEditor: this.editorState,
       });
     }
+    if (this.editorType == EditorType.POST) {
+      const url = (store.getState().image as {url: string} | undefined)?.url;
+      if (url) {
+        this.update({image: url});
+      }
+    }
   }
 
   update(data: EditorUpdateData): void {
     if (data.newEditor) this.displayEditor(data.newEditor);
     if (data.errors) this.displayErrors(data.errors);
+    if (data.image) this.addImage(data.image);
+  }
+
+  private addImage(image: string) {
+    if (this.editorType == EditorType.POST) {
+      const textarea = querySelectorWithThrow(
+          this.domElement,
+          'textarea.input-field__textarea',
+      ) as HTMLInputElement;
+      textarea.value += `[img|${image}]`;
+    }
   }
 
   private displayEditor(newEditor: PayloadEditor) {
@@ -69,6 +89,7 @@ class EditorContainer
         this.currentEditor = undefined;
         break;
       case EditorType.POST: {
+        this.editorType = EditorType.POST;
         const postID = newEditor.id;
         if (typeof postID !== 'number') {
           this.currentEditor = new PostEditor(this.domElement);
@@ -81,11 +102,13 @@ class EditorContainer
               {
                 id: postID,
                 text: targetPost.content,
+                tier: targetPost.tier,
               });
         }
         break;
       }
       case EditorType.PROFILE: {
+        this.editorType = EditorType.PROFILE;
         const user = store.getState().user as PayloadUser;
         this.currentEditor = new ProfileEditor(this.domElement,
             {
@@ -98,6 +121,7 @@ class EditorContainer
         break;
       }
       case EditorType.SUBSCRIBTION: {
+        this.editorType = EditorType.SUBSCRIBTION;
         const subID = newEditor.id;
         if (typeof subID !== 'number') {
           this.currentEditor = new SubscriptionEditor(this.domElement);

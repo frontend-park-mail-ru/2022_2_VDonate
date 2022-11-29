@@ -55,6 +55,8 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     post.innerHTML = templatePost({
       username: this.options.author.username,
       date: this.options.dateCreated,
+      notAllowed: !this.options.isAllowed,
+      tier: this.options.tier,
     });
 
     const avatarArea =
@@ -83,7 +85,6 @@ post.querySelector<HTMLElement>('.post__author-avatar');
       });
       editBtn.addClassNames('post__header-btn');
     }
-
     return post;
   }
 

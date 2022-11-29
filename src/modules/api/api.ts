@@ -185,6 +185,7 @@ export default class Api {
    * @returns dfd
    */
   createPost(data: {
+    tier: number,
     content: string,
   }): Promise<ResponseData> {
     return this.request('/posts', Method.POST, ContentType.formData, data);
@@ -196,6 +197,7 @@ export default class Api {
    * @returns dfd
    */
   updatePost(id: number, data: {
+    tier: number,
     content: string,
   }): Promise<ResponseData> {
     return this.request(
@@ -291,6 +293,15 @@ export default class Api {
         `/search?keyword=${keyword}`,
         Method.GET,
         ContentType.json,
+    );
+  }
+
+  putImage(file: File): Promise<ResponseData> {
+    return this.request(
+        '/image',
+        Method.POST,
+        ContentType.formData,
+        {file},
     );
   }
 }

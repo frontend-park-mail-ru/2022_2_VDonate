@@ -11,6 +11,7 @@ import {
   ActionCreatePost,
   ActionDeletePost,
   ActionGetPosts,
+  ActionPutImage,
   ActionUpdatePost,
 } from './posts';
 import {ActionRouting} from './routing';
@@ -54,6 +55,7 @@ export enum ActionType {
   CREATE_POST,
   DELETE_POST,
   SEARCH_AUTHORS,
+  PUT_IMAGE,
 }
 /** Объединение действий */
 export type Action =
@@ -81,4 +83,5 @@ export type Action =
   | ActionUpdatePost
   | ActionCreatePost
   | ActionDeletePost
-  | ActionSearch;
+  | ActionSearch
+  | ActionPutImage;

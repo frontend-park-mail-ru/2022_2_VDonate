@@ -3,6 +3,7 @@ import {
   createPost,
   deletePost,
   PostForm,
+  putImage,
   updatePost,
 } from '@actions/handlers/posts';
 import {PayloadUser} from '@actions/types/user';
@@ -16,6 +17,7 @@ import './editor.styl';
 interface PostEditorOptions {
   id: number
   text: string
+  tier: number
 }
 
 // const postEditorInputs = new Map<string, InputOptions>([
@@ -71,6 +73,15 @@ export default class PostEditor
     this.addInputs(form);
     this.addButtons(form);
 
+    const image = querySelectorWithThrow(
+        form,
+        'input[type=file]',
+    ) as HTMLInputElement;
+    image.addEventListener('change', () => {
+      if (image.files) {
+        putImage(image.files[0]);
+      }
+    });
     return editor;
   }
 
@@ -121,6 +132,13 @@ export default class PostEditor
     //   }));
     // });
     this.inputs
+        .set('tier', new InputField(inputsArea, {
+          kind: InputType.text,
+          label: 'Уровень',
+          name: 'tier',
+          placeholder: 'Введите уровень доступа',
+          value: this.options?.tier.toString(),
+        }))
         .set('text', new InputField(inputsArea, {
           kind: InputType.textarea,
           label: 'Основной текст',

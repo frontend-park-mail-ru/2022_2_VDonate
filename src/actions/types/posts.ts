@@ -50,3 +50,10 @@ export interface ActionDeletePost extends IAction {
   type: ActionType.DELETE_POST
   payload: PayloadPostDelete
 }
+
+export interface ActionPutImage extends IAction {
+  type: ActionType.PUT_IMAGE,
+  payload: {
+    url: string,
+  }
+}
