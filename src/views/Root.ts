@@ -9,6 +9,7 @@ import EditorContainer from './containers/EditorContainer/EditorContainer';
 import NoticeContainer from './containers/NoticeContainer/NoticeContainer';
 import ViewBaseExtended from '@app/view';
 import Navbar from './containers/Navbar/Navbar';
+import SearchPage from './pages/SearchPage/searchPage';
 
 /** Класс корневой вьюшки */
 export default class Root extends ViewBaseExtended<PayloadLocation> {
@@ -19,7 +20,8 @@ export default class Root extends ViewBaseExtended<PayloadLocation> {
   private currentPage?:
     | NotFoundPage
     | PreloadPage
-    | EntryPage;
+    | EntryPage
+    | SearchPage;
 
   constructor(el: HTMLElement) {
     super();
@@ -57,9 +59,12 @@ export default class Root extends ViewBaseExtended<PayloadLocation> {
           type: EntryFormType.SIGNUP,
         });
         break;
+      case Pages.SEARCH:
+        this.navbar.showNavbar();
+        this.currentPage = new SearchPage(this.domElement);
+        break;
       case Pages.PROFILE:
       case Pages.FEED:
-      case Pages.SEARCH:
       case Pages.NOT_FOUND:
         this.navbar.showNavbar();
         this.currentPage = new NotFoundPage(this.domElement);

@@ -6,7 +6,7 @@ interface SubscriptionLinkOptions {
   id: number
   imgPath: string
   username: string
-  tier: number
+  tier: string
 }
 
 /**
@@ -36,7 +36,7 @@ class SubscriptionLink extends ComponentBase<'a'> {
     user.innerText = this.options.username;
     const lvl = document.createElement('div');
     lvl.classList.add('subscriptions-item__tier');
-    lvl.innerText = `Уровень ${this.options.tier}`;
+    lvl.innerText = this.options.tier;
 
     subscription.append(user, lvl);
 
