@@ -50,17 +50,26 @@ export default class Root extends ViewBaseExtended<PayloadLocation> {
     this.currentPage?.erase();
     switch (location.type) {
       case Pages.PRELOAD:
-        this.navbar?.erase();
+        if (this.navbar) {
+          this.navbar.erase();
+          this.navbar = undefined;
+        }
         this.currentPage = new PreloadPage(this.domElement);
         break;
       case Pages.LOGIN:
-        this.navbar?.erase();
+        if (this.navbar) {
+          this.navbar.erase();
+          this.navbar = undefined;
+        }
         this.currentPage = new EntryPage(this.domElement, {
           type: EntryFormType.LOGIN,
         });
         break;
       case Pages.SIGNUP:
-        this.navbar?.erase();
+        if (this.navbar) {
+          this.navbar.erase();
+          this.navbar = undefined;
+        }
         this.currentPage = new EntryPage(this.domElement, {
           type: EntryFormType.SIGNUP,
         });
