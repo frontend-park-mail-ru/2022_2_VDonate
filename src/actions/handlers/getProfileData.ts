@@ -5,7 +5,6 @@ import store from '@app/store';
 import {
   PayloadProfileUser} from '@actions/types/getProfileData';
 import {PayloadPost} from '@actions/types/posts';
-import {PostResponse} from './posts';
 import {Pages} from '@configs/router';
 import {Subscription} from '@actions/types/subscribe';
 
@@ -17,28 +16,7 @@ const getAuthorData = async (user: PayloadProfileUser) => {
     getSubscriptionsRes.body as Subscription[] : undefined;
 
   const posts = getPostsRes.ok ?
-    (getPostsRes.body as PostResponse[]).map(
-        (postResponse) => {
-          const post: PayloadPost = {
-            author: {
-              id: user.id,
-              username: user.username,
-              imgPath: user.avatar,
-            },
-            postID: postResponse.postID,
-            content: {
-              img: postResponse.img,
-              text: postResponse.text,
-              title: postResponse.title,
-            },
-            likesNum: postResponse.likesNum,
-            isLiked: postResponse.isLiked,
-            commentsNum: 0, // TODO получать из запроса
-            date: new Date(Date.now()), // TODO получать из запроса
-          };
-          return post;
-        },
-    ) : undefined;
+    getPostsRes.body as PayloadPost[] : undefined;
 
   store.dispatch({
     type: ActionType.GETPROFILEDATA,

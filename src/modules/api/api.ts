@@ -91,7 +91,7 @@ export default class Api {
      * @return объект ответа с полями {ok,status,body}
      */
   getAuthorPosts(id: number): Promise<ResponseData> {
-    return this.request(`/posts?user_id=${id}`, Method.GET, ContentType.json);
+    return this.request(`/posts?filter=${id}`, Method.GET, ContentType.json);
   }
 
   /**
@@ -185,9 +185,8 @@ export default class Api {
    * @returns dfd
    */
   createPost(data: {
-    title: string,
-    text: string,
-    file?: File,
+    tier: number,
+    contentTemplate: string,
   }): Promise<ResponseData> {
     return this.request('/posts', Method.POST, ContentType.formData, data);
   }
@@ -198,9 +197,8 @@ export default class Api {
    * @returns dfd
    */
   updatePost(id: number, data: {
-    title: string,
-    text: string,
-    file?: File,
+    tier: number,
+    contentTemplate: string,
   }): Promise<ResponseData> {
     return this.request(
         `/posts/${id}`,
@@ -288,6 +286,22 @@ export default class Api {
         `/posts/${id}`,
         Method.DELETE,
         ContentType.json,
+    );
+  }
+  searchAuthors(keyword: string): Promise<ResponseData> {
+    return this.request(
+        `/search?keyword=${keyword}`,
+        Method.GET,
+        ContentType.json,
+    );
+  }
+
+  putImage(file: File): Promise<ResponseData> {
+    return this.request(
+        '/image',
+        Method.POST,
+        ContentType.formData,
+        {file},
     );
   }
 }

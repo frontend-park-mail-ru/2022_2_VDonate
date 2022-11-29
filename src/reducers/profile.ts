@@ -32,7 +32,14 @@ const profileReducer: Reducer<Action> =
         }
         return state;
       case ActionType.DELETEAUTHORSUBSCRIPTION:
-        const idx = (state as PayloadGetProfileData).authorSubscriptions
+        const subscriptions = (state as PayloadGetProfileData)
+            .authorSubscriptions;
+        if (subscriptions?.length == 1 &&
+          subscriptions[0].id == action.payload.id) {
+          (state as PayloadGetProfileData).authorSubscriptions = [];
+          return state;
+        }
+        const idx = subscriptions
             ?.findIndex((sub) => sub.id == action.payload.id);
         if (idx && idx > -1) {
           (state as PayloadGetProfileData).authorSubscriptions?.splice(idx, 1);

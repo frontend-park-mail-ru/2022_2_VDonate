@@ -16,7 +16,7 @@ export class Glass {
   /**
    * Актуальный контейнер стекла
    */
-  readonly element: HTMLElement;
+  readonly element: HTMLDivElement;
 
   /**
    * @param viewType дизайн стекла
@@ -28,16 +28,16 @@ export class Glass {
     this.element.classList.add('glass');
     switch (viewType) {
       case GlassType.mono:
-        this.element.classList.add('glass__mono');
+        this.element.classList.add('glass_back_mono');
         break;
       case GlassType.blackHard:
-        this.element.classList.add('glass__black-hard');
+        this.element.classList.add('glass_back_black-hard');
         break;
       case GlassType.lines:
-        this.element.classList.add('glass__lines');
+        this.element.classList.add('glass_back_lines');
         break;
       default:
-        this.element.classList.add('glass__mono');
+        this.element.classList.add('glass_back_mono');
         break;
     }
   }

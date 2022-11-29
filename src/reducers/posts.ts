@@ -3,17 +3,22 @@ import {PayloadPost} from '@actions/types/posts';
 import {Reducer} from '@flux/types/reducer';
 import {PropTree} from '@flux/types/store';
 
+const createPostsMap = (posts: PayloadPost[]): Map<number, PayloadPost> => {
+  const postsMap = new Map<number, PayloadPost>();
+  posts.forEach((post) => postsMap.set(post.postID, post));
+  return postsMap;
+};
+
 const postsReducer: Reducer<Action> =
   (state: PropTree, action: Action): PropTree => {
     switch (action.type) {
       case ActionType.GET_POSTS:
-        return action.payload;
+        return createPostsMap(action.payload);
       case ActionType.GETPROFILEDATA:
-        return action.payload.posts ?? [];
+        return createPostsMap(action.payload.posts ?? []);
       case ActionType.UPDATE_POST: {
-        const post = (state as PayloadPost[]).find(
-            (post) => post.postID === action.payload.postID,
-        );
+        const post = (state as Map<number, PayloadPost>)
+            .get(action.payload.postID);
         if (post) {
           if (action.payload.isLiked !== undefined) {
             post.isLiked = action.payload.isLiked;
@@ -26,14 +31,11 @@ const postsReducer: Reducer<Action> =
         return state;
       }
       case ActionType.CREATE_POST:
-        (state as PayloadPost[]).push(action.payload);
+        (state as Map<number, PayloadPost>)
+            .set(action.payload.postID, action.payload);
         return state;
       case ActionType.DELETE_POST: {
-        const idx = (state as PayloadPost[])
-            .findIndex((post) => post.postID === action.payload.postID);
-        if (idx > -1) {
-          (state as PayloadPost[]).splice(idx);
-        }
+        (state as Map<number, PayloadPost>).delete(action.payload.postID);
         return state;
       }
       default:

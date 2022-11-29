@@ -2,30 +2,26 @@ import {IAction} from '@flux/types/actions';
 import {ActionType} from './action';
 
 export interface PayloadPost {
-  postID: number
   author: {
-    id: number
+    userID: number
     imgPath: string
     username: string
   }
-  date: Date
-  content: {
-    title: string
-    img: string
-    text: string
-  }
-  likesNum: number
+  content: string
+  dateCreated: Date
+  isAllowed: boolean
   isLiked: boolean
+  likesNum: number
+  postID: number
+  // tags
+  tier: number
+  userID: number
   commentsNum: number
 }
 
 export interface PayloadPostUpdate {
   postID: number
-  content?: {
-    title: string
-    img: string
-    text: string
-  }
+  content?: string
   likesNum?: number
   isLiked?: boolean
   commentsNum?: number
@@ -53,4 +49,11 @@ export interface ActionCreatePost extends IAction {
 export interface ActionDeletePost extends IAction {
   type: ActionType.DELETE_POST
   payload: PayloadPostDelete
+}
+
+export interface ActionPutImage extends IAction {
+  type: ActionType.PUT_IMAGE,
+  payload: {
+    url: string,
+  }
 }

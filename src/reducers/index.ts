@@ -8,6 +8,8 @@ import postsReducer from './posts';
 import profileReducer from './profile';
 import userReducer from './user';
 import UserSubscribersReducer from './userSubscribers';
+import authorReducer from './authors';
+import imageReducer from './image';
 
 export default combineReducers<Action>({
   location: locationReducer,
@@ -18,4 +20,6 @@ export default combineReducers<Action>({
   notice: noticeReducer,
   userSubscribers: UserSubscribersReducer,
   editor: editorReducer,
+  authors: authorReducer,
+  image: imageReducer,
 });

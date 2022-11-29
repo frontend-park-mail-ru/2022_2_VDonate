@@ -11,6 +11,7 @@ import {
   ActionCreatePost,
   ActionDeletePost,
   ActionGetPosts,
+  ActionPutImage,
   ActionUpdatePost,
 } from './posts';
 import {ActionRouting} from './routing';
@@ -26,6 +27,7 @@ import {
   ActionEditUserFail,
 } from './user';
 import {ActionEditorClose, ActionEditorOpen} from './editor';
+import {ActionSearch} from './searchAuthor';
 /** Типы действий */
 export enum ActionType {
   LOGIN_SUCCESS,
@@ -52,6 +54,8 @@ export enum ActionType {
   UPDATE_POST,
   CREATE_POST,
   DELETE_POST,
+  SEARCH_AUTHORS,
+  PUT_IMAGE,
 }
 /** Объединение действий */
 export type Action =
@@ -78,4 +82,6 @@ export type Action =
   | ActionEditorClose
   | ActionUpdatePost
   | ActionCreatePost
-  | ActionDeletePost;
+  | ActionDeletePost
+  | ActionSearch
+  | ActionPutImage;

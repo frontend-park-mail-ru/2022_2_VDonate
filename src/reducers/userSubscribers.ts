@@ -25,9 +25,15 @@ const UserSubscribersReducer: Reducer<Action> =
         }
         return state;
       case ActionType.UNSUBSCRIBE:
+        const subs = state as Subscription[];
+        if (subs.length == 1 &&
+          subs[0].id == action.payload.authorSubscriptionID) {
+          state = [];
+          return state;
+        }
         const idx =
-          (state as Subscription[]).findIndex((sub) =>
-            sub.id == action.payload.authorSubscriptionID);
+            subs.findIndex((sub) =>
+              sub.id == action.payload.authorSubscriptionID);
         if (idx && idx > -1) {
           (state as Subscription[]).splice(idx, 1);
         }

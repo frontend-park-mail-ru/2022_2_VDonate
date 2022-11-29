@@ -1,57 +1,55 @@
 import {ActionType} from '@actions/types/action';
+import {PayloadGetProfileData} from '@actions/types/getProfileData';
 import {PayloadNotice} from '@actions/types/notice';
 import {PayloadPost} from '@actions/types/posts';
+import {PayloadUser} from '@actions/types/user';
 import api from '@app/api';
 import store from '@app/store';
 
 export interface PostForm extends HTMLCollection {
-  title: HTMLInputElement
   text: HTMLTextAreaElement
-  img?: HTMLInputElement
-}
-
-interface PostCreateResponse {
-  imgPath: string
-  postID: number
-}
-
-export interface PostResponse {
-  author: {
-    id: number
-    username: string
-    imgPath: string
-  }
-  img: string
-  likesNum: number
-  postID: 1
-  text: string
-  title: string
-  userID: number
-  isLiked: boolean
+  tier: HTMLInputElement
 }
 
 export const createPost = (author: PayloadPost['author'], form: PostForm) => {
+  const tierIdx = (store.getState().profile as PayloadGetProfileData)
+      .authorSubscriptions?.map((sub) => {
+        return sub.tier;
+      }).findIndex((tier) => tier == Number(form.tier.value));
+  if (!tierIdx && tierIdx == -1) {
+    store.dispatch({
+      type: ActionType.NOTICE,
+      payload: {
+        message: 'Вы указали несуществующий уровень подписки',
+      },
+    });
+    return;
+  }
   api.createPost({
-    title: form.title.value,
-    text: form.text.value,
-    file: form.img?.files?.item(0) ?? undefined,
+    tier: Number(form.tier.value),
+    contentTemplate: form.text.value,
   })
       .then((res) => {
         if (res.ok) {
+          const user = store.getState().user as PayloadUser;
           store.dispatch({
             type: ActionType.CREATE_POST,
             payload: {
-              author,
-              postID: (res.body as PostCreateResponse).postID,
-              commentsNum: 0,
-              date: new Date(Date.now()),
-              content: {
-                img: (res.body as PostCreateResponse).imgPath,
-                text: form.text.value,
-                title: form.title.value,
+              author: {
+                userID: user.id,
+                imgPath: user.avatar,
+                username: user.username,
               },
+              content: res.body.contentTemplate as string,
+              dateCreated: new Date(Date.now()),
+              isAllowed: true,
               isLiked: false,
               likesNum: 0,
+              postID: res.body.postID as number,
+              // tags
+              tier: 0,
+              userID: user.id,
+              commentsNum: 0,
             },
           });
         } else {
@@ -74,10 +72,22 @@ export const createPost = (author: PayloadPost['author'], form: PostForm) => {
 };
 
 export const updatePost = (id: number, form: PostForm) => {
+  const tierIdx = (store.getState().profile as PayloadGetProfileData)
+      .authorSubscriptions?.map((sub) => {
+        return sub.tier;
+      }).findIndex((tier) => tier == Number(form.tier.value));
+  if (!tierIdx && tierIdx == -1) {
+    store.dispatch({
+      type: ActionType.NOTICE,
+      payload: {
+        message: 'Вы указали несуществующий уровень подписки',
+      },
+    });
+    return;
+  }
   api.updatePost(id, {
-    title: form.title.value,
-    text: form.text.value,
-    file: form.img?.files?.item(0) ?? undefined,
+    tier: Number(form.tier.value),
+    contentTemplate: form.text.value,
   })
       .then((res) => {
         if (res.ok) {
@@ -85,11 +95,7 @@ export const updatePost = (id: number, form: PostForm) => {
             type: ActionType.UPDATE_POST,
             payload: {
               postID: id,
-              content: {
-                title: form.title.value,
-                text: form.text.value,
-                img: (res.body as {imgPath: string}).imgPath,
-              },
+              content: res.body.contentTemplate as string,
             },
           });
         } else {
@@ -201,27 +207,27 @@ export const getFeed = () => {
   api.getFeed()
       .then((res) => {
         if (res.ok) {
-          const posts = (res.body as PostResponse[]).map(
-              (postResponse) => {
-                const post: PayloadPost = {
-                  author: postResponse.author,
-                  postID: postResponse.postID,
-                  content: {
-                    img: postResponse.img,
-                    text: postResponse.text,
-                    title: postResponse.title,
-                  },
-                  likesNum: postResponse.likesNum,
-                  isLiked: postResponse.isLiked,
-                  commentsNum: 0, // TODO получать из запроса
-                  date: new Date(Date.now()), // TODO получать из запроса
-                };
-                return post;
-              },
-          );
+          // const posts = (res.body as PostResponse[]).map(
+          //     (postResponse) => {
+          //       const post: PayloadPost = {
+          //         author: postResponse.author,
+          //         postID: postResponse.postID,
+          //         content: {
+          //           img: postResponse.img,
+          //           text: postResponse.text,
+          //           title: postResponse.title,
+          //         },
+          //         likesNum: postResponse.likesNum,
+          //         isLiked: postResponse.isLiked,
+          //         commentsNum: 0, // TODO получать из запроса
+          //         date: new Date(Date.now()), // TODO получать из запроса
+          //       };
+          //       return post;
+          //     },
+          // );
           store.dispatch({
             type: ActionType.GET_POSTS,
-            payload: posts,
+            payload: res.body as PayloadPost[],
           });
         } else {
           store.dispatch({
@@ -239,4 +245,31 @@ export const getFeed = () => {
         });
       },
       );
+};
+
+export const putImage = (file: File) => {
+  api.putImage(file)
+      .then((res) => {
+        if (res.ok) {
+          store.dispatch({
+            type: ActionType.PUT_IMAGE,
+            payload: {
+              url: res.body.url as string,
+            },
+          });
+        } else {
+          store.dispatch({
+            type: ActionType.NOTICE,
+            payload: res.body as PayloadNotice,
+          });
+        }
+      })
+      .catch((err) => {
+        store.dispatch({
+          type: ActionType.NOTICE,
+          payload: {
+            message: err as string,
+          },
+        });
+      });
 };

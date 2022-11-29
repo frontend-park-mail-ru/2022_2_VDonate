@@ -1,2 +1,4 @@
-import Root from '@views/root';
+import './style/index.styl';
+import Root from '@views/Root';
+
 new Root(document.body);

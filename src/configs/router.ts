@@ -30,4 +30,8 @@ export const routes: RouteType[] = [
     path: /^\/(feed)?$/,
     type: Pages.FEED,
   },
+  {
+    path: /^\/search$/,
+    type: Pages.SEARCH,
+  },
 ];
