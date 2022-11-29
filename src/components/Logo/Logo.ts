@@ -5,7 +5,12 @@ import ComponentBase from '@flux/types/component';
 /**
  * Компонент лого
  */
-export default class Logo extends ComponentBase<HTMLDivElement, never> {
+export default class Logo extends ComponentBase<'div'> {
+  constructor(el: HTMLElement) {
+    super();
+    this.renderTo(el);
+  }
+
   protected render(): HTMLDivElement {
     const logo = document.createElement('div');
     logo.classList.add('logo');

@@ -28,6 +28,7 @@ module.exports = {
       '@style': path.resolve(__dirname, 'src/style'),
       '@icon': path.resolve(__dirname, 'static/icon'),
       '@img': path.resolve(__dirname, 'static/img'),
+      '@specialCompare': path.resolve(__dirname, 'src/modules/specialCompare'),
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },

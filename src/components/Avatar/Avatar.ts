@@ -1,4 +1,4 @@
-import './image.styl';
+import './avatar.styl';
 import altAvatar from '@img/altAvatar.jpg';
 import altAuthorSub from '@img/altAuthorSub.jpg';
 import ComponentBase from '@flux/types/component';
@@ -6,9 +6,9 @@ import ComponentBase from '@flux/types/component';
  * Перечисление типов аватара
  */
 export enum AvatarType {
-  donater,
-  author,
-  sub,
+  DONATER,
+  AUTHOR,
+  SUBSCRIPTION,
 }
 interface AvatarOptions {
   viewType: AvatarType
@@ -17,22 +17,23 @@ interface AvatarOptions {
 /**
  * Компонент аватар
  */
-export default class Avatar extends ComponentBase<HTMLImageElement, never> {
-  constructor(element: HTMLElement, private options: AvatarOptions) {
-    super(element);
+export default class Avatar extends ComponentBase<'img', string> {
+  constructor(el: HTMLElement, private options: AvatarOptions) {
+    super();
+    this.renderTo(el);
   }
 
   protected render(): HTMLImageElement {
     const image = document.createElement('img');
     image.classList.add('image');
     switch (this.options.viewType) {
-      case AvatarType.author:
+      case AvatarType.AUTHOR:
         image.classList.add('image_style_author');
         break;
-      case AvatarType.donater:
+      case AvatarType.DONATER:
         image.classList.add('image_style_donater');
         break;
-      case AvatarType.sub:
+      case AvatarType.SUBSCRIPTION:
         image.classList.add('image_style_sub');
         break;
       default:
@@ -42,13 +43,13 @@ export default class Avatar extends ComponentBase<HTMLImageElement, never> {
       image.setAttribute('src', this.options.image);
     } else {
       image.setAttribute(
-          'src', this.options.viewType == AvatarType.sub ?
+          'src', this.options.viewType == AvatarType.SUBSCRIPTION ?
         altAuthorSub : altAvatar);
     }
     return image;
   }
 
-  update(data: never): void {
-    return data;
+  update(imgPath: string): void {
+    this.domElement.src = imgPath;
   }
 }

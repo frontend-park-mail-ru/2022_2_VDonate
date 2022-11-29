@@ -1,5 +1,5 @@
 import ComponentBase from '@flux/types/component';
-import './navbar_unit.styl';
+import './navbar-link.styl';
 
 interface NavbarLinkOptions {
   icon: string
@@ -11,9 +11,11 @@ interface NavbarLinkOptions {
  * Компонент элемента навбара
  */
 export default
-class NavbarLink extends ComponentBase<HTMLAnchorElement, boolean> {
-  constructor(element: HTMLElement, private options: NavbarLinkOptions) {
-    super(element);
+class NavbarLink
+  extends ComponentBase<'a', boolean> {
+  constructor(el: HTMLElement, private options: NavbarLinkOptions) {
+    super();
+    this.renderTo(el);
   }
 
   protected render(): HTMLAnchorElement {
@@ -34,11 +36,8 @@ class NavbarLink extends ComponentBase<HTMLAnchorElement, boolean> {
     return link;
   }
 
-  update(status: boolean): void {
-    if (status) {
-      this.domElement.classList.add('navbar-unit__navbar-unit_choosen');
-    } else {
-      this.domElement.classList.remove('navbar-unit__navbar-unit_choosen');
-    }
+  update(isChoosed: boolean): void {
+    if (isChoosed) this.domElement.classList.add('navbar-unit__navbar-unit_choosen');
+    else this.domElement.classList.remove('navbar-unit__navbar-unit_choosen');
   }
 }

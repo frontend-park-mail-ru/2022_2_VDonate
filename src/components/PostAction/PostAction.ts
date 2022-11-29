@@ -1,4 +1,4 @@
-import './reaction.styl';
+import './post-action.styl';
 import commentIcon from '@icon/comment.svg';
 import likeIcon from '@icon/like.svg';
 import ComponentBase from '@flux/types/component';
@@ -22,9 +22,16 @@ interface PostActionOptions {
  * Компонент кнопка
  */
 export default
-class PostAction extends ComponentBase<HTMLButtonElement, never> {
-  constructor(element: HTMLElement, private options: PostActionOptions) {
-    super(element);
+class PostAction extends ComponentBase<'button', boolean> {
+  constructor(el: HTMLElement, private options: PostActionOptions) {
+    super();
+    this.renderTo(el);
+  }
+
+  update(isActive: boolean): void {
+    if (this.options.reactType === PostActionType.COMMENT) return;
+    if (isActive) this.domElement.classList.add('reaction__like');
+    else this.domElement.classList.remove('reaction__like');
   }
 
   protected render(): HTMLButtonElement {
@@ -58,9 +65,5 @@ class PostAction extends ComponentBase<HTMLButtonElement, never> {
     button.appendChild(innerText);
 
     return button;
-  }
-
-  update(data: never): void {
-    return data;
   }
 }

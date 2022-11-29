@@ -1,13 +1,12 @@
 import {login, LogInFormElements} from '@actions/handlers/user';
-import {PayloadLogInErrors} from '@actions/types/user';
 import Button, {ButtonType} from '@components/Button/Button';
 import InputField, {
   InputOptions,
   InputType,
 } from '@components/InputField/InputField';
 import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
-import template from './signlog.hbs';
-import './signlog.styl';
+import template from './entry-form.hbs';
+import './entry-form.styl';
 /** Контекст для шаблона */
 const logInContext = {
   title: 'Вход',
@@ -30,11 +29,26 @@ const logInInputs: InputOptions[] = [
     name: 'password',
   },
 ];
+
+type LogInInputsErrors = Map<'username' | 'password', boolean>;
+
 /** Модель формы входа */
 export default
-class LogInForm extends ComponentBase<HTMLFormElement, PayloadLogInErrors> {
+class LogInForm
+  extends ComponentBase<'form', LogInInputsErrors> {
   /** Список компонентов ввода, используемых в текущем контейнере */
   private inputs = new Map<string, InputField>();
+
+  constructor(el: HTMLElement) {
+    super();
+    this.renderTo(el);
+  }
+
+  update(errors: LogInInputsErrors): void {
+    errors.forEach((isError, name) => {
+      this.inputs.get(name)?.update(isError);
+    });
+  }
 
   protected render(): HTMLFormElement {
     const form = document.createElement('form');
@@ -52,15 +66,9 @@ class LogInForm extends ComponentBase<HTMLFormElement, PayloadLogInErrors> {
     new Button(querySelectorWithThrow(form, '.signlog__submit'), {
       actionType: 'submit',
       innerText: 'Войти',
-      viewType: ButtonType.primary,
+      viewType: ButtonType.PRIMARY,
     });
 
     return form;
-  }
-
-  update(errors: PayloadLogInErrors): void {
-    this.inputs.forEach((input, name) => {
-      input.update(Boolean(errors[name as keyof PayloadLogInErrors]));
-    });
   }
 }

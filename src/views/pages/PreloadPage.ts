@@ -1,22 +1,21 @@
-// import {IView} from '@flux/types/view';
-// FIXME Доделать
-// /** Класс страницы предварительной загрузки */
-// export default class PreloadPage implements IView {
-//   /** Основной элемент страницы */
-//   private page: HTMLHeadingElement;
-//   /** Конструктор */
-//   constructor() {
-//     this.page = document.createElement('div');
-//   }
-//   /** Сброс страницы */
-//   reset(): void {
-//     this.page.remove();
-//   }
-//   /**
-//    * Отрисовка страницы загрузки
-//    * @returns Элемент-страница
-//    */
-//   render(): HTMLElement {
-//     return this.page;
-//   }
-// }
+import ViewBaseExtended from '@app/view';
+
+/** Класс страницы предварительной загрузки */
+export default class PreloadPage extends ViewBaseExtended<never> {
+  constructor(el: HTMLElement) {
+    super();
+    this.renderTo(el);
+  }
+
+  protected render(): HTMLDivElement {
+    return document.createElement('div');
+  }
+
+  notify(): void {
+    //
+  }
+
+  update(data: never): void {
+    return data;
+  }
+}

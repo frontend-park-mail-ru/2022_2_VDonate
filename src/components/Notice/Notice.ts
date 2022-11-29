@@ -9,10 +9,13 @@ interface NoticeOptions {
 }
 
 /** */
-export default class Notice extends ComponentBase<HTMLDivElement, never> {
-  constructor(element: HTMLElement, private options: NoticeOptions) {
-    super(element);
+export default
+class Notice extends ComponentBase<'div'> {
+  constructor(el: HTMLElement, private options: NoticeOptions) {
+    super();
+    this.renderTo(el);
   }
+
   protected render(): HTMLDivElement {
     const notice = document.createElement('div');
     notice.classList.add('notice', 'notice__back');
@@ -20,9 +23,10 @@ export default class Notice extends ComponentBase<HTMLDivElement, never> {
     const message = document.createElement('span');
     message.className = 'notice__msg';
     message.insertAdjacentText('afterbegin', this.options.message);
+    notice.appendChild(message);
 
     const closeBtn = new Button(notice, {
-      viewType: ButtonType.icon,
+      viewType: ButtonType.ICON,
       innerIcon: closeIcon,
       actionType: 'button',
       clickCallback: this.options.onDelete,

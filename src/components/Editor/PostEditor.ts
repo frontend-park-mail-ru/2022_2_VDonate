@@ -9,7 +9,7 @@ import {PayloadUser} from '@actions/types/user';
 import store from '@app/store';
 import Button, {ButtonType} from '@components/Button/Button';
 import InputField, {InputType} from '@components/InputField/InputField';
-import ComponentBase from '@flux/types/component';
+import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 import template from './editor.hbs';
 import './editor.styl';
 
@@ -19,13 +19,47 @@ interface PostEditorOptions {
   text: string
 }
 
+// const postEditorInputs = new Map<string, InputOptions>([
+//   [
+//     'title',
+//     {
+//       kind: InputType.text,
+//       label: 'Заголовок',
+//       name: 'title',
+//       placeholder: 'Придумайте заголовок для поста',
+//     },
+//   ],
+//   [
+//     'text',
+//     {
+//       kind: InputType.textarea,
+//       label: 'Основной текст',
+//       name: 'text',
+//       placeholder: 'Место для основного текста',
+//     },
+//   ],
+//   [
+//     'file',
+//     {
+//       kind: InputType.file,
+//       label: 'Загрузите картинку',
+//       name: 'file',
+//     },
+//   ],
+// ]);
+
+type PostEditorInputsErrors = Map<'text' | 'title', boolean>;
+
 /** */
 export default class PostEditor
-  extends ComponentBase<HTMLDivElement, never> {
-  private inputs: InputField[] = [];
+  extends ComponentBase<'div', PostEditorInputsErrors> {
+  private inputs = new Map<string, InputField>();
 
-  constructor(element: HTMLElement, private options?: PostEditorOptions) {
-    super(element);
+  constructor(el: HTMLElement, private options?: PostEditorOptions) {
+    super();
+
+
+    this.renderTo(el);
   }
 
   protected render(): HTMLDivElement {
@@ -39,6 +73,12 @@ export default class PostEditor
     this.addButtons(form);
 
     return editor;
+  }
+
+  update(errors: PostEditorInputsErrors): void {
+    errors.forEach((isError, name) => {
+      this.inputs.get(name)?.update(isError);
+    });
   }
 
   private createForm(): HTMLFormElement {
@@ -73,56 +113,57 @@ export default class PostEditor
   }
 
   private addInputs(form: HTMLFormElement) {
-    const inputsArea = form.querySelector<HTMLInputElement>('.editor__inputs');
-    if (!inputsArea) throw new Error('Not found .editor__inputs');
+    const inputsArea = querySelectorWithThrow(form, '.editor__inputs');
 
-    const titleInput = new InputField(inputsArea, {
-      kind: InputType.text,
-      label: 'Заголовок',
-      name: 'title',
-      placeholder: 'Придумайте заголовок для поста',
-      value: this.options?.title,
-    });
-    const textInput = new InputField(inputsArea, {
-      kind: InputType.textarea,
-      label: 'Основной текст',
-      name: 'text',
-      placeholder: 'Место для основного текста',
-      value: this.options?.text,
-    });
-    const fileInput = new InputField(inputsArea, {
-      kind: InputType.file,
-      label: 'Загрузите картинку',
-      name: 'img',
-    });
-    this.inputs.push(titleInput, textInput, fileInput);
+    // postEditorInputs.forEach((options, name) => {
+    //   this.inputs.set(name, new InputField(inputsArea, {
+    //     ...options,
+    //     value: this.options?[name],
+    //   }));
+    // });
+    this.inputs
+        .set('title', new InputField(inputsArea, {
+          kind: InputType.text,
+          label: 'Заголовок',
+          name: 'title',
+          placeholder: 'Придумайте заголовок для поста',
+          value: this.options?.title,
+        }))
+        .set('text', new InputField(inputsArea, {
+          kind: InputType.textarea,
+          label: 'Основной текст',
+          name: 'text',
+          placeholder: 'Место для основного текста',
+          value: this.options?.text,
+        }))
+        .set('image', new InputField(inputsArea, {
+          kind: InputType.file,
+          label: 'Загрузите картинку',
+          name: 'image',
+        }));
   }
 
   private addButtons(form: HTMLFormElement) {
-    const btnArea = form.querySelector<HTMLElement>('.editor__btn-area');
-    if (!btnArea) throw new Error('Not found .editor__btn-area');
+    const btnArea = querySelectorWithThrow(form, '.editor__btn-area');
+
     new Button(btnArea, {
-      viewType: ButtonType.primary,
+      viewType: ButtonType.PRIMARY,
       innerText: this.options ? 'Изменить' : 'Создать',
       actionType: 'submit',
     });
     new Button(btnArea, {
-      viewType: ButtonType.outline,
+      viewType: ButtonType.OUTLINE,
       innerText: 'Отменить',
       actionType: 'button',
       clickCallback: closeEditor,
     });
     if (this.options) {
       new Button(btnArea, {
-        viewType: ButtonType.outline,
+        viewType: ButtonType.OUTLINE,
         innerText: 'Удалить',
         actionType: 'button',
         clickCallback: deletePost.bind(this, this.options.id),
       });
     }
-  }
-
-  update(data: never): void {
-    return data;
   }
 }

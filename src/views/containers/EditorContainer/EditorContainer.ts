@@ -4,10 +4,10 @@ import {PayloadGetProfileData} from '@actions/types/getProfileData';
 import {PayloadPost} from '@actions/types/posts';
 import {PayloadUser} from '@actions/types/user';
 import store from '@app/store';
+import ViewBaseExtended from '@app/view';
 import PostEditor from '@components/Editor/PostEditor';
 import ProfileEditor from '@components/Editor/ProfileEditor';
 import SubscriptionEditor from '@components/Editor/SubscriptionEditor';
-import ViewBase from '@flux/types/view';
 
 interface EditorUpdateData {
   newEditor?: PayloadEditor
@@ -16,22 +16,21 @@ interface EditorUpdateData {
 
 /** */
 export default
-class EditorContainer extends ViewBase<PayloadEditor | EditorUpdateData> {
-  private editorState?: PayloadEditor;
+class EditorContainer
+  extends ViewBaseExtended<EditorUpdateData> {
+  private editorState: PayloadEditor;
   private currentEditor?:
     | PostEditor
     | ProfileEditor
     | SubscriptionEditor;
 
-  constructor(element: HTMLElement) {
-    super(element);
-    this.notify();
-    store.registerObserver(this);
-  }
-
-  erase(): void {
-    store.removeObserver(this);
-    this.remove();
+  constructor(el: HTMLElement) {
+    super();
+    this.renderTo(el);
+    this.editorState = store.getState().editor as PayloadEditor;
+    this.update({
+      newEditor: this.editorState,
+    });
   }
 
   protected render(): HTMLDivElement {
@@ -42,9 +41,16 @@ class EditorContainer extends ViewBase<PayloadEditor | EditorUpdateData> {
   }
 
   notify(): void {
-    const editorNew = store.getState().editor as PayloadEditor;
-    if (JSON.stringify(editorNew) !== JSON.stringify(this.editorState)) {
-      this.editorState = editorNew;
+    const editorStateNew = store.getState().editor as PayloadEditor;
+    if (this.editorState.type && editorStateNew.type) {
+      this.editorState = editorStateNew;
+      this.update({
+        newEditor: this.editorState,
+      });
+    }
+
+    if (JSON.stringify(editorStateNew) !== JSON.stringify(this.editorState)) {
+      this.editorState = editorStateNew;
       this.update({
         newEditor: this.editorState,
       });
@@ -127,10 +133,21 @@ class EditorContainer extends ViewBase<PayloadEditor | EditorUpdateData> {
   private displayErrors(errors: PayloadFormError) {
     if (this.currentEditor instanceof ProfileEditor &&
       errors?.type == FormErrorType.EDIT_USER) {
-      this.currentEditor.update(errors);
+      this.currentEditor.update({
+        username: errors.username ? true : undefined,
+        email: errors.email ? true : undefined,
+        password: errors.password ? true : undefined,
+        repeatPassword: errors.repeatPassword ? true : undefined,
+        about: errors.about ? true : undefined,
+      });
     } else if (this.currentEditor instanceof SubscriptionEditor &&
       errors?.type == FormErrorType.AUTHOR_SUBSCRIPTION) {
-      this.currentEditor.update(errors);
+      this.currentEditor.update({
+        price: errors.price ? true : undefined,
+        title: errors.title ? true : undefined,
+        text: errors.text ? true : undefined,
+        tier: errors.tier ? true : undefined,
+      });
     } else {
       throw new Error(`displayErrors вызван с разногласиями в типе ошибок 
       и типе редактора`);

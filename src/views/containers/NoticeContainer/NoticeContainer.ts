@@ -1,34 +1,32 @@
 import {PayloadNotice} from '@actions/types/notice';
 import store from '@app/store';
+import ViewBaseExtended from '@app/view';
 import Notice from '@components/Notice/Notice';
-import ViewBase from '@flux/types/view';
-import './notice.styl';
+import './notice-container.styl';
 /** */
-export default class NoticeContainer extends ViewBase<string> {
+export default class NoticeContainer extends ViewBaseExtended<string> {
   private notices = new Set<Notice>();
   private noticeState?: PayloadNotice;
 
-  constructor(element: HTMLElement) {
-    super(element);
+  constructor(el: HTMLElement) {
+    super();
+    this.renderTo(el);
     this.notify();
-    store.registerObserver(this);
   }
-  erase(): void {
-    store.removeObserver(this);
-    this.remove();
-  }
+
   protected render(): HTMLDivElement {
     const container = document.createElement('div');
     container.className = 'notice-container notice-container__notice';
 
     return container;
   }
+
   notify(): void {
     const noticeStateNew = store.getState().notice as PayloadNotice;
-    if (JSON.stringify(noticeStateNew) !== JSON.stringify(this.noticeState)) {
+    if (this.noticeState?.timestamp !== noticeStateNew.timestamp) {
       this.noticeState = noticeStateNew;
-      if (typeof this.noticeState.message === 'string' &&
-        /^[а-яёА-ЯЁ]/.test(this.noticeState.message)) {
+      if (typeof this.noticeState.message === 'string' /* &&
+        /^[а-яёА-ЯЁ]/.test(this.noticeState.message)*/) {
         this.update(this.noticeState.message);
       }
       if (Array.isArray(this.noticeState.message)) {
@@ -38,11 +36,12 @@ export default class NoticeContainer extends ViewBase<string> {
       }
     }
   }
+
   update(message: string) {
     const timeoutID = setTimeout(
         () => {
           this.removeNotice(notice);
-        }, 5000,
+        }, 10000,
     );
     const notice = new Notice(this.domElement, {
       message,
@@ -53,6 +52,7 @@ export default class NoticeContainer extends ViewBase<string> {
     });
     this.notices.add(notice);
   }
+
   private removeNotice(target: Notice) {
     target.remove();
     this.notices.delete(target);

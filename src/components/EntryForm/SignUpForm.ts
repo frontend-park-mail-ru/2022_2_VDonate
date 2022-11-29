@@ -1,13 +1,12 @@
 import {signup, SignUpFormElements} from '@actions/handlers/user';
-import {PayloadSignUpErrors} from '@actions/types/user';
 import Button, {ButtonType} from '@components/Button/Button';
 import InputField, {
   InputOptions,
   InputType,
 } from '@components/InputField/InputField';
 import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
-import template from './signlog.hbs';
-import './signlog.styl';
+import template from './entry-form.hbs';
+import './entry-form.styl';
 /** Контекст для шаблона */
 const signUpContext = {
   title: 'Регистрация',
@@ -42,11 +41,26 @@ const signUpInputs: InputOptions[] = [
     name: 'repeatPassword',
   },
 ];
+
+type SignUpInputsErrors = Map<'username' | 'password', boolean>;
+
 /** Модель формы регистрации */
 export default
-class SignUpForm extends ComponentBase<HTMLFormElement, PayloadSignUpErrors> {
+class SignUpForm
+  extends ComponentBase<'form', SignUpInputsErrors> {
   /** Список компонентов ввода, используемых в текущем контейнере */
   private inputs = new Map<string, InputField>();
+
+  constructor(el: HTMLElement) {
+    super();
+    this.renderTo(el);
+  }
+
+  update(errors: SignUpInputsErrors): void {
+    errors.forEach((isError, name) => {
+      this.inputs.get(name)?.update(isError);
+    });
+  }
 
   protected render(): HTMLFormElement {
     const form = document.createElement('form');
@@ -64,15 +78,9 @@ class SignUpForm extends ComponentBase<HTMLFormElement, PayloadSignUpErrors> {
     new Button(querySelectorWithThrow(form, '.signlog__submit'), {
       actionType: 'submit',
       innerText: 'Зарегистрироваться',
-      viewType: ButtonType.primary,
+      viewType: ButtonType.PRIMARY,
     });
 
     return form;
-  }
-
-  update(errors: PayloadSignUpErrors): void {
-    this.inputs.forEach((input, name) => {
-      input.update(Boolean(errors[name as keyof PayloadSignUpErrors]));
-    });
   }
 }

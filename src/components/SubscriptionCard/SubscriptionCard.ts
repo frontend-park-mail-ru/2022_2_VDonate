@@ -1,112 +1,174 @@
-// import {Button, ButtonType} from '@components/Button/Button';
-// import {Glass, GlassType} from '@components/glass/glass';
-// import {Image, ImageType} from '@components/mini-image/mini-image';
-// import {Popup, SubType} from '../Editor/PayEditor';
-// import './sub.styl';
-// import subHbs from './sub.hbs';
-// import {openSubscribtionEditor} from '@actions/handlers/editor';
-// FIXME Доделать
-// interface Data {
-//   subType: SubType,
-//   AuthorID: number,
-//   id: number,
-//   subName: string,
-//   lvl: number,
-//   img: string,
-//   price: number,
-//   period: string,
-//   motivation: string,
-// }
+import Button, {ButtonType} from '@components/Button/Button';
+import {Glass, GlassType} from '@components/glass/glass';
+import {openSubscribtionEditor} from '@actions/handlers/editor';
+import './subscription-card.styl';
+import template from './subscription-card.hbs';
+import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
+import Avatar, {AvatarType} from '@components/Avatar/Avatar';
+import PayEditor from '@components/Editor/PayEditor';
 
-// /**
-//  * Модель уровня подписки
-//  */
-// export class Sub {
-//   /**
-//    * Актуальный контейнер уровня подписки
-//    */
-//   readonly element: HTMLElement;
+export enum SubscriptionCardStatus {
+  OWNER,
+  DONATER,
+  AUTHOR,
+}
 
-//   private button: Button | undefined;
-//   /**
-//    * @param data данные для генерации
-//    */
-//   constructor(data: Data) {
-//     const lvlImg = new Image(ImageType.sub, data.img);
-//     lvlImg.element.classList.add('sub__img');
-//     switch (data.subType) {
-//       case SubType.SUBSCRIBE:
-//         this.button = new Button(ButtonType.primary, 'Задонатить', 'button');
-//         this.button.element.addEventListener('click', () => {
-//           const popup = new Popup(data.AuthorID, data.id, data.subType);
-//           document.body.appendChild(popup.element);
-//         });
-//         break;
-//       case SubType.UNSUBSCRIBE:
-//         this.button = new Button(ButtonType.primary, 'Отписаться', 'button');
-//         this.button.element.addEventListener('click', () => {
-//           const popup = new Popup(data.AuthorID, data.id, data.subType);
-//           document.body.appendChild(popup.element);
-//         });
-//         break;
-//       case SubType.EDITSUBSCRIBE:
-//         this.button = new Button(ButtonType.primary, 'Изменить', 'button');
-//         this.button.element.addEventListener('click', () => {
-//           openSubscribtionEditor(data.id);
-//         });
-//         break;
-//       default:
-//         break;
-//     }
-//     this.button?.element.classList.add('sub__button');
-//     const glass = new Glass(GlassType.mono);
-//     this.element = glass.element;
-//     this.element.innerHTML = subHbs({
-//       id: data.id,
-//       subName: data.subName,
-//       lvl: data.lvl,
-//       subImg: lvlImg.element.outerHTML,
-//       price: data.price,
-//       period: data.period,
-//       button: this.button?.element.outerHTML,
-//       motivation: data.motivation,
-//     });
-//     switch (data.subType) {
-//       case SubType.SUBSCRIBE:
-//         this.element.getElementsByTagName('button')[0]
-//             .addEventListener('click', () => {
-//               const popup = new Popup(data.AuthorID, data.id, data.subType);
-//               document.body.appendChild(popup.element);
-//             });
-//         break;
-//       case SubType.UNSUBSCRIBE:
-//         this.element.getElementsByTagName('button')[0]
-//             .addEventListener('click', () => {
-//               const popup = new Popup(data.AuthorID, data.id, data.subType);
-//               document.body.appendChild(popup.element);
-//             });
-//         break;
-//       case SubType.EDITSUBSCRIBE:
-//         this.element.getElementsByTagName('button')[0]
-//             .addEventListener('click', () => {
-//               openSubscribtionEditor(data.id);
-//             });
-//         break;
-//       default:
-//         break;
-//     }
-//     const motivation =
-//         this.element.getElementsByClassName('sub__motivation').item(0);
-//     if (motivation && motivation.innerHTML.length >= 60) {
-//       motivation.classList.add('sub__motivation_part');
-//       const showMore = document.createElement('a');
-//       showMore.classList.add('sub__more');
-//       showMore.textContent = 'показать еще';
-//       showMore.addEventListener('click', () => {
-//         motivation.classList.remove('sub__motivation_part');
-//         showMore.hidden = true;
-//       });
-//       this.element.firstChild?.appendChild(showMore);
-//     }
-//   }
-// }
+interface SubscriptionCardOptions {
+  subscriptionStatus: SubscriptionCardStatus,
+  authorID: number,
+  subscriptionID: number,
+  subscriptionName: string,
+  lvl: number,
+  img: string,
+  price: number,
+  description: string,
+}
+
+interface SubscriptionCardUpdateContext {
+  subscriptionStatus?: SubscriptionCardStatus,
+  subscriptionName?: string,
+  img?: string,
+  description?: string,
+}
+
+/**
+ * Модель уровня подписки
+ */
+export default
+class SubscriptionCard
+  extends ComponentBase<'div', SubscriptionCardUpdateContext> {
+  private button!: Button;
+  private avatar!: Avatar;
+  private description!: HTMLElement;
+
+  constructor(el: HTMLElement, private options: SubscriptionCardOptions) {
+    super();
+    this.renderTo(el);
+  }
+
+  update(data: SubscriptionCardUpdateContext): void {
+    switch (data.subscriptionStatus) {
+      case SubscriptionCardStatus.OWNER:
+        this.button.update({
+          innerText: 'Отписаться',
+          callback: () => {
+            // TODO нельза так. Это в обход флакса
+            new PayEditor(document.body, {
+              authorID: this.options.authorID,
+              authorSubscriptionID: this.options.subscriptionID,
+              subType: this.options.subscriptionStatus,
+            });
+          },
+        });
+        break;
+      case SubscriptionCardStatus.DONATER:
+        this.button.update({
+          innerText: 'Задонатить',
+          callback: () => {
+            // TODO нельза так. Это в обход флакса
+            new PayEditor(document.body, {
+              authorID: this.options.authorID,
+              authorSubscriptionID: this.options.subscriptionID,
+              subType: this.options.subscriptionStatus,
+            });
+          },
+        });
+        break;
+    }
+    if (data.img) {
+      this.avatar.update(data.img);
+    }
+    if (data.description) {
+      this.description.innerText = data.description;
+    }
+  }
+
+  protected render(): HTMLDivElement {
+    const card = new Glass(GlassType.mono).element;
+    card.innerHTML = template({
+      id: this.options.subscriptionID,
+      subName: this.options.subscriptionName,
+      lvl: '&#8381;' + this.options.lvl.toString(),
+      price: this.options.price,
+      description: this.options.description,
+    });
+
+    const imageArea = querySelectorWithThrow(card, '.sub__price_period__img');
+    imageArea.style.display = 'contents';
+
+    this.avatar = new Avatar(imageArea, {
+      viewType: AvatarType.SUBSCRIPTION,
+      image: this.options.img,
+    });
+    this.avatar.addClassNames('sub__img');
+
+    this.addButton(card);
+
+    this.description = querySelectorWithThrow(card, '.sub__motivation');
+    if (this.options.description.length >= 60) {
+      this.description.classList.add('sub__motivation_part');
+      const showMore = document.createElement('a');
+      showMore.classList.add('sub__more');
+      showMore.textContent = 'показать еще';
+      showMore.addEventListener('click', () => {
+        this.description.classList.remove('sub__motivation_part');
+        showMore.hidden = true;
+      });
+      card.firstChild?.appendChild(showMore);
+    }
+
+    return card;
+  }
+
+  private addButton(card: HTMLDivElement) {
+    const btnArea = querySelectorWithThrow(card, '.sub__price_period__btn');
+    btnArea.style.display = 'contents';
+    switch (this.options.subscriptionStatus) {
+      case SubscriptionCardStatus.DONATER:
+        this.button = new Button(btnArea, {
+          viewType: ButtonType.PRIMARY,
+          actionType: 'button',
+          innerText: 'Задонатить',
+          clickCallback: () => {
+            // TODO нельза так. Это в обход флакса
+            new PayEditor(document.body, {
+              authorID: this.options.authorID,
+              authorSubscriptionID: this.options.subscriptionID,
+              subType: this.options.subscriptionStatus,
+            });
+          },
+        });
+        break;
+      case SubscriptionCardStatus.OWNER:
+        this.button = new Button(btnArea, {
+          viewType: ButtonType.PRIMARY,
+          actionType: 'button',
+          innerText: 'Отписаться',
+          clickCallback: () => {
+            // TODO нельза так. Это в обход флакса
+            new PayEditor(document.body, {
+              authorID: this.options.authorID,
+              authorSubscriptionID: this.options.subscriptionID,
+              subType: this.options.subscriptionStatus,
+            });
+          },
+        });
+        break;
+      case SubscriptionCardStatus.AUTHOR:
+        this.button = new Button(btnArea, {
+          viewType: ButtonType.PRIMARY,
+          actionType: 'button',
+          innerText: 'Изменить',
+          clickCallback: () => {
+            openSubscribtionEditor(this.options.subscriptionID);
+          },
+        });
+        break;
+      default: {
+        const _: never = this.options.subscriptionStatus;
+        return _;
+      }
+    }
+    this.button.addClassNames('sub__button');
+  }
+}

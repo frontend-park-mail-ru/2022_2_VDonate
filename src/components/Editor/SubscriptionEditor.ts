@@ -4,10 +4,9 @@ import {
   createAuthorSubscription,
   deleteAuthorSubscription,
   editAuthorSubscription} from '@actions/handlers/subscribe';
-import {PayloadAuthorSubscriptionErrors} from '@actions/types/subscribe';
 import Button, {ButtonType} from '@components/Button/Button';
 import InputField, {InputType} from '@components/InputField/InputField';
-import ComponentBase from '@flux/types/component';
+import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 import template from './editor.hbs';
 import './editor.styl';
 
@@ -19,17 +18,22 @@ interface SubscriptionEditorOptions {
   text: string
 }
 
+interface SubscriptionEditorInputsErrors {
+  title?: boolean
+  price?: boolean
+  tier?: boolean
+  text?: boolean
+}
+
 /** */
 export default
 class SubscriptionEditor
-  extends ComponentBase<HTMLDivElement, PayloadAuthorSubscriptionErrors> {
-  private inputs: InputField[] = [];
+  extends ComponentBase <'div', SubscriptionEditorInputsErrors> {
+  private inputs = new Map<string, InputField>();
 
-  constructor(
-      element: HTMLElement,
-    private options?: SubscriptionEditorOptions,
-  ) {
-    super(element);
+  constructor(el: HTMLElement, private options?: SubscriptionEditorOptions) {
+    super();
+    this.renderTo(el);
   }
 
   protected render(): HTMLDivElement {
@@ -43,6 +47,12 @@ class SubscriptionEditor
     this.addButtons(form);
 
     return editor;
+  }
+
+  update(errors: SubscriptionEditorInputsErrors): void {
+    Object.entries(errors).forEach(([name, value]) => {
+      this.inputs.get(name)?.update(value as boolean);
+    });
   }
 
   private createForm(): HTMLFormElement {
@@ -72,61 +82,61 @@ class SubscriptionEditor
   }
 
   private addInputs(form: HTMLFormElement) {
-    const inputsArea = form.querySelector<HTMLElement>('.editor__inputs');
-    if (!inputsArea) throw new Error('Not found .editor__inputs');
-    this.inputs.push(new InputField(inputsArea, {
-      kind: InputType.text,
-      label: 'Заголовок',
-      name: 'title',
-      placeholder: 'Придумайте заголовок для подписки',
-      value: this.options?.title,
-    }));
-    this.inputs.push(new InputField(inputsArea, {
-      kind: InputType.text,
-      label: 'Стоимость',
-      name: 'price',
-      placeholder: 'Введите стоимость подписки',
-      value: this.options?.price.toString(),
-    }));
-    this.inputs.push(new InputField(inputsArea, {
-      kind: InputType.text,
-      label: 'Уровень',
-      name: 'tier',
-      placeholder: 'Введите уровень подписки',
-      value: this.options?.tier.toString(),
-    }));
-    this.inputs.push(new InputField(inputsArea, {
-      kind: InputType.textarea,
-      label: 'Текст',
-      name: 'text',
-      placeholder: 'Замотивируйте своих донатеров',
-      value: this.options?.text,
-    }));
-    this.inputs.push(new InputField(inputsArea, {
-      kind: InputType.file,
-      label: 'Загрузите картинку',
-      name: 'file',
-    }));
+    const inputsArea = querySelectorWithThrow(form, '.editor__inputs');
+
+    this.inputs
+        .set('title', new InputField(inputsArea, {
+          kind: InputType.text,
+          label: 'Заголовок',
+          name: 'title',
+          placeholder: 'Придумайте заголовок для подписки',
+          value: this.options?.title,
+        }))
+        .set('price', new InputField(inputsArea, {
+          kind: InputType.text,
+          label: 'Стоимость',
+          name: 'price',
+          placeholder: 'Введите стоимость подписки',
+          value: this.options?.price.toString(),
+        }))
+        .set('tier', new InputField(inputsArea, {
+          kind: InputType.text,
+          label: 'Уровень',
+          name: 'tier',
+          placeholder: 'Введите уровень подписки',
+          value: this.options?.tier.toString(),
+        }))
+        .set('text', new InputField(inputsArea, {
+          kind: InputType.textarea,
+          label: 'Текст',
+          name: 'text',
+          placeholder: 'Замотивируйте своих донатеров',
+          value: this.options?.text,
+        }))
+        .set('image', new InputField(inputsArea, {
+          kind: InputType.file,
+          label: 'Загрузите картинку',
+          name: 'image',
+        }));
   }
 
   private addButtons(form: HTMLFormElement) {
-    const btnArea = form.querySelector<HTMLElement>('.editor__btn-area');
-    if (!btnArea) throw new Error('Not found .editor__btn-area');
+    const btnArea = querySelectorWithThrow(form, '.editor__btn-area');
 
     new Button(btnArea, {
-      viewType: ButtonType.primary,
+      viewType: ButtonType.PRIMARY,
       innerText: this.options ? 'Изменить' : 'Создать',
       actionType: 'submit',
     });
     new Button(btnArea, {
-      viewType: ButtonType.outline,
+      viewType: ButtonType.OUTLINE,
       innerText: 'Отменить',
       actionType: 'button',
       clickCallback: closeEditor,
     });
     if (this.options) {
       new Button(btnArea, {
-        viewType: ButtonType.outline,
+        viewType: ButtonType.OUTLINE,
         innerText: 'Удалить',
         actionType: 'button',
         clickCallback: deleteAuthorSubscription.bind(this, this.options.id),
@@ -134,10 +144,10 @@ class SubscriptionEditor
     }
   }
 
-  update(errors: PayloadAuthorSubscriptionErrors): void {
-    this.inputs[0].update(Boolean(errors.title));
-    this.inputs[1].update(Boolean(errors.price));
-    this.inputs[2].update(Boolean(errors.tier));
-    this.inputs[3].update(Boolean(errors.text));
-  }
+  // update(errors: PayloadAuthorSubscriptionErrors): void {
+  //   this.inputs[0].update(Boolean(errors.title));
+  //   this.inputs[1].update(Boolean(errors.price));
+  //   this.inputs[2].update(Boolean(errors.tier));
+  //   this.inputs[3].update(Boolean(errors.text));
+  // }
 }
