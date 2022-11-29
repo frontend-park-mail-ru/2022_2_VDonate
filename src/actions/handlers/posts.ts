@@ -27,7 +27,7 @@ export const createPost = (author: PayloadPost['author'], form: PostForm) => {
   }
   api.createPost({
     tier: Number(form.tier.value),
-    content: form.text.value,
+    contentTemplate: form.text.value,
   })
       .then((res) => {
         if (res.ok) {
@@ -87,7 +87,7 @@ export const updatePost = (id: number, form: PostForm) => {
   }
   api.updatePost(id, {
     tier: Number(form.tier.value),
-    content: form.text.value,
+    contentTemplate: form.text.value,
   })
       .then((res) => {
         if (res.ok) {
