@@ -8,7 +8,6 @@ import {openPostEditor} from '@actions/handlers/editor';
 import {querySelectorWithThrow} from '@flux/types/component';
 import Button, {ButtonType} from '@components/Button/Button';
 import ViewBaseExtended from '@app/view';
-import specialCompare from '@specialCompare/specialCompare';
 
 interface PostsContainerOptions {
   withCreateBtn: boolean
@@ -54,23 +53,21 @@ class PostsContainer
         this.deletePost(postID);
       }
     });
-    console.log(newPostsState);
-    console.log(this.postsState);
     newPostsState.forEach(
         (postPayload, postID) => {
           const oldPost = this.postsState.get(postID);
           if (oldPost) {
             this.posts.get(postID)?.update({
-              isLiked: specialCompare(oldPost.isLiked, postPayload.isLiked),
-              content: specialCompare(oldPost.content, postPayload.content),
+              isLiked: postPayload.isLiked,
+              likesNum: postPayload.likesNum,
+              content: postPayload.content,
             });
           } else {
             this.addPost(postPayload);
           }
         },
     );
-
-    this.postsState = new Map(newPostsState);
+    this.postsState = newPostsState;
   }
 
   private deletePost(postID: number) {
@@ -83,7 +80,6 @@ class PostsContainer
         this.domElement,
         '.posts-container__posts-area',
     );
-    console.log(postPayload);
     this.posts.set(postPayload.postID, new Post(postsArea, {
       ...postPayload,
       changable: postPayload.userID == postPayload.author.userID,

@@ -18,6 +18,7 @@ type PostOptions = PayloadPost & {
 export interface PostUpdateContext {
   content?: string
   isLiked?: boolean
+  likesNum?: number
 }
 
 /**
@@ -33,8 +34,12 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
   }
 
   update(data: PostUpdateContext): void {
-    if (data.isLiked !== undefined) {
-      this.likeBtn.update(data.isLiked);
+    if (data.isLiked !== undefined && data.likesNum !== undefined) {
+      this.options.isLiked = data.isLiked;
+      this.likeBtn.update({
+        isActive: data.isLiked,
+        likesNum: data.likesNum,
+      });
     }
     if (data.content) {
       querySelectorWithThrow(this.domElement, '.post__content').innerHTML =

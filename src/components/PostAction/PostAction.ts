@@ -1,7 +1,7 @@
 import './post-action.styl';
 import commentIcon from '@icon/comment.svg';
 import likeIcon from '@icon/like.svg';
-import ComponentBase from '@flux/types/component';
+import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 
 /**
  * Перечисление типов кнопок
@@ -18,20 +18,26 @@ interface PostActionOptions {
   clickCallback: () => void
 }
 
+interface PostActionUpdateContent {
+  isActive: boolean
+  likesNum: number
+}
 /**
  * Компонент кнопка
  */
 export default
-class PostAction extends ComponentBase<'button', boolean> {
+class PostAction extends ComponentBase<'button', PostActionUpdateContent> {
   constructor(el: HTMLElement, private options: PostActionOptions) {
     super();
     this.renderTo(el);
   }
 
-  update(isActive: boolean): void {
+  update(data: PostActionUpdateContent): void {
     if (this.options.reactType === PostActionType.COMMENT) return;
-    if (isActive) this.domElement.classList.add('reaction__like');
-    else this.domElement.classList.remove('reaction__like');
+    if (data.isActive) this.domElement.classList.add('reaction_like');
+    else this.domElement.classList.remove('reaction_like');
+    querySelectorWithThrow(this.domElement, '.reaction__text').innerText =
+      data.likesNum.toString();
   }
 
   protected render(): HTMLButtonElement {
