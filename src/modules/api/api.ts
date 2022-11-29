@@ -290,4 +290,11 @@ export default class Api {
         ContentType.json,
     );
   }
+  searchAuthors(keyword: string): Promise<ResponseData> {
+    return this.request(
+        `/search?keyword=${keyword}`,
+        Method.GET,
+        ContentType.json,
+    );
+  }
 }
