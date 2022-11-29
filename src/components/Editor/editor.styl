@@ -4,8 +4,8 @@
   display: flex
   justify-content: space-around
   align-items: center
-  z-index: 1;
   &__back
+    z-index: 1;
     position:fixed
     top:0
     left:0
@@ -43,33 +43,34 @@
     align-items: flex-start;
     padding: 0px;
     gap: 30px;
-  &__text
-    &_back
-      display: flex
-      flex-direction: row
-      gap: 5px
-      padding: 10px
-      width: 58vw
-      max-width: 58vw
-      height: 50vh
-      max-height: 50vh
-      background: linear-gradient(109.46deg, rgba(201, 201, 201, 0.8) 1.57%, rgba(196, 196, 196, 0.1) 100%), linear-gradient(108.87deg, rgba(255, 255, 255, 0.8) 0.66%, rgba(211, 211, 211, 0.1) 99.48%);
-      opacity: 0.5
-      backdrop-filter: blur(30px)
-      border-radius: radius-min 
-      position: relative
-      box-sizing: border-box
-    &_field
-      width: 58vw
-      max-width: 58vw
-      height: 41vh
-      max-height: 41vh
-      border: none
-      background: none
-      outline: none
-      flex: 1
-      font-16()
-      color: color-font-light
+  // не нашел где это используется
+  // &__text
+  //   &_back
+  //     display: flex
+  //     flex-direction: row
+  //     gap: 5px
+  //     padding: 10px
+  //     width: 58vw
+  //     max-width: 58vw
+  //     height: 50vh
+  //     max-height: 50vh
+  //     background: linear-gradient(109.46deg, rgba(201, 201, 201, 0.8) 1.57%, rgba(196, 196, 196, 0.1) 100%), linear-gradient(108.87deg, rgba(255, 255, 255, 0.8) 0.66%, rgba(211, 211, 211, 0.1) 99.48%);
+  //     opacity: 0.5
+  //     backdrop-filter: blur(30px)
+  //     border-radius: radius-min 
+  //     position: relative
+  //     box-sizing: border-box
+  //   &_field
+  //     width: 58vw
+  //     max-width: 58vw
+  //     height: 41vh
+  //     max-height: 41vh
+  //     border: none
+  //     background: none
+  //     outline: none
+  //     flex: 1
+  //     font-16()
+  //     color: color-font-light
   &__inputs
     display: contents
   

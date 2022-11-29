@@ -52,7 +52,7 @@ class PostAction extends ComponentBase<'button', boolean> {
       case PostActionType.LIKE:
         innerIcon.src = likeIcon;
         if (this.options.isActive) {
-          button.classList.add('reaction__like');
+          button.classList.add('reaction_like');
         }
         button.appendChild(innerIcon);
         break;

@@ -84,7 +84,7 @@ post.querySelector<HTMLElement>('.post__author-avatar');
         clickCallback: openPostEditor.bind(this, this.options.postID),
         viewType: ButtonType.ICON,
       });
-      editBtn.addClassNames('post__header_btn');
+      editBtn.addClassNames('post__header-btn');
     }
 
     return post;

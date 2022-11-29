@@ -22,7 +22,7 @@ class NavbarLink
     const link = document.createElement('a');
     link.setAttribute('href', this.options.href);
     link.setAttribute('data-link', '');
-    link.classList.add('navbar-unit');
+    link.classList.add('navbar-unit navbar-unit__navbar-unit');
 
     const ico = document.createElement('img');
     ico.classList.add('navbar-unit__icon');
@@ -37,7 +37,7 @@ class NavbarLink
   }
 
   update(isChoosed: boolean): void {
-    if (isChoosed) this.domElement.classList.add('navbar-unit__choosen');
-    else this.domElement.classList.remove('navbar-unit__choosen');
+    if (isChoosed) this.domElement.classList.add('navbar-unit__navbar-unit_choosen');
+    else this.domElement.classList.remove('navbar-unit__navbar-unit_choosen');
   }
 }

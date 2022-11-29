@@ -81,7 +81,8 @@ export default class Navbar extends ViewBaseExtended<never> {
     });
     glass.appendChild(linkes);
 
-    glass.innerHTML += '<hr>';
+    profileContainer.innerHTML +=
+       '<hr class="navbar-hr navbar-hr__navbar-hr">';
 
     this.subsList = document.createElement('div');
     this.subsList.classList.add('left-navbar__subs-list');
@@ -252,17 +253,4 @@ export default class Navbar extends ViewBaseExtended<never> {
   showNavbar() {
     this.domElement.removeAttribute('style');
   }
-//   /** Callback метод обновления хранилища */
-//   notify(): void {
-//     const newUser =
-//       store.getState().user as PayloadUser;
-//     this.user = newUser;
-//     this.renderProfile();
-//     const newSubscriptions =
-//       store.getState().userSubscribers as Subscription[] | undefined;
-//     if (newSubscriptions) {
-//       this.subs = newSubscriptions;
-//       this.renderSubs();
-//     }
-//   }
 }

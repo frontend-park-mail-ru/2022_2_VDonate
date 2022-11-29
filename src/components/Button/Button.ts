@@ -69,7 +69,6 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
       button.classList.add(
           'icon-button',
           'icon-button__back',
-          'icon-button__back_fing',
       );
       const innerIcon = document.createElement('img');
       innerIcon.className = 'icon-button__icon';
@@ -83,13 +82,13 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
         'button__back');
     switch (this.options.viewType) {
       case ButtonType.PRIMARY:
-        button.classList.add('button__back_primary');
+        button.classList.add('button__back_style_primary');
         break;
       case ButtonType.OUTLINE:
-        button.classList.add('button__back_outline');
+        button.classList.add('button__back_style_outline');
         break;
       case ButtonType.FINGERS:
-        button.classList.add('button__back_fingers');
+        button.classList.add('button__back_style_fingers');
         break;
       default: {
         const _: never = this.options;

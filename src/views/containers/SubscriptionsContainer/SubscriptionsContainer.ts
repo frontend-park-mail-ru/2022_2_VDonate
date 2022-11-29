@@ -40,7 +40,6 @@
 //     const head = document.createElement('div');
 //     head.classList.add('sub-container__head');
 //     head.innerText = 'Уровни подписок';
-
 //     if (this.options.changeable) {
 //       const editBtn = new Button(head, {
 //         viewType: ButtonType.ICON,
