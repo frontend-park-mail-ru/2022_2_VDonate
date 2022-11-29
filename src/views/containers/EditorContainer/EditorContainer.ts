@@ -70,7 +70,7 @@ class EditorContainer
         break;
       case EditorType.POST: {
         const postID = newEditor.id;
-        if (!postID) {
+        if (typeof postID !== 'number') {
           this.currentEditor = new PostEditor(this.domElement);
           break;
         }
@@ -101,7 +101,7 @@ class EditorContainer
       }
       case EditorType.SUBSCRIBTION: {
         const subID = newEditor.id;
-        if (!subID) {
+        if (typeof subID !== 'number') {
           this.currentEditor = new SubscriptionEditor(this.domElement);
           break;
         }

@@ -228,6 +228,10 @@ export const getFeed = () => {
             type: ActionType.NOTICE,
             payload: res.body as PayloadNotice,
           });
+          // store.dispatch({
+          //   type: ActionType.GET_POSTS,
+          //   payload: [] as PayloadPost[],
+          // });
         }
       })
       .catch((err) => {

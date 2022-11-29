@@ -53,3 +53,41 @@
 //     return this.page.el;
 //   }
 // }
+import './feed-page.styl';
+import {getFeed} from '@actions/handlers/posts';
+import {PayloadUser} from '@actions/types/user';
+import store from '@app/store';
+import ViewBaseExtended from '@app/view';
+import PostsContainer from '@views/containers/PostsContainer/PostsContainer';
+
+export default class FeedPage extends ViewBaseExtended<never> {
+  constructor(element: HTMLElement) {
+    super();
+    this.renderTo(element);
+  }
+  protected render(): HTMLDivElement {
+    const page = document.createElement('div');
+    page.classList.add('feed-page', 'feed-page__feed-page');
+    const content = document.createElement('div');
+    content.classList.add('feed-page__content-area');
+    page.appendChild(content);
+
+    const state = store.getState();
+    const user = state.user as PayloadUser;
+
+    new PostsContainer(content, {
+      withCreateBtn: user.isAuthor,
+    });
+
+    getFeed();
+    return page;
+  }
+
+  update(data: never): void {
+    return data;
+  }
+
+  notify(): void {
+  //
+  }
+}
