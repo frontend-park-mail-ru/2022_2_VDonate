@@ -8,6 +8,7 @@ import {openPostEditor} from '@actions/handlers/editor';
 import {querySelectorWithThrow} from '@flux/types/component';
 import Button, {ButtonType} from '@components/Button/Button';
 import ViewBaseExtended from '@app/view';
+import {PayloadUser} from '@actions/types/user';
 
 interface PostsContainerOptions {
   withCreateBtn: boolean
@@ -82,7 +83,8 @@ class PostsContainer
     );
     this.posts.set(postPayload.postID, new Post(postsArea, {
       ...postPayload,
-      changable: postPayload.userID == postPayload.author.userID,
+      changable: postPayload.userID ==
+        (store.getState().user as PayloadUser).id,
     }));
   }
 }

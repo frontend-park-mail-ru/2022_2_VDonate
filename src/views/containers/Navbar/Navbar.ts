@@ -13,6 +13,7 @@ import Logo from '@components/Logo/Logo';
 import NavbarLink from '@components/NavbarLink/NavbarLink';
 import Button, {ButtonType} from '@components/Button/Button';
 import Avatar, {AvatarType} from '@components/Avatar/Avatar';
+import {getSubscritions} from '@actions/handlers/subscribe';
 
 
 const links = [
@@ -50,10 +51,10 @@ export default class Navbar extends ViewBaseExtended<never> {
   private user?: PayloadUser;
   private subs: Subscription[] = [];
 
-  constructor(el: HTMLElement) {
+  constructor(el: HTMLElement, private options: number) {
     super();
     this.renderTo(el);
-    this.notify();
+    getSubscritions(options);
   }
 
   update(data: never): void {

@@ -95,7 +95,7 @@ export const updatePost = (id: number, form: PostForm) => {
             type: ActionType.UPDATE_POST,
             payload: {
               postID: id,
-              content: form.text.value,
+              content: res.body.contentTemplate as string,
             },
           });
         } else {

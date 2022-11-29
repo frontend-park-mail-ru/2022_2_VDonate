@@ -78,7 +78,7 @@ export default class PostEditor
         'input[type=file]',
     ) as HTMLInputElement;
     image.addEventListener('change', () => {
-      if (image.files) {
+      if (image.files && image.files.length !== 0) {
         putImage(image.files[0]);
       }
     });

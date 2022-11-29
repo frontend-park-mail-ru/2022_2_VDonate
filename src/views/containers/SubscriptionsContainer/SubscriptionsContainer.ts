@@ -78,7 +78,8 @@ export default class SubscriptionsContainer
                 store.getState().userSubscribers as Subscription[] | undefined;
               const idx = userSubscriptions
                   ?.findIndex((sub) => sub.id === subID);
-              status = (idx && idx > -1) ? SubscriptionCardStatus.OWNER :
+              status =
+                (idx !== undefined && idx > -1) ? SubscriptionCardStatus.OWNER :
               SubscriptionCardStatus.DONATER;
             }
             this.subscriptionCards.get(subID)?.update({
@@ -104,7 +105,7 @@ export default class SubscriptionsContainer
           store.getState().userSubscribers as Subscription[] | undefined;
       const idx = userSubscriptions
           ?.findIndex((o) => sub.id === o.id);
-      status = (idx && idx > -1) ? SubscriptionCardStatus.OWNER :
+      status = (idx !== undefined && idx > -1) ? SubscriptionCardStatus.OWNER :
           SubscriptionCardStatus.DONATER;
     }
     const card = new SubscriptionCard(this.container, {

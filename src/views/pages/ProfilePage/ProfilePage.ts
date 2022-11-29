@@ -52,12 +52,13 @@ export default class ProfilePage extends ViewBaseExtended<never> {
       this.donaterContent.hidden = false;
     }
     const profileInfoNew: {
-      isAuthor?: true
+      isAuthor: boolean
       avatar: string
       username: string
       countSubscriptions: number
       countDonaters?: number
     } = {
+      isAuthor: profileNew.user.isAuthor,
       avatar: profileNew.user.avatar,
       username: profileNew.user.username,
       countSubscriptions: profileNew.user.countSubscriptions,

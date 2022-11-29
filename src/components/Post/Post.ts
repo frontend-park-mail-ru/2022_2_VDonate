@@ -1,6 +1,5 @@
 import Button, {ButtonType} from '@components/Button/Button';
 import templatePost from './post.hbs';
-import templateContent from './content.hbs';
 import editIcon from '@icon/edit.svg';
 import './post.styl';
 
@@ -41,11 +40,9 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
         likesNum: data.likesNum,
       });
     }
-    if (data.content) {
+    if (data.content && this.options.isAllowed) {
       querySelectorWithThrow(this.domElement, '.post__content').innerHTML =
-          templateContent({
-            text: data.content,
-          });
+        data.content;
     }
   }
 
@@ -55,8 +52,9 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     post.innerHTML = templatePost({
       username: this.options.author.username,
       date: this.options.dateCreated,
-      isAllowed: this.options.isAllowed,
+      notAllowed: !this.options.isAllowed,
       tier: this.options.tier,
+      text: this.options.content,
     });
 
     const avatarArea =
@@ -67,11 +65,6 @@ post.querySelector<HTMLElement>('.post__author-avatar');
       viewType: AvatarType.AUTHOR,
     });
     avatar.addClassNames('post__img');
-
-    post.querySelector('.post__content')
-        ?.insertAdjacentHTML('afterbegin', templateContent({
-          text: this.options.content,
-        }));
 
     this.addReactionBtn(post);
 

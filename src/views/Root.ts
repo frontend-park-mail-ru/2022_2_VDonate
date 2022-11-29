@@ -19,7 +19,7 @@ export default class Root extends ViewBaseExtended<PayloadLocation> {
   // private page: RootModel;
   /** Состояния расположения в приложении */
   private locationState: PayloadLocation;
-  private navbar!: Navbar;
+  private navbar?: Navbar;
   private currentPage?:
     | NotFoundPage
     | PreloadPage
@@ -50,27 +50,37 @@ export default class Root extends ViewBaseExtended<PayloadLocation> {
     this.currentPage?.erase();
     switch (location.type) {
       case Pages.PRELOAD:
-        this.navbar.hideNavbar();
+        this.navbar?.erase();
         this.currentPage = new PreloadPage(this.domElement);
         break;
       case Pages.LOGIN:
-        this.navbar.hideNavbar();
+        this.navbar?.erase();
         this.currentPage = new EntryPage(this.domElement, {
           type: EntryFormType.LOGIN,
         });
         break;
       case Pages.SIGNUP:
-        this.navbar.hideNavbar();
+        this.navbar?.erase();
         this.currentPage = new EntryPage(this.domElement, {
           type: EntryFormType.SIGNUP,
         });
         break;
       case Pages.SEARCH:
-        this.navbar.showNavbar();
+        if (!this.navbar) {
+          this.navbar = new Navbar(
+              this.domElement,
+              (store.getState().user as PayloadUser).id,
+          );
+        }
         this.currentPage = new SearchPage(this.domElement);
         break;
       case Pages.PROFILE:
-        this.navbar.showNavbar();
+        if (!this.navbar) {
+          this.navbar = new Navbar(
+              this.domElement,
+              (store.getState().user as PayloadUser).id,
+          );
+        }
         this.currentPage = new ProfilePage(this.domElement, {
           profileID:
             Number(new URL(window.location.href).searchParams.get('id')),
@@ -80,11 +90,21 @@ export default class Root extends ViewBaseExtended<PayloadLocation> {
         });
         break;
       case Pages.FEED:
-        this.navbar.showNavbar();
+        if (!this.navbar) {
+          this.navbar = new Navbar(
+              this.domElement,
+              (store.getState().user as PayloadUser).id,
+          );
+        }
         this.currentPage = new FeedPage(this.domElement);
         break;
       case Pages.NOT_FOUND:
-        this.navbar.showNavbar();
+        if (!this.navbar) {
+          this.navbar = new Navbar(
+              this.domElement,
+              (store.getState().user as PayloadUser).id,
+          );
+        }
         this.currentPage = new NotFoundPage(this.domElement);
         break;
       default: {
@@ -98,7 +118,7 @@ export default class Root extends ViewBaseExtended<PayloadLocation> {
     const root = document.createElement('div');
     root.style.display = 'contents';
 
-    this.navbar = new Navbar(root);
+    // this.navbar = new Navbar(root);
     new EditorContainer(root);
     new NoticeContainer(root);
     // this.update(this.locationState);

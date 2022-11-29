@@ -21,7 +21,7 @@ interface ProfileInfoOptions {
 // type ProfileInfoOptions = ProfileInfoDonater | ProfileInfoAuthor
 
 interface ProfileInfoUpdateContext {
-  isAuthor?: true
+  isAuthor: boolean
   avatar: string
   username: string
   countSubscriptions: number
@@ -54,7 +54,8 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
     if (data.countSubscriptions !== this.options.countSubscriptions) {
       this.countSubscriptions.innerText = data.countSubscriptions.toString();
     }
-    if (data.isAuthor) {
+    if (data.isAuthor && !this.options.isAuthor) {
+      this.options.isAuthor = true;
       const info =
         querySelectorWithThrow(this.domElement, '.profile-info');
       const donatersContainer = document.createElement('div');
@@ -68,6 +69,10 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
       this.countDonaters.innerText = data.countDonaters?.toString() ?? '0';
       donatersContainer.append(donaters, this.countDonaters);
       info.appendChild(donatersContainer);
+    } else if (!data.isAuthor && this.options.isAuthor) {
+      this.options.isAuthor = false;
+      querySelectorWithThrow(this.domElement, '.profile-info__donaters')
+          .parentElement?.remove();
     }
     if (this.options.isAuthor && data.countDonaters) {
       this.countDonaters.innerText = data.countDonaters.toString();

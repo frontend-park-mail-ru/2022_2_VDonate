@@ -54,6 +54,7 @@ class PayEditor extends ComponentBase<'div'> {
           innerText: 'Задонатить',
           clickCallback: () => {
             subscribe(this.options.authorID, this.options.authorSubscriptionID);
+            this.remove();
           },
         });
         text.innerText = 'Вы действительно собиратесь задонатить?';
@@ -68,6 +69,7 @@ class PayEditor extends ComponentBase<'div'> {
                 this.options.authorID,
                 this.options.authorSubscriptionID,
             );
+            this.remove();
           },
         });
         text.innerText = 'Вы действительно собиратесь отписаться?';
