@@ -23,16 +23,19 @@ export default class SearchPage extends ViewBaseExtended<never> {
     const searchForm = document.createElement('form');
     searchForm.classList.add('search-page__search-form');
 
-    new InputField(searchForm, {
+    const input = new InputField(searchForm, {
       kind: InputType.text,
       label: 'Поиск Авторов',
       name: 'searchField',
+      placeholder: 'Найти автора',
     });
-    new Button(searchForm, {
+    input.addClassNames('search-page__input-field');
+    const btn = new Button(searchForm, {
       viewType: ButtonType.PRIMARY,
       innerText: 'Найти',
       actionType: 'submit',
     });
+    btn.addClassNames('search-page__search-btn');
     page.appendChild(searchForm);
 
     searchForm.addEventListener('submit', (e) => {
@@ -56,6 +59,7 @@ export default class SearchPage extends ViewBaseExtended<never> {
       this.glass.element.innerText = `Автор не найден`;
       return;
     }
+    this.glass.element.innerHTML = '';
     authors.forEach((author: PayloadUser) => {
       new SubscriptionLink(this.glass.element, {
         id: author.id,
