@@ -22,7 +22,7 @@ class NavbarLink
     const link = document.createElement('a');
     link.setAttribute('href', this.options.href);
     link.setAttribute('data-link', '');
-    link.classList.add('navbar-unit navbar-unit__navbar-unit');
+    link.classList.add('navbar-unit', 'navbar-unit__navbar-unit');
 
     const ico = document.createElement('img');
     ico.classList.add('navbar-unit__icon');

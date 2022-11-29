@@ -80,18 +80,15 @@ export default class Navbar extends ViewBaseExtended<never> {
       }));
     });
     glass.appendChild(linkes);
-
-    profileContainer.innerHTML +=
-       '<hr class="navbar-hr navbar-hr__navbar-hr">';
-
+    glass.innerHTML += '<hr class="navbar-hr navbar-hr__navbar-hr">';
     this.subsList = document.createElement('div');
     this.subsList.classList.add('left-navbar__subs-list');
     glass.appendChild(this.subsList);
 
     const profileContainer = document.createElement('div');
     profileContainer.classList.add('left-navbar__down');
-    profileContainer.innerHTML += '<hr>';
-
+    profileContainer.innerHTML +=
+    '<hr class="navbar-hr navbar-hr__navbar-hr">';
     this.profile = document.createElement('div');
     this.profile.classList.add('left-navbar__down_profile');
     this.profile.addEventListener('click', () => {
