@@ -59,44 +59,44 @@
 //   }
 
 
-//   // /**
-//   //  * @param subs элементы подписок
-//   //  */
-//   // renderSubs(subs: Subscription[] | undefined) {
-//   //   if (!subs || subs.length == 0) {
-//   //     this.container.innerHTML = 'Пока что тут пусто';
-//   //     return;
-//   //   }
-//   //   this.container.innerHTML = '';
-//   //   const user = store.getState().user as PayloadUser;
-//   //   const subscriptions =
-//   //     store.getState().userSubscribers as Subscription[];
-//   //   subs.sort((a, b) => a.tier - b.tier);
-//   //   subs.forEach((sub) => {
-//   //     let subType = SubType.SUBSCRIBE;
-//   //     if (user.id == sub.authorID) {
-//   //       subType = SubType.EDITSUBSCRIBE;
-//   //     } else {
-//   //       if (subscriptions.find((o) => o.id == sub.id)) {
-//   //         subType = SubType.UNSUBSCRIBE;
-//   //       }
-//   //     }
-//   //     const subItem = new Sub({
-//   //       AuthorID: sub.authorID,
-//   //       subType: subType,
-//   //       id: sub.id,
-//   //       subName: sub.title,
-//   //       lvl: sub.tier,
-//   //       img: sub.img,
-//   //       price: sub.price,
-//   //       period: 'за неделю',
-//   //       motivation: sub.text,
-//   //     });
-//   //     subItem.element.classList.add('sub-container__card');
-//   //     subItem.element.id = `sub-card_${sub.id}`;
-//   //     this.container.appendChild(subItem.element);
-//   //   });
-//   // }
+//   /**
+//    * @param subs элементы подписок
+//    */
+//   renderSubs(subs: Subscription[] | undefined) {
+//     if (!subs || subs.length == 0) {
+//       this.container.innerHTML = 'Пока что тут пусто';
+//       return;
+//     }
+//     this.container.innerHTML = '';
+//     const user = store.getState().user as PayloadUser;
+//     const subscriptions =
+//       store.getState().userSubscribers as Subscription[];
+//     subs.sort((a, b) => a.tier - b.tier);
+//     subs.forEach((sub) => {
+//       let subType = SubType.SUBSCRIBE;
+//       if (user.id == sub.authorID) {
+//         subType = SubType.EDITSUBSCRIBE;
+//       } else {
+//         if (subscriptions.find((o) => o.id == sub.id)) {
+//           subType = SubType.UNSUBSCRIBE;
+//         }
+//       }
+//       const subItem = new Sub({
+//         AuthorID: sub.authorID,
+//         subType: subType,
+//         id: sub.id,
+//         subName: sub.title,
+//         lvl: sub.tier,
+//         img: sub.img,
+//         price: sub.price,
+//         period: 'за неделю',
+//         motivation: sub.text,
+//       });
+//       subItem.element.classList.add('sub-container__card');
+//       subItem.element.id = `sub-card_${sub.id}`;
+//       this.container.appendChild(subItem.element);
+//     });
+//   }
 //   // /**
 //   //  * @param sub данные измененной/созданной сабки
 //   //  */

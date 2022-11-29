@@ -3,22 +3,22 @@ import Avatar, {AvatarType} from '@components/Avatar/Avatar';
 import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 import './profile-info.styl';
 
-interface ProfileInfoDonater {
-  isAuthor: false
+// interface ProfileInfoDonater {
+//   isAuthor: false
+//   avatar: string
+//   username: string
+//   countSubscriptions: number
+// }
+
+interface ProfileInfoOptions {
+  isAuthor: boolean
   avatar: string
   username: string
   countSubscriptions: number
+  countDonaters?: number
 }
 
-interface ProfileInfoAuthor {
-  isAuthor: true
-  avatar: string
-  username: string
-  countSubscriptions: number
-  countDonaters: number
-}
-
-type ProfileInfoOptions = ProfileInfoDonater | ProfileInfoAuthor
+// type ProfileInfoOptions = ProfileInfoDonater | ProfileInfoAuthor
 
 interface ProfileInfoUpdateContext {
   isAuthor?: true
@@ -119,7 +119,8 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
       donaters.innerText = 'Донатеров';
       this.countDonaters = document.createElement('span');
       this.countDonaters.classList.add('right-navbar__profile_info_count');
-      this.countDonaters.innerText = this.options.countDonaters.toString();
+      this.countDonaters.innerText =
+        this.options.countDonaters?.toString() ?? '0';
       donatersContainer.append(donaters, this.countDonaters);
       info.appendChild(donatersContainer);
     }

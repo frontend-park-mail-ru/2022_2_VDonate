@@ -25,9 +25,8 @@ export default class Root extends ViewBaseExtended<PayloadLocation> {
 
   constructor(el: HTMLElement) {
     super();
-    this.renderTo(el);
     this.locationState = store.getState().location as PayloadLocation;
-    this.update(this.locationState);
+    this.renderTo(el);
     auth();
   }
 
@@ -83,6 +82,7 @@ export default class Root extends ViewBaseExtended<PayloadLocation> {
     this.navbar = new Navbar(root);
     new EditorContainer(root);
     new NoticeContainer(root);
+    this.update(this.locationState);
 
     return root;
   }
