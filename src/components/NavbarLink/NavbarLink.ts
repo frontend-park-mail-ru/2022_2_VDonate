@@ -37,7 +37,8 @@ class NavbarLink
   }
 
   update(isChoosed: boolean): void {
-    if (isChoosed) this.domElement.classList.add('navbar-unit__navbar-unit_choosen');
-    else this.domElement.classList.remove('navbar-unit__navbar-unit_choosen');
+    if (isChoosed) {
+      this.domElement.classList.add('navbar-unit__navbar-unit_choosen');
+    } else this.domElement.classList.remove('navbar-unit__navbar-unit_choosen');
   }
 }
