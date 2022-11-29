@@ -4,9 +4,9 @@ import {
   PayloadEditUser,
   PayloadEditUserSucces,
   PayloadUser} from '@actions/types/user';
-import router from '@app/router';
-import store from '@app/store';
-import api from '@app/api';
+import router from '@app/Router';
+import store from '@app/Store';
+import api from '@app/Api';
 import {PayloadNotice} from '@actions/types/notice';
 import {
   emailCheck,

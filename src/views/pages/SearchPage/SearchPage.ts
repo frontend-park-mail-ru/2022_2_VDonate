@@ -1,14 +1,14 @@
 import searchAuthor, {SearchAuthorForm} from '@actions/handlers/searchAuthor';
 import {PayloadUser} from '@actions/types/user';
-import store from '@app/store';
-import ViewBaseExtended from '@app/view';
+import store from '@app/Store';
 import Button, {ButtonType} from '@components/Button/Button';
 import {Glass, GlassType} from '@components/glass/glass';
 import InputField, {InputType} from '@components/InputField/InputField';
 import SubscriptionLink from '@components/SubscriptionLink/SubscriptionLink';
 import './search-page.styl';
+import PageBase from '@app/Page';
 
-export default class SearchPage extends ViewBaseExtended<never> {
+export default class SearchPage extends PageBase {
   private glass: Glass = new Glass(GlassType.mono);
 
   constructor(element: HTMLElement) {
@@ -49,10 +49,6 @@ export default class SearchPage extends ViewBaseExtended<never> {
     return page;
   }
 
-  update(data: never): void {
-    return data;
-  }
-
   notify(): void {
     const authors = store.getState().authors as PayloadUser[] | undefined;
     if (!authors) {
@@ -68,5 +64,9 @@ export default class SearchPage extends ViewBaseExtended<never> {
         tier: `донатеров ${author.countSubscribers ?? 0}`,
       });
     });
+  }
+
+  protected onErase(): void {
+    return;
   }
 }

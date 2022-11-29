@@ -1,8 +1,8 @@
 import {ActionType} from '@actions/types/action';
 import {PayloadUser} from '@actions/types/user';
 import {ResponseData} from '@api/ajax';
-import api from '@app/api';
-import store from '@app/store';
+import api from '@app/Api';
+import store from '@app/Store';
 
 export interface SearchAuthorForm extends HTMLCollection {
     searchField: HTMLInputElement

@@ -30,12 +30,15 @@ const logInInputs: InputOptions[] = [
   },
 ];
 
-type LogInInputsErrors = Map<'username' | 'password', boolean>;
+interface LogInFormUpdateContent {
+  username?: boolean
+  password?: boolean
+}
 
 /** Модель формы входа */
 export default
 class LogInForm
-  extends ComponentBase<'form', LogInInputsErrors> {
+  extends ComponentBase<'form', LogInFormUpdateContent> {
   /** Список компонентов ввода, используемых в текущем контейнере */
   private inputs = new Map<string, InputField>();
 
@@ -44,9 +47,9 @@ class LogInForm
     this.renderTo(el);
   }
 
-  update(errors: LogInInputsErrors): void {
-    errors.forEach((isError, name) => {
-      this.inputs.get(name)?.update(isError);
+  update(errors: LogInFormUpdateContent): void {
+    Object.entries(errors).forEach(([name, value]) => {
+      this.inputs.get(name)?.update(value as boolean);
     });
   }
 

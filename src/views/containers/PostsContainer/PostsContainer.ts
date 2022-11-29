@@ -1,5 +1,5 @@
 import {PayloadPost} from '@actions/types/posts';
-import store from '@app/store';
+import store from '@app/Store';
 import Post from '@components/Post/Post';
 import plusIcon from '@icon/plus.svg';
 import './posts-container.styl';
@@ -7,8 +7,8 @@ import template from './posts-container.hbs';
 import {openPostEditor} from '@actions/handlers/editor';
 import {querySelectorWithThrow} from '@flux/types/component';
 import Button, {ButtonType} from '@components/Button/Button';
-import ViewBaseExtended from '@app/view';
 import {PayloadUser} from '@actions/types/user';
+import ContainerBase from '@app/Container';
 
 interface PostsContainerOptions {
   withCreateBtn: boolean
@@ -17,7 +17,7 @@ interface PostsContainerOptions {
 /** */
 export default
 class PostsContainer
-  extends ViewBaseExtended<Map<number, PayloadPost>> {
+  extends ContainerBase<Map<number, PayloadPost>> {
   private postsState = new Map<number, PayloadPost>();
   private posts = new Map<number, Post>();
 

@@ -1,9 +1,10 @@
-import store from '@app/store';
+import store from '@app/Store';
 import './entry-page.styl';
 import {PayloadSignUpErrors} from '@actions/types/user';
-import ViewBaseExtended from '@app/view';
 import LogInForm from '@components/EntryForm/LogInForm';
 import SignUpForm from '@components/EntryForm/SignUpForm';
+import PageBase from '@app/Page';
+import {FormErrorType, PayloadFormError} from '@actions/types/formError';
 /** Перечисление типов формы входа */
 export enum EntryFormType {
   LOGIN,
@@ -15,9 +16,9 @@ interface LoginPageOptions {
 }
 
 /** Реализация интерфейса *IView* для страницы входа */
-export default class EntryPage extends ViewBaseExtended<never> {
+export default class EntryPage extends PageBase {
   /** Сосотояние ошибок в форме */
-  private formErrors: PayloadSignUpErrors | undefined;
+  private formErrorsState: PayloadFormError;
   private form!: LogInForm | SignUpForm;
 
   constructor(el: HTMLElement, private options: LoginPageOptions) {
@@ -26,11 +27,37 @@ export default class EntryPage extends ViewBaseExtended<never> {
   }
 
   notify(): void {
-    //
+    const formErrorsNew = store.getState().formErrors as PayloadFormError;
+    if (JSON.stringify(formErrorsNew) !==
+      JSON.stringify(this.formErrorsState)) {
+      this.formErrorsState = formErrorsNew;
+      this.updateFormErrors();
+    }
   }
 
-  update(data: never): void {
-    return data;
+  private updateFormErrors() {
+    switch (this.formErrorsState?.type) {
+      case FormErrorType.LOGIN:
+        if (this.form instanceof LogInForm) {
+          this.form.update({
+            password: Boolean(this.formErrorsState.password),
+            username: Boolean(this.formErrorsState.username),
+          });
+        }
+        break;
+      case FormErrorType.SIGNUP:
+        if (this.form instanceof SignUpForm) {
+          this.form.update({
+            email: Boolean(this.formErrorsState.email),
+            username: Boolean(this.formErrorsState.username),
+            password: Boolean(this.formErrorsState.password),
+            repeatPassword: Boolean(this.formErrorsState.repeatPassword),
+          });
+        }
+        break;
+      default:
+        break;
+    }
   }
 
   protected render(): HTMLDivElement {
@@ -57,8 +84,10 @@ export default class EntryPage extends ViewBaseExtended<never> {
         this.form = new SignUpForm(formArea);
     }
 
-    this.formErrors = store.getState().formErrors as PayloadSignUpErrors;
-
     return page;
+  }
+
+  protected onErase(): void {
+    return;
   }
 }

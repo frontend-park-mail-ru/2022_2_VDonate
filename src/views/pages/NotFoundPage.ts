@@ -1,9 +1,9 @@
-import ViewBaseExtended from '@app/view';
+import PageBase from '@app/Page';
 import img404 from '@img/404.png';
 /**
  * Реализация интерфейса *IView* для несуществующе страницы
  */
-export default class NotFoundPage extends ViewBaseExtended<never> {
+export default class NotFoundPage extends PageBase {
   constructor(el: HTMLElement) {
     super();
     this.renderTo(el);
@@ -23,10 +23,10 @@ export default class NotFoundPage extends ViewBaseExtended<never> {
   }
 
   notify(): void {
-    //
+    return;
   }
 
-  update(data: never): void {
-    return data;
+  protected onErase(): void {
+    return;
   }
 }

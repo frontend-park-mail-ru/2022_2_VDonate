@@ -2,12 +2,12 @@ import SubscriptionCard,
 {SubscriptionCardStatus} from '@components/SubscriptionCard/SubscriptionCard';
 import './subscriptions-container.styl';
 import plusIcon from '@icon/plus.svg';
-import store from '@app/store';
+import store from '@app/Store';
 import {Subscription} from '@actions/types/subscribe';
 import {openSubscribtionEditor} from '@actions/handlers/editor';
-import ViewBaseExtended from '@app/view';
 import Button, {ButtonType} from '@components/Button/Button';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
+import ContainerBase from '@app/Container';
 
 interface SubscriptionsContainerOptions {
   changeable: boolean
@@ -17,7 +17,7 @@ interface SubscriptionsContainerOptions {
  * Модель поля подписок
  */
 export default class SubscriptionsContainer
-  extends ViewBaseExtended<Map<number, Subscription>> {
+  extends ContainerBase<Map<number, Subscription>> {
   private subscriptionsState = new Map<number, Subscription>();
   private subscriptionCards = new Map<number, SubscriptionCard>();
   constructor(el: HTMLElement,

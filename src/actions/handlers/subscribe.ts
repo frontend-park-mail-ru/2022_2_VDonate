@@ -1,7 +1,7 @@
-import api from '@app/api';
+import api from '@app/Api';
 import {ResponseData} from '@api/ajax';
 import {ActionType} from '@actions/types/action';
-import store from '@app/store';
+import store from '@app/Store';
 import {
   Subscription} from '@actions/types/subscribe';
 import {FormErrorType} from '@actions/types/formError';
@@ -11,6 +11,34 @@ import {
   tierCheck,
   titleCheck} from '@validation/validation';
 import {PayloadNotice} from '@actions/types/notice';
+import {PayloadPost} from '@actions/types/posts';
+
+
+const loadNewPosts =
+  (authorID: number, dispatch: (posts: PayloadPost[]) => void) => {
+    return api.getAuthorPosts(authorID)
+        .then((res) => {
+          if (res.ok) {
+            const posts = res.body as PayloadPost[];
+            dispatch(posts);
+          } else {
+            store.dispatch({
+              type: ActionType.SUBSCRIBE,
+              payload: {
+                error: 'Ошибка при попытке получить посты после смены подписки',
+              },
+            });
+          }
+        })
+        .catch((err) => {
+          store.dispatch({
+            type: ActionType.NOTICE,
+            payload: {
+              message: err as string,
+            },
+          });
+        });
+  };
 
 export const subscribe = (
     authorID: number,
@@ -18,12 +46,15 @@ export const subscribe = (
   api.subscribe(authorID, authorSubscriptionID)
       .then((res: ResponseData) => {
         if (res.ok) {
-          store.dispatch({
-            type: ActionType.SUBSCRIBE,
-            payload: {
-              authorSubscriptionID,
-              error: undefined,
-            },
+          return loadNewPosts(authorID, (posts: PayloadPost[]) => {
+            store.dispatch({
+              type: ActionType.SUBSCRIBE,
+              payload: {
+                authorSubscriptionID,
+                error: undefined,
+                posts,
+              },
+            });
           });
         } else {
           store.dispatch({
@@ -50,12 +81,15 @@ export const unsubscribe = (
   api.unsubscribe(authorID, authorSubscriptionID)
       .then((res: ResponseData) => {
         if (res.ok) {
-          store.dispatch({
-            type: ActionType.UNSUBSCRIBE,
-            payload: {
-              authorSubscriptionID,
-              error: undefined,
-            },
+          return loadNewPosts(authorID, (posts: PayloadPost[]) => {
+            store.dispatch({
+              type: ActionType.UNSUBSCRIBE,
+              payload: {
+                authorSubscriptionID,
+                error: undefined,
+                posts,
+              },
+            });
           });
         } else {
           store.dispatch({

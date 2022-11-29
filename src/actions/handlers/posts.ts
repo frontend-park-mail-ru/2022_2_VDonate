@@ -3,8 +3,8 @@ import {PayloadGetProfileData} from '@actions/types/getProfileData';
 import {PayloadNotice} from '@actions/types/notice';
 import {PayloadPost} from '@actions/types/posts';
 import {PayloadUser} from '@actions/types/user';
-import api from '@app/api';
-import store from '@app/store';
+import api from '@app/Api';
+import store from '@app/Store';
 
 export interface PostForm extends HTMLCollection {
   text: HTMLTextAreaElement

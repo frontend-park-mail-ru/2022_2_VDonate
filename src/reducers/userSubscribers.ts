@@ -2,7 +2,7 @@
 import {Action, ActionType} from '@actions/types/action';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
 import {Subscription} from '@actions/types/subscribe';
-import store from '@app/store';
+import store from '@app/Store';
 import {Reducer} from '@flux/types/reducer';
 import {PropTree} from '@flux/types/store';
 

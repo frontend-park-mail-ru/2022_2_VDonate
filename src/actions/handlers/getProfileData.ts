@@ -1,7 +1,7 @@
-import api from '@app/api';
+import api from '@app/Api';
 import {ResponseData} from '@api/ajax';
 import {ActionType} from '@actions/types/action';
-import store from '@app/store';
+import store from '@app/Store';
 import {
   PayloadProfileUser} from '@actions/types/getProfileData';
 import {PayloadPost} from '@actions/types/posts';

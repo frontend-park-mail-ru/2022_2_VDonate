@@ -1,6 +1,6 @@
 import {ActionType} from '@actions/types/action';
 import {EditorType} from '@actions/types/editor';
-import store from '@app/store';
+import store from '@app/Store';
 
 export const openPostEditor = (id?: number) =>
   store.dispatch({

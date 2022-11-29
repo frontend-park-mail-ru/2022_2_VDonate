@@ -1,19 +1,20 @@
 import './navbar.styl';
 import {Glass, GlassType} from '@components/glass/glass';
 import menuIcon from '@icon/menu.svg';
-import store from '@app/store';
+import store from '@app/Store';
 import routing from '@actions/handlers/routing';
 import {PayloadUser} from '@actions/types/user';
 import {logout} from '@actions/handlers/user';
 import {Subscription} from '@actions/types/subscribe';
 import {openProfileEditor} from '@actions/handlers/editor';
 import {RouteType} from '@actions/types/routing';
-import ViewBaseExtended from '@app/view';
+import ViewBaseExtended from '@app/Page';
 import Logo from '@components/Logo/Logo';
 import NavbarLink from '@components/NavbarLink/NavbarLink';
 import Button, {ButtonType} from '@components/Button/Button';
 import Avatar, {AvatarType} from '@components/Avatar/Avatar';
 import {getSubscritions} from '@actions/handlers/subscribe';
+import ContainerBase from '@app/Container';
 
 
 const links = [
@@ -44,7 +45,7 @@ export enum ChoosenLink {
 /**
  * Модель левого навбара
  */
-export default class Navbar extends ViewBaseExtended<never> {
+export default class Navbar extends ContainerBase<never> {
   private navbarLinks: NavbarLink[] = [];
   private subsList!: HTMLElement;
   private profile!: HTMLElement;

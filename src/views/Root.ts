@@ -1,5 +1,5 @@
 import {PayloadLocation} from '@actions/types/routing';
-import store from '@app/store';
+import store from '@app/Store';
 import {Pages} from '@configs/router';
 import PreloadPage from './pages/PreloadPage';
 import EntryPage, {EntryFormType} from './pages/EntryPage/EntryPage';
@@ -7,26 +7,32 @@ import NotFoundPage from './pages/NotFoundPage';
 import {auth} from '@actions/handlers/user';
 import EditorContainer from './containers/EditorContainer/EditorContainer';
 import NoticeContainer from './containers/NoticeContainer/NoticeContainer';
-import ViewBaseExtended from '@app/view';
 import Navbar from './containers/Navbar/Navbar';
-import SearchPage from './pages/SearchPage/searchPage';
+import SearchPage from './pages/SearchPage/SearchPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import {PayloadUser} from '@actions/types/user';
 import FeedPage from './pages/FeedPage/FeedPage';
+import PageBase from '@app/Page';
 
-/** Класс корневой вьюшки */
-export default class Root extends ViewBaseExtended<PayloadLocation> {
-  // private page: RootModel;
-  /** Состояния расположения в приложении */
-  private locationState: PayloadLocation;
-  private navbar?: Navbar;
-  private currentPage?:
+interface RootChildViews {
+  navbar?: Navbar
+  editor?: EditorContainer
+  notice?: NoticeContainer
+  page?:
     | NotFoundPage
     | PreloadPage
     | EntryPage
     | SearchPage
     | ProfilePage
     | FeedPage;
+}
+
+/** Класс корневой вьюшки */
+export default class Root extends PageBase {
+  // private page: RootModel;
+  /** Состояния расположения в приложении */
+  private locationState: PayloadLocation;
+  private childViews: RootChildViews = {};
 
   constructor(el: HTMLElement) {
     super();
@@ -47,50 +53,31 @@ export default class Root extends ViewBaseExtended<PayloadLocation> {
   }
 
   update(location: PayloadLocation): void {
-    this.currentPage?.erase();
+    this.childViews.page?.erase();
     switch (location.type) {
       case Pages.PRELOAD:
-        if (this.navbar) {
-          this.navbar.erase();
-          this.navbar = undefined;
-        }
-        this.currentPage = new PreloadPage(this.domElement);
+        this.onlyAuthViews(false);
+        this.childViews.page = new PreloadPage(this.domElement);
         break;
       case Pages.LOGIN:
-        if (this.navbar) {
-          this.navbar.erase();
-          this.navbar = undefined;
-        }
-        this.currentPage = new EntryPage(this.domElement, {
+        this.onlyAuthViews(false);
+        this.childViews.page = new EntryPage(this.domElement, {
           type: EntryFormType.LOGIN,
         });
         break;
       case Pages.SIGNUP:
-        if (this.navbar) {
-          this.navbar.erase();
-          this.navbar = undefined;
-        }
-        this.currentPage = new EntryPage(this.domElement, {
+        this.onlyAuthViews(false);
+        this.childViews.page = new EntryPage(this.domElement, {
           type: EntryFormType.SIGNUP,
         });
         break;
       case Pages.SEARCH:
-        if (!this.navbar) {
-          this.navbar = new Navbar(
-              this.domElement,
-              (store.getState().user as PayloadUser).id,
-          );
-        }
-        this.currentPage = new SearchPage(this.domElement);
+        this.onlyAuthViews(true);
+        this.childViews.page = new SearchPage(this.domElement);
         break;
       case Pages.PROFILE:
-        if (!this.navbar) {
-          this.navbar = new Navbar(
-              this.domElement,
-              (store.getState().user as PayloadUser).id,
-          );
-        }
-        this.currentPage = new ProfilePage(this.domElement, {
+        this.onlyAuthViews(true);
+        this.childViews.page = new ProfilePage(this.domElement, {
           profileID:
             Number(new URL(window.location.href).searchParams.get('id')),
           changeable:
@@ -99,22 +86,12 @@ export default class Root extends ViewBaseExtended<PayloadLocation> {
         });
         break;
       case Pages.FEED:
-        if (!this.navbar) {
-          this.navbar = new Navbar(
-              this.domElement,
-              (store.getState().user as PayloadUser).id,
-          );
-        }
-        this.currentPage = new FeedPage(this.domElement);
+        this.onlyAuthViews(true);
+        this.childViews.page = new FeedPage(this.domElement);
         break;
       case Pages.NOT_FOUND:
-        if (!this.navbar) {
-          this.navbar = new Navbar(
-              this.domElement,
-              (store.getState().user as PayloadUser).id,
-          );
-        }
-        this.currentPage = new NotFoundPage(this.domElement);
+        this.onlyAuthViews(false);
+        this.childViews.page = new NotFoundPage(this.domElement);
         break;
       default: {
         const _: never = location.type;
@@ -128,10 +105,35 @@ export default class Root extends ViewBaseExtended<PayloadLocation> {
     root.style.display = 'contents';
 
     // this.navbar = new Navbar(root);
-    new EditorContainer(root);
-    new NoticeContainer(root);
+    // new EditorContainer(root);
+    this.childViews.notice = new NoticeContainer(root);
     // this.update(this.locationState);
 
     return root;
+  }
+
+  private onlyAuthViews(isActive: boolean) {
+    if (isActive) {
+      this.childViews.navbar = this.childViews.navbar ??
+        new Navbar(
+            this.domElement,
+            (store.getState().user as PayloadUser).id,
+        );
+      this.childViews.editor = this.childViews.editor ??
+        new EditorContainer(this.domElement);
+    } else {
+      this.childViews.navbar?.erase();
+      this.childViews.navbar = undefined;
+
+      this.childViews.editor?.erase();
+      this.childViews.editor = undefined;
+    }
+  }
+
+  protected onErase(): void {
+    this.childViews.editor?.erase();
+    this.childViews.navbar?.erase();
+    this.childViews.notice?.erase();
+    this.childViews.page?.erase();
   }
 }

@@ -1,7 +1,7 @@
-import ViewBaseExtended from '@app/view';
+import PageBase from '@app/Page';
 
 /** Класс страницы предварительной загрузки */
-export default class PreloadPage extends ViewBaseExtended<never> {
+export default class PreloadPage extends PageBase {
   constructor(el: HTMLElement) {
     super();
     this.renderTo(el);
@@ -12,10 +12,10 @@ export default class PreloadPage extends ViewBaseExtended<never> {
   }
 
   notify(): void {
-    //
+    return;
   }
 
-  update(data: never): void {
-    return data;
+  protected onErase(): void {
+    return;
   }
 }

@@ -57,9 +57,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
       text: this.options.content,
     });
 
-    const avatarArea =
-post.querySelector<HTMLElement>('.post__author-avatar');
-    if (!avatarArea) throw new Error('Нет элемента с .post__author-avatar');
+    const avatarArea = querySelectorWithThrow(post, '.post__author-avatar');
     const avatar = new Avatar(avatarArea, {
       image: this.options.author.imgPath,
       viewType: AvatarType.AUTHOR,

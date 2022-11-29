@@ -1,10 +1,12 @@
 import {IAction} from '@flux/types/actions';
 import {ActionType} from './action';
 import {FormErrorType} from './formError';
+import {PayloadPost} from './posts';
 
 export interface PayloadSubscribe {
   authorSubscriptionID?: number
   error: string | undefined
+  posts?: PayloadPost[]
 }
 
 export interface Subscription {

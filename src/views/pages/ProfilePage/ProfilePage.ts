@@ -1,8 +1,8 @@
-import store from '@app/store';
+import store from '@app/Store';
 import {PayloadUser} from '@actions/types/user';
 import getProfile from '@actions/handlers/getProfileData';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
-import ViewBaseExtended from '@app/view';
+import ViewBaseExtended from '@app/Page';
 import About from '@components/About/About';
 import ProfileInfo from '@components/ProfileInfo/ProfileInfo';
 import SubscriptionsContainer
@@ -11,19 +11,27 @@ import PostsContainer from '@views/containers/PostsContainer/PostsContainer';
 import {Glass, GlassType} from '@components/glass/glass';
 import SubscriptionLink from '@components/SubscriptionLink/SubscriptionLink';
 import './profile-page.styl';
+import PageBase from '@app/Page';
 
 interface ProfileEditorOptions {
   profileID: number
   changeable: boolean
 }
 
-export default class ProfilePage extends ViewBaseExtended<never> {
+interface ProfilePageChildViews {
+  postContainer?: PostsContainer
+  subscriptionsContainer?: SubscriptionsContainer
+}
+
+export default class ProfilePage extends PageBase {
   private authorContent: HTMLDivElement = document.createElement('div');
   private donaterContent: HTMLDivElement = document.createElement('div');
   private about!: About;
   private profileInfo!: ProfileInfo;
   private glass: Glass = new Glass(GlassType.mono);
   private profileState: PayloadGetProfileData;
+
+  private childViews: ProfilePageChildViews = {};
 
   constructor(el: HTMLElement, private options: ProfileEditorOptions) {
     super();
@@ -104,16 +112,17 @@ export default class ProfilePage extends ViewBaseExtended<never> {
       countDonaters: this.profileState.user.countSubscribers,
     });
 
-    new SubscriptionsContainer(this.authorContent, {
-      changeable: this.options.changeable,
-    });
+    this.childViews.subscriptionsContainer =
+      new SubscriptionsContainer(this.authorContent, {
+        changeable: this.options.changeable,
+      });
 
     this.about = new About(this.authorContent, {
       aboutTextHtml: this.profileState.user.about ??
       'Пользователь пока ничего о себе не написал',
     });
     const user = store.getState().user as PayloadUser;
-    new PostsContainer(this.authorContent, {
+    this.childViews.postContainer = new PostsContainer(this.authorContent, {
       withCreateBtn: this.options.changeable && user.isAuthor,
     });
     this.donaterContent.classList.add('profile-page__content');
@@ -126,7 +135,8 @@ export default class ProfilePage extends ViewBaseExtended<never> {
     return page;
   }
 
-  update(): void {
-    //
+  protected onErase(): void {
+    this.childViews.postContainer?.erase();
+    this.childViews.subscriptionsContainer?.erase();
   }
 }

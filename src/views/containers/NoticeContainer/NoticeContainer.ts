@@ -1,10 +1,10 @@
 import {PayloadNotice} from '@actions/types/notice';
-import store from '@app/store';
-import ViewBaseExtended from '@app/view';
+import store from '@app/Store';
 import Notice from '@components/Notice/Notice';
 import './notice-container.styl';
+import ContainerBase from '@app/Container';
 /** */
-export default class NoticeContainer extends ViewBaseExtended<string> {
+export default class NoticeContainer extends ContainerBase<string> {
   private notices = new Set<Notice>();
   private noticeState?: PayloadNotice;
 

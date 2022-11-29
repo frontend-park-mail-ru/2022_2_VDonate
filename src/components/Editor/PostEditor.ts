@@ -7,7 +7,7 @@ import {
   updatePost,
 } from '@actions/handlers/posts';
 import {PayloadUser} from '@actions/types/user';
-import store from '@app/store';
+import store from '@app/Store';
 import Button, {ButtonType} from '@components/Button/Button';
 import InputField, {InputType} from '@components/InputField/InputField';
 import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';

@@ -42,12 +42,17 @@ const signUpInputs: InputOptions[] = [
   },
 ];
 
-type SignUpInputsErrors = Map<'username' | 'password', boolean>;
+interface SignUpFormUpdateErrors {
+  username?: boolean
+  email?: boolean
+  password?: boolean
+  repeatPassword?: boolean
+}
 
 /** Модель формы регистрации */
 export default
 class SignUpForm
-  extends ComponentBase<'form', SignUpInputsErrors> {
+  extends ComponentBase<'form', SignUpFormUpdateErrors> {
   /** Список компонентов ввода, используемых в текущем контейнере */
   private inputs = new Map<string, InputField>();
 
@@ -56,9 +61,9 @@ class SignUpForm
     this.renderTo(el);
   }
 
-  update(errors: SignUpInputsErrors): void {
-    errors.forEach((isError, name) => {
-      this.inputs.get(name)?.update(isError);
+  update(errors: SignUpFormUpdateErrors): void {
+    Object.entries(errors).forEach(([name, value]) => {
+      this.inputs.get(name)?.update(value as boolean);
     });
   }
 

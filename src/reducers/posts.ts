@@ -34,10 +34,12 @@ const postsReducer: Reducer<Action> =
         (state as Map<number, PayloadPost>)
             .set(action.payload.postID, action.payload);
         return state;
-      case ActionType.DELETE_POST: {
+      case ActionType.DELETE_POST:
         (state as Map<number, PayloadPost>).delete(action.payload.postID);
         return state;
-      }
+      case ActionType.SUBSCRIBE:
+      case ActionType.UNSUBSCRIBE:
+        return createPostsMap(action.payload.posts ?? []);
       default:
         return state;
     }

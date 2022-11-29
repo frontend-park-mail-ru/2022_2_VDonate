@@ -1,4 +1,4 @@
-// import store from '@app/store';
+// import store from '@app/Store';
 // import {IView} from '@flux/types/view';
 // import './feedPage.styl';
 // import {PostsContaner} from '@views/containers/posts/posts';
@@ -56,11 +56,13 @@
 import './feed-page.styl';
 import {getFeed} from '@actions/handlers/posts';
 import {PayloadUser} from '@actions/types/user';
-import store from '@app/store';
-import ViewBaseExtended from '@app/view';
+import store from '@app/Store';
 import PostsContainer from '@views/containers/PostsContainer/PostsContainer';
+import PageBase from '@app/Page';
 
-export default class FeedPage extends ViewBaseExtended<never> {
+export default class FeedPage extends PageBase {
+  private postsContainer!: PostsContainer;
+
   constructor(element: HTMLElement) {
     super();
     this.renderTo(element);
@@ -75,7 +77,7 @@ export default class FeedPage extends ViewBaseExtended<never> {
     const state = store.getState();
     const user = state.user as PayloadUser;
 
-    new PostsContainer(content, {
+    this.postsContainer = new PostsContainer(content, {
       withCreateBtn: user.isAuthor,
     });
 
@@ -83,11 +85,11 @@ export default class FeedPage extends ViewBaseExtended<never> {
     return page;
   }
 
-  update(data: never): void {
-    return data;
+  protected onErase(): void {
+    this.postsContainer.erase();
   }
 
   notify(): void {
-  //
+    return;
   }
 }

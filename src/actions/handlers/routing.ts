@@ -1,5 +1,5 @@
-import router from '@app/router';
-import store from '@app/store';
+import router from '@app/Router';
+import store from '@app/Store';
 import {Pages} from '@configs/router';
 import {ActionType} from '@actions/types/action';
 import {ActionRouting, RouteType} from '@actions/types/routing';
