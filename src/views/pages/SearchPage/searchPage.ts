@@ -51,8 +51,8 @@ export default class SearchPage extends ViewBaseExtended<never> {
   }
 
   notify(): void {
-    const authors = store.getState().authors as PayloadUser[];
-    if (!authors.length) {
+    const authors = store.getState().authors as PayloadUser[] | undefined;
+    if (!authors) {
       this.glass.element.innerText = `Автор не найден`;
       return;
     }
