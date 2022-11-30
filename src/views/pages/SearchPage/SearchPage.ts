@@ -52,7 +52,15 @@ export default class SearchPage extends PageBase {
   notify(): void {
     const authors = store.getState().authors as PayloadUser[] | undefined;
     if (!authors) {
-      this.glass.element.innerText = `Автор не найден`;
+      this.glass.element.innerText =
+      `Введите псевдоним интересующего Вас автора.\n
+       Или просто нажмите на кнопку "Найти",
+       чтобы уведеть всех доступных авторов.`;
+      return;
+    }
+    if (authors.length === 0) {
+      this.glass.element.innerText =
+        'По Вашему запросу ничего не найдено (ｏ・_・)ノ”(ノ_<、)';
       return;
     }
     this.glass.element.innerHTML = '';
