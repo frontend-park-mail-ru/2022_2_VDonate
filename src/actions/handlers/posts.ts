@@ -40,7 +40,8 @@ export const createPost = (author: PayloadPost['author'], form: PostForm) => {
                 imgPath: user.avatar,
                 username: user.username,
               },
-              content: res.body.contentTemplate as string,
+              content: res.body.content as string,
+              contentTemplate: res.body.contentTemplate as string,
               dateCreated: new Date(Date.now()),
               isAllowed: true,
               isLiked: false,
@@ -95,7 +96,8 @@ export const updatePost = (id: number, form: PostForm) => {
             type: ActionType.UPDATE_POST,
             payload: {
               postID: id,
-              content: res.body.contentTemplate as string,
+              content: res.body.content as string,
+              contentTemplate: res.body.contentTemplate as string,
             },
           });
         } else {

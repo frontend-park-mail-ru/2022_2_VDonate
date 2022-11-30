@@ -28,10 +28,15 @@ class EditorContainer
     | SubscriptionEditor;
   private editorType!: EditorType;
 
+  private imageState: {
+    url: string,
+  };
+
   constructor(el: HTMLElement) {
     super();
     this.editorState = store.getState().editor as PayloadEditor;
     this.formErrorsState = store.getState().formErrors as PayloadFormError;
+    this.imageState = store.getState().image as { url: string };
     this.renderTo(el);
     this.update({
       newEditor: this.editorState,
@@ -62,7 +67,12 @@ class EditorContainer
         newEditor: this.editorState,
       });
     }
-    if (this.editorType == EditorType.POST) {
+    const imageNew = (store.getState().image as { url: string });
+    if (imageNew.url.length !== 0 &&
+      imageNew !== this.imageState &&
+       this.editorType == EditorType.POST) {
+      this.imageState = imageNew;
+
       const url = (store.getState().image as {url: string} | undefined)?.url;
       if (url) {
         this.update({image: url});
@@ -113,7 +123,7 @@ class EditorContainer
           this.currentEditor = new PostEditor(this.domElement,
               {
                 id: postID,
-                text: targetPost.content,
+                text: targetPost.contentTemplate,
                 tier: targetPost.tier,
               });
         }
