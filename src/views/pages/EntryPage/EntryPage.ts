@@ -4,6 +4,7 @@ import LogInForm from '@components/EntryForm/LogInForm';
 import SignUpForm from '@components/EntryForm/SignUpForm';
 import PageBase from '@app/Page';
 import {FormErrorType, PayloadFormError} from '@actions/types/formError';
+import Logo from '@components/Logo/Logo';
 /** Перечисление типов формы входа */
 export enum EntryFormType {
   LOGIN,
@@ -61,10 +62,11 @@ export default class EntryPage extends PageBase {
 
   protected render(): HTMLDivElement {
     const page = document.createElement('div');
-    page.className = 'entry-page';
+    page.className = 'entry-page entry-page__entry-page';
 
     const contentArea = document.createElement('div');
     contentArea.className = 'entry-page__content-area';
+    new Logo(contentArea).addClassNames('entry-page__logo');
     page.appendChild(contentArea);
 
     const formArea = document.createElement('div');
