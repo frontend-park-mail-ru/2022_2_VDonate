@@ -106,7 +106,6 @@ class SubscriptionCard
 
   protected render(): HTMLDivElement {
     const card = new Glass(GlassType.mono).element;
-    card.classList.add('sub', 'sub__sub');
     card.id = `sub_${this.options.subscriptionID}`;
     card.innerHTML = template({
       id: this.options.subscriptionID,
