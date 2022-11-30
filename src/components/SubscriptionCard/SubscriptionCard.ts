@@ -66,6 +66,8 @@ class SubscriptionCard
               });
             },
           });
+          this.button.addClassNames('sub__button_style_owner');
+          this.button.removeClassName('sub__button_style_donater');
           break;
         case SubscriptionCardStatus.DONATER:
           this.button.update({
@@ -79,6 +81,8 @@ class SubscriptionCard
               });
             },
           });
+          this.button.removeClassName('sub__button_style_owner');
+          this.button.addClassNames('sub__button_style_donater');
           break;
       }
       this.options.subscriptionStatus = data.subscriptionStatus;
@@ -106,7 +110,6 @@ class SubscriptionCard
 
   protected render(): HTMLDivElement {
     const card = new Glass(GlassType.mono).element;
-    card.classList.add('sub', 'sub__sub');
     card.id = `sub_${this.options.subscriptionID}`;
     card.innerHTML = template({
       id: this.options.subscriptionID,
@@ -162,6 +165,7 @@ class SubscriptionCard
             });
           },
         });
+        this.button.addClassNames('sub__button_style_donater');
         break;
       case SubscriptionCardStatus.OWNER:
         this.button = new Button(btnArea, {
@@ -177,6 +181,7 @@ class SubscriptionCard
             });
           },
         });
+        this.button.addClassNames('sub__button_style_owner');
         break;
       case SubscriptionCardStatus.AUTHOR:
         this.button = new Button(btnArea, {
@@ -187,6 +192,7 @@ class SubscriptionCard
             openSubscribtionEditor(this.options.subscriptionID);
           },
         });
+        this.button.addClassNames('sub__button_style_author');
         break;
       default: {
         const _: never = this.options.subscriptionStatus;
