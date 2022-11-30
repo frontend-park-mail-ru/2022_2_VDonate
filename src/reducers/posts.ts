@@ -6,10 +6,7 @@ import {PropTree} from '@flux/types/store';
 const createPostsMap = (posts: PayloadPost[]): Map<number, PayloadPost> => {
   const postsMap = new Map<number, PayloadPost>();
   posts.forEach((post) => postsMap.set(post.postID, post));
-  const sortedMap =
-    new Map<number, PayloadPost>([...postsMap.entries()]
-        .sort(([a], [b]) => a - b));
-  return sortedMap;
+  return postsMap;
 };
 
 const postsReducer: Reducer<Action> =
