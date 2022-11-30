@@ -23,7 +23,8 @@ class SubscriptionLink extends ComponentBase<'a'> {
     const subscription = document.createElement('a');
     subscription.setAttribute('href', `/profile?id=${this.options.id}`);
     subscription.setAttribute('data-link', '');
-    subscription.classList.add('subscriptions-item');
+    subscription.classList.
+        add('subscriptions-item', 'subscriptions-item__subscriptions-item');
 
     const avatar = new Avatar(subscription, {
       image: this.options.imgPath,
