@@ -3,6 +3,8 @@ import store from '@app/Store';
 import Notice from '@components/Notice/Notice';
 import './notice-container.styl';
 import ContainerBase from '@app/Container';
+import routing from '@actions/handlers/routing';
+import {RouteType} from '@actions/types/routing';
 /** */
 export default class NoticeContainer extends ContainerBase<string> {
   private notices = new Set<Notice>();
@@ -51,6 +53,9 @@ export default class NoticeContainer extends ContainerBase<string> {
       },
     });
     this.notices.add(notice);
+    if (message == 'no existing session') {
+      routing('/login', RouteType.POPSTATE);
+    }
   }
 
   private removeNotice(target: Notice) {
