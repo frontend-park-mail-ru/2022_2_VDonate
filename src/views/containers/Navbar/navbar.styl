@@ -43,8 +43,8 @@
     padding-left: 16px
     gap: 8px
     text-decoration: none
-    &_avatar
-      width: 30px
+  &__sub-avatar
+    width: 30px
   &__down
     position: fixed;
     left: 0
@@ -53,31 +53,33 @@
     align-items: left 
     padding-bottom: 10px
     gap: 10px
-    &_profile
-      display: flex
-      flex-direction: row
-      align-items: center
-      padding: 5px 10px
-      gap: 10px
-      font-16()
-      color: color-font-light
-      flex-wrap: wrap
-      justify-content: space-evenly
-      width: 75%
-      cursor: pointer
-      &_img
-        width: 50px
-    &_btn
-      position: fixed
-      right: 20px
-      bottom: 20px
-    &_popup
-      flex-direction: column;
-      align-items: center;
-      padding: 8px;
-      gap: 8px;
-      &_btn
-        width: 100%
+
+.down
+  &__profile
+    display: flex
+    flex-direction: row
+    align-items: center
+    padding: 5px 10px
+    gap: 10px
+    font-16()
+    color: color-font-light
+    flex-wrap: wrap
+    justify-content: space-evenly
+    width: 75%
+    cursor: pointer
+  &__avatar
+    width: 50px
+  &__menu-btn
+    position: fixed
+    right: 20px
+    bottom: 20px
+  &__popup
+    flex-direction: column
+    align-items: center
+    padding: 8px
+    gap: 8px
+  &__popup-btn
+    width: 100%
 
 .navbar-hr
   background-color: rgba(#00103D, 0.10)

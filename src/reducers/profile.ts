@@ -67,6 +67,20 @@ const profileReducer: Reducer<Action> =
           action.payload.user.username;
         }
         return state;
+      case ActionType.SUBSCRIBE:
+        const user = (state as PayloadGetProfileData).user;
+        if (action.payload.authorSubscriptionID &&
+        user.countSubscribers) {
+          user.countSubscribers += 1;
+        }
+        return state;
+      case ActionType.UNSUBSCRIBE:
+        const userr = (state as PayloadGetProfileData).user;
+        if (action.payload.authorSubscriptionID &&
+        userr.countSubscribers) {
+          userr.countSubscribers -= 1;
+        }
+        return state;
       default:
         return state;
     }

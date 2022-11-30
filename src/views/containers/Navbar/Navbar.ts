@@ -87,11 +87,11 @@ export default class Navbar extends ContainerBase<never> {
     glass.appendChild(this.subsList);
 
     const profileContainer = document.createElement('div');
-    profileContainer.classList.add('left-navbar__down');
+    profileContainer.classList.add('left-navbar__down', 'down');
     profileContainer.innerHTML +=
     '<hr class="navbar-hr navbar-hr__navbar-hr">';
     this.profile = document.createElement('div');
-    this.profile.classList.add('left-navbar__down_profile');
+    this.profile.classList.add('down__profile');
     this.profile.addEventListener('click', () => {
       const user = store.getState().user as PayloadUser;
       routing(`/profile?id=${user.id}`, RouteType.STANDART);
@@ -113,10 +113,10 @@ export default class Navbar extends ContainerBase<never> {
         }
       },
     });
-    menuBtn.addClassNames('left-navbar__down_btn');
+    menuBtn.addClassNames('down__menu-btn');
 
     popup.style.display = 'none';
-    popup.classList.add('left-navbar__down_popup');
+    popup.classList.add('down__popup');
 
     const profileLink = new Button(popup, {
       viewType: ButtonType.OUTLINE,
@@ -127,7 +127,7 @@ export default class Navbar extends ContainerBase<never> {
         routing(`/profile?id=${user.id}`, RouteType.STANDART);
       },
     });
-    profileLink.addClassNames('left-navbar__down_popup_btn');
+    profileLink.addClassNames('down__popup-btn');
 
     const change = new Button(popup, {
       viewType: ButtonType.OUTLINE,
@@ -137,7 +137,7 @@ export default class Navbar extends ContainerBase<never> {
         openProfileEditor();
       },
     });
-    change.addClassNames('left-navbar__down_popup_btn');
+    change.addClassNames('down__popup-btn');
 
     const logoutBtn = new Button(popup, {
       viewType: ButtonType.OUTLINE,
@@ -147,7 +147,7 @@ export default class Navbar extends ContainerBase<never> {
         logout();
       },
     });
-    logoutBtn.addClassNames('left-navbar__down_popup_btn');
+    logoutBtn.addClassNames('down__popup-btn');
 
     profileContainer.appendChild(this.profile);
     glass.appendChild(profileContainer);
@@ -212,7 +212,7 @@ export default class Navbar extends ContainerBase<never> {
       image: this.user.avatar,
       viewType: this.user.isAuthor ? AvatarType.AUTHOR : AvatarType.DONATER,
     });
-    avatar.addClassNames('left-navbar__down_profile_img');
+    avatar.addClassNames('down__avatar');
     const usrname = document.createElement('span');
     usrname.innerText = this.user.username;
     this.profile.appendChild(usrname);
@@ -234,7 +234,7 @@ export default class Navbar extends ContainerBase<never> {
         image: subItem.authorAvatar ?? '',
         viewType: AvatarType.AUTHOR,
       });
-      avatar.addClassNames('left-navbar__sub_avatar');
+      avatar.addClassNames('left-navbar__sub-avatar');
       const usrname = document.createElement('span');
       usrname.innerText = subItem.authorName ?? subItem.title;
       sub.appendChild(usrname);

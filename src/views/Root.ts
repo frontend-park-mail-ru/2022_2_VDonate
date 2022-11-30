@@ -3,7 +3,7 @@ import store from '@app/Store';
 import {Pages} from '@configs/router';
 import PreloadPage from './pages/PreloadPage';
 import EntryPage, {EntryFormType} from './pages/EntryPage/EntryPage';
-import NotFoundPage from './pages/NotFoundPage';
+import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import {auth} from '@actions/handlers/user';
 import EditorContainer from './containers/EditorContainer/EditorContainer';
 import NoticeContainer from './containers/NoticeContainer/NoticeContainer';
