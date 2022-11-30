@@ -21,7 +21,19 @@ const UserSubscribersReducer: Reducer<Action> =
           profile.authorSubscriptions.find((sub) =>
             sub.id == action.payload.authorSubscriptionID);
         if (authorSub) {
-          (state as Subscription[]).push(authorSub);
+          console.log(authorSub);
+          const sub: Subscription = {
+            authorAvatar: profile.user.avatar,
+            authorID: authorSub.authorID,
+            authorName: profile.user.username,
+            id: authorSub.id,
+            img: authorSub.img,
+            price: authorSub.price,
+            text: authorSub.text,
+            tier: authorSub.tier,
+            title: authorSub.title,
+          };
+          (state as Subscription[]).push(sub);
         }
         return state;
       case ActionType.UNSUBSCRIBE:
