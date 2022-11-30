@@ -27,11 +27,11 @@ const links = [
     text: 'Поиск',
     link: '/search',
   },
-  {
-    icon: menuIcon,
-    text: 'Подписки',
-    link: '/subsriptions',
-  },
+  // {
+  //   icon: menuIcon,
+  //   text: 'Подписки',
+  //   link: '/subsriptions',
+  // },
 ];
 
 export enum ChoosenLink {
@@ -151,7 +151,7 @@ export default class Navbar extends ContainerBase<never> {
 
     profileContainer.appendChild(this.profile);
     glass.appendChild(profileContainer);
-    this.renderLocation(ChoosenLink.FEED);
+    // this.renderLocation(ChoosenLink.FEED);
     return navbar;
   }
 
@@ -175,30 +175,30 @@ export default class Navbar extends ContainerBase<never> {
    * рендер выбора локации
    * @param page -
    */
-  renderLocation(page: ChoosenLink) {
-    switch (page) {
-      case ChoosenLink.FEED:
-        this.navbarLinks[0].update(true);
-        this.navbarLinks[1].update(false);
-        this.navbarLinks[2].update(false);
-        break;
-      case ChoosenLink.SEARCH:
-        this.navbarLinks[0].update(false);
-        this.navbarLinks[1].update(true);
-        this.navbarLinks[2].update(false);
-        break;
-      case ChoosenLink.SUBSCRIBTIONS:
-        this.navbarLinks[0].update(false);
-        this.navbarLinks[1].update(false);
-        this.navbarLinks[2].update(true);
-        break;
-      default:
-        this.navbarLinks[0].update(false);
-        this.navbarLinks[1].update(false);
-        this.navbarLinks[2].update(false);
-        break;
-    }
-  }
+  // renderLocation(page: ChoosenLink) {
+  //   switch (page) {
+  //     case ChoosenLink.FEED:
+  //       this.navbarLinks[0].update(true);
+  //       this.navbarLinks[1].update(false);
+  //       this.navbarLinks[2].update(false);
+  //       break;
+  //     case ChoosenLink.SEARCH:
+  //       this.navbarLinks[0].update(false);
+  //       this.navbarLinks[1].update(true);
+  //       this.navbarLinks[2].update(false);
+  //       break;
+  //     case ChoosenLink.SUBSCRIBTIONS:
+  //       this.navbarLinks[0].update(false);
+  //       this.navbarLinks[1].update(false);
+  //       this.navbarLinks[2].update(true);
+  //       break;
+  //     default:
+  //       this.navbarLinks[0].update(false);
+  //       this.navbarLinks[1].update(false);
+  //       this.navbarLinks[2].update(false);
+  //       break;
+  //   }
+  // }
 
   /**
      * рендер профиля
