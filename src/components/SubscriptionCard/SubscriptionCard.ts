@@ -95,7 +95,7 @@ class SubscriptionCard
       this.lvl.innerText = data.lvl.toString();
       this.options.lvl = data.lvl;
     }
-    if (data.img !== this.options.img) {
+    if (data.img.length > 0 && data.img !== this.options.img) {
       this.avatar.update(data.img);
       this.options.img = data.img;
     }
