@@ -21,7 +21,6 @@ const UserSubscribersReducer: Reducer<Action> =
           profile.authorSubscriptions.find((sub) =>
             sub.id == action.payload.authorSubscriptionID);
         if (authorSub) {
-          console.log(authorSub);
           const sub: Subscription = {
             authorAvatar: profile.user.avatar,
             authorID: authorSub.authorID,
