@@ -1,5 +1,10 @@
-{{!-- <span class="post-content__title">{{title}}</span>
-{{#with img}}
-  <img src="{{this}}" alt="post-content__image">
-{{/with}} --}}
-<span class="post-content__text">{{{text}}}</span>
+{{#if isAllowed}}
+  <div class="post-content post-content__text">{{{text}}}</div>
+{{else}}
+  <div class="post__not-allowed">Нужен донат {{tier}} уровня</div>
+  <div class="post-content post-content__text post-content_blured">
+    {{{text}}}
+    Проблема в том, что быть жуликом плохо, только когда поймают. ＼(≧▽≦)／
+    Мы тебя поймали! ヾ( ￣O￣)ツ
+  </div>
+{{/if}}

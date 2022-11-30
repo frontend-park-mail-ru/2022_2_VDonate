@@ -62,6 +62,8 @@ class PostsContainer
               isLiked: postPayload.isLiked,
               likesNum: postPayload.likesNum,
               content: postPayload.content,
+              isAllowed: postPayload.isAllowed,
+              tier: postPayload.tier,
             });
           } else {
             this.addPost(postPayload);

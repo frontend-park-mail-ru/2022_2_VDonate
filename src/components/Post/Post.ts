@@ -1,5 +1,6 @@
 import Button, {ButtonType} from '@components/Button/Button';
 import templatePost from './post.hbs';
+import templateContent from './content.hbs';
 import editIcon from '@icon/edit.svg';
 import './post.styl';
 
@@ -15,9 +16,11 @@ type PostOptions = PayloadPost & {
 }
 
 export interface PostUpdateContext {
-  content?: string
-  isLiked?: boolean
-  likesNum?: number
+  content: string
+  isLiked: boolean
+  likesNum: number
+  isAllowed: boolean
+  tier: number
 }
 
 /**
@@ -33,17 +36,39 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
   }
 
   update(data: PostUpdateContext): void {
-    if (data.isLiked !== undefined && data.likesNum !== undefined) {
+    if (data.isLiked !== this.options.isLiked &&
+      data.likesNum !== this.options.likesNum) {
       this.options.isLiked = data.isLiked;
+      this.options.likesNum = data.likesNum;
       this.likeBtn.update({
         isActive: data.isLiked,
         likesNum: data.likesNum,
       });
     }
-    if (data.content && this.options.isAllowed) {
+    if (
+      // Изменился уровень доступа
+      data.isAllowed !== this.options.isAllowed ||
+      // У нас нет доступа и изменился тир
+      !this.options.isAllowed && data.tier != this.options.tier ||
+      // Изменился контент
+      data.content !== this.options.content
+    ) {
+      this.options.isAllowed = data.isAllowed;
+      this.options.content = data.content;
+      this.options.tier = data.tier;
+
       querySelectorWithThrow(this.domElement, '.post__content').innerHTML =
-        data.content;
+          templateContent({
+            isAllowed: data.isAllowed,
+            text: data.content,
+            tier: data.tier,
+          });
     }
+
+    // if (data.content && this.options.isAllowed) {
+    //   querySelectorWithThrow(this.domElement, '.post__content').innerHTML =
+    //     data.content;
+    // }
   }
 
   protected render(): HTMLDivElement {
@@ -52,9 +77,6 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     post.innerHTML = templatePost({
       username: this.options.author.username,
       date: this.options.dateCreated,
-      notAllowed: !this.options.isAllowed,
-      tier: this.options.tier,
-      text: this.options.content,
     });
 
     const avatarArea = querySelectorWithThrow(post, '.post__author-avatar');
@@ -63,6 +85,13 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
       viewType: AvatarType.AUTHOR,
     });
     avatar.addClassNames('post__img');
+
+    const contentArea = querySelectorWithThrow(post, '.post__content');
+    contentArea.innerHTML = templateContent({
+      isAllowed: this.options.isAllowed,
+      text: this.options.content,
+      tier: this.options.tier,
+    });
 
     this.addReactionBtn(post);
 
