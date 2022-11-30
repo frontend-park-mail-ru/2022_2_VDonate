@@ -23,9 +23,10 @@ const loadNewPosts =
             dispatch(posts);
           } else {
             store.dispatch({
-              type: ActionType.SUBSCRIBE,
+              type: ActionType.NOTICE,
               payload: {
-                error: 'Ошибка при попытке получить посты после смены подписки',
+                message:
+                  'Ошибка при попытке получить посты после смены подписки',
               },
             });
           }
@@ -58,9 +59,9 @@ export const subscribe = (
           });
         } else {
           store.dispatch({
-            type: ActionType.SUBSCRIBE,
+            type: ActionType.NOTICE,
             payload: {
-              error: 'Ошибка при попытке подписаться',
+              message: 'Ошибка при попытке подписаться',
             },
           });
         }
