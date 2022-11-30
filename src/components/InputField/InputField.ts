@@ -74,6 +74,7 @@ class InputField extends ComponentBase<'label', boolean> {
         templateContext.type = 'checkbox';
         break;
       case InputType.textarea:
+        input.classList.add('input-field_with-textarea');
         input.insertAdjacentHTML(
             'afterbegin',
             templateTextarea(this.options),
