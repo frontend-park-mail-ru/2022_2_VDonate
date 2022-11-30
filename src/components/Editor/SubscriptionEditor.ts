@@ -113,10 +113,10 @@ class SubscriptionEditor
           placeholder: 'Замотивируйте своих донатеров',
           value: this.options?.text,
         }))
-        .set('image', new InputField(inputsArea, {
+        .set('file', new InputField(inputsArea, {
           kind: InputType.file,
           label: 'Загрузите картинку',
-          name: 'image',
+          name: 'file',
         }));
   }
 
