@@ -6,7 +6,10 @@ import {PropTree} from '@flux/types/store';
 const createPostsMap = (posts: PayloadPost[]): Map<number, PayloadPost> => {
   const postsMap = new Map<number, PayloadPost>();
   posts.forEach((post) => postsMap.set(post.postID, post));
-  return postsMap;
+  const sortedMap =
+    new Map<number, PayloadPost>([...postsMap.entries()]
+        .sort(([a], [b]) => a - b));
+  return sortedMap;
 };
 
 const postsReducer: Reducer<Action> =
@@ -24,8 +27,10 @@ const postsReducer: Reducer<Action> =
             post.isLiked = action.payload.isLiked;
             post.likesNum += action.payload.isLiked ? 1 : -1;
           }
-          if (action.payload.content) {
+          if (action.payload.content !== undefined &&
+            action.payload.contentTemplate !== undefined) {
             post.content = action.payload.content;
+            post.contentTemplate = action.payload.contentTemplate;
           }
         }
         return state;

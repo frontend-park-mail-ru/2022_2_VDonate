@@ -68,7 +68,7 @@ class PostsContainer
           }
         },
     );
-    this.postsState = newPostsState;
+    this.postsState = new Map(newPostsState);
   }
 
   private deletePost(postID: number) {

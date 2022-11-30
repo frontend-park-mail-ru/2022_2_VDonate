@@ -17,6 +17,9 @@ const initinalState: {
     authorSubscriptions: Subscription[],
     posts: PayloadPost[],
   },
+  image: {
+    url: string,
+  },
 } = {
   location: {
     type: Pages.PRELOAD,
@@ -39,6 +42,9 @@ const initinalState: {
     subscriptions: [],
     authorSubscriptions: [],
     posts: [],
+  },
+  image: {
+    url: '',
   },
 };
 
