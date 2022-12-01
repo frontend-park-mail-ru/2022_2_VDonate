@@ -50,21 +50,22 @@ const dataToQuery = (data: RequestData): string => {
   return queryString;
 };
 /** Поле для CSFR токена */
-const csrfField = 'csrf_token';
+// const csrfField = 'csrf_token';
 /**
  *  Сохрание CSRF токена в локальное хранилище
  * @returns успешное сохранение CSRF токена
  */
 export const saveCSRF = (): boolean => {
-  document.cookie = `${csrfField}=OjEM2QPpsGd8SjXybAtHwgENY8e3BFFz;`;
-  const csrfCookie = document.cookie.match(
-      new RegExp(`${csrfField}=([\\w-]+)`),
-  );
-  if (!csrfCookie) {
-    return false;
-  }
-  localStorage.setItem(csrfField, csrfCookie[1]);
+  // document.cookie = `${csrfField}=OjEM2QPpsGd8SjXybAtHwgENY8e3BFFz;`;
   return true;
+  // const csrfCookie = document.cookie.match(
+  //     new RegExp(`${csrfField}=([\\w-]+)`),
+  // );
+  // if (!csrfCookie) {
+  //   return false;
+  // }
+  // localStorage.setItem(csrfField, csrfCookie[1]);
+  // return true;
 };
 /**
      * отправляет Request-запрос на заданный url,
@@ -120,10 +121,10 @@ export default async (
         break;
     }
 
-    headers.append(
-        'X-CSRF-Token',
-        localStorage.getItem(`${csrfField}`) ?? '',
-    );
+    // headers.append(
+    //     'X-CSRF-Token',
+    //     localStorage.getItem(`${csrfField}`) ?? '',
+    // );
   }
   options.headers = headers;
   const response = await fetch(
