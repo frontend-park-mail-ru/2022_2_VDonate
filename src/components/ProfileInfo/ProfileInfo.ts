@@ -74,7 +74,7 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
       querySelectorWithThrow(this.domElement, '.profile-info__donaters')
           .parentElement?.remove();
     }
-    if (this.options.isAuthor && data.countDonaters) {
+    if (this.options.isAuthor && data.countDonaters !== undefined) {
       this.countDonaters.innerText = data.countDonaters.toString();
     }
   }
