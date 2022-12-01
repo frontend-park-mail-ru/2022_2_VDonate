@@ -115,7 +115,7 @@ class SubscriptionEditor
         }))
         .set('file', new InputField(inputsArea, {
           kind: InputType.file,
-          label: 'Загрузите картинку',
+          label: 'Загрузите картинку (.jpg)',
           name: 'file',
         }));
   }

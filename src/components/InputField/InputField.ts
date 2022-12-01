@@ -68,7 +68,7 @@ class InputField extends ComponentBase<'label', boolean> {
         break;
       case InputType.file:
         templateContext.type = 'file';
-        templateContext.withAccept = 'image/*';
+        templateContext.withAccept = 'image/jpeg';
         break;
       case InputType.checkbox:
         templateContext.type = 'checkbox';

@@ -43,7 +43,7 @@ interface PostEditorOptions {
 //     'file',
 //     {
 //       kind: InputType.file,
-//       label: 'Загрузите картинку',
+//       label: 'Загрузите картинку (.jpg)',
 //       name: 'file',
 //     },
 //   ],
@@ -148,7 +148,7 @@ export default class PostEditor
         }))
         .set('image', new InputField(inputsArea, {
           kind: InputType.file,
-          label: 'Загрузите картинку',
+          label: 'Загрузите картинку (.jpg)',
           name: 'image',
         }));
   }
