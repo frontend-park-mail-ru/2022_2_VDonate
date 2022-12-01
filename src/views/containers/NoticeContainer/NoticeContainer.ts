@@ -27,8 +27,8 @@ export default class NoticeContainer extends ContainerBase<string> {
     const noticeStateNew = store.getState().notice as PayloadNotice;
     if (this.noticeState?.timestamp !== noticeStateNew.timestamp) {
       this.noticeState = noticeStateNew;
-      if (typeof this.noticeState.message === 'string' /* &&
-        /^[а-яёА-ЯЁ]/.test(this.noticeState.message)*/) {
+      if (typeof this.noticeState.message === 'string' &&
+        /^[а-яёА-ЯЁ]/.test(this.noticeState.message)) {
         this.update(this.noticeState.message);
       }
       if (Array.isArray(this.noticeState.message)) {

@@ -39,10 +39,6 @@ export default class ProfilePage extends PageBase {
     getProfile(this.options.profileID);
   }
 
-  // protected beforeRegisterStore(): void {
-  //   getProfile(Number(new URL(location.href).searchParams.get('id')));
-  // }
-
   /** Оповещение об изменением хранилища */
   notify(): void {
     const profileNew =
