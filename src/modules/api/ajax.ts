@@ -100,14 +100,18 @@ export default async (
 
         for (const [name, value] of Object.entries(data)) {
           // eslint-disable-next-line @typescript-eslint/no-base-to-string
-          switch (typeof value) {
-            case 'boolean':
-            case 'number':
-              formData.append(name, value.toString());
-              break;
-            default:
-              formData.append(name, value);
-              break;
+          if (value instanceof Blob) {
+            formData.append(name, value, 'newfile.jpg');
+          } else {
+            switch (typeof value) {
+              case 'boolean':
+              case 'number':
+                formData.append(name, value.toString());
+                break;
+              default:
+                formData.append(name, value);
+                break;
+            }
           }
         }
         options.body = formData;
