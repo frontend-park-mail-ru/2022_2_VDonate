@@ -162,7 +162,7 @@ export const login = (props: LogInFormElements): void => {
                     },
                   });
                 });
-          case 404:
+          case 401:
             store.dispatch({
               type: ActionType.LOGIN_FAIL,
               payload: {
@@ -250,7 +250,7 @@ export const signup = (props: SignUpFormElements): void => {
                   },
                 });
               });
-          case 405:
+          case 409:
             store.dispatch({
               type: ActionType.SIGNUP_FAIL,
               payload: {
