@@ -83,12 +83,13 @@ export default class ProfilePage extends PageBase {
         this.glass.element.innerHTML = 'Донатер пока никого не поддерживает';
       } else {
         this.glass.element.innerHTML = '';
-        profileNew.subscriptions.forEach((sub) => {
+        profileNew.subscriptions.forEach((sub, idx, arr) => {
           new SubscriptionLink(this.glass.element, {
             id: sub.authorID,
             imgPath: sub.authorAvatar ?? sub.img,
             username: sub.authorName ?? sub.title,
             tier: `Уровень ${sub.tier}`,
+            isLast: idx === arr.length - 1,
           });
         });
       }
