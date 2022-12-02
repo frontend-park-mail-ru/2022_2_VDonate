@@ -10,7 +10,7 @@ class Router {
       const target = (e.target as Element).closest('a[data-link]');
       if (target !== null) {
         e.preventDefault();
-        routing(target.getAttribute('href') ?? '/', RouteType.STANDART);
+        routing(target.getAttribute('href') ?? '/');
       }
     });
 
@@ -23,9 +23,17 @@ class Router {
   /**
    * Вызывает рендер страницы по переданому пути
    * @param {string} loc путь страницы
+   * @param {RouteType} type тип перехода
    * @returns TODO
    */
-  go(loc: string): Pages {
+  go(loc: string, type?: RouteType): Pages {
+    switch (type) {
+      case RouteType.POPSTATE:
+        break;
+      default:
+        window.history.pushState(null, '', loc);
+        break;
+    }
     return routes.find((obj) => loc.match(obj.path))?.type ?? Pages.NOT_FOUND;
   }
 }

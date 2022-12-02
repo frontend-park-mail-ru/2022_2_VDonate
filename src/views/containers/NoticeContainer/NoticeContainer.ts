@@ -27,13 +27,24 @@ export default class NoticeContainer extends ContainerBase<string> {
     const noticeStateNew = store.getState().notice as PayloadNotice;
     if (this.noticeState?.timestamp !== noticeStateNew.timestamp) {
       this.noticeState = noticeStateNew;
-      if (typeof this.noticeState.message === 'string' &&
-        /^[а-яёА-ЯЁ]/.test(this.noticeState.message)) {
-        this.update(this.noticeState.message);
+      if (typeof this.noticeState.message === 'string') {
+        if (this.noticeState.message == 'no existing session') {
+          routing('/login', RouteType.STANDART);
+          this.update('Ошибка авторизации');
+        } else if (/^[а-яёА-ЯЁ]/.test(this.noticeState.message)) {
+          this.update(this.noticeState.message);
+        }
       }
       if (Array.isArray(this.noticeState.message)) {
         this.noticeState.message.forEach(
-            (message) => this.update(message),
+            (message) => {
+              if (message == 'no existing session') {
+                routing('/login', RouteType.STANDART);
+                this.update('Ошибка авторизации');
+              } else if (/^[а-яёА-ЯЁ]/.test(message)) {
+                this.update(message);
+              }
+            },
         );
       }
     }
@@ -53,9 +64,6 @@ export default class NoticeContainer extends ContainerBase<string> {
       },
     });
     this.notices.add(notice);
-    if (message == 'no existing session') {
-      routing('/login', RouteType.POPSTATE);
-    }
   }
 
   private removeNotice(target: Notice) {
