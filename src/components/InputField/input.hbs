@@ -1,0 +1,7 @@
+<span class="input-field__label">{{label}}</span>
+<div class="input-field__back">
+  <input class="input-field__input" type="{{type}}" {{#with placeholder}} placeholder="{{this}}" {{/with}} name="{{name}}" {{#with value}} value="{{this}}" {{/with}} {{#with withAccept}} accept="{{this}}" {{/with}}>
+  {{#with icon}}
+    <img class="input-field__icon" src="{{this}}" alt="icon">
+  {{/with}}
+</div>

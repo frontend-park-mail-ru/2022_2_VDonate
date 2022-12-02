@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint no-undef: "off"*/
 const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
@@ -6,7 +8,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
   context: path.resolve(__dirname, 'src'),
   entry: {
-    main: './index.js',
+    main: './index.ts',
   },
   output: {
     filename: '[name].[contenthash].js',
@@ -14,13 +16,22 @@ module.exports = {
   },
   resolve: {
     alias: {
-      '@modules': path.resolve(__dirname, 'src/modules'),
-      '@template': path.resolve(__dirname, 'src/template'),
+      '@flux': path.resolve(__dirname, 'src/modules/flux'),
+      '@api': path.resolve(__dirname, 'src/modules/api'),
+      '@validation': path.resolve(__dirname, 'src/modules/validation'),
+      '@reducers': path.resolve(__dirname, 'src/reducers'),
       '@views': path.resolve(__dirname, 'src/views'),
       '@configs': path.resolve(__dirname, 'src/configs'),
+      '@components': path.resolve(__dirname, 'src/components'),
+      '@models': path.resolve(__dirname, 'src/models'),
+      '@app': path.resolve(__dirname, 'src/app'),
+      '@actions': path.resolve(__dirname, 'src/actions'),
+      '@style': path.resolve(__dirname, 'src/style'),
       '@icon': path.resolve(__dirname, 'static/icon'),
       '@img': path.resolve(__dirname, 'static/img'),
+      '@specialCompare': path.resolve(__dirname, 'src/modules/specialCompare'),
     },
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
   devServer: {
     port: 4200,
@@ -29,7 +40,7 @@ module.exports = {
   plugins: [
     new HTMLWebpackPlugin({
       template: './index.html',
-      favicon: '../static/icon/favicon.ico'
+      favicon: '../static/icon/favicon.ico',
     }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
@@ -47,7 +58,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.handlebars$/,
+        test: /\.(handlebars|hbs)$/,
         loader: 'handlebars-loader',
       },
       {
@@ -64,13 +75,7 @@ module.exports = {
         test: /\.ts$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              '@babel/preset-env',
-              '@babel/preset-typescript',
-            ],
-          },
+          loader: 'ts-loader',
         },
       },
       {

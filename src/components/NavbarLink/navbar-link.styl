@@ -1,0 +1,26 @@
+@require '@style/const.styl'
+
+.navbar-unit
+  display: flex
+  flex-direction: row
+  align-items: center
+  gap: 20px
+  text-decoration: none
+  flex-wrap: wrap
+  &__navbar-unit
+    width: 95%
+    border-radius: 0px 10px 10px 0px;
+    padding: 8px 0px 8px 10px;
+    &_choosen
+      // background: url('https://s3-alpha-sig.figma.com/img/7361/3ee1/d8285b5aef72c8357d210b2a1f4e820c?Expires=1667779200&Signature=RUFJFjcZbiuSpwZktWTDJPczBTZdECzpafPF~QXtT9lpqNCWshR2Lj-dYVoZ5GV~Oa0wxtoa8yJ7QrPliCnaDvlQDOuNJECsYKyWRM2gAmEUnpLSO2QSIOI6BjftrgGEoDdeGaaPl342QRDvCsSNrrpMgbuF2WLERmoe15Gedb9Oxc~3ndnl0uqBiXYb~7nDNj24GV6m2NNenOc3oecAF~Lu~bdDASYo4FPIMLxzaOp83OwyuRGygjQ1av73X8SJfa798Ti~nrgKqgZmjY3-T7boLSguN~ageWTcQg3~xeJrCWt2k-ox~uVlC2X6W~XhKiZChs8jI2UuseSA4SKV8w__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA')
+      background-repeat: no-repeat
+      background-size: cover
+      min-height: 100%
+      box-shadow: inset 0px -4px 2px rgba(0, 0, 0, 0.05), inset 0px 4px 2px rgba(255, 255, 255, 0.25), inset 4px 4px 26px rgba(255, 255, 255, 0.25)
+      filter: drop-shadow(0px 40px 80px rgba(0, 0, 0, 0.38)) invert(25%) sepia(60%) hue-rotate(210deg) brightness(103%) contrast(104%)
+  &__icon
+    width: 20px
+    filter: invert(85%) sepia(12%) saturate(764%) hue-rotate(186deg) brightness(102%) contrast(98%);
+  &__context
+    font-21()
+    color: color-font-light
