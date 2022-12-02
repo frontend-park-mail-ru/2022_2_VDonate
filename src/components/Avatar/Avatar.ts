@@ -50,6 +50,12 @@ export default class Avatar extends ComponentBase<'img', string> {
   }
 
   update(imgPath: string): void {
-    this.domElement.src = imgPath;
+    if (imgPath) {
+      this.domElement.src = imgPath;
+    } else {
+      this.domElement.src = this.options.viewType == AvatarType.SUBSCRIPTION ?
+        altAuthorSub : altAvatar;
+    }
+    this.options.image = imgPath;
   }
 }
