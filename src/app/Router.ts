@@ -30,6 +30,7 @@ class Router {
     switch (type) {
       case RouteType.POPSTATE:
         break;
+      case RouteType.STANDART:
       default:
         window.history.pushState(null, '', loc);
         break;

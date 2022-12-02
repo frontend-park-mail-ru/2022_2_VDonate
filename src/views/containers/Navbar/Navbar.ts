@@ -7,7 +7,6 @@ import {PayloadUser} from '@actions/types/user';
 import {logout} from '@actions/handlers/user';
 import {Subscription} from '@actions/types/subscribe';
 import {openProfileEditor} from '@actions/handlers/editor';
-import {RouteType} from '@actions/types/routing';
 import Logo from '@components/Logo/Logo';
 import NavbarLink from '@components/NavbarLink/NavbarLink';
 import Button, {ButtonType} from '@components/Button/Button';
@@ -94,7 +93,7 @@ export default class Navbar extends ContainerBase<never> {
     this.profile.classList.add('down__profile');
     this.profile.addEventListener('click', () => {
       const user = store.getState().user as PayloadUser;
-      routing(`/profile?id=${user.id}`, RouteType.STANDART);
+      routing(`/profile?id=${user.id}`);
     });
 
     const popup = new Glass(GlassType.lines).element;
@@ -124,7 +123,7 @@ export default class Navbar extends ContainerBase<never> {
       innerText: 'Профиль',
       clickCallback: () => {
         const user = store.getState().user as PayloadUser;
-        routing(`/profile?id=${user.id}`, RouteType.STANDART);
+        routing(`/profile?id=${user.id}`);
       },
     });
     profileLink.addClassNames('down__popup-btn');

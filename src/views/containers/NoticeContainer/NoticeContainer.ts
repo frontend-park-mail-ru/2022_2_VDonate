@@ -4,7 +4,6 @@ import Notice from '@components/Notice/Notice';
 import './notice-container.styl';
 import ContainerBase from '@app/Container';
 import routing from '@actions/handlers/routing';
-import {RouteType} from '@actions/types/routing';
 /** */
 export default class NoticeContainer extends ContainerBase<string> {
   private notices = new Set<Notice>();
@@ -29,7 +28,7 @@ export default class NoticeContainer extends ContainerBase<string> {
       this.noticeState = noticeStateNew;
       if (typeof this.noticeState.message === 'string') {
         if (this.noticeState.message == 'no existing session') {
-          routing('/login', RouteType.STANDART);
+          routing('/login');
           this.update('Ошибка авторизации');
         } else if (/^[а-яёА-ЯЁ]/.test(this.noticeState.message)) {
           this.update(this.noticeState.message);
@@ -39,7 +38,7 @@ export default class NoticeContainer extends ContainerBase<string> {
         this.noticeState.message.forEach(
             (message) => {
               if (message == 'no existing session') {
-                routing('/login', RouteType.STANDART);
+                routing('/login');
                 this.update('Ошибка авторизации');
               } else if (/^[а-яёА-ЯЁ]/.test(message)) {
                 this.update(message);
