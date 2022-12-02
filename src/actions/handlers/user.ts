@@ -405,19 +405,38 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
             },
           });
         } else {
-          store.dispatch({
-            type: ActionType.CHANGEUSERDATA_FAIL,
-            payload: {
-              type: FormErrorType.EDIT_USER,
-              email: 'Неверная почта',
-              username: 'Неверный псевдоним или пароль',
-              password: 'Неверный псевдоним или пароль',
-              repeatPassword: null,
-              isAuthor: 'Error',
-              about: 'Error',
-              avatar: 'Error',
-            },
-          });
+          switch (res.status) {
+            case 401:
+              store.dispatch({
+                type: ActionType.NOTICE,
+                payload: {
+                  message: res.body.message as string,
+                },
+              });
+              break;
+            case 500:
+              store.dispatch({
+                type: ActionType.NOTICE,
+                payload: {
+                  message: 'Ошибка сервера',
+                },
+              });
+              break;
+            default:
+              store.dispatch({
+                type: ActionType.CHANGEUSERDATA_FAIL,
+                payload: {
+                  type: FormErrorType.EDIT_USER,
+                  email: 'Неверная почта',
+                  username: 'Неверный псевдоним или пароль',
+                  password: 'Неверный псевдоним или пароль',
+                  repeatPassword: null,
+                  isAuthor: 'Error',
+                  about: 'Error',
+                  avatar: 'Error',
+                },
+              });
+          }
         }
       })
       .catch((err) => {
