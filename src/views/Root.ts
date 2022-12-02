@@ -102,7 +102,7 @@ export default class Root extends PageBase {
 
   protected render(): HTMLDivElement {
     const root = document.createElement('div');
-    root.style.display = 'contents';
+    root.classList.add('v-donate');
 
     // this.navbar = new Navbar(root);
     // new EditorContainer(root);

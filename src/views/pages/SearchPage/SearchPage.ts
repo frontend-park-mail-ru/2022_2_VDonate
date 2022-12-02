@@ -64,12 +64,13 @@ export default class SearchPage extends PageBase {
       return;
     }
     this.glass.element.innerHTML = '';
-    authors.forEach((author: PayloadUser) => {
+    authors.forEach((author: PayloadUser, idx, arr) => {
       new SubscriptionLink(this.glass.element, {
         id: author.id,
         username: author.username,
         imgPath: author.avatar,
         tier: `донатеров ${author.countSubscribers ?? 0}`,
+        isLast: idx === arr.length - 1,
       });
     });
   }
