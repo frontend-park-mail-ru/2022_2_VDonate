@@ -9,25 +9,14 @@
   &__back
     padding: 30px
     position: relative
-    &:before
-      content: ""
-      position: absolute
-      inset: 0
-      z-index: -1
-      background-color: rgba(0, 0, 0, 0.4)
-      // background-image: url('https://s3-alpha-sig.figma.com/img/ca1e/1e28/45436f194410fdd6436f52d8be429bb6?Expires=1667779200&Signature=OrQont9p1yyYY2mhnyIUUlnWCgO2EWbodmdzmNKSgi~LzQ-hahEL0O3PGijuUI3KuJsN4X7PyRr1o~Tp7bEGIyDBlHuTKOOCGzmu1ibk3yTasuPOxKUwJseRs7T6RWeYIQ8fzDoDErFu~UcPvrqcGcD1xsX~Y~uM4pjHB2Ui-VvdMWxXb6R8SDbzQUtdND~Pl4dW~ZVgRPTwyHV5RyvCN031vj~~rS3gauXkMMgbnryrwJ3zOwWOCfJGdxNWrnqFPD6q6GY~VOWF75EiFZioiEB7JsjPecNPzNF6Q0jVgUQxqUpGbMX1Uicv4Vq8zvRgHR11sRacrOm0j52urGu9Eg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA')
-      background-blend-mode: soft-light
-      box-shadow: 0px 40px 80px rgba(0, 0, 0, 0.2), inset 0px -4px 2px rgba(0, 0, 0, 0.2), inset 0px 4px 2px rgba(255, 255, 255, 0.12), inset 4px 4px 26px rgba(255, 255, 255, 0.12)
-      backdrop-filter: blur(20px)
-      background-size: cover
-      opacity: 0.6
-      border-radius: 20px
+    background-color: color-content
+    border-radius: 20px
   &__title
     font-36()
-    color: color-font-light
+    color: color-font
   &__greeting
     font-21()
-    color: color-font-light
+    color: color-font
   &__btn-area
     display: flex
     flex-direction: column
@@ -36,7 +25,7 @@
     gap: 15px
   &__link
     font-16()
-    color: color-font-light
+    color: color-font
     text-decoration: none
     align-self: center
     cursor: pointer
@@ -45,3 +34,11 @@
   &__inputs
   &__submit
     display: contents
+
+@media  (max-height: 700px)
+  .signlog
+    &__back
+      width: 100%
+      overflow: auto
+      height: 100%
+      border-radius: 0px

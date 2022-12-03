@@ -257,16 +257,43 @@ export const signup = (props: SignUpFormElements): void => {
                 });
               });
           case 409:
-            store.dispatch({
-              type: ActionType.SIGNUP_FAIL,
-              payload: {
-                type: FormErrorType.SIGNUP,
-                email: 'Неверная почта',
-                username: 'Неверный псевдоним или пароль',
-                password: 'Неверный псевдоним или пароль',
-                repeatPassword: null,
-              },
-            });
+            switch (res.body.message as string) {
+              case 'email exists':
+                store.dispatch({
+                  type: ActionType.SIGNUP_FAIL,
+                  payload: {
+                    type: FormErrorType.SIGNUP,
+                    email: 'Почта уже занята',
+                    username: null,
+                    password: null,
+                    repeatPassword: null,
+                  },
+                });
+                break;
+              case 'username exists':
+                store.dispatch({
+                  type: ActionType.SIGNUP_FAIL,
+                  payload: {
+                    type: FormErrorType.SIGNUP,
+                    email: null,
+                    username: 'Псевдоним уже занят',
+                    password: null,
+                    repeatPassword: null,
+                  },
+                });
+                break;
+              default:
+                store.dispatch({
+                  type: ActionType.SIGNUP_FAIL,
+                  payload: {
+                    type: FormErrorType.SIGNUP,
+                    email: 'Неверная почта',
+                    username: 'Неверный псевдоним или пароль',
+                    password: 'Неверный псевдоним или пароль',
+                    repeatPassword: null,
+                  },
+                });
+            }
             break;
           case 0:
             store.dispatch({

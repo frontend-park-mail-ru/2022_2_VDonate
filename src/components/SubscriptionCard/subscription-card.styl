@@ -6,8 +6,7 @@
   align-items: center
   white-space: normal
   &__sub
-    width: 18vw
-    max-width: 180px
+    width: 160px
     min-height: 320px
   &__img
     width: 96px
@@ -16,7 +15,7 @@
     justify-content: center
     align-items: center
     font-21()
-    color: color-font-light
+    color: color-font
     text-align: center
     min-height: 50px
   &__lvl
@@ -25,19 +24,19 @@
   &__button
     &_style
       &_owner
-        filter: hue-rotate(135deg) contrast(150%)
+        border: 2px solid rgb(255, 0, 0)
       &_donater
-        filter: hue-rotate(280deg) contrast(150%)
+        border: 2px solid rgb(0, 255, 94)
       &_author
-        filter: hue-rotate(201deg) contrast(150%)
+        border: 2px solid rgb(209, 250, 5)
   &__motivation
-    max-width: 16vw
+    max-width: 80%
     padding: 12px
     font-12()
-    color: color-font-light
+    color: color-font
     &_part
       max-height: 50px
-      background: linear-gradient(180deg, rgba(255, 255, 255, 1) 70%, rgba(255, 255, 255, 0) 100%)
+      background: linear-gradient(180deg, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%)
       -webkit-background-clip: text
       -webkit-text-fill-color: transparent
   &__more
@@ -53,7 +52,7 @@
   padding: 6px
   &__count
     font-16()
-    color: color-font-light
+    color: color-font
   &__period
     font-12()
     color: color-font-secondary

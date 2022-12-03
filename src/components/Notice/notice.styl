@@ -9,19 +9,13 @@
     align-items: center
     position relative
     gap: 5px
-    &:before
-      z-index: -1
-      content: ""
-      position: absolute
-      border-radius: 10px
-      outline: 1px solid gray
-      inset: 0
-      background: linear-gradient(200.72deg, rgba(255, 255, 255, 0.15) 1.79%, rgba(255, 255, 255, 0) 100%)
-      backdrop-filter: blur(40px)
+    background-color: color-content
+    border: 2px solid color-primary
+    border-radius: 10px
   &__msg
     flex: 1
     font-16()
-    color: color-font-light
+    color: color-font
   // &__btn-close
 
       

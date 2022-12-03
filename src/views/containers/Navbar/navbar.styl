@@ -2,11 +2,12 @@
 
 .left-navbar
   position: fixed
-  top: 0
-  left: 0
+  top: -2px
+  left: -2px
+  z-index: 1
   &__glass
-    border-radius: 0px 16px 16px 0px
-    height: 100vh
+    border-radius: 0px
+    height: calc(100vh + 4px)
     width: 20vw
     max-width: 300px
     min-width: 150px
@@ -20,13 +21,13 @@
     flex-direction: column
     align-items: flex-start
     gap: 10px
-    max-height: 52vh
+    max-height: calc(100vh - 320px)
     overflow: auto
     scrollbar-color: color-font-secondary
     scrollbar-width: 4px
     &::-webkit-scrollbar
       width: 4px;
-      height: 16px;
+      height: 4px;
       &-thumb
         background: #CBE0FD
         border-radius: 16px;
@@ -34,8 +35,6 @@
       &-track 
         background: none
   &__sub
-    font-16()
-    color: color-font-light
     display: flex
     flex-direction: row
     justify-content: center
@@ -43,6 +42,9 @@
     padding-left: 16px
     gap: 8px
     text-decoration: none
+  &__sub-username
+    font-16()
+    color: color-font
   &__sub-avatar
     width: 30px
   &__down
@@ -61,14 +63,15 @@
     align-items: center
     padding: 5px 10px
     gap: 10px
-    font-16()
-    color: color-font-light
     flex-wrap: wrap
     justify-content: space-evenly
     width: 75%
     cursor: pointer
   &__avatar
     width: 50px
+  &__username
+      font-16()
+      color: color-font
   &__menu-btn
     position: fixed
     right: 20px
@@ -93,3 +96,61 @@
     max-width: 280px
     border-radius: 0px 5px 5px 0px
     margin: 16px 20px 16px 0px
+
+@media  (max-width: 700px)
+  .left-navbar
+    &__glass
+      border-radius: 0px
+      height: 50px
+      width: calc(100vw + 4px)
+      max-width: calc(100vw + 4px)
+      display: flex
+      flex-direction: row
+      flex-wrap: nowrap
+    &__logo
+      padding-right: 8px
+    &__linkes
+      display: flex
+      flex-direction: row
+      align-items: center
+      // width: 200px
+    &__subs-list
+      align-items: center
+      flex-direction: row
+      gap: 8px
+      width: calc(100vw - 270px)
+      max-height: 50px
+    &__sub
+      padding: 0px
+    &__sub-username
+      display: none
+    &__sub-avatar
+      width: 30px
+    &__down
+      position: fixed
+      padding: 0px
+      left: auto
+      bottom: auto
+      right: 52px
+      width: 34px
+
+  .down
+    &__profile
+      width: 34px
+    &__avatar
+      width: 34px
+    &__username
+      display: none
+    &__menu-btn
+      position: fixed
+      width: 26px
+      height 26px
+      right: 16px
+      bottom: 12px
+    &__popup
+      position: fixed
+      top: 50px
+      right: 5px
+      
+  .navbar-hr
+    display: none

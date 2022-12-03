@@ -4,17 +4,10 @@
   &__back
     padding: 30px
     position: relative
-    &:before
-      content: ""
-      position: absolute
-      inset: 0
-      z-index: -1
-      background-color: rgba(0, 16, 61, 0.30)
-      box-shadow: 0px 40px 80px rgba(0, 0, 0, 0.2), inset 0px -4px 2px rgba(0, 0, 0, 0.2), inset 0px 4px 2px rgba(255, 255, 255, 0.12), inset 4px 4px 26px rgba(255, 255, 255, 0.12)
-      backdrop-filter: blur(40px)
-      background-size: cover
-      opacity: 0.6
-      border-radius: 20px
+    background: rgb(255,255,255)
+    border: 2px solid rgb(200, 200, 200)
+    border-radius: 20px
+    margin: 10px 0px
   &__header
     display: grid
     grid-template-areas: "avatar username edit"\
@@ -30,12 +23,12 @@
     grid-area: username
     align-self: end
     font-16()
-    color: color-font-light
+    color: color-font
   &__date-created
     grid-area: date
     align-self: start
     font-9()
-    color: color-font-light
+    color: color-font
   &__content
     padding: 8px
   &__reaction
@@ -59,6 +52,6 @@
     filter: blur(10px)
   &__text
     font-16()
-    color: color-font-light
+    color: color-font
   &__image
     max-width: 30vw 

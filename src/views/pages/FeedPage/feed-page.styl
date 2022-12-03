@@ -1,15 +1,20 @@
 @require '@style/const.styl'
 
 .feed-page
-  &__feed-page
-    display: grid
-    grid-template-areas: 'left content-area right'
-    grid-template-rows: 1fr
-    grid-template-columns: 1fr 50vw 1fr
-    gap: 10px
+  display: flex
+  flex-direction: column
   &__content-area
-    margin-top: 30px
-    grid-area: content-area
+    margin-top: 16px
+    margin-left: 35vw
+    margin-right: 15vw
+    width: 50vw
+
+@media  (max-width: 700px)
+  .feed-page
     display: flex
     flex-direction: column
-    gap: 10px
+    &__content-area
+      margin-top: 50px
+      margin-left: 0
+      margin-right: 0
+      width: 100vw

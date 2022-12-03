@@ -72,6 +72,7 @@ export default class Navbar extends ContainerBase<never> {
     logo.addClassNames('left-navbar__logo');
 
     const linkes = document.createElement('div');
+    linkes.classList.add('left-navbar__linkes');
     links.forEach(({icon, text, link}) => {
       this.navbarLinks.push(new NavbarLink(linkes, {
         href: link,
@@ -213,6 +214,7 @@ export default class Navbar extends ContainerBase<never> {
     });
     avatar.addClassNames('down__avatar');
     const usrname = document.createElement('span');
+    usrname.classList.add('down__username');
     usrname.innerText = this.user.username;
     this.profile.appendChild(usrname);
   }
@@ -235,6 +237,7 @@ export default class Navbar extends ContainerBase<never> {
       });
       avatar.addClassNames('left-navbar__sub-avatar');
       const usrname = document.createElement('span');
+      usrname.classList.add('left-navbar__sub-username');
       usrname.innerText = subItem.authorName ?? subItem.title;
       sub.appendChild(usrname);
       this.subsList.appendChild(sub);

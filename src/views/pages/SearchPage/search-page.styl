@@ -8,6 +8,7 @@
         margin-top: 16px
         margin-left: 35vw
         margin-right: 15vw
+        width: calc(40vw + 118px)
     &__search-form
         display: flex
         flex-direction: row
@@ -18,9 +19,20 @@
     &__search-btn
         height: 50px
     &__glass
-        width: calc(40vw + 118px)
+        width: 100%
         font-16()
         text-align: center
-        color: color-font-light
+        color: color-font
         margin-top: 16px
         padding: 10px
+        border-radius: 20px
+
+@media  (max-width: 700px)
+  .search-page
+    &__search-page
+      margin-top: 55px
+      margin-left: 0
+      margin-right: 0
+      width: 100vw
+    &__input-field
+      width: calc(100vw - 118px)
