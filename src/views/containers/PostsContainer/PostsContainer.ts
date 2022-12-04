@@ -8,7 +8,7 @@ import {openPostEditor} from '@actions/handlers/editor';
 import {querySelectorWithThrow} from '@flux/types/component';
 import Button, {ButtonType} from '@components/Button/Button';
 import {PayloadUser} from '@actions/types/user';
-import ContainerBase from '@app/Container';
+import UpgradeViewBase from '@app/UpgradeView';
 
 interface PostsContainerOptions {
   withCreateBtn: boolean
@@ -17,7 +17,7 @@ interface PostsContainerOptions {
 /** */
 export default
 class PostsContainer
-  extends ContainerBase<Map<number, PayloadPost>> {
+  extends UpgradeViewBase {
   private postsState = new Map<number, PayloadPost>();
   private posts = new Map<number, Post>();
 
@@ -45,10 +45,8 @@ class PostsContainer
   }
 
   notify(): void {
-    this.update(store.getState().posts as Map<number, PayloadPost>);
-  }
+    const newPostsState = store.getState().posts as Map<number, PayloadPost>;
 
-  update(newPostsState: Map<number, PayloadPost>): void {
     this.postsState.forEach((_, postID) => {
       if (!newPostsState.has(postID)) {
         this.deletePost(postID);
@@ -56,9 +54,8 @@ class PostsContainer
     });
     newPostsState.forEach(
         (postPayload, postID) => {
-          const oldPost = this.posts.get(postID);
-          if (oldPost) {
-            oldPost.update({
+          if (this.postsState.has(postID)) {
+            this.posts.get(postID)?.update({
               isLiked: postPayload.isLiked,
               likesNum: postPayload.likesNum,
               content: postPayload.content,
@@ -71,6 +68,11 @@ class PostsContainer
         },
     );
     this.postsState = new Map(newPostsState);
+  }
+
+  protected onErase(): void {
+    this.posts.forEach((post) => post.remove());
+    this.posts.clear();
   }
 
   private deletePost(postID: number) {

@@ -20,6 +20,7 @@ const initinalState: {
   image: {
     url: string,
   },
+  userSubscriptions: Map<number, PayloadSubscription>,
 } = {
   location: {
     type: Pages.PRELOAD,
@@ -46,6 +47,7 @@ const initinalState: {
   image: {
     url: '',
   },
+  userSubscriptions: new Map<number, PayloadSubscription>(),
 };
 
 export default initinalState;

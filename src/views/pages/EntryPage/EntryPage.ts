@@ -2,9 +2,9 @@ import store from '@app/Store';
 import './entry-page.styl';
 import LogInForm from '@components/EntryForm/LogInForm';
 import SignUpForm from '@components/EntryForm/SignUpForm';
-import PageBase from '@app/Page';
 import {FormErrorType, PayloadFormError} from '@actions/types/formError';
 import Logo from '@components/Logo/Logo';
+import UpgradeViewBase from '@app/UpgradeView';
 /** Перечисление типов формы входа */
 export enum EntryFormType {
   LOGIN,
@@ -16,7 +16,7 @@ interface LoginPageOptions {
 }
 
 /** Реализация интерфейса *IView* для страницы входа */
-export default class EntryPage extends PageBase {
+export default class EntryPage extends UpgradeViewBase {
   /** Сосотояние ошибок в форме */
   // private formErrorsState: PayloadFormError;
   private form!: LogInForm | SignUpForm;

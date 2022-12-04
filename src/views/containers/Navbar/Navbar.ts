@@ -5,14 +5,16 @@ import store from '@app/Store';
 import routing from '@actions/handlers/routing';
 import {PayloadUser} from '@actions/types/user';
 import {logout} from '@actions/handlers/user';
-import {PayloadSubscription} from '@actions/types/subscribe';
 import {openProfileEditor} from '@actions/handlers/editor';
 import Logo from '@components/Logo/Logo';
 import NavbarLink from '@components/NavbarLink/NavbarLink';
 import Button, {ButtonType} from '@components/Button/Button';
-import Avatar, {AvatarType} from '@components/Avatar/Avatar';
 import {getSubscritions} from '@actions/handlers/subscribe';
-import ContainerBase from '@app/Container';
+import ProfielMini, {ProfileMiniType}
+  from '@components/ProfileMini/ProfileMini';
+import SubscriptionsListContainer
+  from '../SubscriptionsListContainer/SubscriptionsListContainer';
+import UpgradeViewBase from '@app/UpgradeView';
 
 
 const links = [
@@ -26,11 +28,6 @@ const links = [
     text: 'Поиск',
     link: '/search',
   },
-  // {
-  //   icon: menuIcon,
-  //   text: 'Подписки',
-  //   link: '/subsriptions',
-  // },
 ];
 
 export enum ChoosenLink {
@@ -43,12 +40,12 @@ export enum ChoosenLink {
 /**
  * Модель левого навбара
  */
-export default class Navbar extends ContainerBase<never> {
+export default class Navbar extends UpgradeViewBase {
   private navbarLinks: NavbarLink[] = [];
-  private subsList!: HTMLElement;
   private profile!: HTMLElement;
-  private user?: PayloadUser;
-  private subs: PayloadSubscription[] = [];
+
+  private profileMini!: ProfielMini;
+  private subscriptionsListContainer!: SubscriptionsListContainer;
 
   constructor(el: HTMLElement, private options: number) {
     super();
@@ -76,28 +73,34 @@ export default class Navbar extends ContainerBase<never> {
         text,
       }));
     });
+
     glass.appendChild(linkes);
     glass.innerHTML += '<hr class="navbar-hr navbar-hr__navbar-hr">';
-    this.subsList = document.createElement('div');
-    this.subsList.classList.add('left-navbar__subs-list');
-    glass.appendChild(this.subsList);
+
+    this.subscriptionsListContainer = new SubscriptionsListContainer(glass);
+    this.subscriptionsListContainer.addClassNames('left-navbar__subs-list');
 
     const profileContainer = document.createElement('div');
     profileContainer.classList.add('left-navbar__down', 'down');
     profileContainer.innerHTML +=
-    '<hr class="navbar-hr navbar-hr__navbar-hr">';
+      '<hr class="navbar-hr navbar-hr__navbar-hr">';
+
     this.profile = document.createElement('div');
     this.profile.classList.add('down__profile');
-    this.profile.addEventListener('click', () => {
-      const user = store.getState().user as PayloadUser;
-      routing(`/profile?id=${user.id}`);
+
+    this.profileMini = new ProfielMini(this.profile, {
+      username: '',
+      avatar: '',
+      isAuthor: false,
+      id: this.options,
+      type: ProfileMiniType.SESSION_PROFILE,
     });
 
     const popup = new Glass(GlassType.lines).element;
     popup.style.display = 'none';
     profileContainer.appendChild(popup);
 
-    const menuBtn = new Button(profileContainer, {
+    const menuBtn = new Button(this.profile, {
       viewType: ButtonType.ICON,
       actionType: 'button',
       innerIcon: menuIcon,
@@ -153,18 +156,21 @@ export default class Navbar extends ContainerBase<never> {
 
   /** Callback метод обновления хранилища */
   notify(): void {
-    const newUser =
+    const user =
       store.getState().user as PayloadUser;
-    this.user = newUser;
-    this.renderProfile();
+    this.profileMini.update({
+      avatar: user.avatar,
+      username: user.username,
+      isAuthor: user.isAuthor,
+    });
+  }
 
-
-    const newSubscriptions =
-      store.getState().userSubscribers as PayloadSubscription[] | undefined;
-    if (newSubscriptions) {
-      this.subs = newSubscriptions;
-      this.renderSubs();
-    }
+  protected onErase(): void {
+    this.navbarLinks.forEach((link) => {
+      link.remove();
+    });
+    this.subscriptionsListContainer.erase();
+    this.profileMini.remove();
   }
 
   /**
@@ -196,48 +202,6 @@ export default class Navbar extends ContainerBase<never> {
   //   }
   // }
 
-  /**
-     * рендер профиля
-     */
-  renderProfile() {
-    if (!this.user) {
-      return;
-    }
-    this.profile.innerHTML = '';
-    const avatar = new Avatar(this.profile, {
-      imgPath: this.user.avatar,
-      viewType: this.user.isAuthor ? AvatarType.AUTHOR : AvatarType.DONATER,
-    });
-    avatar.addClassNames('down__avatar');
-    const usrname = document.createElement('span');
-    usrname.innerText = this.user.username;
-    this.profile.appendChild(usrname);
-  }
-
-  /**
-     * рендер подписок
-     */
-  renderSubs() {
-    this.subsList.innerHTML = '';
-    this.subs.forEach((subItem) => {
-      const sub = document.createElement('a');
-      if (subItem.authorID) {
-        sub.setAttribute('href', `/profile?id=${subItem.authorID}`);
-        sub.setAttribute('data-link', '');
-      }
-      sub.classList.add('left-navbar__sub');
-      const avatar = new Avatar(sub, {
-        imgPath: subItem.authorAvatar ?? '',
-        viewType: AvatarType.AUTHOR,
-      });
-      avatar.addClassNames('left-navbar__sub-avatar');
-      const usrname = document.createElement('span');
-      usrname.innerText = subItem.authorName ?? subItem.title;
-      sub.appendChild(usrname);
-      this.subsList.appendChild(sub);
-    });
-  }
-
   /** функция скрывающая navbar */
   hideNavbar() {
     this.domElement.style.display = 'none';
@@ -245,9 +209,5 @@ export default class Navbar extends ContainerBase<never> {
   /** функция показывающая navbar */
   showNavbar() {
     this.domElement.removeAttribute('style');
-  }
-
-  update(data: never): void {
-    return data;
   }
 }

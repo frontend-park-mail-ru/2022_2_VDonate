@@ -38,7 +38,7 @@ const getDonaterData = async (user: PayloadProfileUser) => {
     type: ActionType.GETPROFILEDATA,
     payload: {
       user,
-      subscriptions,
+      userSubscriptions: subscriptions,
     },
   });
 };

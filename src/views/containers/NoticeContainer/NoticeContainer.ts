@@ -2,10 +2,10 @@ import {PayloadNotice} from '@actions/types/notice';
 import store from '@app/Store';
 import Notice from '@components/Notice/Notice';
 import './notice-container.styl';
-import ContainerBase from '@app/Container';
 import routing from '@actions/handlers/routing';
+import UpgradeViewBase from '@app/UpgradeView';
 /** */
-export default class NoticeContainer extends ContainerBase<string> {
+export default class NoticeContainer extends UpgradeViewBase {
   private notices = new Set<Notice>();
   private noticeState?: PayloadNotice;
 
@@ -13,22 +13,6 @@ export default class NoticeContainer extends ContainerBase<string> {
     super();
     this.renderTo(el);
     this.notify();
-  }
-
-  update(message: string) {
-    const timeoutID = setTimeout(
-        () => {
-          this.removeNotice(notice);
-        }, 10000,
-    );
-    const notice = new Notice(this.domElement, {
-      message,
-      onDelete: () => {
-        this.removeNotice(notice);
-        clearTimeout(timeoutID);
-      },
-    });
-    this.notices.add(notice);
   }
 
   protected render(): HTMLDivElement {
@@ -45,9 +29,9 @@ export default class NoticeContainer extends ContainerBase<string> {
       if (typeof this.noticeState.message === 'string') {
         if (this.noticeState.message == 'no existing session') {
           routing('/login');
-          this.update('Ошибка авторизации');
+          this.addNewNotice('Ошибка авторизации');
         } else if (/^[а-яёА-ЯЁ]/.test(this.noticeState.message)) {
-          this.update(this.noticeState.message);
+          this.addNewNotice(this.noticeState.message);
         }
       }
       if (Array.isArray(this.noticeState.message)) {
@@ -55,14 +39,34 @@ export default class NoticeContainer extends ContainerBase<string> {
             (message) => {
               if (message == 'no existing session') {
                 routing('/login');
-                this.update('Ошибка авторизации');
+                this.addNewNotice('Ошибка авторизации');
               } else if (/^[а-яёА-ЯЁ]/.test(message)) {
-                this.update(message);
+                this.addNewNotice(message);
               }
             },
         );
       }
     }
+  }
+
+  protected onErase(): void {
+    return;
+  }
+
+  private addNewNotice(message: string) {
+    const timeoutID = setTimeout(
+        () => {
+          this.removeNotice(notice);
+        }, 10000,
+    );
+    const notice = new Notice(this.domElement, {
+      message,
+      onDelete: () => {
+        this.removeNotice(notice);
+        clearTimeout(timeoutID);
+      },
+    });
+    this.notices.add(notice);
   }
 
   private removeNotice(target: Notice) {

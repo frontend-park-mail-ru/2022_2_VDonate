@@ -4,13 +4,14 @@ import getProfile from '@actions/handlers/getProfileData';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
 import About from '@components/About/About';
 import ProfileInfo from '@components/ProfileInfo/ProfileInfo';
-import SubscriptionsContainer
-  from '@views/containers/SubscriptionsContainer/SubscriptionsContainer';
 import PostsContainer from '@views/containers/PostsContainer/PostsContainer';
 import {Glass, GlassType} from '@components/glass/glass';
 import SubscriptionLink from '@components/SubscriptionLink/SubscriptionLink';
 import './profile-page.styl';
-import PageBase from '@app/Page';
+import SubscriptionCardsContainer
+  from
+  '@views/containers/SubscriptionCardsContainer/SubscriptionCardsContainer';
+import UpgradeViewBase from '@app/UpgradeView';
 
 interface ProfileEditorOptions {
   profileID: number
@@ -19,10 +20,10 @@ interface ProfileEditorOptions {
 
 interface ProfilePageChildViews {
   postContainer?: PostsContainer
-  subscriptionsContainer?: SubscriptionsContainer
+  subscriptionCardsContainer?: SubscriptionCardsContainer
 }
 
-export default class ProfilePage extends PageBase {
+export default class ProfilePage extends UpgradeViewBase {
   private authorContent: HTMLDivElement = document.createElement('div');
   private donaterContent: HTMLDivElement = document.createElement('div');
   private about!: About;
@@ -72,16 +73,16 @@ export default class ProfilePage extends PageBase {
       this.about.update(profileNew.user.about ?? '');
     }
     if (!profileNew.user.isAuthor) {
-      if (!profileNew.subscriptions ||
-          profileNew.subscriptions.length == 0) {
+      if (!profileNew.userSubscriptions ||
+          profileNew.userSubscriptions.length == 0) {
         this.glass.element.innerHTML = 'Донатер пока никого не поддерживает';
       } else {
         this.glass.element.innerHTML = '';
-        profileNew.subscriptions.forEach((sub, idx, arr) => {
+        profileNew.userSubscriptions.forEach((sub, idx, arr) => {
           new SubscriptionLink(this.glass.element, {
             id: sub.authorID,
-            imgPath: sub.authorAvatar ?? sub.img,
-            username: sub.authorName ?? sub.title,
+            imgPath: sub.authorAvatar,
+            username: sub.authorName,
             tier: `Уровень ${sub.tier}`,
             isLast: idx === arr.length - 1,
           });
@@ -102,8 +103,8 @@ export default class ProfilePage extends PageBase {
       countDonaters: this.profileState.user.countDonaters,
     });
 
-    this.childViews.subscriptionsContainer =
-      new SubscriptionsContainer(this.authorContent, {
+    this.childViews.subscriptionCardsContainer =
+      new SubscriptionCardsContainer(this.authorContent, {
         changeable: this.options.changeable,
       });
 
@@ -127,6 +128,6 @@ export default class ProfilePage extends PageBase {
 
   protected onErase(): void {
     this.childViews.postContainer?.erase();
-    this.childViews.subscriptionsContainer?.erase();
+    this.childViews.subscriptionCardsContainer?.erase();
   }
 }

@@ -8,19 +8,13 @@ import PostEditor from '@components/Editor/PostEditor';
 import ProfileEditor from '@components/Editor/ProfileEditor';
 import SubscriptionEditor from '@components/Editor/SubscriptionEditor';
 import {querySelectorWithThrow} from '@flux/types/component';
-import ContainerBase from '@app/Container';
 import PayEditor from '@components/Editor/PayEditor';
-
-interface EditorUpdateData {
-  newEditor?: PayloadEditor
-  errors?: PayloadFormError
-  image?: string
-}
+import UpgradeViewBase from '@app/UpgradeView';
 
 /** */
 export default
 class EditorContainer
-  extends ContainerBase<EditorUpdateData> {
+  extends UpgradeViewBase {
   private editorState: PayloadEditor;
   private formErrorsState: PayloadFormError;
   private currentEditor?:
@@ -40,9 +34,7 @@ class EditorContainer
     this.formErrorsState = store.getState().formErrors as PayloadFormError;
     this.imageState = store.getState().image as { url: string };
     this.renderTo(el);
-    this.update({
-      newEditor: this.editorState,
-    });
+    this.displayEditor(this.editorState);
   }
 
   protected render(): HTMLDivElement {
@@ -59,9 +51,7 @@ class EditorContainer
 
     if (JSON.stringify(editorStateNew) !== JSON.stringify(this.editorState)) {
       this.editorState = editorStateNew;
-      this.update({
-        newEditor: this.editorState,
-      });
+      this.displayEditor(editorStateNew);
     }
 
     const imageNew = (store.getState().image as { url: string });
@@ -72,23 +62,19 @@ class EditorContainer
 
       const url = (store.getState().image as {url: string} | undefined)?.url;
       if (url) {
-        this.update({image: url});
+        this.addImage(url);
       }
     }
     const formErrorsNew = state.formErrors as PayloadFormError;
     if (JSON.stringify(formErrorsNew) !==
       JSON.stringify(this.formErrorsState)) {
       this.formErrorsState = formErrorsNew;
-      this.update({
-        errors: this.formErrorsState,
-      });
+      this.displayErrors(this.formErrorsState);
     }
   }
 
-  update(data: EditorUpdateData): void {
-    if (data.newEditor) this.displayEditor(data.newEditor);
-    if (data.errors) this.displayErrors(data.errors);
-    if (data.image) this.addImage(data.image);
+  protected onErase(): void {
+    this.currentEditor?.remove();
   }
 
   private addImage(image: string) {

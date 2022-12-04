@@ -16,7 +16,7 @@ export interface PayloadProfileUser {
 /** Результат успешной аутификации */
 export interface PayloadGetProfileData {
   user: PayloadProfileUser,
-  subscriptions?: PayloadSubscription[],
+  userSubscriptions?: PayloadSubscription[],
   authorSubscriptions?: PayloadSubscription[],
   posts?: PayloadPost[],
 }

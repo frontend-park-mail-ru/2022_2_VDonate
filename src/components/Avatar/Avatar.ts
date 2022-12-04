@@ -14,10 +14,11 @@ interface AvatarOptions {
   viewType: AvatarType
   imgPath: string
 }
+
 /**
  * Компонент аватар
  */
-export default class Avatar extends ComponentBase<'img', string> {
+export default class Avatar extends ComponentBase<'img', string | AvatarType> {
   constructor(el: HTMLElement, private options: AvatarOptions) {
     super();
     this.renderTo(el);
@@ -45,12 +46,54 @@ export default class Avatar extends ComponentBase<'img', string> {
     return image;
   }
 
-  update(imgPath: string): void {
+  update(data: string | AvatarType): void {
+    if (typeof data === 'string') {
+      this.updateImage(data);
+    } else {
+      this.updateViewType(data);
+    }
+  }
+
+  private updateImage(imgPath: string): void {
     if (this.options.imgPath === imgPath) return;
     this.options.imgPath = imgPath;
 
     this.domElement.src = this.options.imgPath ||
       (this.options.viewType == AvatarType.SUBSCRIPTION ?
         altSubscriptionAvatar : altAvatar);
+  }
+
+  private updateViewType(viewType: AvatarType): void {
+    if (this.options.viewType === viewType) return;
+
+    switch (this.options.viewType) {
+      case AvatarType.AUTHOR:
+        this.domElement.classList.remove('image_style_author');
+        break;
+      case AvatarType.DONATER:
+        this.domElement.classList.remove('image_style_donater');
+        break;
+      case AvatarType.SUBSCRIPTION:
+        this.domElement.classList.remove('image_style_sub');
+        break;
+      default:
+        break;
+    }
+
+    switch (viewType) {
+      case AvatarType.AUTHOR:
+        this.domElement.classList.add('image_style_author');
+        break;
+      case AvatarType.DONATER:
+        this.domElement.classList.add('image_style_donater');
+        break;
+      case AvatarType.SUBSCRIPTION:
+        this.domElement.classList.add('image_style_sub');
+        break;
+      default:
+        break;
+    }
+
+    this.options.viewType = viewType;
   }
 }

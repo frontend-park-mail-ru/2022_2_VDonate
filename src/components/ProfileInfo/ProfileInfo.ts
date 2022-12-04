@@ -78,7 +78,9 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
           .parentElement?.remove();
     }
 
-    if (this.options.isAuthor) {
+    if (this.options.isAuthor &&
+      this.options.countDonaters !== data.countDonaters) {
+      this.options.countDonaters = data.countDonaters;
       this.countDonaters.innerText = data.countDonaters.toString();
     }
   }

@@ -9,9 +9,9 @@ export interface PayloadSubscribe {
 }
 
 export interface PayloadSubscription {
-  authorAvatar?: string
+  authorAvatar: string
   authorID: number
-  authorName?: string
+  authorName: string
   id: number
   img: string
   price: number
