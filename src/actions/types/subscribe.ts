@@ -4,12 +4,11 @@ import {FormErrorType} from './formError';
 import {PayloadPost} from './posts';
 
 export interface PayloadSubscribe {
-  authorSubscriptionID?: number
-  error: string | undefined
-  posts?: PayloadPost[]
+  authorSubscriptionID: number
+  posts: PayloadPost[]
 }
 
-export interface Subscription {
+export interface PayloadSubscription {
   authorAvatar?: string
   authorID: number
   authorName?: string
@@ -19,11 +18,6 @@ export interface Subscription {
   text: string
   tier: number
   title: string
-}
-
-export interface PayloadGetSubscriptions {
-  subscriptions: Subscription[]
-  error: string | undefined
 }
 
 export interface ActionSubscribe extends IAction {
@@ -38,7 +32,7 @@ export interface ActionUnsubscribe extends IAction {
 
 export interface ActionGetSubscriptions extends IAction {
   type: ActionType.GETSUBSCRIPTIONS
-  payload: PayloadGetSubscriptions
+  payload: PayloadSubscription[]
 }
 
 export interface PayloadAuthorSubscriptionErrors {
@@ -53,7 +47,7 @@ export interface PayloadAuthorSubscriptionErrors {
 export interface ActionEditAuthorSubscription extends IAction {
   type: ActionType.EDITAUTHORSUBSRIPTION
   payload: {
-    subscription?: Subscription
+    subscription?: PayloadSubscription
     formErrors: PayloadAuthorSubscriptionErrors
   }
 }
@@ -61,7 +55,7 @@ export interface ActionEditAuthorSubscription extends IAction {
 export interface ActionCreateAuthorSubscription extends IAction {
   type: ActionType.CREATEAUTHORSUBSRIPTION
   payload: {
-    subscription?: Subscription
+    subscription?: PayloadSubscription
     formErrors: PayloadAuthorSubscriptionErrors
   }
 }

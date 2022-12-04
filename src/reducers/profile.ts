@@ -2,7 +2,7 @@
 import {Action, ActionType} from '@actions/types/action';
 import {
   PayloadGetProfileData} from '@actions/types/getProfileData';
-import {Subscription} from '@actions/types/subscribe';
+import {PayloadSubscription} from '@actions/types/subscribe';
 import {Reducer} from '@flux/types/reducer';
 import {PropTree} from '@flux/types/store';
 
@@ -15,7 +15,7 @@ const profileReducer: Reducer<Action> =
         if (!action.payload.subscription) {
           return state;
         }
-        const newSub: Subscription = action.payload.subscription;
+        const newSub: PayloadSubscription = action.payload.subscription;
         (state as PayloadGetProfileData).authorSubscriptions?.push(newSub);
         return state;
       case ActionType.EDITAUTHORSUBSRIPTION:

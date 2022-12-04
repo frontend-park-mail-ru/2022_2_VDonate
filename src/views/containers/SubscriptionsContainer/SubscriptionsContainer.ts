@@ -3,7 +3,7 @@ import SubscriptionCard,
 import './subscriptions-container.styl';
 import plusIcon from '@icon/plus.svg';
 import store from '@app/Store';
-import {Subscription} from '@actions/types/subscribe';
+import {PayloadSubscription} from '@actions/types/subscribe';
 import {openSubscribtionEditor} from '@actions/handlers/editor';
 import Button, {ButtonType} from '@components/Button/Button';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
@@ -17,8 +17,8 @@ interface SubscriptionsContainerOptions {
  * Модель поля подписок
  */
 export default class SubscriptionsContainer
-  extends ContainerBase<Map<number, Subscription>> {
-  private subscriptionsState = new Map<number, Subscription>();
+  extends ContainerBase<Map<number, PayloadSubscription>> {
+  private subscriptionsState = new Map<number, PayloadSubscription>();
   private subscriptionCards = new Map<number, SubscriptionCard>();
   constructor(el: HTMLElement,
     private options: SubscriptionsContainerOptions) {
@@ -53,14 +53,14 @@ export default class SubscriptionsContainer
   }
 
   notify(): void {
-    const SubscriptionsMap = new Map<number, Subscription>();
+    const SubscriptionsMap = new Map<number, PayloadSubscription>();
     (store.getState().profile as PayloadGetProfileData)
         .authorSubscriptions?.forEach((sub) => {
           SubscriptionsMap.set(sub.id, sub);
         });
     this.update(SubscriptionsMap);
   }
-  update(newSubscriptionsState: Map<number, Subscription>): void {
+  update(newSubscriptionsState: Map<number, PayloadSubscription>): void {
     this.subscriptionsState.forEach((_, subID) => {
       if (!newSubscriptionsState.has(subID)) {
         this.deleteSubscriptionCard(subID);
@@ -75,7 +75,8 @@ export default class SubscriptionsContainer
             if (this.options.changeable) status = SubscriptionCardStatus.AUTHOR;
             else {
               const userSubscriptions =
-                store.getState().userSubscribers as Subscription[] | undefined;
+                store.getState()
+                    .userSubscribers as PayloadSubscription[] | undefined;
               const idx = userSubscriptions
                   ?.findIndex((sub) => sub.id === subID);
               status =
@@ -97,12 +98,12 @@ export default class SubscriptionsContainer
     );
   }
 
-  addSubcriptionCard(sub: Subscription) {
+  addSubcriptionCard(sub: PayloadSubscription) {
     let status: SubscriptionCardStatus;
     if (this.options.changeable) status = SubscriptionCardStatus.AUTHOR;
     else {
       const userSubscriptions =
-          store.getState().userSubscribers as Subscription[] | undefined;
+          store.getState().userSubscribers as PayloadSubscription[] | undefined;
       const idx = userSubscriptions
           ?.findIndex((o) => sub.id === o.id);
       status = (idx !== undefined && idx > -1) ? SubscriptionCardStatus.OWNER :

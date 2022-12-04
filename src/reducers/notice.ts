@@ -43,16 +43,6 @@ const noticeReducer: Reducer<Action> =
           message: msgArr,
         };
       }
-      case ActionType.SUBSCRIBE:
-      case ActionType.UNSUBSCRIBE:
-        if (action.payload.error) {
-          return {
-            timestamp: performance.now(),
-            message: [action.payload.error],
-          };
-        } else {
-          return state;
-        }
       default:
         return state;
     }

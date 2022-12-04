@@ -6,14 +6,14 @@ import {
   PayloadProfileUser} from '@actions/types/getProfileData';
 import {PayloadPost} from '@actions/types/posts';
 import {Pages} from '@configs/router';
-import {Subscription} from '@actions/types/subscribe';
+import {PayloadSubscription} from '@actions/types/subscribe';
 
 
 const getAuthorData = async (user: PayloadProfileUser) => {
   const getSubscriptionsRes = await api.getAuthorSubscriptions(user.id);
   const getPostsRes = await api.getAuthorPosts(user.id);
   const authorSubscriptions = getSubscriptionsRes.ok ?
-    getSubscriptionsRes.body as Subscription[] : undefined;
+    getSubscriptionsRes.body as PayloadSubscription[] : undefined;
 
   const posts = getPostsRes.ok ?
     getPostsRes.body as PayloadPost[] : undefined;
@@ -31,7 +31,7 @@ const getAuthorData = async (user: PayloadProfileUser) => {
 const getDonaterData = async (user: PayloadProfileUser) => {
   const getSubscriptionsRes = await api.getSubscriptions(user.id);
   const subscriptions = getSubscriptionsRes.ok ?
-    getSubscriptionsRes.body as Subscription[] :
+    getSubscriptionsRes.body as PayloadSubscription[] :
     undefined;
 
   store.dispatch({

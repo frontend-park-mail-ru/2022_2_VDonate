@@ -5,7 +5,7 @@ import store from '@app/Store';
 import routing from '@actions/handlers/routing';
 import {PayloadUser} from '@actions/types/user';
 import {logout} from '@actions/handlers/user';
-import {Subscription} from '@actions/types/subscribe';
+import {PayloadSubscription} from '@actions/types/subscribe';
 import {openProfileEditor} from '@actions/handlers/editor';
 import Logo from '@components/Logo/Logo';
 import NavbarLink from '@components/NavbarLink/NavbarLink';
@@ -48,7 +48,7 @@ export default class Navbar extends ContainerBase<never> {
   private subsList!: HTMLElement;
   private profile!: HTMLElement;
   private user?: PayloadUser;
-  private subs: Subscription[] = [];
+  private subs: PayloadSubscription[] = [];
 
   constructor(el: HTMLElement, private options: number) {
     super();
@@ -160,7 +160,7 @@ export default class Navbar extends ContainerBase<never> {
 
 
     const newSubscriptions =
-      store.getState().userSubscribers as Subscription[] | undefined;
+      store.getState().userSubscribers as PayloadSubscription[] | undefined;
     if (newSubscriptions) {
       this.subs = newSubscriptions;
       this.renderSubs();

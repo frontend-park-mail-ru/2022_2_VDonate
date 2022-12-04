@@ -3,7 +3,7 @@ import {ResponseData} from '@api/ajax';
 import {ActionType} from '@actions/types/action';
 import store from '@app/Store';
 import {
-  Subscription} from '@actions/types/subscribe';
+  PayloadSubscription} from '@actions/types/subscribe';
 import {FormErrorType} from '@actions/types/formError';
 import {
   priceCheck,
@@ -52,7 +52,6 @@ export const subscribe = (
               type: ActionType.SUBSCRIBE,
               payload: {
                 authorSubscriptionID,
-                error: undefined,
                 posts,
               },
             });
@@ -87,16 +86,15 @@ export const unsubscribe = (
               type: ActionType.UNSUBSCRIBE,
               payload: {
                 authorSubscriptionID,
-                error: undefined,
                 posts,
               },
             });
           });
         } else {
           store.dispatch({
-            type: ActionType.UNSUBSCRIBE,
+            type: ActionType.NOTICE,
             payload: {
-              error: 'Ошибка при попытке отписаться',
+              message: 'Ошибка при попытке отписаться',
             },
           });
         }
@@ -120,17 +118,13 @@ export const getSubscritions = (id: number) => {
         if (res.ok) {
           store.dispatch({
             type: ActionType.GETSUBSCRIPTIONS,
-            payload: {
-              subscriptions: res.body as Subscription[],
-              error: undefined,
-            },
+            payload: res.body as PayloadSubscription[],
           });
         } else {
           store.dispatch({
-            type: ActionType.GETSUBSCRIPTIONS,
+            type: ActionType.NOTICE,
             payload: {
-              subscriptions: [],
-              error: res.body.message as string,
+              message: res.body.message as string,
             },
           });
         }
