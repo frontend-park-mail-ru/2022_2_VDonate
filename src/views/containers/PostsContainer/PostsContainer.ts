@@ -76,6 +76,7 @@ class PostsContainer
   private deletePost(postID: number) {
     this.posts.get(postID)?.remove();
     this.posts.delete(postID);
+    this.postsState.delete(postID);
   }
 
   private addPost(postPayload: PayloadPost) {

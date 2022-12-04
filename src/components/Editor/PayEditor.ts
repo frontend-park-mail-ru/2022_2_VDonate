@@ -9,7 +9,7 @@ import {SubscriptionCardStatus}
 interface PayEditorOptions {
   authorID: number,
   authorSubscriptionID: number,
-  subType: SubscriptionCardStatus,
+  currentCardStatus: SubscriptionCardStatus,
 }
 
 /**
@@ -46,8 +46,8 @@ class PayEditor extends ComponentBase<'div'> {
       },
     });
 
-    switch (this.options.subType) {
-      case SubscriptionCardStatus.DONATER:
+    switch (this.options.currentCardStatus) {
+      case SubscriptionCardStatus.CAN_DONATE:
         new Button(btnContainer, {
           actionType: 'button',
           viewType: ButtonType.PRIMARY,
@@ -59,7 +59,7 @@ class PayEditor extends ComponentBase<'div'> {
         });
         text.innerText = 'Вы действительно собиратесь задонатить?';
         break;
-      case SubscriptionCardStatus.OWNER:
+      case SubscriptionCardStatus.ALREADY_DONATED:
         new Button(btnContainer, {
           actionType: 'button',
           viewType: ButtonType.PRIMARY,

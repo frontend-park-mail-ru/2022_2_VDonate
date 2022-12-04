@@ -39,7 +39,6 @@ type ButtonOptions =
 
 interface ButtonUpdateContext {
   inner: string
-  // clickHandler?: () => void
 }
 
 /**

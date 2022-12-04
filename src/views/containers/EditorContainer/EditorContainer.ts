@@ -9,6 +9,7 @@ import ProfileEditor from '@components/Editor/ProfileEditor';
 import SubscriptionEditor from '@components/Editor/SubscriptionEditor';
 import {querySelectorWithThrow} from '@flux/types/component';
 import ContainerBase from '@app/Container';
+import PayEditor from '@components/Editor/PayEditor';
 
 interface EditorUpdateData {
   newEditor?: PayloadEditor
@@ -25,7 +26,8 @@ class EditorContainer
   private currentEditor?:
     | PostEditor
     | ProfileEditor
-    | SubscriptionEditor;
+    | SubscriptionEditor
+    | PayEditor;
   private editorType!: EditorType;
 
   private imageState: {
@@ -139,8 +141,7 @@ class EditorContainer
       }
       case EditorType.SUBSCRIBTION: {
         this.editorType = EditorType.SUBSCRIBTION;
-        const subID = newEditor.id;
-        if (typeof subID !== 'number') {
+        if (typeof newEditor.id !== 'number') {
           this.currentEditor = new SubscriptionEditor(this.domElement);
           break;
         }
@@ -148,11 +149,11 @@ class EditorContainer
           store.getState().profile as PayloadGetProfileData
         ).authorSubscriptions;
         if (subs && typeof subs != 'string') {
-          const targetSub = subs.find((sub) => subID === sub.id);
+          const targetSub = subs.find((sub) => newEditor.id === sub.id);
           if (targetSub) {
             this.currentEditor = new SubscriptionEditor(this.domElement,
                 {
-                  id: subID,
+                  id: newEditor.id,
                   title: targetSub.title,
                   price: targetSub.price,
                   tier: targetSub.tier,
@@ -162,6 +163,14 @@ class EditorContainer
         }
         break;
       }
+      case EditorType.PAY:
+        this.editorType = EditorType.PAY;
+        this.currentEditor = new PayEditor(this.domElement, {
+          authorID: newEditor.authorID,
+          authorSubscriptionID: newEditor.authorSubscriptionID,
+          currentCardStatus: newEditor.currentCardStatus,
+        });
+        break;
       default: {
         const _: never = newEditor;
         return _;

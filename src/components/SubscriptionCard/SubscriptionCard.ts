@@ -1,15 +1,14 @@
 import Button, {ButtonType} from '@components/Button/Button';
 import {Glass, GlassType} from '@components/glass/glass';
-import {openSubscribtionEditor} from '@actions/handlers/editor';
+import {openPayEditor, openSubscribtionEditor} from '@actions/handlers/editor';
 import './subscription-card.styl';
 import template from './subscription-card.hbs';
 import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 import Avatar, {AvatarType} from '@components/Avatar/Avatar';
-import PayEditor from '@components/Editor/PayEditor';
 
 export enum SubscriptionCardStatus {
-  OWNER,
-  DONATER,
+  ALREADY_DONATED,
+  CAN_DONATE,
   AUTHOR,
 }
 
@@ -54,32 +53,16 @@ class SubscriptionCard
   update(data: SubscriptionCardUpdateContext): void {
     if (data.subscriptionStatus !== this.options.subscriptionStatus) {
       switch (data.subscriptionStatus) {
-        case SubscriptionCardStatus.OWNER:
+        case SubscriptionCardStatus.ALREADY_DONATED:
           this.button.update({
             inner: 'Отписаться',
-            // clickHandler: () => {
-            //   // TODO нельза так. Это в обход флакса
-            //   new PayEditor(document.body, {
-            //     authorID: this.options.authorID,
-            //     authorSubscriptionID: this.options.subscriptionID,
-            //     subType: this.options.subscriptionStatus,
-            //   });
-            // },
           });
           this.button.addClassNames('sub__button_style_owner');
           this.button.removeClassName('sub__button_style_donater');
           break;
-        case SubscriptionCardStatus.DONATER:
+        case SubscriptionCardStatus.CAN_DONATE:
           this.button.update({
             inner: 'Задонатить',
-            // clickHandler: () => {
-            //   // TODO нельза так. Это в обход флакса
-            //   new PayEditor(document.body, {
-            //     authorID: this.options.authorID,
-            //     authorSubscriptionID: this.options.subscriptionID,
-            //     subType: this.options.subscriptionStatus,
-            //   });
-            // },
           });
           this.button.removeClassName('sub__button_style_owner');
           this.button.addClassNames('sub__button_style_donater');
@@ -151,34 +134,32 @@ class SubscriptionCard
     const btnArea = querySelectorWithThrow(card, '.sub__button');
     btnArea.style.display = 'contents';
     switch (this.options.subscriptionStatus) {
-      case SubscriptionCardStatus.DONATER:
+      case SubscriptionCardStatus.CAN_DONATE:
         this.button = new Button(btnArea, {
           viewType: ButtonType.PRIMARY,
           actionType: 'button',
           innerText: 'Задонатить',
           clickHandler: () => {
-            // TODO нельза так. Это в обход флакса
-            new PayEditor(document.body, {
-              authorID: this.options.authorID,
-              authorSubscriptionID: this.options.subscriptionID,
-              subType: this.options.subscriptionStatus,
-            });
+            openPayEditor(
+                this.options.authorID,
+                this.options.subscriptionID,
+                this.options.subscriptionStatus,
+            );
           },
         });
         this.button.addClassNames('sub__button_style_donater');
         break;
-      case SubscriptionCardStatus.OWNER:
+      case SubscriptionCardStatus.ALREADY_DONATED:
         this.button = new Button(btnArea, {
           viewType: ButtonType.PRIMARY,
           actionType: 'button',
           innerText: 'Отписаться',
           clickHandler: () => {
-            // TODO нельза так. Это в обход флакса
-            new PayEditor(document.body, {
-              authorID: this.options.authorID,
-              authorSubscriptionID: this.options.subscriptionID,
-              subType: this.options.subscriptionStatus,
-            });
+            openPayEditor(
+                this.options.authorID,
+                this.options.subscriptionID,
+                this.options.subscriptionStatus,
+            );
           },
         });
         this.button.addClassNames('sub__button_style_owner');

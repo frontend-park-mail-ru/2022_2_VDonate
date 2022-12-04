@@ -80,8 +80,9 @@ export default class SubscriptionsContainer
               const idx = userSubscriptions
                   ?.findIndex((sub) => sub.id === subID);
               status =
-                (idx !== undefined && idx > -1) ? SubscriptionCardStatus.OWNER :
-              SubscriptionCardStatus.DONATER;
+                (idx !== undefined && idx > -1) ?
+                  SubscriptionCardStatus.ALREADY_DONATED :
+                  SubscriptionCardStatus.CAN_DONATE;
             }
             this.subscriptionCards.get(subID)?.update({
               subscriptionStatus: status,
@@ -106,8 +107,9 @@ export default class SubscriptionsContainer
           store.getState().userSubscribers as PayloadSubscription[] | undefined;
       const idx = userSubscriptions
           ?.findIndex((o) => sub.id === o.id);
-      status = (idx !== undefined && idx > -1) ? SubscriptionCardStatus.OWNER :
-          SubscriptionCardStatus.DONATER;
+      status = (idx !== undefined && idx > -1) ?
+          SubscriptionCardStatus.ALREADY_DONATED :
+          SubscriptionCardStatus.CAN_DONATE;
     }
     const card = new SubscriptionCard(this.container, {
       subscriptionStatus: status,
