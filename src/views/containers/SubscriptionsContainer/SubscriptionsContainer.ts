@@ -40,7 +40,7 @@ export default class SubscriptionsContainer
         viewType: ButtonType.ICON,
         innerIcon: plusIcon,
         actionType: 'button',
-        clickCallback: () => {
+        clickHandler: () => {
           openSubscribtionEditor();
         },
       });

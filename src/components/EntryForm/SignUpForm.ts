@@ -21,32 +21,36 @@ const signUpInputs: InputOptions[] = [
     label: 'Почта',
     placeholder: 'Для нашего личного общения',
     name: 'email',
+    displayError: false,
   },
   {
     kind: InputType.username,
     label: 'Псевдоним',
     placeholder: 'Ваше уникальное имя',
     name: 'username',
+    displayError: false,
   },
   {
     kind: InputType.password,
     label: 'Пароль',
     placeholder: 'Мы обещаем не продавать его',
     name: 'password',
+    displayError: false,
   },
   {
     kind: InputType.password,
     label: 'Повторите пароль',
     placeholder: 'Чтобы точно',
     name: 'repeatPassword',
+    displayError: false,
   },
 ];
 
 interface SignUpFormUpdateErrors {
-  username?: boolean
-  email?: boolean
-  password?: boolean
-  repeatPassword?: boolean
+  username: boolean
+  email: boolean
+  password: boolean
+  repeatPassword: boolean
 }
 
 /** Модель формы регистрации */

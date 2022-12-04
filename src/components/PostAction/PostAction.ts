@@ -13,7 +13,7 @@ export enum PostActionType {
 
 interface PostActionOptions {
   reactType: PostActionType
-  content: string
+  count: number
   isActive: boolean
   clickCallback: () => void
 }
@@ -34,10 +34,19 @@ class PostAction extends ComponentBase<'button', PostActionUpdateContent> {
 
   update(data: PostActionUpdateContent): void {
     if (this.options.reactType === PostActionType.COMMENT) return;
-    if (data.isActive) this.domElement.classList.add('reaction_like');
-    else this.domElement.classList.remove('reaction_like');
-    querySelectorWithThrow(this.domElement, '.reaction__text').innerText =
-      data.likesNum.toString();
+    if (this.options.isActive !== data.isActive) {
+      this.options.isActive = data.isActive;
+      if (this.options.isActive) {
+        this.domElement.classList.add('reaction_like');
+      } else {
+        this.domElement.classList.remove('reaction_like');
+      }
+    }
+    if (this.options.count !== data.likesNum) {
+      this.options.count = data.likesNum;
+      querySelectorWithThrow(this.domElement, '.reaction__count').textContent =
+        this.options.count.toString();
+    }
   }
 
   protected render(): HTMLButtonElement {
@@ -67,7 +76,7 @@ class PostAction extends ComponentBase<'button', PostActionUpdateContent> {
     }
     const innerText = document.createElement('span');
     innerText.classList.add('reaction__text');
-    innerText.textContent = this.options.content;
+    innerText.textContent = this.options.count.toString();
     button.appendChild(innerText);
 
     return button;

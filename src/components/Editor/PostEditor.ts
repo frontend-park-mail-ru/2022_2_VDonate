@@ -20,36 +20,11 @@ interface PostEditorOptions {
   tier: number
 }
 
-// const postEditorInputs = new Map<string, InputOptions>([
-//   [
-//     'title',
-//     {
-//       kind: InputType.text,
-//       label: 'Заголовок',
-//       name: 'title',
-//       placeholder: 'Придумайте заголовок для поста',
-//     },
-//   ],
-//   [
-//     'text',
-//     {
-//       kind: InputType.textarea,
-//       label: 'Основной текст',
-//       name: 'text',
-//       placeholder: 'Место для основного текста',
-//     },
-//   ],
-//   [
-//     'file',
-//     {
-//       kind: InputType.file,
-//       label: 'Загрузите картинку (.jpg)',
-//       name: 'file',
-//     },
-//   ],
-// ]);
 
-type PostEditorInputsErrors = Map<'text' | 'title', boolean>;
+interface PostEditorInputsErrors {
+  text: boolean
+  title: boolean
+}
 
 /** */
 export default class PostEditor
@@ -61,6 +36,12 @@ export default class PostEditor
 
 
     this.renderTo(el);
+  }
+
+  update(errors: PostEditorInputsErrors): void {
+    Object.entries(errors).forEach(([name, value]) => {
+      this.inputs.get(name)?.update(value as boolean);
+    });
   }
 
   protected render(): HTMLDivElement {
@@ -83,12 +64,6 @@ export default class PostEditor
       }
     });
     return editor;
-  }
-
-  update(errors: PostEditorInputsErrors): void {
-    errors.forEach((isError, name) => {
-      this.inputs.get(name)?.update(isError);
-    });
   }
 
   private createForm(): HTMLFormElement {
@@ -125,12 +100,6 @@ export default class PostEditor
   private addInputs(form: HTMLFormElement) {
     const inputsArea = querySelectorWithThrow(form, '.editor__inputs');
 
-    // postEditorInputs.forEach((options, name) => {
-    //   this.inputs.set(name, new InputField(inputsArea, {
-    //     ...options,
-    //     value: this.options?[name],
-    //   }));
-    // });
     this.inputs
         .set('tier', new InputField(inputsArea, {
           kind: InputType.text,
@@ -138,6 +107,7 @@ export default class PostEditor
           name: 'tier',
           placeholder: 'Введите уровень доступа',
           value: this.options?.tier.toString(),
+          displayError: false,
         }))
         .set('text', new InputField(inputsArea, {
           kind: InputType.textarea,
@@ -145,11 +115,13 @@ export default class PostEditor
           name: 'text',
           placeholder: 'Место для основного текста',
           value: this.options?.text,
+          displayError: false,
         }))
         .set('image', new InputField(inputsArea, {
           kind: InputType.file,
           label: 'Загрузите картинку (.jpg)',
           name: 'image',
+          displayError: false,
         }));
   }
 
@@ -165,14 +137,14 @@ export default class PostEditor
       viewType: ButtonType.OUTLINE,
       innerText: 'Отменить',
       actionType: 'button',
-      clickCallback: closeEditor,
+      clickHandler: closeEditor,
     });
     if (this.options) {
       new Button(btnArea, {
         viewType: ButtonType.OUTLINE,
         innerText: 'Удалить',
         actionType: 'button',
-        clickCallback: deletePost.bind(this, this.options.id),
+        clickHandler: deletePost.bind(this, this.options.id),
       });
     }
   }

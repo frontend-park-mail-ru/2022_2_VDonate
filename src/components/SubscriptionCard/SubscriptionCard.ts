@@ -56,30 +56,30 @@ class SubscriptionCard
       switch (data.subscriptionStatus) {
         case SubscriptionCardStatus.OWNER:
           this.button.update({
-            innerText: 'Отписаться',
-            callback: () => {
-              // TODO нельза так. Это в обход флакса
-              new PayEditor(document.body, {
-                authorID: this.options.authorID,
-                authorSubscriptionID: this.options.subscriptionID,
-                subType: this.options.subscriptionStatus,
-              });
-            },
+            inner: 'Отписаться',
+            // clickHandler: () => {
+            //   // TODO нельза так. Это в обход флакса
+            //   new PayEditor(document.body, {
+            //     authorID: this.options.authorID,
+            //     authorSubscriptionID: this.options.subscriptionID,
+            //     subType: this.options.subscriptionStatus,
+            //   });
+            // },
           });
           this.button.addClassNames('sub__button_style_owner');
           this.button.removeClassName('sub__button_style_donater');
           break;
         case SubscriptionCardStatus.DONATER:
           this.button.update({
-            innerText: 'Задонатить',
-            callback: () => {
-              // TODO нельза так. Это в обход флакса
-              new PayEditor(document.body, {
-                authorID: this.options.authorID,
-                authorSubscriptionID: this.options.subscriptionID,
-                subType: this.options.subscriptionStatus,
-              });
-            },
+            inner: 'Задонатить',
+            // clickHandler: () => {
+            //   // TODO нельза так. Это в обход флакса
+            //   new PayEditor(document.body, {
+            //     authorID: this.options.authorID,
+            //     authorSubscriptionID: this.options.subscriptionID,
+            //     subType: this.options.subscriptionStatus,
+            //   });
+            // },
           });
           this.button.removeClassName('sub__button_style_owner');
           this.button.addClassNames('sub__button_style_donater');
@@ -125,7 +125,7 @@ class SubscriptionCard
 
     this.avatar = new Avatar(imageArea, {
       viewType: AvatarType.SUBSCRIPTION,
-      image: this.options.img,
+      imgPath: this.options.img,
     });
     this.avatar.addClassNames('sub__img');
 
@@ -156,7 +156,7 @@ class SubscriptionCard
           viewType: ButtonType.PRIMARY,
           actionType: 'button',
           innerText: 'Задонатить',
-          clickCallback: () => {
+          clickHandler: () => {
             // TODO нельза так. Это в обход флакса
             new PayEditor(document.body, {
               authorID: this.options.authorID,
@@ -172,7 +172,7 @@ class SubscriptionCard
           viewType: ButtonType.PRIMARY,
           actionType: 'button',
           innerText: 'Отписаться',
-          clickCallback: () => {
+          clickHandler: () => {
             // TODO нельза так. Это в обход флакса
             new PayEditor(document.body, {
               authorID: this.options.authorID,
@@ -188,7 +188,7 @@ class SubscriptionCard
           viewType: ButtonType.PRIMARY,
           actionType: 'button',
           innerText: 'Изменить',
-          clickCallback: () => {
+          clickHandler: () => {
             openSubscribtionEditor(this.options.subscriptionID);
           },
         });

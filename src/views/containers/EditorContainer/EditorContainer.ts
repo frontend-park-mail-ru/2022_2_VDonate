@@ -54,12 +54,6 @@ class EditorContainer
     const state = store.getState();
 
     const editorStateNew = state.editor as PayloadEditor;
-    // if (this.editorState.type && editorStateNew.type) {
-    //   this.editorState = editorStateNew;
-    //   this.update({
-    //     newEditor: this.editorState,
-    //   });
-    // }
 
     if (JSON.stringify(editorStateNew) !== JSON.stringify(this.editorState)) {
       this.editorState = editorStateNew;
@@ -67,6 +61,7 @@ class EditorContainer
         newEditor: this.editorState,
       });
     }
+
     const imageNew = (store.getState().image as { url: string });
     if (imageNew.url.length !== 0 &&
       imageNew !== this.imageState &&
@@ -179,21 +174,21 @@ class EditorContainer
       case FormErrorType.EDIT_USER:
         if (this.currentEditor instanceof ProfileEditor) {
           this.currentEditor.update({
-            username: errors.username ? true : undefined,
-            email: errors.email ? true : undefined,
-            password: errors.password ? true : undefined,
-            repeatPassword: errors.repeatPassword ? true : undefined,
-            about: errors.about ? true : undefined,
+            username: Boolean(errors.username),
+            email: Boolean(errors.email),
+            password: Boolean(errors.password),
+            repeatPassword: Boolean(errors.repeatPassword),
+            about: Boolean(errors.about),
           });
         }
         break;
       case FormErrorType.AUTHOR_SUBSCRIPTION:
         if (this.currentEditor instanceof SubscriptionEditor) {
           this.currentEditor.update({
-            price: errors.price ? true : undefined,
-            title: errors.title ? true : undefined,
-            text: errors.text ? true : undefined,
-            tier: errors.tier ? true : undefined,
+            price: Boolean(errors.price),
+            title: Boolean(errors.title),
+            text: Boolean(errors.text),
+            tier: Boolean(errors.tier),
           });
         }
         break;

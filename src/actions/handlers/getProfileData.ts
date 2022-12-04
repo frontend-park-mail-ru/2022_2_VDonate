@@ -55,7 +55,7 @@ export default (id: number): void => {
             countSubscriptions: res.body.countSubscriptions as number,
           };
           if (user.isAuthor) {
-            user.countSubscribers = res.body.countSubscribers as number;
+            user.countDonaters = res.body.countSubscribers as number;
             user.about = res.body.about as string;
             return getAuthorData(user);
           } else {

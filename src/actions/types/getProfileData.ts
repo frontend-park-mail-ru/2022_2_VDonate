@@ -10,7 +10,7 @@ export interface PayloadProfileUser {
   username: string,
   countSubscriptions: number,
   about?: string,
-  countSubscribers?: number,
+  countDonaters?: number,
 }
 
 /** Результат успешной аутификации */

@@ -28,6 +28,7 @@ export default class SearchPage extends PageBase {
       label: 'Поиск Авторов',
       name: 'searchField',
       placeholder: 'Найти автора',
+      displayError: false,
     });
     input.addClassNames('search-page__input-field');
     const btn = new Button(searchForm, {

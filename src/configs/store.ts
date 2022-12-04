@@ -37,7 +37,7 @@ const initinalState: {
       id: 0,
       username: 'Псевдоним',
       about: 'Тут будет описание',
-      countSubscribers: 0,
+      countDonaters: 0,
     },
     subscriptions: [],
     authorSubscriptions: [],

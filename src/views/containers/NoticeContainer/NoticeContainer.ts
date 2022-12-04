@@ -15,6 +15,22 @@ export default class NoticeContainer extends ContainerBase<string> {
     this.notify();
   }
 
+  update(message: string) {
+    const timeoutID = setTimeout(
+        () => {
+          this.removeNotice(notice);
+        }, 10000,
+    );
+    const notice = new Notice(this.domElement, {
+      message,
+      onDelete: () => {
+        this.removeNotice(notice);
+        clearTimeout(timeoutID);
+      },
+    });
+    this.notices.add(notice);
+  }
+
   protected render(): HTMLDivElement {
     const container = document.createElement('div');
     container.className = 'notice-container notice-container__notice';
@@ -47,22 +63,6 @@ export default class NoticeContainer extends ContainerBase<string> {
         );
       }
     }
-  }
-
-  update(message: string) {
-    const timeoutID = setTimeout(
-        () => {
-          this.removeNotice(notice);
-        }, 10000,
-    );
-    const notice = new Notice(this.domElement, {
-      message,
-      onDelete: () => {
-        this.removeNotice(notice);
-        clearTimeout(timeoutID);
-      },
-    });
-    this.notices.add(notice);
   }
 
   private removeNotice(target: Notice) {

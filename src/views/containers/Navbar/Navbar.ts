@@ -56,10 +56,6 @@ export default class Navbar extends ContainerBase<never> {
     getSubscritions(options);
   }
 
-  update(data: never): void {
-    return data;
-  }
-
   protected render(): HTMLDivElement {
     const navbar = document.createElement('div');
     navbar.classList.add('left-navbar');
@@ -74,6 +70,7 @@ export default class Navbar extends ContainerBase<never> {
     const linkes = document.createElement('div');
     links.forEach(({icon, text, link}) => {
       this.navbarLinks.push(new NavbarLink(linkes, {
+        isActive: false,
         href: link,
         icon,
         text,
@@ -104,7 +101,7 @@ export default class Navbar extends ContainerBase<never> {
       viewType: ButtonType.ICON,
       actionType: 'button',
       innerIcon: menuIcon,
-      clickCallback: () => {
+      clickHandler: () => {
         if (popup.style.display == 'none') {
           popup.style.display = 'flex';
         } else {
@@ -121,7 +118,7 @@ export default class Navbar extends ContainerBase<never> {
       viewType: ButtonType.OUTLINE,
       actionType: 'button',
       innerText: 'Профиль',
-      clickCallback: () => {
+      clickHandler: () => {
         const user = store.getState().user as PayloadUser;
         routing(`/profile?id=${user.id}`);
       },
@@ -132,7 +129,7 @@ export default class Navbar extends ContainerBase<never> {
       viewType: ButtonType.OUTLINE,
       actionType: 'button',
       innerText: 'Изменить данные',
-      clickCallback: () => {
+      clickHandler: () => {
         openProfileEditor();
       },
     });
@@ -142,7 +139,7 @@ export default class Navbar extends ContainerBase<never> {
       viewType: ButtonType.OUTLINE,
       actionType: 'button',
       innerText: 'Выйти',
-      clickCallback: () => {
+      clickHandler: () => {
         logout();
       },
     });
@@ -208,7 +205,7 @@ export default class Navbar extends ContainerBase<never> {
     }
     this.profile.innerHTML = '';
     const avatar = new Avatar(this.profile, {
-      image: this.user.avatar,
+      imgPath: this.user.avatar,
       viewType: this.user.isAuthor ? AvatarType.AUTHOR : AvatarType.DONATER,
     });
     avatar.addClassNames('down__avatar');
@@ -230,7 +227,7 @@ export default class Navbar extends ContainerBase<never> {
       }
       sub.classList.add('left-navbar__sub');
       const avatar = new Avatar(sub, {
-        image: subItem.authorAvatar ?? '',
+        imgPath: subItem.authorAvatar ?? '',
         viewType: AvatarType.AUTHOR,
       });
       avatar.addClassNames('left-navbar__sub-avatar');
@@ -241,7 +238,6 @@ export default class Navbar extends ContainerBase<never> {
     });
   }
 
-
   /** функция скрывающая navbar */
   hideNavbar() {
     this.domElement.style.display = 'none';
@@ -249,5 +245,9 @@ export default class Navbar extends ContainerBase<never> {
   /** функция показывающая navbar */
   showNavbar() {
     this.domElement.removeAttribute('style');
+  }
+
+  update(data: never): void {
+    return data;
   }
 }

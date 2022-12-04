@@ -36,15 +36,13 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
   }
 
   update(data: PostUpdateContext): void {
-    if (data.isLiked !== this.options.isLiked &&
-      data.likesNum !== this.options.likesNum) {
-      this.options.isLiked = data.isLiked;
-      this.options.likesNum = data.likesNum;
-      this.likeBtn.update({
-        isActive: data.isLiked,
-        likesNum: data.likesNum,
-      });
-    }
+    this.options.isLiked = data.isLiked;
+    this.options.likesNum = data.likesNum;
+    this.likeBtn.update({
+      isActive: data.isLiked,
+      likesNum: data.likesNum,
+    });
+
     if (
       // Изменился уровень доступа
       data.isAllowed !== this.options.isAllowed ||
@@ -64,11 +62,6 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
             tier: data.tier,
           });
     }
-
-    // if (data.content && this.options.isAllowed) {
-    //   querySelectorWithThrow(this.domElement, '.post__content').innerHTML =
-    //     data.content;
-    // }
   }
 
   protected render(): HTMLDivElement {
@@ -81,7 +74,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
 
     const avatarArea = querySelectorWithThrow(post, '.post__author-avatar');
     const avatar = new Avatar(avatarArea, {
-      image: this.options.author.imgPath,
+      imgPath: this.options.author.imgPath,
       viewType: AvatarType.AUTHOR,
     });
     avatar.addClassNames('post__img');
@@ -100,7 +93,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
       const editBtn = new Button(header, {
         actionType: 'button',
         innerIcon: editIcon,
-        clickCallback: openPostEditor.bind(this, this.options.postID),
+        clickHandler: openPostEditor.bind(this, this.options.postID),
         viewType: ButtonType.ICON,
       });
       editBtn.addClassNames('post__header-btn');
@@ -112,7 +105,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     const reactionArea = querySelectorWithThrow(post, '.post__reaction');
     this.likeBtn = new PostAction(reactionArea, {
       reactType: PostActionType.LIKE,
-      content: this.options.likesNum.toString(),
+      count: this.options.likesNum,
       isActive: this.options.isLiked,
       clickCallback: () => {
         if (this.options.isLiked) {
@@ -124,7 +117,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     });
     new PostAction(reactionArea, {
       reactType: PostActionType.COMMENT,
-      content: '0', // this.options.commentsNum.toString(),
+      count: 0, // this.options.commentsNum,
       isActive: false,
       clickCallback: () => {
         // TODO экшен на открытие комментариев

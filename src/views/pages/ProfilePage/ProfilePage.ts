@@ -59,20 +59,14 @@ export default class ProfilePage extends PageBase {
       avatar: string
       username: string
       countSubscriptions: number
-      countDonaters?: number
+      countDonaters: number
     } = {
       isAuthor: profileNew.user.isAuthor,
       avatar: profileNew.user.avatar,
       username: profileNew.user.username,
       countSubscriptions: profileNew.user.countSubscriptions,
+      countDonaters: profileNew.user.countDonaters ?? 0,
     };
-    if (profileNew.user.isAuthor) {
-      profileInfoNew.countDonaters = profileNew.user.countSubscribers;
-      if (this.profileState.user.isAuthor !== profileNew.user.isAuthor) {
-        profileInfoNew.isAuthor = true;
-        this.profileState.user.isAuthor = profileNew.user.isAuthor;
-      }
-    }
     this.profileInfo.update(profileInfoNew);
     if (this.profileState.user.about !== profileNew.user.about) {
       this.about.update(profileNew.user.about ?? '');
@@ -105,7 +99,7 @@ export default class ProfilePage extends PageBase {
       countSubscriptions: this.profileState.user.countSubscriptions,
       isAuthor: this.profileState.user.isAuthor,
       username: this.profileState.user.username,
-      countDonaters: this.profileState.user.countSubscribers,
+      countDonaters: this.profileState.user.countDonaters,
     });
 
     this.childViews.subscriptionsContainer =

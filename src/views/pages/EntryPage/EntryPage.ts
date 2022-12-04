@@ -18,7 +18,7 @@ interface LoginPageOptions {
 /** Реализация интерфейса *IView* для страницы входа */
 export default class EntryPage extends PageBase {
   /** Сосотояние ошибок в форме */
-  private formErrorsState: PayloadFormError;
+  // private formErrorsState: PayloadFormError;
   private form!: LogInForm | SignUpForm;
 
   constructor(el: HTMLElement, private options: LoginPageOptions) {
@@ -27,31 +27,23 @@ export default class EntryPage extends PageBase {
   }
 
   notify(): void {
-    const formErrorsNew = store.getState().formErrors as PayloadFormError;
-    if (JSON.stringify(formErrorsNew) !==
-      JSON.stringify(this.formErrorsState)) {
-      this.formErrorsState = formErrorsNew;
-      this.updateFormErrors();
-    }
-  }
-
-  private updateFormErrors() {
-    switch (this.formErrorsState?.type) {
+    const formErrors = store.getState().formErrors as PayloadFormError;
+    switch (formErrors?.type) {
       case FormErrorType.LOGIN:
         if (this.form instanceof LogInForm) {
           this.form.update({
-            password: Boolean(this.formErrorsState.password),
-            username: Boolean(this.formErrorsState.username),
+            password: Boolean(formErrors.password),
+            username: Boolean(formErrors.username),
           });
         }
         break;
       case FormErrorType.SIGNUP:
         if (this.form instanceof SignUpForm) {
           this.form.update({
-            email: Boolean(this.formErrorsState.email),
-            username: Boolean(this.formErrorsState.username),
-            password: Boolean(this.formErrorsState.password),
-            repeatPassword: Boolean(this.formErrorsState.repeatPassword),
+            email: Boolean(formErrors.email),
+            username: Boolean(formErrors.username),
+            password: Boolean(formErrors.password),
+            repeatPassword: Boolean(formErrors.repeatPassword),
           });
         }
         break;

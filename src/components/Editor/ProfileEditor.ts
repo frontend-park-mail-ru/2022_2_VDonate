@@ -15,11 +15,11 @@ interface ProfileEditorOptions {
 }
 
 interface PostEditorInputsErrors {
-  email?: boolean
-  username?: boolean
-  password?: boolean
-  repeatPassword?: boolean
-  about?: boolean
+  email: boolean
+  username: boolean
+  password: boolean
+  repeatPassword: boolean
+  about: boolean
 }
 
 
@@ -80,6 +80,7 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
           name: 'email',
           placeholder: 'Введите почту',
           value: this.options.email,
+          displayError: false,
         }))
         .set('username', new InputField(inputsArea, {
           kind: InputType.username,
@@ -87,6 +88,7 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
           name: 'username',
           placeholder: 'Введите псевдоним',
           value: this.options.username,
+          displayError: false,
         }));
     if (this.options.isAuthor) {
       this.inputs.set('about', new InputField(inputsArea, {
@@ -95,12 +97,14 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
         name: 'about',
         placeholder: 'Расскажите что-то о себе...',
         value: this.options.about,
+        displayError: false,
       }));
     } else {
       this.inputs.set('isAuthor', new InputField(inputsArea, {
         kind: InputType.checkbox,
         label: 'Стать автором',
         name: 'isAuthor',
+        displayError: false,
       }));
     }
     this.inputs
@@ -109,17 +113,20 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
           label: 'Пароль',
           name: 'password',
           placeholder: 'Введите пароль',
+          displayError: false,
         }))
         .set('repeatPassword', new InputField(inputsArea, {
           kind: InputType.password,
           label: 'Повторите пароль',
           name: 'repeatPassword',
           placeholder: 'Точно также',
+          displayError: false,
         }))
         .set('avatar', new InputField(inputsArea, {
           kind: InputType.file,
           label: 'Загрузите аватарку',
           name: 'avatar',
+          displayError: false,
         }));
   }
 
@@ -135,7 +142,7 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
       viewType: ButtonType.OUTLINE,
       innerText: 'Отменить',
       actionType: 'button',
-      clickCallback: closeEditor,
+      clickHandler: closeEditor,
     });
   }
 

@@ -41,7 +41,7 @@ class PayEditor extends ComponentBase<'div'> {
       actionType: 'button',
       viewType: ButtonType.OUTLINE,
       innerText: 'Отмена',
-      clickCallback: () => {
+      clickHandler: () => {
         this.remove();
       },
     });
@@ -52,7 +52,7 @@ class PayEditor extends ComponentBase<'div'> {
           actionType: 'button',
           viewType: ButtonType.PRIMARY,
           innerText: 'Задонатить',
-          clickCallback: () => {
+          clickHandler: () => {
             subscribe(this.options.authorID, this.options.authorSubscriptionID);
             this.remove();
           },
@@ -64,7 +64,7 @@ class PayEditor extends ComponentBase<'div'> {
           actionType: 'button',
           viewType: ButtonType.PRIMARY,
           innerText: 'Отписаться',
-          clickCallback: () => {
+          clickHandler: () => {
             unsubscribe(
                 this.options.authorID,
                 this.options.authorSubscriptionID,

@@ -1,6 +1,6 @@
 import './avatar.styl';
 import altAvatar from '@img/altAvatar.jpg';
-import altAuthorSub from '@img/altAuthorSub.jpg';
+import altSubscriptionAvatar from '@img/altAuthorSub.jpg';
 import ComponentBase from '@flux/types/component';
 /**
  * Перечисление типов аватара
@@ -12,7 +12,7 @@ export enum AvatarType {
 }
 interface AvatarOptions {
   viewType: AvatarType
-  image: string
+  imgPath: string
 }
 /**
  * Компонент аватар
@@ -39,23 +39,18 @@ export default class Avatar extends ComponentBase<'img', string> {
       default:
         break;
     }
-    if (this.options.image) {
-      image.setAttribute('src', this.options.image);
-    } else {
-      image.setAttribute(
-          'src', this.options.viewType == AvatarType.SUBSCRIPTION ?
-        altAuthorSub : altAvatar);
-    }
+    image.src = this.options.imgPath ||
+     (this.options.viewType == AvatarType.SUBSCRIPTION ?
+        altSubscriptionAvatar : altAvatar);
     return image;
   }
 
   update(imgPath: string): void {
-    if (imgPath) {
-      this.domElement.src = imgPath;
-    } else {
-      this.domElement.src = this.options.viewType == AvatarType.SUBSCRIPTION ?
-        altAuthorSub : altAvatar;
-    }
-    this.options.image = imgPath;
+    if (this.options.imgPath === imgPath) return;
+    this.options.imgPath = imgPath;
+
+    this.domElement.src = this.options.imgPath ||
+      this.options.viewType == AvatarType.SUBSCRIPTION ?
+        altSubscriptionAvatar : altAvatar;
   }
 }

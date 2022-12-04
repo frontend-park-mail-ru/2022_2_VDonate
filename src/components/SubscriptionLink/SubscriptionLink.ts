@@ -31,7 +31,7 @@ class SubscriptionLink extends ComponentBase<'a'> {
           add('subscriptions-item__subscriptions-item_with-border');
     }
     const avatar = new Avatar(subscription, {
-      image: this.options.imgPath,
+      imgPath: this.options.imgPath,
       viewType: AvatarType.AUTHOR,
     });
     avatar.addClassNames('subscriptions-item__img');

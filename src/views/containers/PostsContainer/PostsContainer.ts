@@ -38,7 +38,7 @@ class PostsContainer
             viewType: ButtonType.ICON,
             actionType: 'button',
             innerIcon: plusIcon,
-            clickCallback: openPostEditor,
+            clickHandler: openPostEditor,
           });
     }
     return container;
@@ -56,9 +56,9 @@ class PostsContainer
     });
     newPostsState.forEach(
         (postPayload, postID) => {
-          const oldPost = this.postsState.get(postID);
+          const oldPost = this.posts.get(postID);
           if (oldPost) {
-            this.posts.get(postID)?.update({
+            oldPost.update({
               isLiked: postPayload.isLiked,
               likesNum: postPayload.likesNum,
               content: postPayload.content,
