@@ -81,7 +81,7 @@ export default class Root extends UpgradeViewBase {
           profileID:
             Number(new URL(window.location.href).searchParams.get('id')),
           changeable:
-          Number(new URL(window.location.href).searchParams.get('id')) ==
+          Number(new URL(window.location.href).searchParams.get('id')) ===
               (store.getState().user as PayloadUser).id,
         });
         break;

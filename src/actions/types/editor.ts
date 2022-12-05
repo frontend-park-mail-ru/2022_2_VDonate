@@ -4,15 +4,9 @@ import {IAction} from '@flux/types/actions';
 import {ActionType} from './action';
 
 export enum EditorType {
-  POST,
   PROFILE,
   SUBSCRIBTION,
   PAY,
-}
-
-interface PayloadPostEditor {
-  type: EditorType.POST
-  id?: number
 }
 
 interface PayloadProfileEditor {
@@ -32,7 +26,6 @@ interface PayloadPayEditor {
 }
 
 type PayloadOpenEditor =
-  | PayloadPostEditor
   | PayloadProfileEditor
   | PayloadSubscribtionEditor
   | PayloadPayEditor;

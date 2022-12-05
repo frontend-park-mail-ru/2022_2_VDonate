@@ -6,17 +6,21 @@ import {PayloadUser} from '@actions/types/user';
 import api from '@app/Api';
 import store from '@app/Store';
 
-export interface PostForm extends HTMLCollection {
-  text: HTMLTextAreaElement
-  tier: HTMLInputElement
-}
-
-export const createPost = (author: PayloadPost['author'], form: PostForm) => {
+export const createPost = (content: string, tier: number) => {
   const tierIdx = (store.getState().profile as PayloadGetProfileData)
       .authorSubscriptions?.map((sub) => {
         return sub.tier;
-      }).findIndex((tier) => tier == Number(form.tier.value));
-  if (!tierIdx && tierIdx == -1) {
+      }).findIndex((subTier) => subTier === tier);
+
+  if (
+    // Если тир указан
+    tier !== 0 &&
+    (
+      // И не существует
+      !tierIdx ||
+      // Или не найден в подписках
+      tierIdx === -1
+    )) {
     store.dispatch({
       type: ActionType.NOTICE,
       payload: {
@@ -25,9 +29,10 @@ export const createPost = (author: PayloadPost['author'], form: PostForm) => {
     });
     return;
   }
+
   api.createPost({
-    tier: Number(form.tier.value),
-    contentTemplate: form.text.value,
+    tier,
+    contentTemplate: content,
   })
       .then((res) => {
         if (res.ok) {
@@ -49,7 +54,6 @@ export const createPost = (author: PayloadPost['author'], form: PostForm) => {
               postID: res.body.postID as number,
               // tags
               tier: 0,
-              userID: user.id,
               commentsNum: 0,
             },
           });
@@ -72,12 +76,21 @@ export const createPost = (author: PayloadPost['author'], form: PostForm) => {
       );
 };
 
-export const updatePost = (id: number, form: PostForm) => {
+export const updatePost = (id: number, content: string, tier: number) => {
   const tierIdx = (store.getState().profile as PayloadGetProfileData)
       .authorSubscriptions?.map((sub) => {
         return sub.tier;
-      }).findIndex((tier) => tier == Number(form.tier.value));
-  if (!tierIdx && tierIdx == -1) {
+      }).findIndex((subTier) => subTier === tier);
+
+  if (
+    // Если тир указан
+    tier !== 0 &&
+    (
+      // И не существует
+      !tierIdx ||
+      // Или не найден в подписках
+      tierIdx === -1
+    )) {
     store.dispatch({
       type: ActionType.NOTICE,
       payload: {
@@ -86,9 +99,10 @@ export const updatePost = (id: number, form: PostForm) => {
     });
     return;
   }
+
   api.updatePost(id, {
-    tier: Number(form.tier.value),
-    contentTemplate: form.text.value,
+    tier: tier,
+    contentTemplate: content,
   })
       .then((res) => {
         if (res.ok) {
@@ -209,24 +223,6 @@ export const getFeed = () => {
   api.getFeed()
       .then((res) => {
         if (res.ok) {
-          // const posts = (res.body as PostResponse[]).map(
-          //     (postResponse) => {
-          //       const post: PayloadPost = {
-          //         author: postResponse.author,
-          //         postID: postResponse.postID,
-          //         content: {
-          //           img: postResponse.img,
-          //           text: postResponse.text,
-          //           title: postResponse.title,
-          //         },
-          //         likesNum: postResponse.likesNum,
-          //         isLiked: postResponse.isLiked,
-          //         commentsNum: 0, // TODO получать из запроса
-          //         date: new Date(Date.now()), // TODO получать из запроса
-          //       };
-          //       return post;
-          //     },
-          // );
           store.dispatch({
             type: ActionType.GET_POSTS,
             payload: res.body as PayloadPost[],
@@ -249,13 +245,14 @@ export const getFeed = () => {
       );
 };
 
-export const putImage = (file: File) => {
+export const putImage = (postID: number, file: File) => {
   api.putImage(file)
       .then((res) => {
         if (res.ok) {
           store.dispatch({
             type: ActionType.PUT_IMAGE,
             payload: {
+              postID,
               url: res.body.url as string,
             },
           });

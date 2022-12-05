@@ -14,6 +14,7 @@ export enum InputType {
   textarea,
   file,
   checkbox,
+  number,
 }
 
 export interface InputOptions {
@@ -92,6 +93,9 @@ class InputField extends ComponentBase<'label', boolean> {
             templateTextarea(this.options),
         );
         return input;
+      case InputType.number:
+        templateContext.type = 'number';
+        break;
       default: {
         const _exhaustiveCheck: never = this.options.kind;
         return _exhaustiveCheck;

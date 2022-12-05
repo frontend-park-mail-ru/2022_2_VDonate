@@ -4,15 +4,6 @@ import store from '@app/Store';
 import {SubscriptionCardStatus}
   from '@components/SubscriptionCard/SubscriptionCard';
 
-export const openPostEditor = (id?: number) =>
-  store.dispatch({
-    type: ActionType.EDITOR_OPEN,
-    payload: {
-      type: EditorType.POST,
-      id,
-    },
-  });
-
 export const openProfileEditor = () =>
   store.dispatch({
     type: ActionType.EDITOR_OPEN,
