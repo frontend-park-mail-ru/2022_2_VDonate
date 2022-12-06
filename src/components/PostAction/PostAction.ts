@@ -44,7 +44,8 @@ class PostAction extends ComponentBase<'button', PostActionUpdateContent> {
     }
     if (this.options.count !== data.likesNum) {
       this.options.count = data.likesNum;
-      querySelectorWithThrow(this.domElement, '.reaction__count').textContent =
+      const a = querySelectorWithThrow(this.domElement, '.reaction__text');
+      a.textContent =
         this.options.count.toString();
     }
   }

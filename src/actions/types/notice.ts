@@ -3,7 +3,7 @@ import {ActionType} from './action';
 
 export interface PayloadNotice {
   timestamp?: number // Это поле указывается только при сохранении в хранилище
-  message: string[] | string | null
+  message: string[] | string | Error | null
 }
 
 export interface ActionNotice extends IAction {

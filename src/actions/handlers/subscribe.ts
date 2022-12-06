@@ -35,7 +35,7 @@ const loadNewPosts =
           store.dispatch({
             type: ActionType.NOTICE,
             payload: {
-              message: err as string,
+              message: err as Error,
             },
           });
         });
@@ -69,7 +69,7 @@ export const subscribe = (
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       });
@@ -103,7 +103,7 @@ export const unsubscribe = (
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       });
@@ -133,7 +133,7 @@ export const getSubscritions = (id: number) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       });
@@ -226,7 +226,7 @@ export const editAuthorSubscription = (
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       });
@@ -297,7 +297,7 @@ export const createAuthorSubscription = (form: AuthorSubscrptionForm) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       });
@@ -324,7 +324,7 @@ export const deleteAuthorSubscription = (id: number) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       });

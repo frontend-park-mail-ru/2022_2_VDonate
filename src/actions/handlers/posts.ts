@@ -69,7 +69,7 @@ export const createPost = (content: string, tier: number) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       },
@@ -125,7 +125,7 @@ export const updatePost = (id: number, content: string, tier: number) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       },
@@ -154,7 +154,7 @@ export const deletePost = (postID: number) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       },
@@ -183,7 +183,7 @@ export const likePost = (id: number) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       },
@@ -212,7 +212,7 @@ export const unlikePost = (id: number) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       },
@@ -238,7 +238,7 @@ export const getFeed = () => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       },
@@ -267,7 +267,7 @@ export const putImage = (postID: number, file: File) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       });
