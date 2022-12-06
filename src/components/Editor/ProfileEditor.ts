@@ -123,7 +123,7 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
           displayError: false,
         }))
         .set('avatar', new InputField(inputsArea, {
-          kind: InputType.file,
+          kind: InputType.image,
           label: 'Загрузите аватарку',
           name: 'avatar',
           displayError: false,

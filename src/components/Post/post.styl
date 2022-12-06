@@ -38,7 +38,7 @@
     color: color-font-light
   &__content
     padding: 8px
-  &__buttons-area
+  &__btn-area
     display: flex
     flex-direction: row
     gap: 8px
@@ -50,6 +50,23 @@
     color: color-font-secondary
     margin-bottom: 10px
     text-align: center
+  &__edit-form
+    flex-grow: 1
+
+.post-edit-form
+  display: grid
+  grid-template-areas: "tier h1 img"\
+                        "btn btn btn"
+  grid-template-columns: 1fr repeat(2, min-content)
+  gap: 5px
+  &__tier
+    grid-area: tier
+  &__h1
+    grid-area: h1
+  &__img
+    grid-area: img
+  &__btn
+    grid-area: btn
 
 .post-content
   display: flex

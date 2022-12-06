@@ -2,6 +2,9 @@ import Button, {ButtonType} from '@components/Button/Button';
 import templatePost from './post.hbs';
 import templateContent from './content.hbs';
 import editIcon from '@icon/edit.svg';
+import headerIcon from '@icon/header.svg';
+import loadImageIcon from '@icon/loadImage.svg';
+
 import './post.styl';
 
 import {PayloadPost} from '@actions/types/posts';
@@ -53,6 +56,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
   private likeBtn!: PostAction;
   private commentBtn!: PostAction;
   private content!: HTMLElement;
+  private htmlTextElementsInContent = new Set<HTMLElement>();
 
   constructor(el: HTMLElement, private options: PostOptions) {
     super();
@@ -150,7 +154,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     const buttonsArea =
       querySelectorWithThrow(
           domElement ?? this.domElement,
-          '.post__buttons-area',
+          '.post__btn-area',
       );
     this.likeBtn = new PostAction(buttonsArea, {
       reactType: PostActionType.LIKE,
@@ -174,23 +178,35 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     });
   }
 
+  private onContentInput(): void {
+    this.htmlTextElementsInContent.forEach((el) => {
+      if (el.innerText === '\n') {
+        el.remove();
+        this.htmlTextElementsInContent.delete(el);
+      }
+    });
+  }
+
   private openEditor(domElement?: HTMLElement) {
     this.content =
       querySelectorWithThrow(domElement ?? this.domElement, '.post-content');
     this.content.setAttribute('contenteditable', 'true');
+    this.content.addEventListener('input', this.onContentInput.bind(this));
+    this.content.querySelectorAll('h1').forEach((el) => {
+      this.htmlTextElementsInContent.add(el);
+    });
 
     const buttonsArea =
       querySelectorWithThrow(
           domElement ?? this.domElement,
-          '.post__buttons-area',
+          '.post__btn-area',
       );
     buttonsArea.innerHTML = '';
 
     const form = document.createElement('form');
-    form.classList.add('post__edit-form');
+    form.classList.add('post__edit-form', 'post-edit-form');
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      // TODO отправить создание поста
       if (this.options.postID === -1) {
         createPost(this.content.innerHTML,
             Number(((e.target as HTMLFormElement).elements as EditForm)
@@ -210,34 +226,53 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     buttonsArea.appendChild(form);
 
 
-    new InputField(form, {
+    const tierBtn = new InputField(form, {
       name: 'tier',
       kind: InputType.number,
-      label: 'Уровень доступа',
+      value: this.options.tier.toString(),
       displayError: false,
     });
-    new InputField(form, {
-      name: 'image',
-      kind: InputType.file,
-      label: 'Изображение',
-      displayError: false,
-    });
-    const image = querySelectorWithThrow(
-        form,
-        'input[type=file]',
-    ) as HTMLInputElement;
-    image.addEventListener('change', () => {
-      if (image.files && image.files.length !== 0) {
-        putImage(this.options.postID, image.files[0]);
-      }
-    });
+    tierBtn.addClassNames('post-edit-form__tier');
 
-    new Button(form, {
+    const headerBtn = new Button(form, {
+      actionType: 'button',
+      viewType: ButtonType.ICON,
+      innerIcon: headerIcon,
+      clickHandler: () => {
+        const h1 = document.createElement('h1');
+        h1.innerHTML = 'Заголовок';
+        this.htmlTextElementsInContent.add(h1);
+        this.content.insertBefore(h1, this.content.firstChild);
+      },
+    });
+    headerBtn.addClassNames('post-edit-form__h1');
+
+    const imgBtn = new Button(form, {
+      actionType: 'button',
+      viewType: ButtonType.IMAGE_LOADING,
+      innerIcon: loadImageIcon,
+      clickHandler: (e) => {
+        const image = (e.target as HTMLInputElement);
+        if (image.files && image.files.length !== 0) {
+          putImage(this.options.postID, image.files[0]);
+        }
+      },
+    });
+    imgBtn.addClassNames('post-edit-form__img');
+
+
+    const formBtns = document.createElement('div');
+    formBtns.classList.add('post-edit-form__btn', 'btn-area');
+    form.appendChild(formBtns);
+
+    const saveBtn = new Button(formBtns, {
       actionType: 'submit',
       viewType: ButtonType.PRIMARY,
       innerText: 'Сохранить',
     });
-    new Button(form, {
+    saveBtn.addClassNames('btn-area__btn');
+
+    const cancelBtn = new Button(formBtns, {
       actionType: 'button',
       viewType: ButtonType.OUTLINE,
       innerText: 'Отмена',
@@ -246,8 +281,10 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
         this.closeEditor();
       },
     });
+    cancelBtn.addClassNames('btn-area__btn');
+
     if (this.options.postID !== -1) {
-      new Button(form, {
+      const delBtn = new Button(formBtns, {
         actionType: 'button',
         viewType: ButtonType.OUTLINE,
         innerText: 'Удалить',
@@ -255,6 +292,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
           deletePost(this.options.postID);
         },
       });
+      delBtn.addClassNames('btn-area__btn');
     }
 
     this.content.focus();
@@ -266,9 +304,10 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     } else {
       const content = querySelectorWithThrow(this.domElement, '.post-content');
       content.setAttribute('contenteditable', 'false');
-      querySelectorWithThrow(this.domElement, '.post__edit-form').remove();
+      querySelectorWithThrow(this.domElement, '.post-edit-form').remove();
       this.renderActions();
     }
+    this.htmlTextElementsInContent.clear();
   }
 }
 
