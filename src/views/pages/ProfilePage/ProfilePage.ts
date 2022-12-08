@@ -99,6 +99,8 @@ export default class ProfilePage extends UpgradeViewBase {
       isAuthor: this.profileState.user.isAuthor,
       username: this.profileState.user.username,
       countDonaters: this.profileState.user.countDonaters,
+      id: this.options.profileID,
+      changeable: this.options.changeable,
     });
 
     this.childViews.subscriptionCardsContainer =
@@ -108,6 +110,9 @@ export default class ProfilePage extends UpgradeViewBase {
 
     this.about = new About(this.authorContent, {
       aboutTextHtml: 'Пользователь пока ничего о себе не написал',
+      id: this.options.profileID,
+      changeable: this.options.changeable,
+      inEditState: false,
     });
     const user = store.getState().user as PayloadUser;
     this.childViews.postContainer = new PostsContainer(this.authorContent, {

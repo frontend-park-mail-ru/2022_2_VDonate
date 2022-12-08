@@ -10,8 +10,6 @@ interface ProfileEditorOptions {
   id: number
   email: string
   username: string
-  isAuthor: boolean
-  about?: string
 }
 
 interface PostEditorInputsErrors {
@@ -19,7 +17,6 @@ interface PostEditorInputsErrors {
   username: boolean
   password: boolean
   repeatPassword: boolean
-  about: boolean
 }
 
 
@@ -90,23 +87,23 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
           value: this.options.username,
           displayError: false,
         }));
-    if (this.options.isAuthor) {
-      this.inputs.set('about', new InputField(inputsArea, {
-        kind: InputType.textarea,
-        label: 'Описание',
-        name: 'about',
-        placeholder: 'Расскажите что-то о себе...',
-        value: this.options.about,
-        displayError: false,
-      }));
-    } else {
-      this.inputs.set('isAuthor', new InputField(inputsArea, {
-        kind: InputType.checkbox,
-        label: 'Стать автором',
-        name: 'isAuthor',
-        displayError: false,
-      }));
-    }
+    // if (this.options.isAuthor) {
+    //   this.inputs.set('about', new InputField(inputsArea, {
+    //     kind: InputType.textarea,
+    //     label: 'Описание',
+    //     name: 'about',
+    //     placeholder: 'Расскажите что-то о себе...',
+    //     value: this.options.about,
+    //     displayError: false,
+    //   }));
+    // } else {
+    //   this.inputs.set('isAuthor', new InputField(inputsArea, {
+    //     kind: InputType.checkbox,
+    //     label: 'Стать автором',
+    //     name: 'isAuthor',
+    //     displayError: false,
+    //   }));
+    // }
     this.inputs
         .set('password', new InputField(inputsArea, {
           kind: InputType.password,

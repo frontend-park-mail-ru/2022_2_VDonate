@@ -76,8 +76,6 @@ class EditorContainer
               id: user.id,
               username: user.username,
               email: user.email,
-              isAuthor: user.isAuthor,
-              about: user.about,
             });
         break;
       }
@@ -129,7 +127,6 @@ class EditorContainer
             email: Boolean(errors.email),
             password: Boolean(errors.password),
             repeatPassword: Boolean(errors.repeatPassword),
-            about: Boolean(errors.about),
           });
         }
         break;
