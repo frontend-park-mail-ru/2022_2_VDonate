@@ -50,6 +50,8 @@ const userSubscriptionsReducer: Reducer<Action> =
         (state as Map<number, PayloadSubscription>)
             .delete(action.payload.authorSubscriptionID);
         return state;
+      case ActionType.LOGOUT_SUCCESS:
+        return new Map<number, PayloadSubscription>();
       default:
         return state;
     }

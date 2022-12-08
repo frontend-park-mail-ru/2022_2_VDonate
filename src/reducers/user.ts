@@ -32,6 +32,16 @@ const userReducer: Reducer<Action> =
           action.payload.user.email;
         }
         return state;
+      case ActionType.LOGOUT_SUCCESS:
+        return {
+          avatar: '',
+          countSubscriptions: 0,
+          isAuthor: false,
+          id: 0,
+          username: 'Псевдоним',
+          about: 'Тут будет описание',
+          countDonaters: 0,
+        };
       default:
         return state;
     }

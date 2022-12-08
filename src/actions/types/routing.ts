@@ -10,7 +10,7 @@ export enum RouteType {
 
 export interface PayloadLocation {
   type: Pages
-  options?: PropTree
+  options: PropTree
 }
 
 export interface ActionRouting extends IAction {

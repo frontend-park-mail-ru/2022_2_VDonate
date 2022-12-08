@@ -11,6 +11,7 @@ import UpgradeViewBase from '@app/UpgradeView';
 
 interface PostsContainerOptions {
   withCreateBtn: boolean
+  textWhenEmpty: string
 }
 
 /** */
@@ -44,12 +45,21 @@ class PostsContainer
             clickHandler: this.addNewPost.bind(this),
           });
     }
+    querySelectorWithThrow(container, '.posts-container__empty')
+        .innerText = this.options.textWhenEmpty;
     return container;
   }
 
   notify(): void {
     const newPostsState = store.getState().posts as Map<number, PayloadPost>;
 
+    if (newPostsState.size == 0) {
+      querySelectorWithThrow(this.domElement, '.posts-container__empty')
+          .hidden = false;
+    } else {
+      querySelectorWithThrow(this.domElement, '.posts-container__empty')
+          .hidden = true;
+    }
     this.postsState.forEach((_, postID) => {
       if (!newPostsState.has(postID)) {
         this.deletePost(postID);

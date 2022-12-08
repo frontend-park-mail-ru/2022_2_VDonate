@@ -81,6 +81,24 @@ const profileReducer: Reducer<Action> =
           userr.countDonaters -= 1;
         }
         return state;
+      case ActionType.ROUTING:
+        if (action.payload.options.samePage) {
+          return state;
+        }
+        return {
+          user: {
+            avatar: '',
+            countSubscriptions: 0,
+            isAuthor: false,
+            id: 0,
+            username: 'Псевдоним',
+            about: 'Тут будет описание',
+            countDonaters: 0,
+          },
+          subscriptions: [],
+          authorSubscriptions: [],
+          posts: [],
+        };
       default:
         return state;
     }

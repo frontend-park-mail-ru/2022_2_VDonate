@@ -24,6 +24,10 @@ export default class FeedPage extends UpgradeViewBase {
 
     this.postsContainer = new PostsContainer(content, {
       withCreateBtn: user.isAuthor,
+      textWhenEmpty:
+      `Тут будут посты интересующих Вас авторов\n
+        Перейдите на страницу поиска и начните 
+        поддерживать интересующих авторов уже сейчас.`,
     });
 
     getFeed();

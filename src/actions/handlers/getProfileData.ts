@@ -67,6 +67,7 @@ export default (id: number): void => {
               type: ActionType.ROUTING,
               payload: {
                 type: Pages.NOT_FOUND,
+                options: {},
               },
             });
           }
