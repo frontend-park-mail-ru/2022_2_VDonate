@@ -16,7 +16,6 @@ export interface PayloadPost {
   postID: number
   // tags
   tier: number
-  userID: number
   commentsNum: number
 }
 
@@ -31,6 +30,11 @@ export interface PayloadPostUpdate {
 
 export interface PayloadPostDelete {
   postID: number
+}
+
+export interface PayloadPutImage {
+  postID: number
+  url: string
 }
 
 export interface ActionGetPosts extends IAction {
@@ -55,7 +59,5 @@ export interface ActionDeletePost extends IAction {
 
 export interface ActionPutImage extends IAction {
   type: ActionType.PUT_IMAGE,
-  payload: {
-    url: string,
-  }
+  payload: PayloadPutImage
 }

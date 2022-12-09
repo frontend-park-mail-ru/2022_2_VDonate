@@ -1,13 +1,10 @@
 import {EditorType, PayloadEditor} from '@actions/types/editor';
 import {FormErrorType, PayloadFormError} from '@actions/types/formError';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
-import {PayloadPost} from '@actions/types/posts';
 import {PayloadUser} from '@actions/types/user';
 import store from '@app/Store';
-import PostEditor from '@components/Editor/PostEditor';
 import ProfileEditor from '@components/Editor/ProfileEditor';
 import SubscriptionEditor from '@components/Editor/SubscriptionEditor';
-import {querySelectorWithThrow} from '@flux/types/component';
 import PayEditor from '@components/Editor/PayEditor';
 import UpgradeViewBase from '@app/UpgradeView';
 
@@ -18,7 +15,6 @@ class EditorContainer
   private editorState: PayloadEditor;
   private formErrorsState: PayloadFormError;
   private currentEditor?:
-    | PostEditor
     | ProfileEditor
     | SubscriptionEditor
     | PayEditor;
@@ -54,17 +50,6 @@ class EditorContainer
       this.displayEditor(editorStateNew);
     }
 
-    const imageNew = (store.getState().image as { url: string });
-    if (imageNew.url.length !== 0 &&
-      imageNew !== this.imageState &&
-       this.editorType == EditorType.POST) {
-      this.imageState = imageNew;
-
-      const url = (store.getState().image as {url: string} | undefined)?.url;
-      if (url) {
-        this.addImage(url);
-      }
-    }
     const formErrorsNew = state.formErrors as PayloadFormError;
     if (JSON.stringify(formErrorsNew) !==
       JSON.stringify(this.formErrorsState)) {
@@ -77,41 +62,12 @@ class EditorContainer
     this.currentEditor?.remove();
   }
 
-  private addImage(image: string) {
-    if (this.editorType == EditorType.POST) {
-      const textarea = querySelectorWithThrow(
-          this.domElement,
-          'textarea.input-field__textarea',
-      ) as HTMLInputElement;
-      textarea.value += `[img|${image}]`;
-    }
-  }
-
   private displayEditor(newEditor: PayloadEditor) {
     switch (newEditor.type) {
       case undefined:
         this.currentEditor?.remove();
         this.currentEditor = undefined;
         break;
-      case EditorType.POST: {
-        this.editorType = EditorType.POST;
-        const postID = newEditor.id;
-        if (typeof postID !== 'number') {
-          this.currentEditor = new PostEditor(this.domElement);
-          break;
-        }
-        const postsStore = store.getState().posts as Map<number, PayloadPost>;
-        const targetPost = postsStore.get(postID);
-        if (targetPost) {
-          this.currentEditor = new PostEditor(this.domElement,
-              {
-                id: postID,
-                text: targetPost.contentTemplate,
-                tier: targetPost.tier,
-              });
-        }
-        break;
-      }
       case EditorType.PROFILE: {
         this.editorType = EditorType.PROFILE;
         const user = store.getState().user as PayloadUser;

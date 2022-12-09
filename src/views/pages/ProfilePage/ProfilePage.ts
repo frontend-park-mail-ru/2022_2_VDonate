@@ -74,7 +74,7 @@ export default class ProfilePage extends UpgradeViewBase {
     }
     if (!profileNew.user.isAuthor) {
       if (!profileNew.userSubscriptions ||
-          profileNew.userSubscriptions.length == 0) {
+          profileNew.userSubscriptions.length === 0) {
         this.glass.element.innerHTML = 'Донатер пока никого не поддерживает';
       } else {
         this.glass.element.innerHTML = '';

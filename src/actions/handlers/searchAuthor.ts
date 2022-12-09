@@ -33,7 +33,7 @@ export default (form: SearchAuthorForm): void => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
         return;

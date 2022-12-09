@@ -117,7 +117,7 @@ export const auth = (): void => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       });
@@ -198,7 +198,7 @@ export const login = (props: LogInFormElements): void => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       });
@@ -288,7 +288,7 @@ export const signup = (props: SignUpFormElements): void => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       });
@@ -319,7 +319,7 @@ export const logout = (): void => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       });
@@ -449,7 +449,7 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       });

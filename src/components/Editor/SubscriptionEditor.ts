@@ -118,7 +118,7 @@ class SubscriptionEditor
           displayError: false,
         }))
         .set('file', new InputField(inputsArea, {
-          kind: InputType.file,
+          kind: InputType.image,
           label: 'Загрузите картинку (.jpg)',
           name: 'file',
           displayError: false,

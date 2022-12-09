@@ -19,8 +19,33 @@ body,html {
     margin: 0;
     padding: 0;
 }
+
 * {
     box-sizing: border-box;
+}
+
+h1
+  font-weight: bold
+  font-size: inherit
+
+.btn-area 
+  display: flex
+  flex-direction: row
+  align-items: flex-start
+  gap: 15px
+  justify-content: space-between
+  flex-wrap: wrap
+  &__btn
+    flex-grow: 1
+
+[contenteditable="true"]:active,
+[contenteditable="true"]:focus{
+  border:none;
+  outline:none;
+}
+
+[contenteditable='true'] {
+    caret-color: red;
 }
 
 @media only screen and (max-width: 699px)

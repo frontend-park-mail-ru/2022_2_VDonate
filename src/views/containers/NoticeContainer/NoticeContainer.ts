@@ -7,10 +7,11 @@ import UpgradeViewBase from '@app/UpgradeView';
 /** */
 export default class NoticeContainer extends UpgradeViewBase {
   private notices = new Set<Notice>();
-  private noticeState?: PayloadNotice;
+  private noticeState: PayloadNotice;
 
   constructor(el: HTMLElement) {
     super();
+    this.noticeState = store.getState().notice as PayloadNotice;
     this.renderTo(el);
     this.notify();
   }
@@ -24,7 +25,7 @@ export default class NoticeContainer extends UpgradeViewBase {
 
   notify(): void {
     const noticeStateNew = store.getState().notice as PayloadNotice;
-    if (this.noticeState?.timestamp !== noticeStateNew.timestamp) {
+    if (this.noticeState.timestamp !== noticeStateNew.timestamp) {
       this.noticeState = noticeStateNew;
       if (typeof this.noticeState.message === 'string') {
         if (this.noticeState.message == 'no existing session') {
@@ -32,8 +33,11 @@ export default class NoticeContainer extends UpgradeViewBase {
           this.addNewNotice('Ошибка авторизации');
         } else if (/^[а-яёА-ЯЁ]/.test(this.noticeState.message)) {
           this.addNewNotice(this.noticeState.message);
+        } else {
+          this.addNewNotice('АХТУНГ! Всё идет не по плану ☆(＃××)');
+          console.error(this.noticeState.message);
         }
-      }
+      } else
       if (Array.isArray(this.noticeState.message)) {
         this.noticeState.message.forEach(
             (message) => {
@@ -45,6 +49,10 @@ export default class NoticeContainer extends UpgradeViewBase {
               }
             },
         );
+      } else
+      if (this.noticeState.message instanceof Error) {
+        this.addNewNotice('АХТУНГ! Всё идет не по плану ☆(＃××)');
+        console.error(this.noticeState.message);
       }
     }
   }

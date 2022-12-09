@@ -84,7 +84,7 @@ export default (id: number): void => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
         return;
