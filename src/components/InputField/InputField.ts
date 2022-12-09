@@ -4,7 +4,7 @@ import templateTextarea from './textarea-input.hbs';
 import userIcon from '@icon/user.svg';
 import emailIcon from '@icon/email.svg';
 import passwordIcon from '@icon/password.svg';
-import limitIcon from '@icon/limit.svg';
+import levelsIcon from '@icon/levels.svg';
 
 import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 
@@ -49,9 +49,9 @@ class InputField extends ComponentBase<'label', boolean> {
     }
   }
 
-  render(): HTMLLabelElement {
+  protected render(): HTMLLabelElement {
     const input = document.createElement('label');
-    input.classList.add('input-field', 'input-field__label');
+    input.classList.add('input-field', 'input-field__label', 'font_regular');
     input.innerText = this.options.label ?? '';
 
 
@@ -95,7 +95,7 @@ class InputField extends ComponentBase<'label', boolean> {
         break;
       case InputType.number:
         templateContext.type = 'number';
-        templateContext.icon = limitIcon;
+        templateContext.icon = levelsIcon;
         break;
       default: {
         const _exhaustiveCheck: never = this.options.kind;

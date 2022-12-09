@@ -1,4 +1,4 @@
-import './style/index.styl';
+import '@style/index.styl';
 import Root from '@views/Root';
 
 

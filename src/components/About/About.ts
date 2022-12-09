@@ -1,6 +1,5 @@
 import Button, {ButtonType} from '@components/Button/Button';
 import editIcon from '@icon/edit.svg';
-import {Glass, GlassType} from '@components/glass/glass';
 import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 import './about.styl';
 import {editAbout} from '@actions/handlers/user';
@@ -13,7 +12,7 @@ interface AboutOptions {
 }
 
 /**
- * Модель поля 'Обо мне'
+ *
  */
 export default
 class About extends ComponentBase<'div', string> {
@@ -25,11 +24,11 @@ class About extends ComponentBase<'div', string> {
   }
 
   protected render(): HTMLDivElement {
-    const about = new Glass(GlassType.mono).element;
-    about.classList.add('about', 'about__about');
+    const about = document.createElement('div');
+    about.classList.add('about', 'about__about', 'bg_content');
 
     const head = document.createElement('div');
-    head.classList.add('about__head');
+    head.classList.add('about__head', 'font_big');
     head.innerText = 'Обо мне';
     const editBtn = new Button(head, {
       viewType: ButtonType.ICON,
@@ -49,7 +48,7 @@ class About extends ComponentBase<'div', string> {
     about.appendChild(head);
 
     this.content = document.createElement('div');
-    this.content.classList.add('about__text');
+    this.content.classList.add('about__text', 'font_regular');
     this.content.innerHTML = this.aboutTextHtml;
     about.appendChild(this.content);
 
