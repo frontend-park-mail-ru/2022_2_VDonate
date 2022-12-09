@@ -25,7 +25,7 @@ interface ProfileInfoUpdateContext {
   avatar: string
   username: string
   countSubscriptions: number
-  countDonaters?: number
+  countDonaters: number
 }
 
 /**
@@ -45,17 +45,20 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
   }
 
   update(data: ProfileInfoUpdateContext): void {
-    if (data.avatar !== this.options.avatar) {
-      this.avatar.update(data.avatar);
+    this.avatar.update(data.avatar);
+
+    if (this.options.username !== data.username) {
+      this.options.username = data.username;
+      this.username.innerText = this.options.username;
     }
-    if (data.username !== this.options.username) {
-      this.username.innerText = data.username;
-    }
-    if (data.countSubscriptions !== this.options.countSubscriptions) {
+
+    if (this.options.countSubscriptions !== data.countSubscriptions) {
+      this.options.countSubscriptions = data.countSubscriptions;
       this.countSubscriptions.innerText = data.countSubscriptions.toString();
     }
-    if (data.isAuthor && !this.options.isAuthor) {
-      this.options.isAuthor = true;
+
+    if (!this.options.isAuthor && data.isAuthor) {
+      this.options.isAuthor = data.isAuthor;
       const info =
         querySelectorWithThrow(this.domElement, '.profile-info');
       const donatersContainer = document.createElement('div');
@@ -66,15 +69,18 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
       donaters.innerText = 'Донатеров';
       this.countDonaters = document.createElement('span');
       this.countDonaters.classList.add('profile-info__count');
-      this.countDonaters.innerText = data.countDonaters?.toString() ?? '0';
+      this.countDonaters.innerText = data.countDonaters.toString();
       donatersContainer.append(donaters, this.countDonaters);
       info.appendChild(donatersContainer);
-    } else if (!data.isAuthor && this.options.isAuthor) {
+    } else if (this.options.isAuthor && !data.isAuthor) {
       this.options.isAuthor = false;
       querySelectorWithThrow(this.domElement, '.profile-info__donaters')
           .parentElement?.remove();
     }
-    if (this.options.isAuthor && data.countDonaters !== undefined) {
+
+    if (this.options.isAuthor &&
+      this.options.countDonaters !== data.countDonaters) {
+      this.options.countDonaters = data.countDonaters;
       this.countDonaters.innerText = data.countDonaters.toString();
     }
   }
@@ -88,7 +94,7 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
 
     this.avatar = new Avatar(glass, {
       viewType: this.options.isAuthor ? AvatarType.AUTHOR : AvatarType.DONATER,
-      image: this.options.avatar,
+      imgPath: this.options.avatar,
     });
     this.avatar.addClassNames('right-navbar__img');
 

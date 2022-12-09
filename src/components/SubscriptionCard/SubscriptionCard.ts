@@ -1,15 +1,14 @@
 import Button, {ButtonType} from '@components/Button/Button';
 import {Glass, GlassType} from '@components/glass/glass';
-import {openSubscribtionEditor} from '@actions/handlers/editor';
+import {openPayEditor, openSubscribtionEditor} from '@actions/handlers/editor';
 import './subscription-card.styl';
 import template from './subscription-card.hbs';
 import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 import Avatar, {AvatarType} from '@components/Avatar/Avatar';
-import PayEditor from '@components/Editor/PayEditor';
 
 export enum SubscriptionCardStatus {
-  OWNER,
-  DONATER,
+  ALREADY_DONATED,
+  CAN_DONATE,
   AUTHOR,
 }
 
@@ -54,32 +53,16 @@ class SubscriptionCard
   update(data: SubscriptionCardUpdateContext): void {
     if (data.subscriptionStatus !== this.options.subscriptionStatus) {
       switch (data.subscriptionStatus) {
-        case SubscriptionCardStatus.OWNER:
+        case SubscriptionCardStatus.ALREADY_DONATED:
           this.button.update({
-            innerText: 'Отписаться',
-            callback: () => {
-              // TODO нельза так. Это в обход флакса
-              new PayEditor(document.body, {
-                authorID: this.options.authorID,
-                authorSubscriptionID: this.options.subscriptionID,
-                subType: this.options.subscriptionStatus,
-              });
-            },
+            inner: 'Отписаться',
           });
           this.button.addClassNames('sub__button_style_owner');
           this.button.removeClassName('sub__button_style_donater');
           break;
-        case SubscriptionCardStatus.DONATER:
+        case SubscriptionCardStatus.CAN_DONATE:
           this.button.update({
-            innerText: 'Задонатить',
-            callback: () => {
-              // TODO нельза так. Это в обход флакса
-              new PayEditor(document.body, {
-                authorID: this.options.authorID,
-                authorSubscriptionID: this.options.subscriptionID,
-                subType: this.options.subscriptionStatus,
-              });
-            },
+            inner: 'Задонатить',
           });
           this.button.removeClassName('sub__button_style_owner');
           this.button.addClassNames('sub__button_style_donater');
@@ -125,7 +108,7 @@ class SubscriptionCard
 
     this.avatar = new Avatar(imageArea, {
       viewType: AvatarType.SUBSCRIPTION,
-      image: this.options.img,
+      imgPath: this.options.img,
     });
     this.avatar.addClassNames('sub__img');
 
@@ -151,34 +134,32 @@ class SubscriptionCard
     const btnArea = querySelectorWithThrow(card, '.sub__button');
     btnArea.style.display = 'contents';
     switch (this.options.subscriptionStatus) {
-      case SubscriptionCardStatus.DONATER:
+      case SubscriptionCardStatus.CAN_DONATE:
         this.button = new Button(btnArea, {
           viewType: ButtonType.PRIMARY,
           actionType: 'button',
           innerText: 'Задонатить',
-          clickCallback: () => {
-            // TODO нельза так. Это в обход флакса
-            new PayEditor(document.body, {
-              authorID: this.options.authorID,
-              authorSubscriptionID: this.options.subscriptionID,
-              subType: this.options.subscriptionStatus,
-            });
+          clickHandler: () => {
+            openPayEditor(
+                this.options.authorID,
+                this.options.subscriptionID,
+                this.options.subscriptionStatus,
+            );
           },
         });
         this.button.addClassNames('sub__button_style_donater');
         break;
-      case SubscriptionCardStatus.OWNER:
+      case SubscriptionCardStatus.ALREADY_DONATED:
         this.button = new Button(btnArea, {
           viewType: ButtonType.PRIMARY,
           actionType: 'button',
           innerText: 'Отписаться',
-          clickCallback: () => {
-            // TODO нельза так. Это в обход флакса
-            new PayEditor(document.body, {
-              authorID: this.options.authorID,
-              authorSubscriptionID: this.options.subscriptionID,
-              subType: this.options.subscriptionStatus,
-            });
+          clickHandler: () => {
+            openPayEditor(
+                this.options.authorID,
+                this.options.subscriptionID,
+                this.options.subscriptionStatus,
+            );
           },
         });
         this.button.addClassNames('sub__button_style_owner');
@@ -188,7 +169,7 @@ class SubscriptionCard
           viewType: ButtonType.PRIMARY,
           actionType: 'button',
           innerText: 'Изменить',
-          clickCallback: () => {
+          clickHandler: () => {
             openSubscribtionEditor(this.options.subscriptionID);
           },
         });

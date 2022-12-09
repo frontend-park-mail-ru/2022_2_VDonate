@@ -5,6 +5,7 @@ interface NavbarLinkOptions {
   icon: string
   text: string
   href: string
+  isActive: boolean
 }
 
 /**
@@ -16,6 +17,16 @@ class NavbarLink
   constructor(el: HTMLElement, private options: NavbarLinkOptions) {
     super();
     this.renderTo(el);
+  }
+
+  update(isActive: boolean): void {
+    if (this.options.isActive === isActive) return;
+    this.options.isActive = isActive;
+    if (this.options.isActive) {
+      this.domElement.classList.add('navbar-unit__navbar-unit_choosen');
+    } else {
+      this.domElement.classList.remove('navbar-unit__navbar-unit_choosen');
+    }
   }
 
   protected render(): HTMLAnchorElement {
@@ -34,11 +45,5 @@ class NavbarLink
     link.appendChild(context);
 
     return link;
-  }
-
-  update(isChoosed: boolean): void {
-    if (isChoosed) {
-      this.domElement.classList.add('navbar-unit__navbar-unit_choosen');
-    } else this.domElement.classList.remove('navbar-unit__navbar-unit_choosen');
   }
 }

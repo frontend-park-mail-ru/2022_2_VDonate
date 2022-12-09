@@ -9,7 +9,7 @@ import {SubscriptionCardStatus}
 interface PayEditorOptions {
   authorID: number,
   authorSubscriptionID: number,
-  subType: SubscriptionCardStatus,
+  currentCardStatus: SubscriptionCardStatus,
 }
 
 /**
@@ -41,30 +41,30 @@ class PayEditor extends ComponentBase<'div'> {
       actionType: 'button',
       viewType: ButtonType.OUTLINE,
       innerText: 'Отмена',
-      clickCallback: () => {
+      clickHandler: () => {
         this.remove();
       },
     });
 
-    switch (this.options.subType) {
-      case SubscriptionCardStatus.DONATER:
+    switch (this.options.currentCardStatus) {
+      case SubscriptionCardStatus.CAN_DONATE:
         new Button(btnContainer, {
           actionType: 'button',
           viewType: ButtonType.PRIMARY,
           innerText: 'Задонатить',
-          clickCallback: () => {
+          clickHandler: () => {
             subscribe(this.options.authorID, this.options.authorSubscriptionID);
             this.remove();
           },
         });
         text.innerText = 'Вы действительно собиратесь задонатить?';
         break;
-      case SubscriptionCardStatus.OWNER:
+      case SubscriptionCardStatus.ALREADY_DONATED:
         new Button(btnContainer, {
           actionType: 'button',
           viewType: ButtonType.PRIMARY,
           innerText: 'Отписаться',
-          clickCallback: () => {
+          clickHandler: () => {
             unsubscribe(
                 this.options.authorID,
                 this.options.authorSubscriptionID,

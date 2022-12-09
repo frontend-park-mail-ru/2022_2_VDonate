@@ -41,7 +41,7 @@ const postsReducer: Reducer<Action> =
         return state;
       case ActionType.SUBSCRIBE:
       case ActionType.UNSUBSCRIBE:
-        return createPostsMap(action.payload.posts ?? []);
+        return createPostsMap(action.payload.posts);
       default:
         return state;
     }

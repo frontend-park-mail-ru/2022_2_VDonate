@@ -19,10 +19,10 @@ interface SubscriptionEditorOptions {
 }
 
 interface SubscriptionEditorInputsErrors {
-  title?: boolean
-  price?: boolean
-  tier?: boolean
-  text?: boolean
+  title: boolean
+  price: boolean
+  tier: boolean
+  text: boolean
 }
 
 /** */
@@ -91,6 +91,7 @@ class SubscriptionEditor
           name: 'title',
           placeholder: 'Придумайте заголовок для подписки',
           value: this.options?.title,
+          displayError: false,
         }))
         .set('price', new InputField(inputsArea, {
           kind: InputType.text,
@@ -98,6 +99,7 @@ class SubscriptionEditor
           name: 'price',
           placeholder: 'Введите стоимость подписки',
           value: this.options?.price.toString(),
+          displayError: false,
         }))
         .set('tier', new InputField(inputsArea, {
           kind: InputType.text,
@@ -105,6 +107,7 @@ class SubscriptionEditor
           name: 'tier',
           placeholder: 'Введите уровень подписки',
           value: this.options?.tier.toString(),
+          displayError: false,
         }))
         .set('text', new InputField(inputsArea, {
           kind: InputType.textarea,
@@ -112,11 +115,13 @@ class SubscriptionEditor
           name: 'text',
           placeholder: 'Замотивируйте своих донатеров',
           value: this.options?.text,
+          displayError: false,
         }))
         .set('file', new InputField(inputsArea, {
           kind: InputType.file,
           label: 'Загрузите картинку (.jpg)',
           name: 'file',
+          displayError: false,
         }));
   }
 
@@ -132,14 +137,14 @@ class SubscriptionEditor
       viewType: ButtonType.OUTLINE,
       innerText: 'Отменить',
       actionType: 'button',
-      clickCallback: closeEditor,
+      clickHandler: closeEditor,
     });
     if (this.options) {
       new Button(btnArea, {
         viewType: ButtonType.OUTLINE,
         innerText: 'Удалить',
         actionType: 'button',
-        clickCallback: deleteAuthorSubscription.bind(this, this.options.id),
+        clickHandler: deleteAuthorSubscription.bind(this, this.options.id),
       });
     }
   }

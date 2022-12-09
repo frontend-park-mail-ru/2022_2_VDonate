@@ -1,6 +1,5 @@
 import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 import './button.styl';
-import './icon_button.styl';
 
 /**
  * Перчисление типов кнопок
@@ -12,28 +11,34 @@ export enum ButtonType {
   ICON,
 }
 
+interface SubmitButtonOptions {
+  actionType: 'button'
+  clickHandler: () => void
+}
+
 interface SimpleButtonOptions {
+  actionType: 'submit'
+}
+
+interface TextButtonOptions {
   viewType:
     | ButtonType.PRIMARY
     | ButtonType.OUTLINE
     | ButtonType.FINGERS
   innerText: string
-  actionType: 'submit' | 'button'
-  clickCallback?: () => void
 }
 
 interface IconButtonOptions {
   viewType: ButtonType.ICON
   innerIcon: string
-  actionType: 'button'
-  clickCallback: () => void
 }
 
-type ButtonOptions = SimpleButtonOptions | IconButtonOptions
+type ButtonOptions =
+  (TextButtonOptions | IconButtonOptions) &
+  (SubmitButtonOptions | SimpleButtonOptions);
 
 interface ButtonUpdateContext {
-  innerText?: string
-  callback?: () => void
+  inner: string
 }
 
 /**
@@ -44,25 +49,39 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
   constructor(el: HTMLElement, private options: ButtonOptions) {
     super();
     this.renderTo(el);
+    options.viewType;
   }
 
   update(data: ButtonUpdateContext): void {
-    if (data.innerText) {
-      querySelectorWithThrow(this.domElement, '.button__text').textContent =
-        data.innerText;
+    if (this.options.viewType === ButtonType.ICON) {
+      this.updateIcon(data.inner);
+    } else {
+      this.updateText(data.inner);
     }
-    if (this.options.clickCallback && data.callback) {
-      this.domElement.removeEventListener('click', this.options.clickCallback);
-      this.options.clickCallback = data.callback;
-      this.domElement.addEventListener('click', this.options.clickCallback);
-    }
+  }
+
+  private updateIcon(innerIcon: string): void {
+    if (this.options.viewType !== ButtonType.ICON) return;
+    if (this.options.innerIcon === innerIcon) return;
+    this.options.innerIcon = innerIcon;
+    const icon =
+      querySelectorWithThrow(this.domElement, 'img') as HTMLImageElement;
+    icon.src = this.options.innerIcon;
+  }
+
+  private updateText(innerText: string): void {
+    if (this.options.viewType === ButtonType.ICON) return;
+    if (this.options.innerText === innerText) return;
+    this.options.innerText = innerText;
+    querySelectorWithThrow(this.domElement, '.button__text').textContent =
+      innerText;
   }
 
   protected render(): HTMLButtonElement {
     const button = document.createElement('button');
     button.setAttribute('type', this.options.actionType);
-    if (this.options.clickCallback) {
-      button.addEventListener('click', this.options.clickCallback);
+    if (this.options.actionType === 'button') {
+      button.addEventListener('click', this.options.clickHandler);
     }
 
     if (this.options.viewType === ButtonType.ICON) {

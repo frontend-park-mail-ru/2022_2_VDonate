@@ -4,7 +4,7 @@ import templateTextarea from './textarea.hbs';
 import userIcon from '@icon/user.svg';
 import emailIcon from '@icon/email.svg';
 import passwordIcon from '@icon/password.svg';
-import ComponentBase from '@flux/types/component';
+import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 
 export enum InputType {
   username,
@@ -22,6 +22,7 @@ export interface InputOptions {
   name: string
   placeholder?: string
   value?: string
+  displayError: boolean
 }
 
 /**
@@ -32,6 +33,17 @@ class InputField extends ComponentBase<'label', boolean> {
   constructor(element: HTMLElement, private options: InputOptions) {
     super();
     this.renderTo(element);
+  }
+
+  update(isError: boolean): void {
+    if (this.options.displayError === isError) return;
+    this.options.displayError = isError;
+    const back = querySelectorWithThrow(this.domElement, '.input-field__back');
+    if (this.options.displayError) {
+      back.classList.add('input-field__back_error');
+    } else {
+      back.classList.remove('input-field__back_error');
+    }
   }
 
   render(): HTMLLabelElement {
@@ -88,11 +100,5 @@ class InputField extends ComponentBase<'label', boolean> {
     input.insertAdjacentHTML('beforeend', templateInput(templateContext));
 
     return input;
-  }
-
-  update(isError: boolean): void {
-    const back = this.domElement.querySelector('.input-field__back');
-    if (isError) back?.classList.add('input-field__back_error');
-    else back?.classList.remove('input-field__back_error');
   }
 }

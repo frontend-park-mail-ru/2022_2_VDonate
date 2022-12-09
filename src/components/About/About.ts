@@ -36,6 +36,7 @@ class About extends ComponentBase<'div', string> {
   }
 
   update(htmlString: string): void {
+    if (this.options.aboutTextHtml === htmlString) return;
     this.options.aboutTextHtml = htmlString;
     this.content.innerHTML = this.aboutTextHtml;
   }

@@ -3,7 +3,7 @@ import {PayloadProfileUser} from '@actions/types/getProfileData';
 import {PayloadNotice} from '@actions/types/notice';
 import {PayloadPost} from '@actions/types/posts';
 import {PayloadLocation} from '@actions/types/routing';
-import {Subscription} from '@actions/types/subscribe';
+import {PayloadSubscription} from '@actions/types/subscribe';
 import {Pages} from './router';
 
 const initinalState: {
@@ -13,13 +13,14 @@ const initinalState: {
   editor: PayloadEditor,
   profile: {
     user: PayloadProfileUser,
-    subscriptions: Subscription[],
-    authorSubscriptions: Subscription[],
+    subscriptions: PayloadSubscription[],
+    authorSubscriptions: PayloadSubscription[],
     posts: PayloadPost[],
   },
   image: {
     url: string,
   },
+  userSubscriptions: Map<number, PayloadSubscription>,
 } = {
   location: {
     type: Pages.PRELOAD,
@@ -37,7 +38,7 @@ const initinalState: {
       id: 0,
       username: 'Псевдоним',
       about: 'Тут будет описание',
-      countSubscribers: 0,
+      countDonaters: 0,
     },
     subscriptions: [],
     authorSubscriptions: [],
@@ -46,6 +47,7 @@ const initinalState: {
   image: {
     url: '',
   },
+  userSubscriptions: new Map<number, PayloadSubscription>(),
 };
 
 export default initinalState;

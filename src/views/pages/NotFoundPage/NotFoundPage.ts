@@ -1,10 +1,10 @@
-import PageBase from '@app/Page';
+import UpgradeViewBase from '@app/UpgradeView';
 import img404 from '@img/404.png';
 import './not-found-page.styl';
 /**
  * Реализация интерфейса *IView* для несуществующе страницы
  */
-export default class NotFoundPage extends PageBase {
+export default class NotFoundPage extends UpgradeViewBase {
   constructor(el: HTMLElement) {
     super();
     this.renderTo(el);

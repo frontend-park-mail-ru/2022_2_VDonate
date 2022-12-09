@@ -6,9 +6,9 @@ import {Glass, GlassType} from '@components/glass/glass';
 import InputField, {InputType} from '@components/InputField/InputField';
 import SubscriptionLink from '@components/SubscriptionLink/SubscriptionLink';
 import './search-page.styl';
-import PageBase from '@app/Page';
+import UpgradeViewBase from '@app/UpgradeView';
 
-export default class SearchPage extends PageBase {
+export default class SearchPage extends UpgradeViewBase {
   private glass: Glass = new Glass(GlassType.mono);
 
   constructor(element: HTMLElement) {
@@ -28,6 +28,7 @@ export default class SearchPage extends PageBase {
       label: 'Поиск Авторов',
       name: 'searchField',
       placeholder: 'Найти автора',
+      displayError: false,
     });
     input.addClassNames('search-page__input-field');
     const btn = new Button(searchForm, {

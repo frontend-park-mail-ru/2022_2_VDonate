@@ -1,27 +1,27 @@
 import SubscriptionCard,
 {SubscriptionCardStatus} from '@components/SubscriptionCard/SubscriptionCard';
-import './subscriptions-container.styl';
+import './subscription-cards-container.styl';
 import plusIcon from '@icon/plus.svg';
 import store from '@app/Store';
-import {Subscription} from '@actions/types/subscribe';
+import {PayloadSubscription} from '@actions/types/subscribe';
 import {openSubscribtionEditor} from '@actions/handlers/editor';
 import Button, {ButtonType} from '@components/Button/Button';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
-import ContainerBase from '@app/Container';
+import UpgradeViewBase from '@app/UpgradeView';
 
-interface SubscriptionsContainerOptions {
+interface SubscriptionCardsContainerOptions {
   changeable: boolean
 }
 
 /**
  * Модель поля подписок
  */
-export default class SubscriptionsContainer
-  extends ContainerBase<Map<number, Subscription>> {
-  private subscriptionsState = new Map<number, Subscription>();
+export default class SubscriptionCardsContainer
+  extends UpgradeViewBase {
+  private subscriptionsState = new Map<number, PayloadSubscription>();
   private subscriptionCards = new Map<number, SubscriptionCard>();
   constructor(el: HTMLElement,
-    private options: SubscriptionsContainerOptions) {
+    private options: SubscriptionCardsContainerOptions) {
     super();
     this.renderTo(el);
     this.notify();
@@ -40,7 +40,7 @@ export default class SubscriptionsContainer
         viewType: ButtonType.ICON,
         innerIcon: plusIcon,
         actionType: 'button',
-        clickCallback: () => {
+        clickHandler: () => {
           openSubscribtionEditor();
         },
       });
@@ -53,14 +53,12 @@ export default class SubscriptionsContainer
   }
 
   notify(): void {
-    const SubscriptionsMap = new Map<number, Subscription>();
+    const newSubscriptionsState = new Map<number, PayloadSubscription>();
     (store.getState().profile as PayloadGetProfileData)
         .authorSubscriptions?.forEach((sub) => {
-          SubscriptionsMap.set(sub.id, sub);
+          newSubscriptionsState.set(sub.id, sub);
         });
-    this.update(SubscriptionsMap);
-  }
-  update(newSubscriptionsState: Map<number, Subscription>): void {
+
     this.subscriptionsState.forEach((_, subID) => {
       if (!newSubscriptionsState.has(subID)) {
         this.deleteSubscriptionCard(subID);
@@ -74,13 +72,12 @@ export default class SubscriptionsContainer
             let status: SubscriptionCardStatus;
             if (this.options.changeable) status = SubscriptionCardStatus.AUTHOR;
             else {
-              const userSubscriptions =
-                store.getState().userSubscribers as Subscription[] | undefined;
-              const idx = userSubscriptions
-                  ?.findIndex((sub) => sub.id === subID);
+              const userSubscriptions = store.getState()
+                  .userSubscriptions as Map<number, PayloadSubscription>;
               status =
-                (idx !== undefined && idx > -1) ? SubscriptionCardStatus.OWNER :
-              SubscriptionCardStatus.DONATER;
+                userSubscriptions.has(subID) ?
+                  SubscriptionCardStatus.ALREADY_DONATED :
+                  SubscriptionCardStatus.CAN_DONATE;
             }
             this.subscriptionCards.get(subID)?.update({
               subscriptionStatus: status,
@@ -97,16 +94,23 @@ export default class SubscriptionsContainer
     );
   }
 
-  addSubcriptionCard(sub: Subscription) {
+  protected onErase(): void {
+    this.subscriptionCards.forEach((card) => {
+      card.remove();
+    });
+    this.subscriptionCards.clear();
+    this.subscriptionsState.clear();
+  }
+
+  addSubcriptionCard(sub: PayloadSubscription) {
     let status: SubscriptionCardStatus;
     if (this.options.changeable) status = SubscriptionCardStatus.AUTHOR;
     else {
-      const userSubscriptions =
-          store.getState().userSubscribers as Subscription[] | undefined;
-      const idx = userSubscriptions
-          ?.findIndex((o) => sub.id === o.id);
-      status = (idx !== undefined && idx > -1) ? SubscriptionCardStatus.OWNER :
-          SubscriptionCardStatus.DONATER;
+      const userSubscriptions = store.getState()
+          .userSubscriptions as Map<number, PayloadSubscription>;
+      status = userSubscriptions.has(sub.id) ?
+          SubscriptionCardStatus.ALREADY_DONATED :
+          SubscriptionCardStatus.CAN_DONATE;
     }
     const card = new SubscriptionCard(this.container, {
       subscriptionStatus: status,

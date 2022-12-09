@@ -29,7 +29,7 @@ class Notice extends ComponentBase<'div'> {
       viewType: ButtonType.ICON,
       innerIcon: closeIcon,
       actionType: 'button',
-      clickCallback: this.options.onDelete,
+      clickHandler: this.options.onDelete,
     });
     closeBtn.addClassNames('notice__btn-close');
 

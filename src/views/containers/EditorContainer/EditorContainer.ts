@@ -8,24 +8,20 @@ import PostEditor from '@components/Editor/PostEditor';
 import ProfileEditor from '@components/Editor/ProfileEditor';
 import SubscriptionEditor from '@components/Editor/SubscriptionEditor';
 import {querySelectorWithThrow} from '@flux/types/component';
-import ContainerBase from '@app/Container';
-
-interface EditorUpdateData {
-  newEditor?: PayloadEditor
-  errors?: PayloadFormError
-  image?: string
-}
+import PayEditor from '@components/Editor/PayEditor';
+import UpgradeViewBase from '@app/UpgradeView';
 
 /** */
 export default
 class EditorContainer
-  extends ContainerBase<EditorUpdateData> {
+  extends UpgradeViewBase {
   private editorState: PayloadEditor;
   private formErrorsState: PayloadFormError;
   private currentEditor?:
     | PostEditor
     | ProfileEditor
-    | SubscriptionEditor;
+    | SubscriptionEditor
+    | PayEditor;
   private editorType!: EditorType;
 
   private imageState: {
@@ -38,9 +34,7 @@ class EditorContainer
     this.formErrorsState = store.getState().formErrors as PayloadFormError;
     this.imageState = store.getState().image as { url: string };
     this.renderTo(el);
-    this.update({
-      newEditor: this.editorState,
-    });
+    this.displayEditor(this.editorState);
   }
 
   protected render(): HTMLDivElement {
@@ -54,19 +48,12 @@ class EditorContainer
     const state = store.getState();
 
     const editorStateNew = state.editor as PayloadEditor;
-    // if (this.editorState.type && editorStateNew.type) {
-    //   this.editorState = editorStateNew;
-    //   this.update({
-    //     newEditor: this.editorState,
-    //   });
-    // }
 
     if (JSON.stringify(editorStateNew) !== JSON.stringify(this.editorState)) {
       this.editorState = editorStateNew;
-      this.update({
-        newEditor: this.editorState,
-      });
+      this.displayEditor(editorStateNew);
     }
+
     const imageNew = (store.getState().image as { url: string });
     if (imageNew.url.length !== 0 &&
       imageNew !== this.imageState &&
@@ -75,23 +62,19 @@ class EditorContainer
 
       const url = (store.getState().image as {url: string} | undefined)?.url;
       if (url) {
-        this.update({image: url});
+        this.addImage(url);
       }
     }
     const formErrorsNew = state.formErrors as PayloadFormError;
     if (JSON.stringify(formErrorsNew) !==
       JSON.stringify(this.formErrorsState)) {
       this.formErrorsState = formErrorsNew;
-      this.update({
-        errors: this.formErrorsState,
-      });
+      this.displayErrors(this.formErrorsState);
     }
   }
 
-  update(data: EditorUpdateData): void {
-    if (data.newEditor) this.displayEditor(data.newEditor);
-    if (data.errors) this.displayErrors(data.errors);
-    if (data.image) this.addImage(data.image);
+  protected onErase(): void {
+    this.currentEditor?.remove();
   }
 
   private addImage(image: string) {
@@ -144,8 +127,7 @@ class EditorContainer
       }
       case EditorType.SUBSCRIBTION: {
         this.editorType = EditorType.SUBSCRIBTION;
-        const subID = newEditor.id;
-        if (typeof subID !== 'number') {
+        if (typeof newEditor.id !== 'number') {
           this.currentEditor = new SubscriptionEditor(this.domElement);
           break;
         }
@@ -153,11 +135,11 @@ class EditorContainer
           store.getState().profile as PayloadGetProfileData
         ).authorSubscriptions;
         if (subs && typeof subs != 'string') {
-          const targetSub = subs.find((sub) => subID === sub.id);
+          const targetSub = subs.find((sub) => newEditor.id === sub.id);
           if (targetSub) {
             this.currentEditor = new SubscriptionEditor(this.domElement,
                 {
-                  id: subID,
+                  id: newEditor.id,
                   title: targetSub.title,
                   price: targetSub.price,
                   tier: targetSub.tier,
@@ -167,6 +149,14 @@ class EditorContainer
         }
         break;
       }
+      case EditorType.PAY:
+        this.editorType = EditorType.PAY;
+        this.currentEditor = new PayEditor(this.domElement, {
+          authorID: newEditor.authorID,
+          authorSubscriptionID: newEditor.authorSubscriptionID,
+          currentCardStatus: newEditor.currentCardStatus,
+        });
+        break;
       default: {
         const _: never = newEditor;
         return _;
@@ -179,21 +169,21 @@ class EditorContainer
       case FormErrorType.EDIT_USER:
         if (this.currentEditor instanceof ProfileEditor) {
           this.currentEditor.update({
-            username: errors.username ? true : undefined,
-            email: errors.email ? true : undefined,
-            password: errors.password ? true : undefined,
-            repeatPassword: errors.repeatPassword ? true : undefined,
-            about: errors.about ? true : undefined,
+            username: Boolean(errors.username),
+            email: Boolean(errors.email),
+            password: Boolean(errors.password),
+            repeatPassword: Boolean(errors.repeatPassword),
+            about: Boolean(errors.about),
           });
         }
         break;
       case FormErrorType.AUTHOR_SUBSCRIPTION:
         if (this.currentEditor instanceof SubscriptionEditor) {
           this.currentEditor.update({
-            price: errors.price ? true : undefined,
-            title: errors.title ? true : undefined,
-            text: errors.text ? true : undefined,
-            tier: errors.tier ? true : undefined,
+            price: Boolean(errors.price),
+            title: Boolean(errors.title),
+            text: Boolean(errors.text),
+            tier: Boolean(errors.tier),
           });
         }
         break;

@@ -21,18 +21,20 @@ const logInInputs: InputOptions[] = [
     label: 'Псевдоним',
     placeholder: 'Введите свой псеводим',
     name: 'username',
+    displayError: false,
   },
   {
     kind: InputType.password,
     label: 'Пароль',
     placeholder: 'Введите свой пароль',
     name: 'password',
+    displayError: false,
   },
 ];
 
 interface LogInFormUpdateContent {
-  username?: boolean
-  password?: boolean
+  username: boolean
+  password: boolean
 }
 
 /** Модель формы входа */

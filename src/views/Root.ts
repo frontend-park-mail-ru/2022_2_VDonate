@@ -12,7 +12,7 @@ import SearchPage from './pages/SearchPage/SearchPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import {PayloadUser} from '@actions/types/user';
 import FeedPage from './pages/FeedPage/FeedPage';
-import PageBase from '@app/Page';
+import UpgradeViewBase from '@app/UpgradeView';
 
 interface RootChildViews {
   navbar?: Navbar
@@ -28,7 +28,7 @@ interface RootChildViews {
 }
 
 /** Класс корневой вьюшки */
-export default class Root extends PageBase {
+export default class Root extends UpgradeViewBase {
   // private page: RootModel;
   /** Состояния расположения в приложении */
   private locationState: PayloadLocation;

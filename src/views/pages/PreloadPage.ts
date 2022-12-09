@@ -1,7 +1,7 @@
-import PageBase from '@app/Page';
+import UpgradeViewBase from '@app/UpgradeView';
 
 /** Класс страницы предварительной загрузки */
-export default class PreloadPage extends PageBase {
+export default class PreloadPage extends UpgradeViewBase {
   constructor(el: HTMLElement) {
     super();
     this.renderTo(el);
