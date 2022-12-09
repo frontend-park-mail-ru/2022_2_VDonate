@@ -18,10 +18,14 @@ class Notice extends ComponentBase<'div'> {
 
   protected render(): HTMLDivElement {
     const notice = document.createElement('div');
-    notice.classList.add('notice', 'notice__back');
+    notice.classList.add('notice', 'notice__back', 'bg_notice');
+
+    const head = document.createElement('div');
+    head.classList.add('notice__head');
+    notice.appendChild(head);
 
     const message = document.createElement('span');
-    message.className = 'notice__msg';
+    message.classList.add('notice__msg', 'font_regular');
     message.insertAdjacentText('afterbegin', this.options.message);
     notice.appendChild(message);
 

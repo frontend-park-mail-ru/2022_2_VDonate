@@ -73,7 +73,7 @@ class SignUpForm
 
   protected render(): HTMLFormElement {
     const form = document.createElement('form');
-    form.classList.add('signlog', 'signlog__back');
+    form.classList.add('signlog', 'signlog__back', 'bg_interaction');
     form.innerHTML = template(signUpContext);
     form.addEventListener('submit', (e) => {
       e.preventDefault();

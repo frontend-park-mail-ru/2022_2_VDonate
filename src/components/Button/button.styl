@@ -1,63 +1,39 @@
 @require '@style/const.styl'
+@require '@style/mixin.styl'
 
 .button
   display: inline-flex
   justify-content: center
   align-items: center
-  position: relative
   box-sizing: border-box
   border: none
-  border-radius: 10px
   cursor: pointer
+  // border-radius: 10px
+  // position: relative
   &__back
     min-width: max-content
-    padding: 1vh 1vw
-    &:before 
-      content: ""
-      position: absolute
-      inset: 0
-      border-radius: 10px
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
-      -webkit-mask-composite: xor
+    padding: 5px
+    // &:before 
+    //   content: ""
+    //   position: absolute
+    //   inset: 0
+    //   border-radius: 10px
+    //   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
+    //   -webkit-mask-composite: xor
     &_style
-      &_icon
-        height: 40px
-        width: 40px   
-        filter: drop-shadow(0px 40px 80px rgba(0, 0, 0, 0.38)) invert(25%) sepia(60%) hue-rotate(210deg) brightness(103%) contrast(104%)
-        background-repeat: no-repeat
-        background-size: cover
-        &:before 
-          padding: 2px
-          background:linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%)
-        &:hover
-          &:before
-            background: none
-        &:active
-          &:before
-            background: linear-gradient(0deg, rgba(255, 255, 255, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%)
-      &_primary
-        background: linear-gradient(
-                                    101.7deg, 
-                                    rgba(255, 255, 255, 0.2) 0%, 
-                                    rgba(255, 255, 255, 0.2) 21.5%, 
-                                    rgba(255, 255, 255, 0.28) 21.51%, 
-                                    rgba(255, 255, 255, 0) 45.14%
-                                    ), 
-                    radial-gradient(
-                                    100% 144.66% at 0% 0%, 
-                                    color-primary-gradient-1 0%, 
-                                    color-primary-gradient-2 100%
-                                    )
-        box-shadow: 0px 20px 20px -10px color-primary-shadow
-        &:before 
-          padding: 1px
-          background:linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%)    
-        &:hover
-          box-shadow: none
-        &:active
-          box-shadow: inset 0px 0px 20px color-primary-dark-2
-          &:before
-            background: none
+      // &_icon 
+      //   filter: drop-shadow(0px 40px 80px rgba(0, 0, 0, 0.38)) invert(25%) sepia(60%) hue-rotate(210deg) brightness(103%) contrast(104%)
+      //   background-repeat: no-repeat
+      //   background-size: cover
+      //   &:before 
+      //     padding: 2px
+      //     background:linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%)
+      //   &:hover
+      //     &:before
+      //       background: none
+      //   &:active
+      //     &:before
+      //       background: linear-gradient(0deg, rgba(255, 255, 255, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%)
       &_outline
         background: none
         &:before 
@@ -90,11 +66,7 @@
             background-blend-mode: soft-light;
             box-shadow: inset 0px -4px 2px rgba(255, 255, 255, 0.25), inset 4px 8px 4px rgba(100, 100, 100, 0.25), inset 4px 4px 26px rgba(0, 0, 0, 0.05);
             backdrop-filter: blur(40px);
-  &__text
-    font-21()
-    color: color-font-light
   &__icon
     width: 20px
-    filter: invert(40%)
   &__input
     display: none

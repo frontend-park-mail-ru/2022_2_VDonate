@@ -92,16 +92,16 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
 
     switch (this.options.viewType) {
       case ButtonType.PRIMARY:
-        button.classList.add('button__back_style_primary');
+        button.classList.add('bg_button_primary');
         break;
       case ButtonType.OUTLINE:
-        button.classList.add('button__back_style_outline');
+        button.classList.add('bg_button_outline');
         break;
       case ButtonType.FINGERS:
         button.classList.add('button__back_style_fingers');
         break;
       case ButtonType.ICON: {
-        button.classList.add('button__back_style_icon');
+        button.classList.add('bg_button_icon');
         const innerIcon = document.createElement('img');
         innerIcon.className = 'button__icon';
         innerIcon.src = this.options.innerIcon;
@@ -109,7 +109,7 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
         return button;
       }
       case ButtonType.IMAGE_LOADING: {
-        button.classList.add('button__back_style_icon');
+        button.classList.add('bg_button_icon');
         const innerIcon = document.createElement('img');
         innerIcon.className = 'button__icon';
         innerIcon.src = this.options.innerIcon;
@@ -136,7 +136,7 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
     }
 
     const innerText = document.createElement('span');
-    innerText.classList.add('button__text');
+    innerText.classList.add('button__text', 'font_regular');
     innerText.textContent = this.options.innerText;
     button.appendChild(innerText);
 
