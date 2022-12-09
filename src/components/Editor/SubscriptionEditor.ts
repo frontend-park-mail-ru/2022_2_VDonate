@@ -83,7 +83,8 @@ class SubscriptionEditor
 
   private addInputs(form: HTMLFormElement) {
     const inputsArea = querySelectorWithThrow(form, '.editor__inputs');
-
+    const inputNumbers = document.createElement('div');
+    inputNumbers.classList.add('editor__form-buttons');
     this.inputs
         .set('title', new InputField(inputsArea, {
           kind: InputType.text,
@@ -93,22 +94,24 @@ class SubscriptionEditor
           value: this.options?.title,
           displayError: false,
         }))
-        .set('price', new InputField(inputsArea, {
-          kind: InputType.text,
+        .set('price', new InputField(inputNumbers, {
+          kind: InputType.number,
           label: 'Стоимость',
           name: 'price',
           placeholder: 'Введите стоимость подписки',
           value: this.options?.price.toString(),
           displayError: false,
         }))
-        .set('tier', new InputField(inputsArea, {
-          kind: InputType.text,
+        .set('tier', new InputField(inputNumbers, {
+          kind: InputType.number,
           label: 'Уровень',
           name: 'tier',
           placeholder: 'Введите уровень подписки',
           value: this.options?.tier.toString(),
           displayError: false,
-        }))
+        }));
+    inputsArea.appendChild(inputNumbers);
+    this.inputs
         .set('text', new InputField(inputsArea, {
           kind: InputType.textarea,
           label: 'Текст',

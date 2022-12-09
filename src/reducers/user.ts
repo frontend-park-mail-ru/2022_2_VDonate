@@ -11,17 +11,9 @@ const userReducer: Reducer<Action> =
       case ActionType.SIGNUP_SUCCESS:
         return action.payload.user;
       case ActionType.CHANGEUSERDATA_SUCCESS:
-        if (action.payload.user.about) {
-          (state as PayloadUser).about =
-          action.payload.user.about;
-        }
         if (action.payload.user.avatar) {
           (state as PayloadUser).avatar =
           action.payload.user.avatar;
-        }
-        if (action.payload.user.isAuthor) {
-          (state as PayloadUser).isAuthor =
-          action.payload.user.isAuthor;
         }
         if (action.payload.user.username) {
           (state as PayloadUser).username =
@@ -31,6 +23,22 @@ const userReducer: Reducer<Action> =
           (state as PayloadUser).email =
           action.payload.user.email;
         }
+        return state;
+      case ActionType.LOGOUT_SUCCESS:
+        return {
+          avatar: '',
+          countSubscriptions: 0,
+          isAuthor: false,
+          id: 0,
+          username: 'Псевдоним',
+          about: 'Тут будет описание',
+          countDonaters: 0,
+        };
+      case ActionType.EDIT_ABOUT:
+        (state as PayloadUser).about = action.payload.about;
+        return state;
+      case ActionType.BECOME_AUTHOR:
+        (state as PayloadUser).isAuthor = action.payload.success;
         return state;
       default:
         return state;

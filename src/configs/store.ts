@@ -24,6 +24,7 @@ const initinalState: {
 } = {
   location: {
     type: Pages.PRELOAD,
+    options: {},
   },
   notice: {
     message: null,

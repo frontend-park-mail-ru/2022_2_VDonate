@@ -8,6 +8,7 @@ import {openSubscribtionEditor} from '@actions/handlers/editor';
 import Button, {ButtonType} from '@components/Button/Button';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
 import UpgradeViewBase from '@app/UpgradeView';
+import {querySelectorWithThrow} from '@flux/types/component';
 
 interface SubscriptionCardsContainerOptions {
   changeable: boolean
@@ -47,7 +48,13 @@ export default class SubscriptionCardsContainer
       editBtn.addClassNames('sub-container__head_btn');
     }
     this.container.classList.add('sub-container__container');
-    container.append(head, this.container);
+    const empty = document.createElement('div');
+    empty.classList.add('sub-container__empty');
+    empty.innerText = this.options.changeable ?
+      `Пока что подписок нет\n
+      Вы можете их создать` :
+      `Этот автор пока что не создал ни одной подписки`;
+    container.append(head, this.container, empty);
 
     return container;
   }
@@ -58,7 +65,13 @@ export default class SubscriptionCardsContainer
         .authorSubscriptions?.forEach((sub) => {
           newSubscriptionsState.set(sub.id, sub);
         });
-
+    if (newSubscriptionsState.size == 0) {
+      querySelectorWithThrow(this.domElement, '.sub-container__empty')
+          .hidden = false;
+    } else {
+      querySelectorWithThrow(this.domElement, '.sub-container__empty')
+          .hidden = true;
+    }
     this.subscriptionsState.forEach((_, subID) => {
       if (!newSubscriptionsState.has(subID)) {
         this.deleteSubscriptionCard(subID);

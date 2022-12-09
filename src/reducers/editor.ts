@@ -27,6 +27,9 @@ const editorReducer: Reducer<Action> =
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         return errorFounded ? state : {};
       }
+      // TODO решить что делать при роутинге (закрывать попап или другое)
+      // case ActionType.ROUTING:
+      //   return {};
       default:
         return state;
     }

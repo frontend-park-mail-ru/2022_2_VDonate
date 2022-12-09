@@ -2,6 +2,8 @@ import {Glass, GlassType} from '@components/glass/glass';
 import Avatar, {AvatarType} from '@components/Avatar/Avatar';
 import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 import './profile-info.styl';
+import Button, {ButtonType} from '@components/Button/Button';
+import {becomeAuthor} from '@actions/handlers/user';
 
 // interface ProfileInfoDonater {
 //   isAuthor: false
@@ -16,6 +18,8 @@ interface ProfileInfoOptions {
   username: string
   countSubscriptions: number
   countDonaters?: number
+  id: number
+  changeable: boolean
 }
 
 // type ProfileInfoOptions = ProfileInfoDonater | ProfileInfoAuthor
@@ -72,6 +76,10 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
       this.countDonaters.innerText = data.countDonaters.toString();
       donatersContainer.append(donaters, this.countDonaters);
       info.appendChild(donatersContainer);
+      if (this.options.changeable) {
+        querySelectorWithThrow(this.domElement, '.right-navbar__become-author')
+            .remove();
+      }
     } else if (this.options.isAuthor && !data.isAuthor) {
       this.options.isAuthor = false;
       querySelectorWithThrow(this.domElement, '.profile-info__donaters')
@@ -133,6 +141,16 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
         this.options.countDonaters?.toString() ?? '0';
       donatersContainer.append(donaters, this.countDonaters);
       info.appendChild(donatersContainer);
+    } else if (this.options.changeable) {
+      const becomeAuthorBtn = new Button(glass, {
+        viewType: ButtonType.PRIMARY,
+        actionType: 'button',
+        innerText: 'Стать автором',
+        clickHandler: () => {
+          becomeAuthor(this.options.id);
+        },
+      });
+      becomeAuthorBtn.addClassNames('right-navbar__become-author');
     }
 
     glass.append(this.username, info);

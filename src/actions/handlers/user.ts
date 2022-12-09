@@ -101,6 +101,7 @@ export const auth = (): void => {
                   user,
                   location: {
                     type: router.go(location.pathname + location.search),
+                    options: {},
                   },
                 },
               });
@@ -110,6 +111,7 @@ export const auth = (): void => {
           type: ActionType.ROUTING,
           payload: {
             type: router.go('/login'),
+            options: {},
           },
         });
       })
@@ -159,6 +161,7 @@ export const login = (props: LogInFormElements): void => {
                       user,
                       location: {
                         type: router.go('/feed'),
+                        options: {},
                       },
                       formErrors: {
                         type: FormErrorType.LOGIN,
@@ -245,6 +248,7 @@ export const signup = (props: SignUpFormElements): void => {
                     user,
                     location: {
                       type: router.go('/feed'),
+                      options: {},
                     },
                     formErrors: {
                       type: FormErrorType.SIGNUP,
@@ -303,6 +307,7 @@ export const logout = (): void => {
             payload: {
               location: {
                 type: router.go('/login'),
+                options: {},
               },
             },
           });
@@ -339,14 +344,8 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
     userData.password = form.password.value;
     userData.repeatPassword = form.repeatPassword.value;
   }
-  if (form.isAuthor?.checked) {
-    userData.isAuthor = true;
-  }
   if (form.avatar?.files) {
     userData.file = form.avatar.files[0];
-  }
-  if (form.about) {
-    userData.about = form.about.value;
   }
   const emailErr = userData.email ? emailCheck(userData.email) : null;
   const usernameErr =
@@ -366,8 +365,6 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
         username: usernameErr,
         password: passwordErr,
         repeatPassword: repeatPasswordErr,
-        isAuthor: null,
-        about: null,
         avatar: null,
       },
     });
@@ -388,12 +385,6 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
           if (userData.email) {
             user.email = userData.email;
           }
-          if (userData.isAuthor) {
-            user.isAuthor = userData.isAuthor;
-          }
-          if (userData.about) {
-            user.about = userData.about;
-          }
           store.dispatch({
             type: ActionType.CHANGEUSERDATA_SUCCESS,
             payload: {
@@ -404,8 +395,6 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
                 username: null,
                 password: null,
                 repeatPassword: null,
-                isAuthor: null,
-                about: null,
                 avatar: null,
               },
             },
@@ -437,12 +426,74 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
                   username: 'Неверный псевдоним или пароль',
                   password: 'Неверный псевдоним или пароль',
                   repeatPassword: null,
-                  isAuthor: 'Error',
-                  about: 'Error',
                   avatar: 'Error',
                 },
               });
           }
+        }
+      })
+      .catch((err) => {
+        store.dispatch({
+          type: ActionType.NOTICE,
+          payload: {
+            message: err as Error,
+          },
+        });
+      });
+};
+
+export const editAbout = (id: number, about: string): void => {
+  api.putUserData({
+    id,
+    about,
+  })
+      .then((res: ResponseData) => {
+        if (res.ok) {
+          store.dispatch({
+            type: ActionType.EDIT_ABOUT,
+            payload: {
+              about,
+            },
+          });
+        } else {
+          store.dispatch({
+            type: ActionType.NOTICE,
+            payload: {
+              message: 'Ошибка при изменении поля о Вас',
+            },
+          });
+        }
+      })
+      .catch((err) => {
+        store.dispatch({
+          type: ActionType.NOTICE,
+          payload: {
+            message: err as Error,
+          },
+        });
+      });
+};
+
+export const becomeAuthor = (id: number): void => {
+  api.putUserData({
+    id,
+    isAuthor: true,
+  })
+      .then((res: ResponseData) => {
+        if (res.ok) {
+          store.dispatch({
+            type: ActionType.BECOME_AUTHOR,
+            payload: {
+              success: true,
+            },
+          });
+        } else {
+          store.dispatch({
+            type: ActionType.NOTICE,
+            payload: {
+              message: 'Ошибка при становлении автором',
+            },
+          });
         }
       })
       .catch((err) => {

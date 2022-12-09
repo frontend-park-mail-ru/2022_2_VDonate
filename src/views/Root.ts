@@ -45,8 +45,9 @@ export default class Root extends UpgradeViewBase {
   /** Оповещение об изменением хранилища */
   notify(): void {
     const locationNew = store.getState().location as PayloadLocation;
-    if (locationNew.type !== this.locationState.type ||
-        locationNew.options?.id != this.locationState.options?.id) {
+    if (!locationNew.options.samePage &&
+        (locationNew.type !== this.locationState.type ||
+        locationNew.options.id != this.locationState.options.id)) {
       this.locationState = locationNew;
       this.update(this.locationState);
     }

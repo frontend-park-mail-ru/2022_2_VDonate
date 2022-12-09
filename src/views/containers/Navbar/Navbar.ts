@@ -1,6 +1,8 @@
 import './navbar.styl';
 import {Glass, GlassType} from '@components/glass/glass';
 import menuIcon from '@icon/menu.svg';
+import feedIcon from '@icon/feed.svg';
+import searchIcon from '@icon/search.svg';
 import store from '@app/Store';
 import routing from '@actions/handlers/routing';
 import {PayloadUser} from '@actions/types/user';
@@ -19,12 +21,12 @@ import UpgradeViewBase from '@app/UpgradeView';
 
 const links = [
   {
-    icon: menuIcon,
+    icon: feedIcon,
     text: 'Лента',
     link: '/feed',
   },
   {
-    icon: menuIcon,
+    icon: searchIcon,
     text: 'Поиск',
     link: '/search',
   },

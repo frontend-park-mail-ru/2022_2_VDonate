@@ -44,7 +44,7 @@ export default class ProfilePage extends UpgradeViewBase {
   notify(): void {
     const profileNew =
       store.getState().profile as PayloadGetProfileData | undefined;
-    if (!profileNew) {
+    if (!profileNew || profileNew.user.id == 0) {
       return;
     }
 
@@ -69,9 +69,7 @@ export default class ProfilePage extends UpgradeViewBase {
       countDonaters: profileNew.user.countDonaters ?? 0,
     };
     this.profileInfo.update(profileInfoNew);
-    if (this.profileState.user.about !== profileNew.user.about) {
-      this.about.update(profileNew.user.about ?? '');
-    }
+    this.about.update(profileNew.user.about ?? '');
     if (!profileNew.user.isAuthor) {
       if (!profileNew.userSubscriptions ||
           profileNew.userSubscriptions.length === 0) {
@@ -101,6 +99,8 @@ export default class ProfilePage extends UpgradeViewBase {
       isAuthor: this.profileState.user.isAuthor,
       username: this.profileState.user.username,
       countDonaters: this.profileState.user.countDonaters,
+      id: this.options.profileID,
+      changeable: this.options.changeable,
     });
 
     this.childViews.subscriptionCardsContainer =
@@ -109,20 +109,29 @@ export default class ProfilePage extends UpgradeViewBase {
       });
 
     this.about = new About(this.authorContent, {
-      aboutTextHtml: this.profileState.user.about ??
-      'Пользователь пока ничего о себе не написал',
+      aboutTextHtml: 'Пользователь пока ничего о себе не написал',
+      id: this.options.profileID,
+      changeable: this.options.changeable,
+      inEditState: false,
     });
     const user = store.getState().user as PayloadUser;
     this.childViews.postContainer = new PostsContainer(this.authorContent, {
       withCreateBtn: this.options.changeable && user.isAuthor,
+      textWhenEmpty: this.options.changeable && user.isAuthor ?
+      `Тут будут Ваши посты\n
+        Начните радовать своих донатеров новым контентом уже сейчас` :
+        `Автор пока что не создал ни одного поста`,
     });
     this.donaterContent.classList.add('profile-page__content');
     const head = document.createElement('div');
     head.classList.add('profile-page__head');
     head.innerText = 'Подписки';
     this.glass.element.classList.add('profile-page__glass');
+    this.glass.element.innerHTML = 'Донатер пока никого не поддерживает';
     this.donaterContent.append(head, this.glass.element);
     page.append(this.authorContent, this.donaterContent);
+    this.authorContent.hidden = true;
+    this.donaterContent.hidden = true;
     return page;
   }
 

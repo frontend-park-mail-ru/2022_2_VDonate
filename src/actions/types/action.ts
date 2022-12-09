@@ -25,6 +25,8 @@ import {
   ActionLogOutFail,
   ActionEditUseDataSuccess,
   ActionEditUserFail,
+  ActionEditAbout,
+  ActionBecomeAuthor,
 } from './user';
 import {ActionEditorClose, ActionEditorOpen} from './editor';
 import {ActionSearch} from './searchAuthor';
@@ -56,6 +58,8 @@ export enum ActionType {
   DELETE_POST,
   SEARCH_AUTHORS,
   PUT_IMAGE,
+  EDIT_ABOUT,
+  BECOME_AUTHOR,
 }
 /** Объединение действий */
 export type Action =
@@ -84,4 +88,6 @@ export type Action =
   | ActionCreatePost
   | ActionDeletePost
   | ActionSearch
-  | ActionPutImage;
+  | ActionPutImage
+  | ActionEditAbout
+  | ActionBecomeAuthor;

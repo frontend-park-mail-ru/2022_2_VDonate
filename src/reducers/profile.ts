@@ -50,17 +50,9 @@ const profileReducer: Reducer<Action> =
             action.payload.user.id) {
           return state;
         }
-        if (action.payload.user.about) {
-          (state as PayloadGetProfileData).user.about =
-          action.payload.user.about;
-        }
         if (action.payload.user.avatar) {
           (state as PayloadGetProfileData).user.avatar =
           action.payload.user.avatar;
-        }
-        if (action.payload.user.isAuthor) {
-          (state as PayloadGetProfileData).user.isAuthor =
-          action.payload.user.isAuthor;
         }
         if (action.payload.user.username) {
           (state as PayloadGetProfileData).user.username =
@@ -80,6 +72,30 @@ const profileReducer: Reducer<Action> =
         userr.countDonaters !== undefined) {
           userr.countDonaters -= 1;
         }
+        return state;
+      case ActionType.ROUTING:
+        if (action.payload.options.samePage) {
+          return state;
+        }
+        return {
+          user: {
+            avatar: '',
+            countSubscriptions: 0,
+            isAuthor: false,
+            id: 0,
+            username: 'Псевдоним',
+            about: 'Тут будет описание',
+            countDonaters: 0,
+          },
+          subscriptions: [],
+          authorSubscriptions: [],
+          posts: [],
+        };
+      case ActionType.EDIT_ABOUT:
+        (state as PayloadGetProfileData).user.about = action.payload.about;
+        return state;
+      case ActionType.BECOME_AUTHOR:
+        (state as PayloadGetProfileData).user.isAuthor = action.payload.success;
         return state;
       default:
         return state;
