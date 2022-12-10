@@ -31,13 +31,17 @@ export default class SubscriptionCardsContainer
 
   protected render(): HTMLDivElement {
     const container = document.createElement('div');
-    container.classList.add('sub-container');
+    container.classList.add('subscription-cards-container');
 
-    const head = document.createElement('div');
-    head.classList.add('sub-container__head');
-    head.innerText = 'Уровни подписок';
+    const header = document.createElement('div');
+    header.classList.add(
+        'subscription-cards-container__title-area',
+        'font_big',
+    );
+    header.innerText = 'Уровни подписок';
+
     if (this.options.changeable) {
-      const editBtn = new Button(head, {
+      new Button(header, {
         viewType: ButtonType.ICON,
         innerIcon: plusIcon,
         actionType: 'button',
@@ -45,16 +49,15 @@ export default class SubscriptionCardsContainer
           openSubscribtionEditor();
         },
       });
-      editBtn.addClassNames('sub-container__head_btn');
     }
-    this.container.classList.add('sub-container__container');
+    this.container.classList.add('subscription-cards-container__card-area');
     const empty = document.createElement('div');
-    empty.classList.add('sub-container__empty');
+    empty.classList.add('subscription-cards-container__empty', 'font_regular');
     empty.innerText = this.options.changeable ?
       `Пока что подписок нет\n
       Вы можете их создать` :
       `Этот автор пока что не создал ни одной подписки`;
-    container.append(head, this.container, empty);
+    container.append(header, this.container, empty);
 
     return container;
   }
@@ -66,10 +69,16 @@ export default class SubscriptionCardsContainer
           newSubscriptionsState.set(sub.id, sub);
         });
     if (newSubscriptionsState.size == 0) {
-      querySelectorWithThrow(this.domElement, '.sub-container__empty')
+      querySelectorWithThrow(
+          this.domElement,
+          '.subscription-cards-container__empty',
+      )
           .hidden = false;
     } else {
-      querySelectorWithThrow(this.domElement, '.sub-container__empty')
+      querySelectorWithThrow(
+          this.domElement,
+          '.subscription-cards-container__empty',
+      )
           .hidden = true;
     }
     this.subscriptionsState.forEach((_, subID) => {
@@ -135,7 +144,7 @@ export default class SubscriptionCardsContainer
       price: sub.price,
       description: sub.text,
     });
-    card.addClassNames('sub-container__card');
+    card.addClassNames('subscription-cards-container__card');
     this.subscriptionCards.set(sub.id, card);
     this.subscriptionsState.set(sub.id, sub);
   }

@@ -1,5 +1,4 @@
 import './navbar.styl';
-import {Glass, GlassType} from '@components/glass/glass';
 import menuIcon from '@icon/menu.svg';
 import feedIcon from '@icon/feed.svg';
 import searchIcon from '@icon/search.svg';
@@ -17,6 +16,8 @@ import ProfielMini, {ProfileMiniType}
 import SubscriptionsListContainer
   from '../SubscriptionsListContainer/SubscriptionsListContainer';
 import UpgradeViewBase from '@app/UpgradeView';
+import {PayloadLocation} from '@actions/types/routing';
+import {Pages} from '@configs/router';
 
 
 const links = [
@@ -45,30 +46,31 @@ export enum ChoosenLink {
 export default class Navbar extends UpgradeViewBase {
   private navbarLinks: NavbarLink[] = [];
   private profile!: HTMLElement;
-
+  private locationState: PayloadLocation;
   private profileMini!: ProfielMini;
   private subscriptionsListContainer!: SubscriptionsListContainer;
 
   constructor(el: HTMLElement, private options: number) {
     super();
+    this.locationState = store.getState().location as PayloadLocation;
     this.renderTo(el);
     getSubscritions(options);
   }
 
   protected render(): HTMLDivElement {
     const navbar = document.createElement('div');
-    navbar.classList.add('left-navbar');
+    navbar.classList.add('navbar');
 
-    const glass = new Glass(GlassType.mono).element;
-    glass.classList.add('left-navbar__glass');
-    navbar.appendChild(glass);
+    const back = document.createElement('div');
+    back.classList.add('navbar__back', 'bg_content');
+    navbar.appendChild(back);
 
-    const logo = new Logo(glass);
-    logo.addClassNames('left-navbar__logo');
+    const logo = new Logo(back);
+    logo.addClassNames('navbar__logo');
 
-    const linkes = document.createElement('div');
+    // const linkes = document.createElement('div');
     links.forEach(({icon, text, link}) => {
-      this.navbarLinks.push(new NavbarLink(linkes, {
+      this.navbarLinks.push(new NavbarLink(back, {
         isActive: false,
         href: link,
         icon,
@@ -76,19 +78,22 @@ export default class Navbar extends UpgradeViewBase {
       }));
     });
 
-    glass.appendChild(linkes);
-    glass.innerHTML += '<hr class="navbar-hr navbar-hr__navbar-hr">';
+    // back.appendChild(linkes);
 
-    this.subscriptionsListContainer = new SubscriptionsListContainer(glass);
-    this.subscriptionsListContainer.addClassNames('left-navbar__subs-list');
+    const hr = document.createElement('hr');
+    hr.classList.add('navbar-hr');
+    back.appendChild(hr);
+
+    this.subscriptionsListContainer = new SubscriptionsListContainer(back);
+    this.subscriptionsListContainer.addClassNames('navbar__subs-list');
+
+    back.appendChild(hr.cloneNode());
 
     const profileContainer = document.createElement('div');
-    profileContainer.classList.add('left-navbar__down', 'down');
-    profileContainer.innerHTML +=
-      '<hr class="navbar-hr navbar-hr__navbar-hr">';
+    profileContainer.classList.add('navbar__botton-area', 'botton-area');
 
     this.profile = document.createElement('div');
-    this.profile.classList.add('down__profile');
+    this.profile.classList.add('botton-area__profile');
 
     this.profileMini = new ProfielMini(this.profile, {
       username: '',
@@ -98,7 +103,8 @@ export default class Navbar extends UpgradeViewBase {
       type: ProfileMiniType.SESSION_PROFILE,
     });
 
-    const popup = new Glass(GlassType.lines).element;
+    const popup = document.createElement('div');
+    popup.classList.add('bg_content');
     popup.style.display = 'none';
     profileContainer.appendChild(popup);
 
@@ -114,10 +120,10 @@ export default class Navbar extends UpgradeViewBase {
         }
       },
     });
-    menuBtn.addClassNames('down__menu-btn');
+    menuBtn.addClassNames('botton-area__menu-btn');
 
     popup.style.display = 'none';
-    popup.classList.add('down__popup');
+    popup.classList.add('botton-area__popup');
 
     const profileLink = new Button(popup, {
       viewType: ButtonType.OUTLINE,
@@ -128,7 +134,7 @@ export default class Navbar extends UpgradeViewBase {
         routing(`/profile?id=${user.id}`);
       },
     });
-    profileLink.addClassNames('down__popup-btn');
+    profileLink.addClassNames('botton-area__popup-btn');
 
     const change = new Button(popup, {
       viewType: ButtonType.OUTLINE,
@@ -138,7 +144,7 @@ export default class Navbar extends UpgradeViewBase {
         openProfileEditor();
       },
     });
-    change.addClassNames('down__popup-btn');
+    change.addClassNames('botton-area__popup-btn');
 
     const logoutBtn = new Button(popup, {
       viewType: ButtonType.OUTLINE,
@@ -148,11 +154,11 @@ export default class Navbar extends UpgradeViewBase {
         logout();
       },
     });
-    logoutBtn.addClassNames('down__popup-btn');
+    logoutBtn.addClassNames('botton-area__popup-btn');
 
     profileContainer.appendChild(this.profile);
-    glass.appendChild(profileContainer);
-    // this.renderLocation(ChoosenLink.FEED);
+    back.appendChild(profileContainer);
+    this.renderLocation(this.locationState.type);
     return navbar;
   }
 
@@ -165,6 +171,12 @@ export default class Navbar extends UpgradeViewBase {
       username: user.username,
       isAuthor: user.isAuthor,
     });
+
+    const locationNew = store.getState().location as PayloadLocation;
+    if (this.locationState.type !== locationNew.type) {
+      this.locationState = locationNew;
+      this.renderLocation(locationNew.type);
+    }
   }
 
   protected onErase(): void {
@@ -179,30 +191,23 @@ export default class Navbar extends UpgradeViewBase {
    * рендер выбора локации
    * @param page -
    */
-  // renderLocation(page: ChoosenLink) {
-  //   switch (page) {
-  //     case ChoosenLink.FEED:
-  //       this.navbarLinks[0].update(true);
-  //       this.navbarLinks[1].update(false);
-  //       this.navbarLinks[2].update(false);
-  //       break;
-  //     case ChoosenLink.SEARCH:
-  //       this.navbarLinks[0].update(false);
-  //       this.navbarLinks[1].update(true);
-  //       this.navbarLinks[2].update(false);
-  //       break;
-  //     case ChoosenLink.SUBSCRIBTIONS:
-  //       this.navbarLinks[0].update(false);
-  //       this.navbarLinks[1].update(false);
-  //       this.navbarLinks[2].update(true);
-  //       break;
-  //     default:
-  //       this.navbarLinks[0].update(false);
-  //       this.navbarLinks[1].update(false);
-  //       this.navbarLinks[2].update(false);
-  //       break;
-  //   }
-  // }
+  renderLocation(page: Pages) {
+    switch (page) {
+      case Pages.FEED:
+        this.navbarLinks[0].update(true);
+        this.navbarLinks[1].update(false);
+        break;
+      case Pages.SEARCH:
+        this.navbarLinks[0].update(false);
+        this.navbarLinks[1].update(true);
+        break;
+      default:
+        this.navbarLinks.forEach((link) => {
+          link.update(false);
+        });
+        break;
+    }
+  }
 
   /** функция скрывающая navbar */
   hideNavbar() {

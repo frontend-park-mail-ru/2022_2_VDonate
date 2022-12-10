@@ -6,6 +6,9 @@ import './button.styl';
  */
 export enum ButtonType {
   PRIMARY,
+  SUCCESS,
+  ERROR,
+  WARNING,
   OUTLINE,
   IMAGE_BG,
   ICON,
@@ -24,6 +27,9 @@ interface SimpleButtonOptions {
 interface TextButtonOptions {
   viewType:
     | ButtonType.PRIMARY
+    | ButtonType.SUCCESS
+    | ButtonType.ERROR
+    | ButtonType.WARNING
     | ButtonType.OUTLINE
     | ButtonType.IMAGE_BG
   innerText: string
@@ -93,6 +99,15 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
     switch (this.options.viewType) {
       case ButtonType.PRIMARY:
         button.classList.add('bg_button_primary');
+        break;
+      case ButtonType.SUCCESS:
+        button.classList.add('bg_button_success');
+        break;
+      case ButtonType.ERROR:
+        button.classList.add('bg_button_error');
+        break;
+      case ButtonType.WARNING:
+        button.classList.add('bg_button_warning');
         break;
       case ButtonType.OUTLINE:
         button.classList.add('bg_button_outline');

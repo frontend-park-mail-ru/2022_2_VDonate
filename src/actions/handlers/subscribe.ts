@@ -184,7 +184,7 @@ export const editAuthorSubscription = (
     tier: Number(form.tier.value),
     title: form.title.value,
   };
-  if (form.file?.files) {
+  if (form.file?.files && form.file.files.length > 0) {
     subData.file = form.file.files[0];
   }
 

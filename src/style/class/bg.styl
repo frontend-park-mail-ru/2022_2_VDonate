@@ -48,6 +48,103 @@ bg-edge = 5px 10px 10px rgba(0, 0, 0, 0.2), inset 0px -4px 2px rgba(0, 0, 0, 0.2
         background:linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%)    
       &:hover
         box-shadow: none
+        &:before
+          background: none
+      &:active
+        box-shadow: inset 0px 0px 20px color-primary-dark-2
+        &:before
+          background: none
+    +m(error)
+      position: relative
+      border-radius: 0.5rem
+      background: linear-gradient(
+                                  101.7deg, 
+                                  rgba(255, 255, 255, 0.2) 0%, 
+                                  rgba(255, 255, 255, 0.2) 21.5%, 
+                                  rgba(255, 255, 255, 0.28) 21.51%, 
+                                  rgba(255, 255, 255, 0) 45.14%
+                                  ), 
+                  radial-gradient(
+                                  100% 144.66% at 0% 0%, 
+                                  color-error 0%, 
+                                  color-error 100%
+                                  )
+      box-shadow: 2.5px 5px 10px color-primary-shadow
+      &:before
+        content: ""
+        position: absolute
+        inset: 0
+        border-radius: 0.5rem
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
+        -webkit-mask-composite: xor
+        padding: 1px
+        background:linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%)    
+      &:hover
+        box-shadow: none
+        &:before
+          background: none
+      &:active
+        box-shadow: inset 0px 0px 20px color-primary-dark-2
+        &:before
+          background: none
+    +m(success)
+      position: relative
+      border-radius: 0.5rem
+      background: linear-gradient(
+                                  101.7deg, 
+                                  rgba(255, 255, 255, 0.2) 0%, 
+                                  rgba(255, 255, 255, 0.2) 21.5%, 
+                                  rgba(255, 255, 255, 0.28) 21.51%, 
+                                  rgba(255, 255, 255, 0) 45.14%
+                                  ), 
+                  radial-gradient(
+                                  100% 144.66% at 0% 0%, 
+                                  color-success 0%, 
+                                  color-success 100%
+                                  )
+      box-shadow: 2.5px 5px 10px color-primary-shadow
+      &:before
+        content: ""
+        position: absolute
+        inset: 0
+        border-radius: 0.5rem
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
+        -webkit-mask-composite: xor
+        padding: 1px
+        background:linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%)    
+      &:hover
+        box-shadow: none
+      &:active
+        box-shadow: inset 0px 0px 20px color-primary-dark-2
+        &:before
+          background: none
+    +m(warning)
+      position: relative
+      border-radius: 0.5rem
+      background: linear-gradient(
+                                  101.7deg, 
+                                  rgba(255, 255, 255, 0.2) 0%, 
+                                  rgba(255, 255, 255, 0.2) 21.5%, 
+                                  rgba(255, 255, 255, 0.28) 21.51%, 
+                                  rgba(255, 255, 255, 0) 45.14%
+                                  ), 
+                  radial-gradient(
+                                  100% 144.66% at 0% 0%, 
+                                  color-warning 0%, 
+                                  color-warning 100%
+                                  )
+      box-shadow: 2.5px 5px 10px color-primary-shadow
+      &:before
+        content: ""
+        position: absolute
+        inset: 0
+        border-radius: 0.5rem
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
+        -webkit-mask-composite: xor
+        padding: 1px
+        background:linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%)    
+      &:hover
+        box-shadow: none
       &:active
         box-shadow: inset 0px 0px 20px color-primary-dark-2
         &:before
@@ -69,7 +166,7 @@ bg-edge = 5px 10px 10px rgba(0, 0, 0, 0.2), inset 0px -4px 2px rgba(0, 0, 0, 0.2
         background:linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%)    
       &:hover
         &:before
-          background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%)
+          background: none
       &:active
         &:before
           background: linear-gradient(180deg, rgba(44, 45, 46, 0.2) 0%, rgba(255, 255, 255, 0.2) 100%)
