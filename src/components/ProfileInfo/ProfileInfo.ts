@@ -49,7 +49,7 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
 
   update(data: ProfileInfoUpdateContext): void {
     this.avatar.update(data.avatar);
-
+    this.avatar.update(data.isAuthor ? AvatarType.AUTHOR : AvatarType.DONATER);
     if (this.options.username !== data.username) {
       this.options.username = data.username;
       this.username.innerText = this.options.username;

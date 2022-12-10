@@ -24,10 +24,7 @@ interface ProfilePageChildViews {
 }
 
 export default class ProfilePage extends UpgradeViewBase {
-  private authorContent: HTMLDivElement = document.createElement('div');
-  private donaterContent: HTMLDivElement = document.createElement('div');
-  private isAuthor: boolean;
-  private about!: About;
+  private isAuthor: boolean | undefined;
   private profileInfo!: ProfileInfo;
   private profileState: PayloadGetProfileData;
   private subscriptions: HTMLDivElement = document.createElement('div');
@@ -36,7 +33,6 @@ export default class ProfilePage extends UpgradeViewBase {
   constructor(el: HTMLElement, private options: ProfileEditorOptions) {
     super();
     this.profileState = store.getState().profile as PayloadGetProfileData;
-    this.isAuthor = this.profileState.user.isAuthor;
     this.renderTo(el);
     getProfile(this.options.profileID);
   }
@@ -50,10 +46,11 @@ export default class ProfilePage extends UpgradeViewBase {
     }
 
     // TODO Переделать на 2 отдельные функции рендера в один компонент
-    if (profileNew.user.isAuthor !== this.isAuthor) {
+    if (profileNew.user.isAuthor !== this.isAuthor ||
+      typeof this.isAuthor == 'undefined') {
       this.isAuthor = profileNew.user.isAuthor;
-      this.isAuthor ? this.renderAuthorContent(this.domElement) :
-        this.renderDonaterContent(this.domElement);
+      this.isAuthor ? this.renderAuthorContent() :
+        this.renderDonaterContent();
     }
     this.profileInfo.update({
       isAuthor: profileNew.user.isAuthor,
@@ -93,8 +90,9 @@ export default class ProfilePage extends UpgradeViewBase {
       id: this.options.profileID,
       changeable: this.options.changeable,
     });
-    this.isAuthor ? this.renderAuthorContent(page) :
-      this.renderDonaterContent(page);
+    const content = document.createElement('div');
+    content.classList.add('profile-page__content');
+    page.appendChild(content);
     return page;
   }
 
@@ -103,33 +101,35 @@ export default class ProfilePage extends UpgradeViewBase {
     this.childViews.subscriptionCardsContainer?.erase();
   }
 
-  private renderAuthorContent(page: HTMLDivElement) {
-    this.authorContent.classList.add('profile-page__content');
+  private renderAuthorContent() {
+    const content =
+        querySelectorWithThrow(this.domElement, '.profile-page__content');
+    content.innerHTML = '';
     this.childViews.subscriptionCardsContainer =
-      new SubscriptionCardsContainer(this.authorContent, {
+      new SubscriptionCardsContainer(content, {
         changeable: this.options.changeable,
       });
 
-    this.about = new About(this.authorContent, {
+    new About(content, {
       aboutTextHtml: 'Пользователь пока ничего о себе не написал',
       id: this.options.profileID,
       changeable: this.options.changeable,
       inEditState: false,
     });
     const user = store.getState().user as PayloadUser;
-    this.childViews.postContainer = new PostsContainer(this.authorContent, {
+    this.childViews.postContainer = new PostsContainer(content, {
       withCreateBtn: this.options.changeable && user.isAuthor,
       textWhenEmpty: this.options.changeable && user.isAuthor ?
       `Тут будут Ваши посты\n
         Начните радовать своих донатеров новым контентом уже сейчас` :
         `Автор пока что не создал ни одного поста`,
     });
-    querySelectorWithThrow(page, '.profile-page__content').remove();
-    page.appendChild(this.authorContent);
   }
 
-  private renderDonaterContent(page: HTMLDivElement): void {
-    this.donaterContent.classList.add('profile-page__content');
+  private renderDonaterContent(): void {
+    const content =
+        querySelectorWithThrow(this.domElement, '.profile-page__content');
+    content.innerHTML = '';
     const head = document.createElement('div');
     head.classList.add('profile-page__header', 'font_big');
     head.innerText = 'Подписки';
@@ -142,7 +142,6 @@ export default class ProfilePage extends UpgradeViewBase {
     `Вы пока никого не поддерживаете\n
     Попробуйте найти интересующих Вас авторов на странице поиска` :
     'Донатер пока никого не поддерживает';
-    this.donaterContent.append(head, this.subscriptions);
-    page.appendChild(this.donaterContent);
+    content.append(head, this.subscriptions);
   }
 }
