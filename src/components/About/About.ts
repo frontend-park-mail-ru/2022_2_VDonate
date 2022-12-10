@@ -35,21 +35,23 @@ class About extends ComponentBase<'div', string> {
     title.innerText = 'Обо мне';
     head.appendChild(title);
 
-    const editBtn = new Button(head, {
-      viewType: ButtonType.ICON,
-      actionType: 'button',
-      innerIcon: editIcon,
-      clickHandler: () => {
-        if (this.options.inEditState) {
-          this.options.inEditState = false;
-          this.closeEditor();
-        } else {
-          this.options.inEditState = true;
-          this.openEditor();
-        }
-      },
-    });
-    editBtn.addClassNames('about__header-btn');
+    if (this.options.changeable) {
+      const editBtn = new Button(head, {
+        viewType: ButtonType.ICON,
+        actionType: 'button',
+        innerIcon: editIcon,
+        clickHandler: () => {
+          if (this.options.inEditState) {
+            this.options.inEditState = false;
+            this.closeEditor();
+          } else {
+            this.options.inEditState = true;
+            this.openEditor();
+          }
+        },
+      });
+      editBtn.addClassNames('about__header-btn');
+    }
     about.appendChild(head);
 
     this.content = document.createElement('div');

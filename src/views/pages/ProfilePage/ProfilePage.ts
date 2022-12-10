@@ -26,13 +26,11 @@ interface ProfilePageChildViews {
 export default class ProfilePage extends UpgradeViewBase {
   private isAuthor: boolean | undefined;
   private profileInfo!: ProfileInfo;
-  private profileState: PayloadGetProfileData;
   private subscriptions: HTMLDivElement = document.createElement('div');
   private childViews: ProfilePageChildViews = {};
 
   constructor(el: HTMLElement, private options: ProfileEditorOptions) {
     super();
-    this.profileState = store.getState().profile as PayloadGetProfileData;
     this.renderTo(el);
     getProfile(this.options.profileID);
   }
@@ -62,7 +60,10 @@ export default class ProfilePage extends UpgradeViewBase {
     if (!this.isAuthor) {
       if (!profileNew.userSubscriptions ||
         profileNew.userSubscriptions.length === 0) {
-        this.subscriptions.innerHTML = 'Донатер пока никого не поддерживает';
+        this.subscriptions.innerHTML = this.options.changeable ?
+          `Вы пока никого не поддерживаете<br> <br>
+          Попробуйте найти интересующих Вас авторов на странице поиска` :
+          'Донатер пока никого не поддерживает';
       } else {
         this.subscriptions.innerHTML = '';
         profileNew.userSubscriptions.forEach((sub, idx, arr) => {
@@ -81,12 +82,13 @@ export default class ProfilePage extends UpgradeViewBase {
   protected render(): HTMLDivElement {
     const page = document.createElement('div');
     page.classList.add('profile-page');
+    const profileState = store.getState().profile as PayloadGetProfileData;
     this.profileInfo = new ProfileInfo(page, {
-      avatar: this.profileState.user.avatar,
-      countSubscriptions: this.profileState.user.countSubscriptions,
-      isAuthor: this.profileState.user.isAuthor,
-      username: this.profileState.user.username,
-      countDonaters: this.profileState.user.countDonaters,
+      avatar: profileState.user.avatar,
+      countSubscriptions: profileState.user.countSubscriptions,
+      isAuthor: profileState.user.isAuthor,
+      username: profileState.user.username,
+      countDonaters: profileState.user.countDonaters,
       id: this.options.profileID,
       changeable: this.options.changeable,
     });
@@ -138,10 +140,6 @@ export default class ProfilePage extends UpgradeViewBase {
         'bg_content',
         'font_regular',
     );
-    this.subscriptions.innerHTML = this.options.changeable ?
-    `Вы пока никого не поддерживаете\n
-    Попробуйте найти интересующих Вас авторов на странице поиска` :
-    'Донатер пока никого не поддерживает';
     content.append(head, this.subscriptions);
   }
 }
