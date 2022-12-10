@@ -32,7 +32,7 @@ export default class SearchPage extends UpgradeViewBase {
     });
     input.addClassNames('search-page__input-field');
     const btn = new Button(searchForm, {
-      viewType: ButtonType.PRIMARY,
+      viewType: ButtonType.IMAGE_BG,
       innerText: 'Найти',
       actionType: 'submit',
     });

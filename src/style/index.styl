@@ -26,19 +26,21 @@ html
 * 
   box-sizing: border-box;
 
+[contenteditable="true"]
 [contenteditable="true"]:active
 [contenteditable="true"]:focus
   border:none
-  outline:none
+  outline: 2px dashed #000;
 
 [contenteditable='true'] 
-  caret-color: red;
+  caret-color: rgb(0, 0, 0);
 
 
 // @media only screen and (max-width: 699px)
 //   .v-donate 
 //     display: none
 //   .small-screen-notion 
+//     position: absolute
 //     display: flex
 //     font-21()
 //     color: color-font-light
@@ -46,10 +48,10 @@ html
 //     text-align: center
 
 // @media only screen and (min-width: 700px)
-//   .v-donate
-//     display: contents
-//   .small-screen-notion 
-//     display: none
+  .v-donate
+    display: contents
+  .small-screen-notion 
+    display: none
 
 /* cyrillic */
 @font-face {

@@ -1,23 +1,14 @@
 @require '@style/const.styl'
+@require '@style/mixin.styl'
 
-.profile-page
++b(profile-page)
   display: flex
   flex-direction: column
-  &__content
-    margin-left: 23vw
-    margin-right: 27vw
-    margin-top: 16px
+  align-items: center
+  +e(content)
     width: 50vw
-  &__head
-    margin-top: 8px
-    font-27()
+  +e(header)
     text-align: center
-    color: color-font-light
-  &__glass
-    font-16()
+  +e(subscriptions)
     text-align: center
-    color: color-font-light
-    margin-top: 16px
-    margin-left: 60px
-    margin-right: 60px
-    padding: 8px
+    padding: 20px

@@ -1,18 +1,20 @@
 @require '@style/const.styl'
+@require '@style/mixin.styl'
 
-.about
-  &__about
-    padding: 5px
-  &__head
++b(about)
+  +e(about)
+    padding: 20px
+  +e(header)
+    display: flex
+    flex-direction: row
+  +e(header-title)
+    flex-grow: 1
     text-align: center
-  &__head-btn
-    position: absolute
-    right: 20px
-  &__text
+  +e(text)
      padding: 5px 10px
-  &__form
+  +e(form)
     display: flex
     padding: 4px
     gap: 16px
-  &__form-btn
+  +e(form-btn)
     //

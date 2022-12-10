@@ -28,8 +28,13 @@ class About extends ComponentBase<'div', string> {
     about.classList.add('about', 'about__about', 'bg_content');
 
     const head = document.createElement('div');
-    head.classList.add('about__head', 'font_big');
-    head.innerText = 'Обо мне';
+    head.classList.add('about__header');
+
+    const title = document.createElement('span');
+    title.classList.add('about__header-title', 'font_big');
+    title.innerText = 'Обо мне';
+    head.appendChild(title);
+
     const editBtn = new Button(head, {
       viewType: ButtonType.ICON,
       actionType: 'button',
@@ -44,7 +49,7 @@ class About extends ComponentBase<'div', string> {
         }
       },
     });
-    editBtn.addClassNames('about__head-btn');
+    editBtn.addClassNames('about__header-btn');
     about.appendChild(head);
 
     this.content = document.createElement('div');
@@ -68,6 +73,9 @@ class About extends ComponentBase<'div', string> {
 
   private openEditor(): void {
     this.content.setAttribute('contenteditable', 'true');
+    if (this.content.innerText == 'Автор пока о себе ничего не рассказал') {
+      this.content.innerText = '';
+    }
     const form = document.createElement('form');
     form.classList.add('about__form');
     form.addEventListener('submit', (e) => {
@@ -88,7 +96,6 @@ class About extends ComponentBase<'div', string> {
       viewType: ButtonType.OUTLINE,
       innerText: 'Отмена',
       clickHandler: () => {
-        this.content.innerHTML = this.options.aboutTextHtml;
         this.closeEditor();
       },
     });
@@ -98,6 +105,7 @@ class About extends ComponentBase<'div', string> {
 
   private closeEditor(): void {
     this.options.inEditState = false;
+    this.content.innerHTML = this.aboutTextHtml;
     this.content.setAttribute('contenteditable', 'false');
     querySelectorWithThrow(this.domElement, '.about__form').remove();
   }

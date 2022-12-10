@@ -7,7 +7,7 @@ import './button.styl';
 export enum ButtonType {
   PRIMARY,
   OUTLINE,
-  FINGERS,
+  IMAGE_BG,
   ICON,
   IMAGE_LOADING,
 }
@@ -25,7 +25,7 @@ interface TextButtonOptions {
   viewType:
     | ButtonType.PRIMARY
     | ButtonType.OUTLINE
-    | ButtonType.FINGERS
+    | ButtonType.IMAGE_BG
   innerText: string
 }
 
@@ -66,7 +66,7 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
         break;
       case ButtonType.PRIMARY:
       case ButtonType.OUTLINE:
-      case ButtonType.FINGERS:
+      case ButtonType.IMAGE_BG:
         if (this.options.innerText === data.inner) return;
         this.options.innerText = data.inner;
         querySelectorWithThrow(this.domElement, '.button__text').textContent =
@@ -97,8 +97,8 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
       case ButtonType.OUTLINE:
         button.classList.add('bg_button_outline');
         break;
-      case ButtonType.FINGERS:
-        button.classList.add('button__back_style_fingers');
+      case ButtonType.IMAGE_BG:
+        button.classList.add('bg_button_image-bg');
         break;
       case ButtonType.ICON: {
         button.classList.add('bg_button_icon');

@@ -35,7 +35,7 @@ export default class Avatar extends ComponentBase<'img', string | AvatarType> {
         image.classList.add('image_style_donater');
         break;
       case AvatarType.SUBSCRIPTION:
-        image.classList.add('image_style_sub');
+        image.classList.add('image_style_subscription');
         break;
       default:
         break;

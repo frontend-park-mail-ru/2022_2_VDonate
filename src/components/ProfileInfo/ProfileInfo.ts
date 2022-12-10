@@ -1,4 +1,3 @@
-import {Glass, GlassType} from '@components/glass/glass';
 import Avatar, {AvatarType} from '@components/Avatar/Avatar';
 import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 import './profile-info.styl';
@@ -69,7 +68,7 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
       donatersContainer.classList
           .add('profile-info__container');
       const donaters = document.createElement('span');
-      donaters.classList.add('profile-info__donaters');
+      donaters.classList.add('profile-info__donaters', 'font_regular');
       donaters.innerText = 'Донатеров';
       this.countDonaters = document.createElement('span');
       this.countDonaters.classList.add('profile-info__count');
@@ -95,19 +94,20 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
 
   protected render(): HTMLDivElement {
     const profileInfo = document.createElement('div');
-    profileInfo.classList.add('right-navbar');
+    profileInfo.classList
+        .add('right-navbar');
 
-    const glass = new Glass(GlassType.mono).element;
-    glass.classList.add('right-navbar__back');
+    const back = document.createElement('div');
+    back.classList.add('right-navbar__back', 'bg_content');
 
-    this.avatar = new Avatar(glass, {
+    this.avatar = new Avatar(back, {
       viewType: this.options.isAuthor ? AvatarType.AUTHOR : AvatarType.DONATER,
       imgPath: this.options.avatar,
     });
     this.avatar.addClassNames('right-navbar__img');
 
     this.username = document.createElement('span');
-    this.username.classList.add('right-navbar__username');
+    this.username.classList.add('right-navbar__username', 'font_big');
     this.username.innerText = this.options.username;
 
     const info = document.createElement('div');
@@ -117,11 +117,12 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
     subsContainer.classList.add('profile-info__container');
 
     const subscriptionsTitle = document.createElement('span');
-    subscriptionsTitle.classList.add('profile-info__subs');
+    subscriptionsTitle.classList.add('profile-info__subs', 'font_regular');
     subscriptionsTitle.innerText = 'Подписок';
 
     this.countSubscriptions = document.createElement('span');
-    this.countSubscriptions.classList.add('profile-info__count');
+    this.countSubscriptions.classList
+        .add('profile-info__count', 'font_regular');
     this.countSubscriptions.innerText =
       this.options.countSubscriptions.toString();
 
@@ -136,13 +137,13 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
       donaters.classList.add('profile-info__donaters');
       donaters.innerText = 'Донатеров';
       this.countDonaters = document.createElement('span');
-      this.countDonaters.classList.add('profile-info__count');
+      this.countDonaters.classList.add('profile-info__count', 'font_regular');
       this.countDonaters.innerText =
         this.options.countDonaters?.toString() ?? '0';
       donatersContainer.append(donaters, this.countDonaters);
       info.appendChild(donatersContainer);
     } else if (this.options.changeable) {
-      const becomeAuthorBtn = new Button(glass, {
+      const becomeAuthorBtn = new Button(back, {
         viewType: ButtonType.PRIMARY,
         actionType: 'button',
         innerText: 'Стать автором',
@@ -153,8 +154,8 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
       becomeAuthorBtn.addClassNames('right-navbar__become-author');
     }
 
-    glass.append(this.username, info);
-    profileInfo.appendChild(glass);
+    back.append(this.username, info);
+    profileInfo.append(back);
     return profileInfo;
   }
 }
