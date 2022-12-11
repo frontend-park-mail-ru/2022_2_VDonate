@@ -109,13 +109,13 @@ class SubscriptionCard
     if (this.options.description.length >= 60) {
       this.description.classList.add('subscription-card__motivation_part');
       const showMore = document.createElement('a');
-      showMore.classList.add('subscription-card__more', 'font-small');
+      showMore.classList.add('subscription-card__more', 'font_small');
       showMore.textContent = 'показать еще';
       showMore.addEventListener('click', () => {
         this.description.classList.remove('subscription-card__motivation_part');
         showMore.hidden = true;
       });
-      card.firstChild?.appendChild(showMore);
+      card.appendChild(showMore);
     }
 
     return card;

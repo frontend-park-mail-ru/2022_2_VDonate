@@ -26,16 +26,16 @@ export default class Avatar extends ComponentBase<'img', string | AvatarType> {
 
   protected render(): HTMLImageElement {
     const image = document.createElement('img');
-    image.classList.add('image');
+    image.classList.add('avatar');
     switch (this.options.viewType) {
       case AvatarType.AUTHOR:
-        image.classList.add('image_style_author');
+        image.classList.add('avatar_style_author');
         break;
       case AvatarType.DONATER:
-        image.classList.add('image_style_donater');
+        image.classList.add('avatar_style_donater');
         break;
       case AvatarType.SUBSCRIPTION:
-        image.classList.add('image_style_subscription');
+        image.classList.add('avatar_style_subscription');
         break;
       default:
         break;
@@ -68,13 +68,13 @@ export default class Avatar extends ComponentBase<'img', string | AvatarType> {
 
     switch (this.options.viewType) {
       case AvatarType.AUTHOR:
-        this.domElement.classList.remove('image_style_author');
+        this.domElement.classList.remove('avatar_style_author');
         break;
       case AvatarType.DONATER:
-        this.domElement.classList.remove('image_style_donater');
+        this.domElement.classList.remove('avatar_style_donater');
         break;
       case AvatarType.SUBSCRIPTION:
-        this.domElement.classList.remove('image_style_sub');
+        this.domElement.classList.remove('avatar_style_sub');
         break;
       default:
         break;
@@ -82,13 +82,13 @@ export default class Avatar extends ComponentBase<'img', string | AvatarType> {
 
     switch (viewType) {
       case AvatarType.AUTHOR:
-        this.domElement.classList.add('image_style_author');
+        this.domElement.classList.add('avatar_style_author');
         break;
       case AvatarType.DONATER:
-        this.domElement.classList.add('image_style_donater');
+        this.domElement.classList.add('avatar_style_donater');
         break;
       case AvatarType.SUBSCRIPTION:
-        this.domElement.classList.add('image_style_sub');
+        this.domElement.classList.add('avatar_style_sub');
         break;
       default:
         break;

@@ -29,13 +29,12 @@ class Notice extends ComponentBase<'div'> {
     message.insertAdjacentText('afterbegin', this.options.message);
     notice.appendChild(message);
 
-    const closeBtn = new Button(notice, {
+    new Button(notice, {
       viewType: ButtonType.ICON,
       innerIcon: closeIcon,
       actionType: 'button',
       clickHandler: this.options.onDelete,
-    });
-    closeBtn.addClassNames('notice__btn-close');
+    }).addClassNames('notice__btn-close');
 
     return notice;
   }

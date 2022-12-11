@@ -57,18 +57,18 @@ class LogInForm
 
   protected render(): HTMLFormElement {
     const form = document.createElement('form');
-    form.classList.add('signlog', 'signlog__back', 'bg_interaction');
+    form.classList.add('entry-form', 'entry-form__back', 'bg_interaction');
     form.innerHTML = template(logInContext);
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       login((e.target as HTMLFormElement).elements as LogInFormElements);
     });
 
-    const inputsArea = querySelectorWithThrow(form, '.signlog__inputs');
+    const inputsArea = querySelectorWithThrow(form, '.entry-form__inputs');
     logInInputs.forEach((options) =>
       this.inputs.set(options.name, new InputField(inputsArea, options)));
 
-    new Button(querySelectorWithThrow(form, '.signlog__submit'), {
+    new Button(querySelectorWithThrow(form, '.entry-form__submit'), {
       actionType: 'submit',
       innerText: 'Войти',
       viewType: ButtonType.PRIMARY,

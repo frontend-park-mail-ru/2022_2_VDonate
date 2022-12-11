@@ -4,13 +4,6 @@ import './profile-info.styl';
 import Button, {ButtonType} from '@components/Button/Button';
 import {becomeAuthor} from '@actions/handlers/user';
 
-// interface ProfileInfoDonater {
-//   isAuthor: false
-//   avatar: string
-//   username: string
-//   countSubscriptions: number
-// }
-
 interface ProfileInfoOptions {
   isAuthor: boolean
   avatar: string
@@ -20,8 +13,6 @@ interface ProfileInfoOptions {
   id: number
   changeable: boolean
 }
-
-// type ProfileInfoOptions = ProfileInfoDonater | ProfileInfoAuthor
 
 interface ProfileInfoUpdateContext {
   isAuthor: boolean

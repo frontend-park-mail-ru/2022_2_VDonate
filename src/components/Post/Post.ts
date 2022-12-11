@@ -286,7 +286,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     if (this.options.postID !== -1) {
       const delBtn = new Button(formBtns, {
         actionType: 'button',
-        viewType: ButtonType.OUTLINE,
+        viewType: ButtonType.ERROR,
         innerText: 'Удалить',
         clickHandler: () => {
           deletePost(this.options.postID);

@@ -57,7 +57,7 @@ class SubscriptionEditor
 
   private createForm(): HTMLFormElement {
     const form = document.createElement('form');
-    form.className = 'editor__form';
+    form.classList.add('editor__form', 'bg_editor');
     form.insertAdjacentHTML(
         'afterbegin',
         template({
@@ -135,20 +135,20 @@ class SubscriptionEditor
       viewType: ButtonType.PRIMARY,
       innerText: this.options ? 'Изменить' : 'Создать',
       actionType: 'submit',
-    });
+    }).addClassNames('btn-area__btn');
     new Button(btnArea, {
       viewType: ButtonType.OUTLINE,
       innerText: 'Отменить',
       actionType: 'button',
       clickHandler: closeEditor,
-    });
+    }).addClassNames('btn-area__btn');
     if (this.options) {
       new Button(btnArea, {
-        viewType: ButtonType.OUTLINE,
+        viewType: ButtonType.ERROR,
         innerText: 'Удалить',
         actionType: 'button',
         clickHandler: deleteAuthorSubscription.bind(this, this.options.id),
-      });
+      }).addClassNames('btn-area__btn');
     }
   }
 

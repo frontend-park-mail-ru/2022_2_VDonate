@@ -64,10 +64,14 @@ class EditorContainer
   }
 
   private displayEditor(newEditor: PayloadEditor) {
+    document.body.classList
+        .add('overflow-hidden');
     switch (newEditor.type) {
       case undefined:
         this.currentEditor?.remove();
         this.currentEditor = undefined;
+        document.body.classList
+            .remove('overflow-hidden');
         break;
       case EditorType.PROFILE: {
         this.editorType = EditorType.PROFILE;

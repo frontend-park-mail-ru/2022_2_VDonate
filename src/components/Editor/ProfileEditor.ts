@@ -51,7 +51,7 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
 
   private createForm(): HTMLFormElement {
     const form = document.createElement('form');
-    form.className = 'editor__form';
+    form.classList.add('editor__form', 'bg_editor');
     form.insertAdjacentHTML(
         'afterbegin',
         template({title: 'Редактирование профиля'}),
@@ -87,23 +87,6 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
           value: this.options.username,
           displayError: false,
         }));
-    // if (this.options.isAuthor) {
-    //   this.inputs.set('about', new InputField(inputsArea, {
-    //     kind: InputType.textarea,
-    //     label: 'Описание',
-    //     name: 'about',
-    //     placeholder: 'Расскажите что-то о себе...',
-    //     value: this.options.about,
-    //     displayError: false,
-    //   }));
-    // } else {
-    //   this.inputs.set('isAuthor', new InputField(inputsArea, {
-    //     kind: InputType.checkbox,
-    //     label: 'Стать автором',
-    //     name: 'isAuthor',
-    //     displayError: false,
-    //   }));
-    // }
     this.inputs
         .set('password', new InputField(inputsArea, {
           kind: InputType.password,
@@ -134,13 +117,13 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
       viewType: ButtonType.PRIMARY,
       innerText: 'Изменить',
       actionType: 'submit',
-    });
+    }).addClassNames('btn-area__btn');
     new Button(btnArea, {
       viewType: ButtonType.OUTLINE,
       innerText: 'Отменить',
       actionType: 'button',
       clickHandler: closeEditor,
-    });
+    }).addClassNames('btn-area__btn');
   }
 
   // update(errors: PayloadEditUserErrors): void {

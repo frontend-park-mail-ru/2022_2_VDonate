@@ -84,7 +84,6 @@ class InputField extends ComponentBase<'label', boolean> {
         break;
       case InputType.image:
         templateContext.type = 'file';
-        templateContext.icon = userIcon;
         break;
       case InputType.checkbox:
         templateContext.type = 'checkbox';
@@ -117,7 +116,6 @@ class InputField extends ComponentBase<'label', boolean> {
               input, '.input-field__input',
           ) as HTMLInputElement;
         inputEl.accept = 'image/*';
-        inputEl.style.display = 'none';
         break;
       }
       default:
