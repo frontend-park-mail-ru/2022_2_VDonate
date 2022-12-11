@@ -8,7 +8,6 @@ export interface PayloadPost {
     username: string
   }
   content: string
-  contentTemplate: string
   dateCreated: Date
   isAllowed: boolean
   isLiked: boolean
@@ -22,7 +21,6 @@ export interface PayloadPost {
 export interface PayloadPostUpdate {
   postID: number
   content?: string
-  contentTemplate?: string
   likesNum?: number
   isLiked?: boolean
   commentsNum?: number

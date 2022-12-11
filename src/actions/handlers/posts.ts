@@ -32,7 +32,7 @@ export const createPost = (content: string, tier: number) => {
 
   api.createPost({
     tier,
-    contentTemplate: content,
+    content,
   })
       .then((res) => {
         if (res.ok) {
@@ -46,7 +46,6 @@ export const createPost = (content: string, tier: number) => {
                 username: user.username,
               },
               content: res.body.content as string,
-              contentTemplate: res.body.contentTemplate as string,
               dateCreated: new Date(Date.now()),
               isAllowed: true,
               isLiked: false,
@@ -101,8 +100,8 @@ export const updatePost = (id: number, content: string, tier: number) => {
   }
 
   api.updatePost(id, {
-    tier: tier,
-    contentTemplate: content,
+    tier,
+    content,
   })
       .then((res) => {
         if (res.ok) {
@@ -111,7 +110,6 @@ export const updatePost = (id: number, content: string, tier: number) => {
             payload: {
               postID: id,
               content: res.body.content as string,
-              contentTemplate: res.body.contentTemplate as string,
             },
           });
         } else {

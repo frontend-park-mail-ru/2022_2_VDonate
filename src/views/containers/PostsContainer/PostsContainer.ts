@@ -147,7 +147,6 @@ class PostsContainer
       tier: 0,
       commentsNum: 0,
       content: '',
-      contentTemplate: '',
       dateCreated: new Date(),
     });
   }
