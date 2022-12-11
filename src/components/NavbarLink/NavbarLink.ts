@@ -23,9 +23,11 @@ class NavbarLink
     if (this.options.isActive === isActive) return;
     this.options.isActive = isActive;
     if (this.options.isActive) {
-      this.domElement.classList.add('navbar-link__back_choosen');
+      this.domElement.classList.add('bg_navbar-link_enable');
+      this.domElement.classList.remove('bg_navbar-link_disable');
     } else {
-      this.domElement.classList.remove('navbar-link__back_choosen');
+      this.domElement.classList.add('bg_navbar-link_disable');
+      this.domElement.classList.remove('bg_navbar-link_enable');
     }
   }
 

@@ -249,4 +249,21 @@ bg-edge = 5px 10px 10px rgba(0, 0, 0, 0.2), inset 0px -4px 2px rgba(0, 0, 0, 0.2
       background-size: cover
       opacity: 0.6
       border-radius: 1rem
+  +m(navbar-link)
+    +m(disable)
+      border-radius: 0px 0.5rem 0.5rem 0px
+    +m(enable)
+      border-radius: 0px 0.5rem 0.5rem 0px
+      position relative
+      &:before
+        content: ""
+        position: absolute
+        inset: 0
+        z-index: -1
+        mix-blend-mode: soft-light
+        box-shadow: bg-edge
+        border-radius: 0px 0.5rem 0.5rem 0px
+        background: "url(%s)" % glass-image-2
+        background-size: cover
+
     

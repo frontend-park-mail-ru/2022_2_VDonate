@@ -70,12 +70,14 @@ export default class Navbar extends UpgradeViewBase {
 
     // const linkes = document.createElement('div');
     links.forEach(({icon, text, link}) => {
-      this.navbarLinks.push(new NavbarLink(back, {
+      const linkComponent = new NavbarLink(back, {
         isActive: false,
         href: link,
         icon,
         text,
-      }));
+      });
+      linkComponent.addClassNames('navbar__link');
+      this.navbarLinks.push(linkComponent);
     });
 
     // back.appendChild(linkes);
@@ -103,29 +105,29 @@ export default class Navbar extends UpgradeViewBase {
       type: ProfileMiniType.SESSION_PROFILE,
     });
 
-    const popup = document.createElement('div');
-    popup.classList.add('bg_content');
-    popup.style.display = 'none';
-    profileContainer.appendChild(popup);
+    const subMenu = document.createElement('div');
+    subMenu.classList.add('bg_content');
+    subMenu.style.display = 'none';
+    profileContainer.appendChild(subMenu);
 
     const menuBtn = new Button(this.profile, {
       viewType: ButtonType.ICON,
       actionType: 'button',
       innerIcon: menuIcon,
       clickHandler: () => {
-        if (popup.style.display == 'none') {
-          popup.style.display = 'flex';
+        if (subMenu.style.display == 'none') {
+          subMenu.style.display = 'flex';
         } else {
-          popup.style.display = 'none';
+          subMenu.style.display = 'none';
         }
       },
     });
     menuBtn.addClassNames('botton-area__menu-btn');
 
-    popup.style.display = 'none';
-    popup.classList.add('botton-area__popup');
+    subMenu.style.display = 'none';
+    subMenu.classList.add('botton-area__sub-menu');
 
-    const profileLink = new Button(popup, {
+    const profileLink = new Button(subMenu, {
       viewType: ButtonType.OUTLINE,
       actionType: 'button',
       innerText: 'Профиль',
@@ -134,9 +136,9 @@ export default class Navbar extends UpgradeViewBase {
         routing(`/profile?id=${user.id}`);
       },
     });
-    profileLink.addClassNames('botton-area__popup-btn');
+    profileLink.addClassNames('botton-area__sub-menu-btn');
 
-    const change = new Button(popup, {
+    const change = new Button(subMenu, {
       viewType: ButtonType.OUTLINE,
       actionType: 'button',
       innerText: 'Изменить данные',
@@ -144,9 +146,9 @@ export default class Navbar extends UpgradeViewBase {
         openProfileEditor();
       },
     });
-    change.addClassNames('botton-area__popup-btn');
+    change.addClassNames('botton-area__sub-menu-btn');
 
-    const logoutBtn = new Button(popup, {
+    const logoutBtn = new Button(subMenu, {
       viewType: ButtonType.OUTLINE,
       actionType: 'button',
       innerText: 'Выйти',
@@ -154,7 +156,7 @@ export default class Navbar extends UpgradeViewBase {
         logout();
       },
     });
-    logoutBtn.addClassNames('botton-area__popup-btn');
+    logoutBtn.addClassNames('botton-area__sub-menu-btn');
 
     profileContainer.appendChild(this.profile);
     back.appendChild(profileContainer);

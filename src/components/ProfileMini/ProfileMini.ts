@@ -69,7 +69,7 @@ class ProfielMini extends ComponentBase<'a', ProfileMiniUpdateContext> {
         break;
     }
     this.username = document.createElement('span');
-    this.username.className = 'profile-mini__username';
+    this.username.className = 'font_regular';
     this.username.innerText = this.options.username;
     container.appendChild(this.username);
 

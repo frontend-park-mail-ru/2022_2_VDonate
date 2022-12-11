@@ -1,26 +1,27 @@
 @require '@style/const.styl'
+@require '@style/mixin.styl'
 
-.search-page
++b(search-page)
+  display: flex
+  flex-direction: column
+  align-items: center
+  gap: 20px
+  +e(back)
+    padding: 20px
+    width: 60vw
+  +e(title)
+    text-align: center
+  +e(search-form)
     display: flex
-    flex-direction: column
-    align-items: center
-    &__search-page
-        margin-top: 16px
-        margin-left: 35vw
-        margin-right: 15vw
-    &__search-form
-        display: flex
-        flex-direction: row
-        align-items: flex-end
-        gap: 12px
-    &__input-field
-        width: 40vw
-    &__search-btn
-        height: 50px
-    &__glass
-        width: calc(40vw + 118px)
-        font-16()
-        text-align: center
-        color: color-font-light
-        margin-top: 16px
-        padding: 10px
+    flex-direction: row
+    align-items: stretch
+    max-width: 800px
+    width: 100%
+    gap: 10px
+  +e(input-field)
+    flex-grow: 1
+  +e(list-area)
+    max-width: 800px
+    width: 100%
+    text-align: center
+    padding: 20px

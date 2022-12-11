@@ -1,4 +1,3 @@
-import {Glass, GlassType} from '@components/glass/glass';
 import Button, {ButtonType} from '@components/Button/Button';
 import './popup.styl';
 import {subscribe, unsubscribe} from '@actions/handlers/subscribe';
@@ -26,13 +25,13 @@ class PayEditor extends ComponentBase<'div'> {
     const editor = document.createElement('div');
     editor.classList.add('sub-popup__back');
 
-    const popupGlass = new Glass(GlassType.lines);
-    popupGlass.element.classList.add('sub-popup__glass');
-    editor.appendChild(popupGlass.element);
+    const popupGlass = document.createElement('div');
+    popupGlass.classList.add('sub-popup__glass', 'bg_content');
+    editor.appendChild(popupGlass);
 
     const text = document.createElement('span');
     text.classList.add('sub-popup__text');
-    popupGlass.element.appendChild(text);
+    popupGlass.appendChild(text);
 
     const btnContainer = document.createElement('div');
     btnContainer.classList.add('sub-popup__btn-container');
@@ -79,7 +78,7 @@ class PayEditor extends ComponentBase<'div'> {
         break;
     }
 
-    popupGlass.element.appendChild(btnContainer);
+    popupGlass.appendChild(btnContainer);
 
     return editor;
   }
