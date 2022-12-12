@@ -20,6 +20,7 @@ import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 import Avatar, {AvatarType} from '@components/Avatar/Avatar';
 import PostAction, {PostActionType} from '@components/PostAction/PostAction';
 import InputField, {InputType} from '@components/InputField/InputField';
+import dateFormate from '@date/dateFormate';
 
 type PostOptions = PayloadPost & {
   changable: boolean
@@ -107,7 +108,8 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     post.classList.add('post', 'post__back', 'bg_content');
     post.innerHTML = templatePost({
       username: this.options.author.username,
-      date: this.options.dateCreated,
+      date: this.options.dateCreated.length === 0 ?
+        'В процессе...' : dateFormate(this.options.dateCreated),
     });
     const avatarArea = querySelectorWithThrow(post, '.post__author-avatar');
     const avatar = new Avatar(avatarArea, {

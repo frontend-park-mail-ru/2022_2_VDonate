@@ -27,7 +27,6 @@ const postsReducer: Reducer<Action> =
           if (action.payload.content !== undefined &&
             action.payload.contentTemplate !== undefined) {
             post.content = action.payload.content;
-            post.contentTemplate = action.payload.contentTemplate;
           }
         }
         return state;

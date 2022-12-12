@@ -30,6 +30,7 @@ module.exports = {
       '@icon': path.resolve(__dirname, 'static/icon'),
       '@img': path.resolve(__dirname, 'static/img'),
       '@font': path.resolve(__dirname, 'static/font'),
+      '@date': path.resolve(__dirname, 'src/modules/date'),
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
