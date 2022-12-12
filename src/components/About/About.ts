@@ -36,7 +36,7 @@ class About extends ComponentBase<'div', string> {
     head.appendChild(title);
 
     if (this.options.changeable) {
-      const editBtn = new Button(head, {
+      new Button(head, {
         viewType: ButtonType.ICON,
         actionType: 'button',
         innerIcon: editIcon,
@@ -49,8 +49,7 @@ class About extends ComponentBase<'div', string> {
             this.openEditor();
           }
         },
-      });
-      editBtn.addClassNames('about__header-btn');
+      }).addClassNames('about__header-btn');
     }
     about.appendChild(head);
 

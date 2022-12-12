@@ -186,7 +186,7 @@ export default class Api {
    */
   createPost(data: {
     tier: number,
-    contentTemplate: string,
+    content: string,
   }): Promise<ResponseData> {
     return this.request('/posts', Method.POST, ContentType.formData, data);
   }
@@ -198,7 +198,7 @@ export default class Api {
    */
   updatePost(id: number, data: {
     tier: number,
-    contentTemplate: string,
+    content: string,
   }): Promise<ResponseData> {
     return this.request(
         `/posts/${id}`,

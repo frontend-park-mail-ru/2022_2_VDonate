@@ -32,7 +32,7 @@ export const createPost = (content: string, tier: number) => {
 
   api.createPost({
     tier,
-    contentTemplate: content,
+    content: content,
   })
       .then((res) => {
         if (res.ok) {
@@ -102,7 +102,7 @@ export const updatePost = (id: number, content: string, tier: number) => {
 
   api.updatePost(id, {
     tier: tier,
-    contentTemplate: content,
+    content: content,
   })
       .then((res) => {
         if (res.ok) {

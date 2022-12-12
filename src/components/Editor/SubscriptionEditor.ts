@@ -84,7 +84,7 @@ class SubscriptionEditor
   private addInputs(form: HTMLFormElement) {
     const inputsArea = querySelectorWithThrow(form, '.editor__inputs');
     const inputNumbers = document.createElement('div');
-    inputNumbers.classList.add('editor__form-buttons');
+    inputNumbers.classList.add('row-inputs');
     this.inputs
         .set('title', new InputField(inputsArea, {
           kind: InputType.text,
@@ -110,6 +110,8 @@ class SubscriptionEditor
           value: this.options?.tier.toString(),
           displayError: false,
         }));
+    this.inputs.get('price')?.addClassNames('row-inputs__input');
+    this.inputs.get('tier')?.addClassNames('row-inputs__input');
     inputsArea.appendChild(inputNumbers);
     this.inputs
         .set('text', new InputField(inputsArea, {
@@ -151,11 +153,4 @@ class SubscriptionEditor
       }).addClassNames('btn-area__btn');
     }
   }
-
-  // update(errors: PayloadAuthorSubscriptionErrors): void {
-  //   this.inputs[0].update(Boolean(errors.title));
-  //   this.inputs[1].update(Boolean(errors.price));
-  //   this.inputs[2].update(Boolean(errors.tier));
-  //   this.inputs[3].update(Boolean(errors.text));
-  // }
 }

@@ -1,8 +1,10 @@
 import Avatar, {AvatarType} from '@components/Avatar/Avatar';
 import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
+import editIcon from '@icon/edit.svg';
 import './profile-info.styl';
 import Button, {ButtonType} from '@components/Button/Button';
 import {becomeAuthor} from '@actions/handlers/user';
+import {openProfileEditor} from '@actions/handlers/editor';
 
 interface ProfileInfoOptions {
   isAuthor: boolean
@@ -149,6 +151,17 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
         },
       });
       becomeAuthorBtn.addClassNames('profile-info__become-author');
+    }
+
+    if (this.options.changeable) {
+      new Button(back, {
+        viewType: ButtonType.ICON,
+        actionType: 'button',
+        innerIcon: editIcon,
+        clickHandler: () => {
+          openProfileEditor();
+        },
+      }).addClassNames('profile-info__edit-btn');
     }
 
     profileInfo.append(back);
