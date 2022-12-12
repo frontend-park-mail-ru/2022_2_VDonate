@@ -57,9 +57,30 @@ export const createPost = (content: string, tier: number) => {
             },
           });
         } else {
+          let msg: PayloadNotice = {
+            message: '',
+          };
+          switch (res.status) {
+            case 400:
+              msg.message = 'Ошибка при создании запроса на сервер';
+              break;
+            case 401:
+              msg.message = 'Ошибка авторизации';
+              break;
+            case 403:
+              msg.message = 'Ошибка доступа';
+              break;
+            case 404:
+            case 500:
+              msg.message = 'Ошибка сервера при создании поста';
+              break;
+            default:
+              msg = res.body as PayloadNotice;
+              break;
+          }
           store.dispatch({
             type: ActionType.NOTICE,
-            payload: res.body as PayloadNotice,
+            payload: msg,
           });
         }
       },
@@ -113,9 +134,32 @@ export const updatePost = (id: number, content: string, tier: number) => {
             },
           });
         } else {
+          let msg: PayloadNotice = {
+            message: '',
+          };
+          switch (res.status) {
+            case 400:
+              msg.message = 'Ошибка при создании запроса на сервер';
+              break;
+            case 401:
+              msg.message = 'Ошибка авторизации';
+              break;
+            case 403:
+              msg.message = 'Ошибка доступа';
+              break;
+            case 404:
+              msg.message = 'Ошибка сервера\n Пост не найден';
+              break;
+            case 500:
+              msg.message = 'Ошибка сервера при изменении поста';
+              break;
+            default:
+              msg = res.body as PayloadNotice;
+              break;
+          }
           store.dispatch({
             type: ActionType.NOTICE,
-            payload: res.body as PayloadNotice,
+            payload: msg,
           });
         }
       })
@@ -141,9 +185,32 @@ export const deletePost = (postID: number) => {
             },
           });
         } else {
+          let msg: PayloadNotice = {
+            message: '',
+          };
+          switch (res.status) {
+            case 400:
+              msg.message = 'Ошибка при создании запроса на сервер';
+              break;
+            case 401:
+              msg.message = 'Ошибка авторизации';
+              break;
+            case 403:
+              msg.message = 'Ошибка доступа';
+              break;
+            case 404:
+              msg.message = 'Ошибка сервера\n Пост не найден';
+              break;
+            case 500:
+              msg.message = 'Ошибка сервера при удалении поста';
+              break;
+            default:
+              msg = res.body as PayloadNotice;
+              break;
+          }
           store.dispatch({
             type: ActionType.NOTICE,
-            payload: res.body as PayloadNotice,
+            payload: msg,
           });
         }
       },
@@ -171,9 +238,29 @@ export const likePost = (id: number) => {
             },
           });
         } else {
+          let msg: PayloadNotice = {
+            message: '',
+          };
+          switch (res.status) {
+            case 400:
+              msg.message = 'Ошибка при создании запроса на сервер';
+              break;
+            case 401:
+              msg.message = 'Ошибка авторизации';
+              break;
+            case 404:
+              msg.message = 'Ошибка сервера\n Пост не найден';
+              break;
+            case 500:
+              msg.message = 'Ошибка сервера при лайке поста';
+              break;
+            default:
+              msg = res.body as PayloadNotice;
+              break;
+          }
           store.dispatch({
             type: ActionType.NOTICE,
-            payload: res.body as PayloadNotice,
+            payload: msg,
           });
         }
       })
