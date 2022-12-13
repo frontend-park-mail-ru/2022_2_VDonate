@@ -125,21 +125,4 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
       clickHandler: closeEditor,
     }).addClassNames('btn-area__btn');
   }
-
-  // update(errors: PayloadEditUserErrors): void {
-  //   this.inputs[0].update(Boolean(errors.email));
-  //   this.inputs[1].update(Boolean(errors.username));
-  //   this.inputs[3].update(Boolean(errors.password));
-  //   this.inputs[4].update(Boolean(errors.repeatPassword));
-  // }
-  // /**
-  //  *
-  //  * @param errors -
-  //  */
-  // errorDisplay(errors: PayloadEditUserErrors) {
-  //   this.inputs[0].errorDetect(Boolean(errors.email));
-  //   this.inputs[1].errorDetect(Boolean(errors.username));
-  //   this.inputs[3].errorDetect(Boolean(errors.password));
-  //   this.inputs[4].errorDetect(Boolean(errors.repeatPassword));
-  // }
 }

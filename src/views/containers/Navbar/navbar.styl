@@ -14,10 +14,10 @@
     flex-direction: column
     gap: 10px
     padding: 10px
-    padding-left: left-indent
+    padding-left: navbar-indent
   +e(link)
-    padding-left: navbar-left-indent !important
-    margin-left: - navbar-left-indent
+    padding-left: navbar-indent !important
+    margin-left: - navbar-indent
   +e(subs-list)
     flex-grow: 1
     overflow: auto
@@ -52,7 +52,7 @@
   border-radius: 0px 5px 5px 0px
   height: 3px
   margin: 0
-  margin-left: - navbar-left-indent
+  margin-left: - navbar-indent
 
 @media  (max-width: mobile-size)
   +b(navbar)
@@ -65,7 +65,7 @@
       display: flex
       flex-direction: row
       flex-wrap: nowrap
-      align-items: center
+      align-items: stretch
       &:before
         border-radius: 0
     +e(logo)
@@ -74,10 +74,12 @@
       flex-wrap: nowrap
       word-break: normal
       margin-right: 6px
+      align-self: flex-start
     +e(link)
-      display: flex
-      flex-direction: row
-      align-items: center
+      padding: 5px !important
+      margin-left: 0
+      padding-top: navbar-indent !important
+      margin-top: - navbar-indent
     +e(sub)
       padding: 0px
     +e(subs-list)

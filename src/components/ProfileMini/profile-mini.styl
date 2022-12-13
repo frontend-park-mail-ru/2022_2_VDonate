@@ -7,16 +7,22 @@
   align-items: center
   justify-content: flex-start;
   gap: 10px
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  min-width: 0
+  width: 100%
   +e(avatar)
     +m(size)
       +m(big)
         width: 50px
       +m(small)
         width: 30px
-
+  +e(username)
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
 
 @media  (max-width: mobile-size)
   +b(profile-mini)
     flex-wrap: nowrap
     word-break: normal
+    width: 100px
