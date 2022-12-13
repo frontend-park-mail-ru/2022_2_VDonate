@@ -53,3 +53,52 @@
   height: 3px
   margin: 0
   margin-left: - navbar-left-indent
+
+@media  (max-width: mobile-size)
+  +b(navbar)
+    z-index: 999
+    +e(back)
+      border-radius: 0
+      height: 50px
+      width: calc(100vw + 4px)
+      max-width: calc(100vw + 4px)
+      display: flex
+      flex-direction: row
+      flex-wrap: nowrap
+      align-items: center
+      &:before
+        border-radius: 0
+    +e(logo)
+      zoom: 0.8
+      display: flex
+      flex-wrap: nowrap
+      word-break: normal
+      margin-right: 6px
+    +e(link)
+      display: flex
+      flex-direction: row
+      align-items: center
+    +e(sub)
+      padding: 0px
+    +e(subs-list)
+      flex-grow: 1
+      overflow-y: hidden
+      overflow-x: auto
+      &::-webkit-scrollbar
+        width: 4px
+        height: 4px
+        background: transparent
+        &-thumb
+          background: color-scrollbar
+          border-radius: 10px
+
+  +b(botton-area)
+    +e(profile-mini)
+      display: none !important
+    +e(sub-menu)
+      position: fixed
+      top: 50px
+      right: 5px
+      
+  +b(navbar-hr)
+    display: none

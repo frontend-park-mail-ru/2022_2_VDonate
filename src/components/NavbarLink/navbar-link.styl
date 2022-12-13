@@ -13,3 +13,15 @@
   +e(icon)
     width: 20px
     filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(8deg) brightness(111%) contrast(101%)
+
+@media  (max-width: mobile-size)
+  +b(navbar-link)
+    +e(back)
+      padding: 10px
+      padding-top: 18px
+      margin-top: -16px
+      &:before
+        border-radius: 0 0 0.5rem 0.5rem
+    +e(text)
+      display: none
+    

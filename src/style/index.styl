@@ -39,22 +39,18 @@ html
 .overflow-hidden
   overflow: hidden
 
-// @media only screen and (max-width: 699px)
-//   .v-donate 
-//     display: none
-//   .small-screen-notion 
-//     position: absolute
-//     display: flex
-//     font-21()
-//     color: color-font-light
-//     padding: 20vw
-//     text-align: center
+.small-screen-notion 
+  display: none
 
-// @media only screen and (min-width: 700px)
-  .v-donate
-    display: contents
-  .small-screen-notion 
+@media (max-width: min-width-site), (max-height: min-height-site)
+  .v-donate 
     display: none
+  .small-screen-notion 
+    display: flex
+    font-21()
+    color: color-font-light
+    padding: 20vw
+    text-align: center
 
 /* cyrillic */
 @font-face {

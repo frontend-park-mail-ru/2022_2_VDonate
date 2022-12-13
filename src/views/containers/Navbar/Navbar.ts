@@ -104,6 +104,7 @@ export default class Navbar extends UpgradeViewBase {
       id: this.options,
       type: ProfileMiniType.SESSION_PROFILE,
     });
+    this.profileMini.addClassNames('botton-area__profile-mini');
 
     const subMenu = document.createElement('div');
     subMenu.classList.add('bg_content');
