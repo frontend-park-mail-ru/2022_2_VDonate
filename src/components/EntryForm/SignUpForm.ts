@@ -84,6 +84,9 @@ class SignUpForm
     signUpInputs.forEach((options) =>
       this.inputs.set(options.name, new InputField(inputsArea, options)));
 
+    querySelectorWithThrow(form, 'input[name="email"]')
+        .setAttribute('autofocus', 'true');
+
     new Button(querySelectorWithThrow(form, '.entry-form__submit'), {
       actionType: 'submit',
       innerText: 'Зарегистрироваться',

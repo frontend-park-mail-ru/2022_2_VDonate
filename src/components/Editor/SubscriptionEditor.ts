@@ -128,6 +128,10 @@ class SubscriptionEditor
           name: 'file',
           displayError: false,
         }));
+    if (!this.options) {
+      querySelectorWithThrow(form, 'input[name="title"]')
+          .setAttribute('autofocus', 'true');
+    }
   }
 
   private addButtons(form: HTMLFormElement) {
