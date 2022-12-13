@@ -34,7 +34,7 @@ class Notice extends ComponentBase<'div'> {
       innerIcon: closeIcon,
       actionType: 'button',
       clickHandler: this.options.onDelete,
-    }).addClassNames('notice__btn-close');
+    });
 
     return notice;
   }

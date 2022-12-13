@@ -137,7 +137,7 @@ export default class ProfilePage extends UpgradeViewBase {
     head.innerText = 'Подписки';
     this.subscriptions.classList.add(
         'profile-page__subscriptions',
-        'bg_content',
+        'bg_main',
         'font_regular',
     );
     content.append(head, this.subscriptions);

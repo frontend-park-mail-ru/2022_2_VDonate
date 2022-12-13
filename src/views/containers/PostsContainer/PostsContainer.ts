@@ -60,6 +60,7 @@ class PostsContainer
       querySelectorWithThrow(this.domElement, '.posts-container__empty')
           .hidden = true;
     }
+
     this.postsState.forEach((_, postID) => {
       if (!newPostsState.has(postID)) {
         this.deletePost(postID);

@@ -4,6 +4,7 @@ import {subscribe, unsubscribe} from '@actions/handlers/subscribe';
 import ComponentBase from '@flux/types/component';
 import {SubscriptionCardStatus}
   from '@components/SubscriptionCard/SubscriptionCard';
+import {closeEditor} from '@actions/handlers/editor';
 
 interface PayEditorOptions {
   authorID: number,
@@ -26,7 +27,7 @@ class PayEditor extends ComponentBase<'div'> {
     editor.classList.add('editor', 'editor__back');
 
     const popupGlass = document.createElement('div');
-    popupGlass.classList.add('editor__form', 'bg_editor');
+    popupGlass.classList.add('editor__form', 'bg_main');
     editor.appendChild(popupGlass);
 
     const text = document.createElement('span');
@@ -44,7 +45,6 @@ class PayEditor extends ComponentBase<'div'> {
           innerText: 'Задонатить',
           clickHandler: () => {
             subscribe(this.options.authorID, this.options.authorSubscriptionID);
-            this.remove();
           },
         }).addClassNames('btn-area__btn');
         text.innerText = 'Вы действительно собиратесь задонатить?';
@@ -59,7 +59,6 @@ class PayEditor extends ComponentBase<'div'> {
                 this.options.authorID,
                 this.options.authorSubscriptionID,
             );
-            this.remove();
           },
         }).addClassNames('btn-area__btn');
         text.innerText = 'Вы действительно собиратесь отписаться?';
@@ -73,9 +72,8 @@ class PayEditor extends ComponentBase<'div'> {
       actionType: 'button',
       viewType: ButtonType.OUTLINE,
       innerText: 'Отмена',
-      clickHandler: () => {
-        this.remove();
-      },
+      clickHandler: closeEditor,
+
     }).addClassNames('btn-area__btn');
 
     popupGlass.appendChild(btnArea);

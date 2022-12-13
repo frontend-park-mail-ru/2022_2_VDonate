@@ -61,10 +61,10 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
       donatersContainer.classList
           .add('mini-statistic__container');
       const donaters = document.createElement('span');
-      donaters.classList.add('mini-statistic__donaters', 'font_regular');
+      donaters.classList.add('mini-statistic__text', 'font_regular');
       donaters.innerText = 'Донатеров';
       this.countDonaters = document.createElement('span');
-      this.countDonaters.classList.add('mini-statistic__count', 'font_regular');
+      this.countDonaters.classList.add('mini-statistic__text', 'font_regular');
       this.countDonaters.innerText = data.countDonaters.toString();
       donatersContainer.append(donaters, this.countDonaters);
       info.appendChild(donatersContainer);
@@ -74,8 +74,7 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
       }
     } else if (this.options.isAuthor && !data.isAuthor) {
       this.options.isAuthor = false;
-      querySelectorWithThrow(this.domElement, '.mini-statistic__donaters')
-          .parentElement?.remove();
+      this.countDonaters.parentElement?.remove();
     }
 
     if (this.options.isAuthor &&
@@ -91,7 +90,7 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
         .add('profile-info');
 
     const back = document.createElement('div');
-    back.classList.add('profile-info__back', 'bg_content');
+    back.classList.add('profile-info__back', 'bg_main');
 
     this.avatar = new Avatar(back, {
       viewType: this.options.isAuthor ? AvatarType.AUTHOR : AvatarType.DONATER,
@@ -114,12 +113,12 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
     subsContainer.classList.add('mini-statistic__container');
 
     const subscriptionsTitle = document.createElement('span');
-    subscriptionsTitle.classList.add('mini-statistic__subs', 'font_regular');
+    subscriptionsTitle.classList.add('mini-statistic__text', 'font_regular');
     subscriptionsTitle.innerText = 'Подписок';
 
     this.countSubscriptions = document.createElement('span');
     this.countSubscriptions.classList
-        .add('mini-statistic__count', 'font_regular');
+        .add('mini-statistic__text', 'font_regular');
     this.countSubscriptions.innerText =
       this.options.countSubscriptions.toString();
 
@@ -133,10 +132,10 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
       donatersContainer.classList
           .add('mini-statistic__container');
       const donaters = document.createElement('span');
-      donaters.classList.add('mini-statistic__donaters');
+      donaters.classList.add('mini-statistic__text', 'font_regular');
       donaters.innerText = 'Донатеров';
       this.countDonaters = document.createElement('span');
-      this.countDonaters.classList.add('mini-statistic__count', 'font_regular');
+      this.countDonaters.classList.add('mini-statistic__text', 'font_regular');
       this.countDonaters.innerText =
         this.options.countDonaters?.toString() ?? '0';
       donatersContainer.append(donaters, this.countDonaters);

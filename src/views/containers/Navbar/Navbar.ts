@@ -49,6 +49,7 @@ export default class Navbar extends UpgradeViewBase {
   private locationState: PayloadLocation;
   private profileMini!: ProfielMini;
   private subscriptionsListContainer!: SubscriptionsListContainer;
+  private subMenu: HTMLElement = document.createElement('div');
 
   constructor(el: HTMLElement, private options: number) {
     super();
@@ -62,13 +63,12 @@ export default class Navbar extends UpgradeViewBase {
     navbar.classList.add('navbar');
 
     const back = document.createElement('div');
-    back.classList.add('navbar__back', 'bg_content');
+    back.classList.add('navbar__back', 'bg_main');
     navbar.appendChild(back);
 
     const logo = new Logo(back);
     logo.addClassNames('navbar__logo');
 
-    // const linkes = document.createElement('div');
     links.forEach(({icon, text, link}) => {
       const linkComponent = new NavbarLink(back, {
         isActive: false,
@@ -80,10 +80,8 @@ export default class Navbar extends UpgradeViewBase {
       this.navbarLinks.push(linkComponent);
     });
 
-    // back.appendChild(linkes);
-
     const hr = document.createElement('hr');
-    hr.classList.add('navbar-hr');
+    hr.classList.add('navbar-hr', 'bg_hr');
     back.appendChild(hr);
 
     this.subscriptionsListContainer = new SubscriptionsListContainer(back);
@@ -106,29 +104,24 @@ export default class Navbar extends UpgradeViewBase {
     });
     this.profileMini.addClassNames('botton-area__profile-mini');
 
-    const subMenu = document.createElement('div');
-    subMenu.classList.add('bg_content');
-    subMenu.style.display = 'none';
-    profileContainer.appendChild(subMenu);
+    this.subMenu.classList.add('bg_sub-menu');
+    this.subMenu.style.display = 'none';
+    navbar.appendChild(this.subMenu);
 
     const menuBtn = new Button(this.profile, {
       viewType: ButtonType.ICON,
       actionType: 'button',
       innerIcon: menuIcon,
       clickHandler: () => {
-        if (subMenu.style.display == 'none') {
-          subMenu.style.display = 'flex';
-        } else {
-          subMenu.style.display = 'none';
-        }
+        this.switchMenu(this.subMenu.style.display == 'none');
       },
     });
     menuBtn.addClassNames('botton-area__menu-btn');
 
-    subMenu.style.display = 'none';
-    subMenu.classList.add('botton-area__sub-menu');
+    this.subMenu.style.display = 'none';
+    this.subMenu.classList.add('sub-menu', 'sub-menu__sub-menu');
 
-    const profileLink = new Button(subMenu, {
+    const profileLink = new Button(this.subMenu, {
       viewType: ButtonType.OUTLINE,
       actionType: 'button',
       innerText: 'Профиль',
@@ -139,7 +132,7 @@ export default class Navbar extends UpgradeViewBase {
     });
     profileLink.addClassNames('botton-area__sub-menu-btn');
 
-    const change = new Button(subMenu, {
+    const change = new Button(this.subMenu, {
       viewType: ButtonType.OUTLINE,
       actionType: 'button',
       innerText: 'Изменить данные',
@@ -149,7 +142,7 @@ export default class Navbar extends UpgradeViewBase {
     });
     change.addClassNames('botton-area__sub-menu-btn');
 
-    const logoutBtn = new Button(subMenu, {
+    const logoutBtn = new Button(this.subMenu, {
       viewType: ButtonType.OUTLINE,
       actionType: 'button',
       innerText: 'Выйти',
@@ -180,6 +173,8 @@ export default class Navbar extends UpgradeViewBase {
       this.locationState = locationNew;
       this.renderLocation(locationNew.type);
     }
+
+    this.switchMenu(false);
   }
 
   protected onErase(): void {
@@ -219,5 +214,13 @@ export default class Navbar extends UpgradeViewBase {
   /** функция показывающая navbar */
   showNavbar() {
     this.domElement.removeAttribute('style');
+  }
+
+  private switchMenu(isClosed: boolean) {
+    if (isClosed) {
+      this.subMenu.style.display = 'flex';
+    } else {
+      this.subMenu.style.display = 'none';
+    }
   }
 }

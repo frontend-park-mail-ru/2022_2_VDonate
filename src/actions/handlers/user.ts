@@ -480,6 +480,14 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
 };
 
 export const editAbout = (id: number, about: string): void => {
+  if (about.length > 1024) {
+    store.dispatch({
+      type: ActionType.NOTICE,
+      payload: {
+        message: 'Поле \'Обо мне\' должно содержать меньше 1024 символов',
+      },
+    });
+  }
   api.putUserData({
     id,
     about,

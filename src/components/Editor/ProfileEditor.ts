@@ -51,7 +51,7 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
 
   private createForm(): HTMLFormElement {
     const form = document.createElement('form');
-    form.classList.add('editor__form', 'bg_editor');
+    form.classList.add('editor__form', 'bg_main');
     form.insertAdjacentHTML(
         'afterbegin',
         template({title: 'Редактирование профиля'}),

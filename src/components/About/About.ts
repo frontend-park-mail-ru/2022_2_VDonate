@@ -25,7 +25,7 @@ class About extends ComponentBase<'div', string> {
 
   protected render(): HTMLDivElement {
     const about = document.createElement('div');
-    about.classList.add('about', 'about__about', 'bg_content');
+    about.classList.add('about', 'about__about', 'bg_main');
 
     const head = document.createElement('div');
     head.classList.add('about__header');

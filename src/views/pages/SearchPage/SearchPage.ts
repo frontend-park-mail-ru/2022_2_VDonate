@@ -49,7 +49,7 @@ export default class SearchPage extends UpgradeViewBase {
     });
     this.listArea.classList.add(
         'search-page__list-area',
-        'bg_content',
+        'bg_main',
         'font_regular',
     );
 

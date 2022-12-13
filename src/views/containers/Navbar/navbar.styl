@@ -1,32 +1,30 @@
 @require '@style/const.styl'
 @require '@style/mixin.styl'
 
+navbar-indent = 20px
+
 +b(navbar)
   position: fixed
   top: 0
   left: 0
   +e(back)
-    border-radius: 0px 1rem 1rem 0px
+    border-radius: 0px radius-big radius-big 0px
     height: 100vh
     width: 20vw
     max-width: 300px
     display: flex
     flex-direction: column
     gap: 10px
-    padding: 10px
-    padding-left: navbar-indent
+    padding: 15px 10px 15px navbar-indent
+    &:before
+      border-radius: 0px radius-big radius-big 0px
   +e(link)
-    padding-left: navbar-indent !important
+    padding: 5px 5px 5px navbar-indent
     margin-left: - navbar-indent
   +e(subs-list)
     flex-grow: 1
     overflow: auto
-    &::-webkit-scrollbar
-      width: 4px
-      background: transparent
-      &-thumb
-        background: color-scrollbar
-        border-radius: 10px
+    customScrollbar()
   +e(botton-area)
     gap: 10px;
     display: flex;
@@ -38,25 +36,29 @@
     flex-direction: row
     align-items: center
     justify-content: space-between
+  +e(sub-menu-btn)
+    min-width: auto
+
++b(sub-menu)
   +e(sub-menu)
+    position: fixed
+    bottom: 80px
+    left: 0
     flex-direction: column
     align-items: stretch
     padding: 10px
     gap: 5px
-  +e(sub-menu-btn)
-    min-width: auto
+    width: 20vw
 
 +b(navbar-hr)
-  background-color: rgba(#00103D, 0.10)
   border: none
-  border-radius: 0px 5px 5px 0px
   height: 3px
   margin: 0
   margin-left: - navbar-indent
 
 @media  (max-width: mobile-size)
   +b(navbar)
-    z-index: 999
+    z-index: 10
     +e(back)
       border-radius: 0
       height: 50px
@@ -66,6 +68,7 @@
       flex-direction: row
       flex-wrap: nowrap
       align-items: stretch
+      padding: navbar-indent 15px 10px 15px
       &:before
         border-radius: 0
     +e(logo)
@@ -76,9 +79,8 @@
       margin-right: 6px
       align-self: flex-start
     +e(link)
-      padding: 5px !important
+      padding: navbar-indent 5px 10px 5px
       margin-left: 0
-      padding-top: navbar-indent !important
       margin-top: - navbar-indent
     +e(sub)
       padding: 0px
@@ -86,21 +88,20 @@
       flex-grow: 1
       overflow-y: hidden
       overflow-x: auto
-      &::-webkit-scrollbar
-        width: 4px
-        height: 4px
-        background: transparent
-        &-thumb
-          background: color-scrollbar
-          border-radius: 10px
+      customScrollbar(1px, 1px)
 
   +b(botton-area)
     +e(profile-mini)
       display: none !important
+
+  +b(sub-menu)
     +e(sub-menu)
       position: fixed
+      bottom: auto
+      left: auto
       top: 50px
-      right: 5px
+      right: 0
+      width: 110px
       
   +b(navbar-hr)
     display: none

@@ -61,7 +61,7 @@ export default class EntryPage extends UpgradeViewBase {
     const contentArea = document.createElement('div');
     contentArea.classList.add(
         'entry-page__content-area',
-        'bg_content',
+        'bg_main',
         'font_regular',
     );
     contentArea.innerText =
@@ -69,7 +69,8 @@ export default class EntryPage extends UpgradeViewBase {
       Поддержи любимого автора, покупая его контент
       и подписывайся на его профиль.
       Также ты можешь создать свой профиль
-      и начать зарабатывать на своем контенте!`;
+      и начать зарабатывать на своем контенте! \n
+      © GitHub, Copilot`;
 
     page.appendChild(contentArea);
 

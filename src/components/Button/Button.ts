@@ -6,11 +6,10 @@ import './button.styl';
  */
 export enum ButtonType {
   PRIMARY,
-  SUCCESS,
+  SUB1,
+  SUB2,
   ERROR,
-  WARNING,
   OUTLINE,
-  IMAGE_BG,
   ICON,
   IMAGE_LOADING,
 }
@@ -27,11 +26,10 @@ interface SimpleButtonOptions {
 interface TextButtonOptions {
   viewType:
     | ButtonType.PRIMARY
-    | ButtonType.SUCCESS
+    | ButtonType.SUB1
     | ButtonType.ERROR
-    | ButtonType.WARNING
+    | ButtonType.SUB2
     | ButtonType.OUTLINE
-    | ButtonType.IMAGE_BG
   innerText: string
 }
 
@@ -72,7 +70,6 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
         break;
       case ButtonType.PRIMARY:
       case ButtonType.OUTLINE:
-      case ButtonType.IMAGE_BG:
         if (this.options.innerText === data.inner) return;
         this.options.innerText = data.inner;
         querySelectorWithThrow(this.domElement, '.button__text').textContent =
@@ -100,20 +97,17 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
       case ButtonType.PRIMARY:
         button.classList.add('bg_button_primary');
         break;
-      case ButtonType.SUCCESS:
-        button.classList.add('bg_button_success');
+      case ButtonType.SUB1:
+        button.classList.add('bg_button_sub-1');
         break;
       case ButtonType.ERROR:
         button.classList.add('bg_button_error');
         break;
-      case ButtonType.WARNING:
-        button.classList.add('bg_button_warning');
+      case ButtonType.SUB2:
+        button.classList.add('bg_button_sub-2');
         break;
       case ButtonType.OUTLINE:
         button.classList.add('bg_button_outline');
-        break;
-      case ButtonType.IMAGE_BG:
-        button.classList.add('bg_button_image-bg');
         break;
       case ButtonType.ICON: {
         button.classList.add('bg_button_icon');

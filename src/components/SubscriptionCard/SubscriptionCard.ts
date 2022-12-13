@@ -81,7 +81,7 @@ class SubscriptionCard
     card.classList.add(
         'subscription-card',
         'subscription-card__back',
-        'bg_content',
+        'bg_main',
     );
     card.id = `subscription-card_${this.options.subscriptionID}`;
     card.innerHTML = template({
@@ -144,7 +144,7 @@ class SubscriptionCard
         break;
       case SubscriptionCardStatus.ALREADY_DONATED:
         this.button = new Button(btnArea, {
-          viewType: ButtonType.ERROR,
+          viewType: ButtonType.SUB1,
           actionType: 'button',
           innerText: 'Отписаться',
           clickHandler: () => {
@@ -158,7 +158,7 @@ class SubscriptionCard
         break;
       case SubscriptionCardStatus.AUTHOR:
         this.button = new Button(btnArea, {
-          viewType: ButtonType.WARNING,
+          viewType: ButtonType.SUB2,
           actionType: 'button',
           innerText: 'Изменить',
           clickHandler: () => {

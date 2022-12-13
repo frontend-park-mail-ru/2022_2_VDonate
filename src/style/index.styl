@@ -8,16 +8,9 @@ body
   display: grid
   word-break: break-word
   min-height: 100vh
-  background-repeat: no-repeat
-  background: color-bg
   overflow: overlay
   justify-items: center
-  &::-webkit-scrollbar
-    width: 8px
-    background: transparent
-    &-thumb
-      background: color-scrollbar
-      border-radius: 10px
+  customScrollbar()
 
 body
 html 
@@ -40,7 +33,31 @@ html
   overflow: hidden
 
 .small-screen-notion 
-  display: nones
+  display: none
+  // word-break: normal
+
+.v-donate
+  display: contents
+
+.background
+  background-repeat: no-repeat
+  background: color-bg
+  position: fixed
+  top: 0
+  left: 0
+  width: 100vw
+  height: 100vh
+  z-index: -1
+
+@media (max-width: min-width-site), (max-height: min-height-site)
+  .v-donate 
+    display: none
+  .small-screen-notion 
+    display: flex
+    font-21()
+    color: color-font-light
+    padding: 20vw
+    text-align: center
 
 /* cyrillic */
 @font-face {
@@ -49,6 +66,16 @@ html
   font-weight: 400;
   font-display: swap;
   src: url(@font/rubik-vinyl/cyrillic.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+/* cyrillic */
+@font-face {
+  font-family: 'Bad Script';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(@font/bad-script/cyrillic.woff2) format('woff2');
   unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
 
