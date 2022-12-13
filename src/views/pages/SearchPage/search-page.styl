@@ -7,6 +7,7 @@
   align-items: center
   gap: 20px
   +e(back)
+    margin-left: 20vw
     padding: 20px
     width: 60vw
   +e(title)
@@ -25,3 +26,11 @@
     width: 100%
     text-align: center
     padding: 20px
+
+@media  (max-width: mobile-size)
+  +b(search-page)
+    +e(back)
+      margin-top: 55px
+      margin-left: 0
+      padding: 0
+      width: 95vw

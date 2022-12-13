@@ -138,6 +138,7 @@ export default class ProfilePage extends UpgradeViewBase {
     this.subscriptions.classList.add(
         'profile-page__subscriptions',
         'bg_content',
+        'font_regular',
     );
     content.append(head, this.subscriptions);
   }

@@ -10,7 +10,6 @@ import {
   textCheck,
   tierCheck,
   titleCheck} from '@validation/validation';
-import {PayloadNotice} from '@actions/types/notice';
 import {PayloadPost} from '@actions/types/posts';
 
 
@@ -124,7 +123,7 @@ export const getSubscritions = (id: number) => {
           store.dispatch({
             type: ActionType.NOTICE,
             payload: {
-              message: res.body.message as string,
+              message: 'Ошибка при получении подписок',
             },
           });
         }
@@ -218,7 +217,9 @@ export const editAuthorSubscription = (
         } else {
           store.dispatch({
             type: ActionType.NOTICE,
-            payload: res.body as PayloadNotice,
+            payload: {
+              message: 'Ошибка сервера при изменении подписки',
+            },
           });
         }
       })
@@ -289,7 +290,9 @@ export const createAuthorSubscription = (form: AuthorSubscrptionForm) => {
         } else {
           store.dispatch({
             type: ActionType.NOTICE,
-            payload: res.body as PayloadNotice,
+            payload: {
+              message: ' Ощибка при создании подписки',
+            },
           });
         }
       })
@@ -316,7 +319,9 @@ export const deleteAuthorSubscription = (id: number) => {
         } else {
           store.dispatch({
             type: ActionType.NOTICE,
-            payload: res.body as PayloadNotice,
+            payload: {
+              message: 'Ошибка сервера при удалении подписки',
+            },
           });
         }
       })

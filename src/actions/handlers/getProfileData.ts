@@ -26,6 +26,80 @@ const getAuthorData = async (user: PayloadProfileUser) => {
       posts,
     },
   });
+  switch (getSubscriptionsRes.status) {
+    case 400:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: `Ошибка при создании запроса 
+          на сервер при получении карт подписок`,
+        },
+      });
+      break;
+    case 401:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Ошибка авторизации',
+        },
+      });
+      break;
+    case 403:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Ошибка доступа',
+        },
+      });
+      break;
+    case 500:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Ошибка сервера при получении карт подписок',
+        },
+      });
+      break;
+    default:
+      break;
+  }
+  switch (getPostsRes.status) {
+    case 400:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: `Ошибка при создании запроса 
+          на сервер при получении постов`,
+        },
+      });
+      break;
+    case 401:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Ошибка авторизации',
+        },
+      });
+      break;
+    case 403:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Ошибка доступа',
+        },
+      });
+      break;
+    case 500:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Ошибка сервера при получении постов',
+        },
+      });
+      break;
+    default:
+      break;
+  }
 };
 
 const getDonaterData = async (user: PayloadProfileUser) => {
@@ -41,6 +115,43 @@ const getDonaterData = async (user: PayloadProfileUser) => {
       userSubscriptions: subscriptions,
     },
   });
+  switch (getSubscriptionsRes.status) {
+    case 400:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: `Ошибка при создании запроса 
+          на сервер при получении подписок донатера`,
+        },
+      });
+      break;
+    case 401:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Ошибка авторизации',
+        },
+      });
+      break;
+    case 403:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Ошибка доступа',
+        },
+      });
+      break;
+    case 500:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Ошибка сервера при получении подписок донатера',
+        },
+      });
+      break;
+    default:
+      break;
+  }
 };
 
 export default (id: number): void => {

@@ -21,7 +21,6 @@ export interface PayloadPost {
 export interface PayloadPostUpdate {
   postID: number
   content?: string
-  contentTemplate?: string
   likesNum?: number
   isLiked?: boolean
   commentsNum?: number
