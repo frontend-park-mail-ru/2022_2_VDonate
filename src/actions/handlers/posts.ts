@@ -46,7 +46,7 @@ export const createPost = (content: string, tier: number) => {
                 username: user.username,
               },
               content: res.body.content as string,
-              dateCreated: new Date(Date.now()),
+              dateCreated: res.body.dateCreated as string,
               isAllowed: true,
               isLiked: false,
               likesNum: 0,

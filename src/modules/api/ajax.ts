@@ -56,7 +56,6 @@ const dataToQuery = (data: RequestData): string => {
  * @returns успешное сохранение CSRF токена
  */
 export const saveCSRF = (): boolean => {
-  // document.cookie = `${csrfField}=OjEM2QPpsGd8SjXybAtHwgENY8e3BFFz;`;
   return true;
   // const csrfCookie = document.cookie.match(
   //     new RegExp(`${csrfField}=([\\w-]+)`),

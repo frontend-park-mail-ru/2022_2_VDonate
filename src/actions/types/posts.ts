@@ -8,7 +8,7 @@ export interface PayloadPost {
     username: string
   }
   content: string
-  dateCreated: Date
+  dateCreated: string
   isAllowed: boolean
   isLiked: boolean
   likesNum: number
