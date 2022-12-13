@@ -36,15 +36,17 @@ class PostAction extends ComponentBase<'button', PostActionUpdateContent> {
     if (this.options.reactType === PostActionType.COMMENT) return;
     if (this.options.isActive !== data.isActive) {
       this.options.isActive = data.isActive;
+      const icon =
+        querySelectorWithThrow(this.domElement, '.post-action__icon');
       if (this.options.isActive) {
-        this.domElement.classList.add('reaction_like');
+        icon.classList.add('post-action__icon_liked');
       } else {
-        this.domElement.classList.remove('reaction_like');
+        icon.classList.remove('post-action__icon_liked');
       }
     }
     if (this.options.count !== data.likesNum) {
       this.options.count = data.likesNum;
-      const a = querySelectorWithThrow(this.domElement, '.reaction__text');
+      const a = querySelectorWithThrow(this.domElement, '.post-action__text');
       a.textContent =
         this.options.count.toString();
     }
@@ -54,12 +56,12 @@ class PostAction extends ComponentBase<'button', PostActionUpdateContent> {
     const button = document.createElement('button');
     button.setAttribute('type', 'button');
     button.classList.add(
-        'reaction',
-        'reaction__back',
-        'reaction__back_outline');
+        'post-action',
+        'post-action__back',
+        'bg_button_action');
     button.addEventListener('click', this.options.clickCallback);
     const innerIcon = document.createElement('img');
-    innerIcon.className = 'reaction__icon';
+    innerIcon.className = 'post-action__icon';
     switch (this.options.reactType) {
       case PostActionType.COMMENT:
         innerIcon.src = commentIcon;
@@ -68,7 +70,7 @@ class PostAction extends ComponentBase<'button', PostActionUpdateContent> {
       case PostActionType.LIKE:
         innerIcon.src = likeIcon;
         if (this.options.isActive) {
-          button.classList.add('reaction_like');
+          innerIcon.classList.add('post-action__icon_liked');
         }
         button.appendChild(innerIcon);
         break;
@@ -76,7 +78,7 @@ class PostAction extends ComponentBase<'button', PostActionUpdateContent> {
         break;
     }
     const innerText = document.createElement('span');
-    innerText.classList.add('reaction__text');
+    innerText.classList.add('post-action__text', 'font_regular');
     innerText.textContent = this.options.count.toString();
     button.appendChild(innerText);
 

@@ -1,44 +1,35 @@
 @require '@style/const.styl'
+@require '@style/mixin.styl'
 
-.input-field
++b(input-field)
   display: flex
   flex-direction: column
   gap: 5px
   cursor: pointer
-  &__label
-    font-16()
-    color: color-font-light
-  &__back
+  +m(with-textarea)
+    flex-grow: 1
+  +e(back)
     display: flex
     flex-direction: row
     gap: 5px
-    padding: 10px
-    background: linear-gradient(109.46deg, rgba(201, 201, 201, 0.8) 1.57%, rgba(196, 196, 196, 0.1) 100%), linear-gradient(108.87deg, rgba(255, 255, 255, 0.8) 0.66%, rgba(211, 211, 211, 0.1) 99.48%);
-    opacity: 0.5
-    backdrop-filter: blur(30px)
-    border-radius: radius-min 
-    box-sizing: border-box
-    &_error
-      box-shadow: 0px 0px 20px 0px color-error;
-  &__input
+    padding: 5px
+    +m(error)
+      box-shadow: 0px 0px 10px 0px color-error;
+  +e(input)
     width: 100%
     border: none
     background: none
     outline: none
     flex: 1
-    font-16()
-    color: color-font-dark
+    color: color-font-input
     &::placeholder
-      font-16()
-      color: color-font-light
-    &_image
+      color: color-font-secondary
+    +m(image)
       display: none
-  &_with-textarea
-    flex-grow: 1
-  &__textarea
+  +e(textarea)
     width: 100%
     flex-grow: 1
-    font-16()
-    color: color-font-dark
-  &__icon
-    width: 24px
+    color: color-font-input
+  +e(icon)
+    max-width: icon-size
+    max-height: icon-size

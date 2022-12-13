@@ -24,10 +24,8 @@ const postsReducer: Reducer<Action> =
             post.isLiked = action.payload.isLiked;
             post.likesNum += action.payload.isLiked ? 1 : -1;
           }
-          if (action.payload.content !== undefined &&
-            action.payload.contentTemplate !== undefined) {
+          if (action.payload.content !== undefined) {
             post.content = action.payload.content;
-            post.contentTemplate = action.payload.contentTemplate;
           }
         }
         return state;

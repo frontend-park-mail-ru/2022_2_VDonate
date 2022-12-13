@@ -1,79 +1,104 @@
 @require '@style/const.styl'
+@require '@style/mixin.styl'
 
-.left-navbar
++b(navbar)
   position: fixed
   top: 0
   left: 0
-  &__glass
-    border-radius: 0px 16px 16px 0px
+  +e(back)
+    border-radius: 0px 1rem 1rem 0px
     height: 100vh
     width: 20vw
     max-width: 300px
-    min-width: 150px
-    position: sticky
-    left: 0
-    padding: 0px
-  &__logo
-    padding: 12px 0px 24px 8px
-  &__subs-list
-    padding: 0px 5px
-    max-height: 52vh
-    overflow: auto
-    scrollbar-color: color-font-secondary
-    scrollbar-width: 4px
-    &::-webkit-scrollbar
-      width: 4px;
-      height: 16px;
-      &-thumb
-        background: #CBE0FD
-        border-radius: 16px;
-        box-shadow: inset 2px 2px 2px hsla(0,0%,100%,.25),inset -2px -2px 2px rgba(0,0,0,.25);
-      &-track 
-        background: none
-  &__sub
-    font-16()
-    color: color-font-light
     display: flex
-    flex-direction: row
-    justify-content: center
-    align-items: center
-    padding-left: 16px
-    gap: 8px
-    text-decoration: none
-  &__sub-avatar
-    width: 30px
-  &__down
-    position: fixed;
-    left: 0
-    right: 0
-    bottom: 0
-    align-items: left 
-    padding-bottom: 10px
-    gap: 10px
-
-.down
-  &__profile
-    display: flex
-    flex-direction: row
-    align-items: center
-    padding: 5px 20px 5px 10px
-  &__popup
     flex-direction: column
+    gap: 10px
+    padding: 10px
+    padding-left: left-indent
+  +e(link)
+    padding-left: navbar-left-indent !important
+    margin-left: - navbar-left-indent
+  +e(subs-list)
+    flex-grow: 1
+    overflow: auto
+    &::-webkit-scrollbar
+      width: 4px
+      background: transparent
+      &-thumb
+        background: color-scrollbar
+        border-radius: 10px
+  +e(botton-area)
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+
++b(botton-area)
+  +e(profile)
+    display: flex
+    flex-direction: row
     align-items: center
-    padding: 8px
-    gap: 8px
-  &__popup-btn
-    width: 100%
+    justify-content: space-between
+  +e(sub-menu)
+    flex-direction: column
+    align-items: stretch
+    padding: 10px
+    gap: 5px
+  +e(sub-menu-btn)
     min-width: auto
 
-.navbar-hr
++b(navbar-hr)
   background-color: rgba(#00103D, 0.10)
   border: none
   border-radius: 0px 5px 5px 0px
-  &__navbar-hr
-    height: 7px
-    width: 18vw
-    min-width 135px
-    max-width: 280px
-    border-radius: 0px 5px 5px 0px
-    margin: 16px 20px 16px 0px
+  height: 3px
+  margin: 0
+  margin-left: - navbar-left-indent
+
+@media  (max-width: mobile-size)
+  +b(navbar)
+    z-index: 999
+    +e(back)
+      border-radius: 0
+      height: 50px
+      width: calc(100vw + 4px)
+      max-width: calc(100vw + 4px)
+      display: flex
+      flex-direction: row
+      flex-wrap: nowrap
+      align-items: center
+      &:before
+        border-radius: 0
+    +e(logo)
+      zoom: 0.8
+      display: flex
+      flex-wrap: nowrap
+      word-break: normal
+      margin-right: 6px
+    +e(link)
+      display: flex
+      flex-direction: row
+      align-items: center
+    +e(sub)
+      padding: 0px
+    +e(subs-list)
+      flex-grow: 1
+      overflow-y: hidden
+      overflow-x: auto
+      &::-webkit-scrollbar
+        width: 4px
+        height: 4px
+        background: transparent
+        &-thumb
+          background: color-scrollbar
+          border-radius: 10px
+
+  +b(botton-area)
+    +e(profile-mini)
+      display: none !important
+    +e(sub-menu)
+      position: fixed
+      top: 50px
+      right: 5px
+      
+  +b(navbar-hr)
+    display: none

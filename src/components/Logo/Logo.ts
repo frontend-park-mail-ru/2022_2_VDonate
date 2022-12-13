@@ -15,13 +15,13 @@ export default class Logo extends ComponentBase<'div'> {
     const logo = document.createElement('div');
     logo.classList.add('logo');
     const vd = document.createElement('span');
-    vd.classList.add('logo__text');
+    vd.classList.add('logo__text', 'font_logo');
     vd.innerText = 'ВД';
     const donut = document.createElement('img');
-    donut.classList.add('logo__ico');
+    donut.classList.add('logo__icon');
     donut.src = donutIco;
     const nate = document.createElement('span');
-    nate.classList.add('logo__text');
+    nate.classList.add('logo__text', 'font_logo');
     nate.innerText = 'нате';
     logo.appendChild(vd);
     logo.appendChild(donut);

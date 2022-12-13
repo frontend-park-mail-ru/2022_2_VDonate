@@ -1,6 +1,5 @@
 import Button, {ButtonType} from '@components/Button/Button';
 import editIcon from '@icon/edit.svg';
-import {Glass, GlassType} from '@components/glass/glass';
 import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 import './about.styl';
 import {editAbout} from '@actions/handlers/user';
@@ -13,7 +12,7 @@ interface AboutOptions {
 }
 
 /**
- * Модель поля 'Обо мне'
+ *
  */
 export default
 class About extends ComponentBase<'div', string> {
@@ -25,31 +24,37 @@ class About extends ComponentBase<'div', string> {
   }
 
   protected render(): HTMLDivElement {
-    const about = new Glass(GlassType.mono).element;
-    about.classList.add('about', 'about__about');
+    const about = document.createElement('div');
+    about.classList.add('about', 'about__about', 'bg_content');
 
     const head = document.createElement('div');
-    head.classList.add('about__head');
-    head.innerText = 'Обо мне';
-    const editBtn = new Button(head, {
-      viewType: ButtonType.ICON,
-      actionType: 'button',
-      innerIcon: editIcon,
-      clickHandler: () => {
-        if (this.options.inEditState) {
-          this.options.inEditState = false;
-          this.closeEditor();
-        } else {
-          this.options.inEditState = true;
-          this.openEditor();
-        }
-      },
-    });
-    editBtn.addClassNames('about__head-btn');
+    head.classList.add('about__header');
+
+    const title = document.createElement('span');
+    title.classList.add('about__header-title', 'font_big');
+    title.innerText = 'Обо мне';
+    head.appendChild(title);
+
+    if (this.options.changeable) {
+      new Button(head, {
+        viewType: ButtonType.ICON,
+        actionType: 'button',
+        innerIcon: editIcon,
+        clickHandler: () => {
+          if (this.options.inEditState) {
+            this.options.inEditState = false;
+            this.closeEditor();
+          } else {
+            this.options.inEditState = true;
+            this.openEditor();
+          }
+        },
+      }).addClassNames('about__header-btn');
+    }
     about.appendChild(head);
 
     this.content = document.createElement('div');
-    this.content.classList.add('about__text');
+    this.content.classList.add('about__text', 'font_regular');
     this.content.innerHTML = this.aboutTextHtml;
     about.appendChild(this.content);
 
@@ -69,6 +74,9 @@ class About extends ComponentBase<'div', string> {
 
   private openEditor(): void {
     this.content.setAttribute('contenteditable', 'true');
+    if (this.content.innerText == 'Автор пока о себе ничего не рассказал') {
+      this.content.innerText = '';
+    }
     const form = document.createElement('form');
     form.classList.add('about__form');
     form.addEventListener('submit', (e) => {
@@ -89,7 +97,6 @@ class About extends ComponentBase<'div', string> {
       viewType: ButtonType.OUTLINE,
       innerText: 'Отмена',
       clickHandler: () => {
-        this.content.innerHTML = this.options.aboutTextHtml;
         this.closeEditor();
       },
     });
@@ -99,6 +106,7 @@ class About extends ComponentBase<'div', string> {
 
   private closeEditor(): void {
     this.options.inEditState = false;
+    this.content.innerHTML = this.aboutTextHtml;
     this.content.setAttribute('contenteditable', 'false');
     querySelectorWithThrow(this.domElement, '.about__form').remove();
   }

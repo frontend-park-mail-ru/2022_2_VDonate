@@ -1,27 +1,19 @@
 @require '@style/const.styl'
+@require '@style/mixin.styl'
 
-.posts-container
++b(posts-container)
   display: flex
   flex-direction: column
   gap: 10px
-  &__title-area
-    margin-top: 30px
-    align-self: center
+  +e(title-area)
     display: flex
     flex-direction: row
     align-items: center
+    justify-content: center
     gap: 10px
-  &__title
-    font-21()
-    color: color-font-light
-  &__empty
-    width: calc(50vw)
-    font-16()
+  +e(empty)
     text-align: center
-    color: color-font-light
-    margin-top: 16px
-    padding: 10px
-  &__posts-area
+  +e(posts-area)
     display: flex
     flex-direction: column-reverse
-    gap: 5px
+    gap: 15px

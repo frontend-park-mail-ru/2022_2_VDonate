@@ -5,13 +5,13 @@ import {PayloadGetProfileData} from '@actions/types/getProfileData';
 import About from '@components/About/About';
 import ProfileInfo from '@components/ProfileInfo/ProfileInfo';
 import PostsContainer from '@views/containers/PostsContainer/PostsContainer';
-import {Glass, GlassType} from '@components/glass/glass';
 import SubscriptionLink from '@components/SubscriptionLink/SubscriptionLink';
 import './profile-page.styl';
 import SubscriptionCardsContainer
   from
   '@views/containers/SubscriptionCardsContainer/SubscriptionCardsContainer';
 import UpgradeViewBase from '@app/UpgradeView';
+import {querySelectorWithThrow} from '@flux/types/component';
 
 interface ProfileEditorOptions {
   profileID: number
@@ -24,18 +24,13 @@ interface ProfilePageChildViews {
 }
 
 export default class ProfilePage extends UpgradeViewBase {
-  private authorContent: HTMLDivElement = document.createElement('div');
-  private donaterContent: HTMLDivElement = document.createElement('div');
-  private about!: About;
+  private isAuthor: boolean | undefined;
   private profileInfo!: ProfileInfo;
-  private glass: Glass = new Glass(GlassType.mono);
-  private profileState: PayloadGetProfileData;
-
+  private subscriptions: HTMLDivElement = document.createElement('div');
   private childViews: ProfilePageChildViews = {};
 
   constructor(el: HTMLElement, private options: ProfileEditorOptions) {
     super();
-    this.profileState = store.getState().profile as PayloadGetProfileData;
     this.renderTo(el);
     getProfile(this.options.profileID);
   }
@@ -48,36 +43,31 @@ export default class ProfilePage extends UpgradeViewBase {
       return;
     }
 
-    if (profileNew.user.isAuthor) {
-      this.authorContent.hidden = false;
-      this.donaterContent.hidden = true;
-    } else {
-      this.authorContent.hidden = true;
-      this.donaterContent.hidden = false;
+    // TODO Переделать на 2 отдельные функции рендера в один компонент
+    if (profileNew.user.isAuthor !== this.isAuthor ||
+      typeof this.isAuthor == 'undefined') {
+      this.isAuthor = profileNew.user.isAuthor;
+      this.isAuthor ? this.renderAuthorContent() :
+        this.renderDonaterContent();
     }
-    const profileInfoNew: {
-      isAuthor: boolean
-      avatar: string
-      username: string
-      countSubscriptions: number
-      countDonaters: number
-    } = {
+    this.profileInfo.update({
       isAuthor: profileNew.user.isAuthor,
       avatar: profileNew.user.avatar,
       username: profileNew.user.username,
       countSubscriptions: profileNew.user.countSubscriptions,
       countDonaters: profileNew.user.countDonaters ?? 0,
-    };
-    this.profileInfo.update(profileInfoNew);
-    this.about.update(profileNew.user.about ?? '');
-    if (!profileNew.user.isAuthor) {
+    });
+    if (!this.isAuthor) {
       if (!profileNew.userSubscriptions ||
-          profileNew.userSubscriptions.length === 0) {
-        this.glass.element.innerHTML = 'Донатер пока никого не поддерживает';
+        profileNew.userSubscriptions.length === 0) {
+        this.subscriptions.innerHTML = this.options.changeable ?
+          `Вы пока никого не поддерживаете<br> <br>
+          Попробуйте найти интересующих Вас авторов на странице поиска` :
+          'Донатер пока никого не поддерживает';
       } else {
-        this.glass.element.innerHTML = '';
+        this.subscriptions.innerHTML = '';
         profileNew.userSubscriptions.forEach((sub, idx, arr) => {
-          new SubscriptionLink(this.glass.element, {
+          new SubscriptionLink(this.subscriptions, {
             id: sub.authorID,
             imgPath: sub.authorAvatar,
             username: sub.authorName,
@@ -92,51 +82,64 @@ export default class ProfilePage extends UpgradeViewBase {
   protected render(): HTMLDivElement {
     const page = document.createElement('div');
     page.classList.add('profile-page');
-    this.authorContent.classList.add('profile-page__content');
+    const profileState = store.getState().profile as PayloadGetProfileData;
     this.profileInfo = new ProfileInfo(page, {
-      avatar: this.profileState.user.avatar,
-      countSubscriptions: this.profileState.user.countSubscriptions,
-      isAuthor: this.profileState.user.isAuthor,
-      username: this.profileState.user.username,
-      countDonaters: this.profileState.user.countDonaters,
+      avatar: profileState.user.avatar,
+      countSubscriptions: profileState.user.countSubscriptions,
+      isAuthor: profileState.user.isAuthor,
+      username: profileState.user.username,
+      countDonaters: profileState.user.countDonaters,
       id: this.options.profileID,
       changeable: this.options.changeable,
     });
-
-    this.childViews.subscriptionCardsContainer =
-      new SubscriptionCardsContainer(this.authorContent, {
-        changeable: this.options.changeable,
-      });
-
-    this.about = new About(this.authorContent, {
-      aboutTextHtml: 'Пользователь пока ничего о себе не написал',
-      id: this.options.profileID,
-      changeable: this.options.changeable,
-      inEditState: false,
-    });
-    const user = store.getState().user as PayloadUser;
-    this.childViews.postContainer = new PostsContainer(this.authorContent, {
-      withCreateBtn: this.options.changeable && user.isAuthor,
-      textWhenEmpty: this.options.changeable && user.isAuthor ?
-      `Тут будут Ваши посты\n
-        Начните радовать своих донатеров новым контентом уже сейчас` :
-        `Автор пока что не создал ни одного поста`,
-    });
-    this.donaterContent.classList.add('profile-page__content');
-    const head = document.createElement('div');
-    head.classList.add('profile-page__head');
-    head.innerText = 'Подписки';
-    this.glass.element.classList.add('profile-page__glass');
-    this.glass.element.innerHTML = 'Донатер пока никого не поддерживает';
-    this.donaterContent.append(head, this.glass.element);
-    page.append(this.authorContent, this.donaterContent);
-    this.authorContent.hidden = true;
-    this.donaterContent.hidden = true;
+    const content = document.createElement('div');
+    content.classList.add('profile-page__content');
+    page.appendChild(content);
     return page;
   }
 
   protected onErase(): void {
     this.childViews.postContainer?.erase();
     this.childViews.subscriptionCardsContainer?.erase();
+  }
+
+  private renderAuthorContent() {
+    const content =
+        querySelectorWithThrow(this.domElement, '.profile-page__content');
+    content.innerHTML = '';
+    this.childViews.subscriptionCardsContainer =
+      new SubscriptionCardsContainer(content, {
+        changeable: this.options.changeable,
+      });
+
+    new About(content, {
+      aboutTextHtml: 'Пользователь пока ничего о себе не написал',
+      id: this.options.profileID,
+      changeable: this.options.changeable,
+      inEditState: false,
+    });
+    const user = store.getState().user as PayloadUser;
+    this.childViews.postContainer = new PostsContainer(content, {
+      withCreateBtn: this.options.changeable && user.isAuthor,
+      textWhenEmpty: this.options.changeable && user.isAuthor ?
+      `Тут будут Ваши посты\n
+        Начните радовать своих донатеров новым контентом уже сейчас` :
+        `Автор пока что не создал ни одного поста`,
+    });
+  }
+
+  private renderDonaterContent(): void {
+    const content =
+        querySelectorWithThrow(this.domElement, '.profile-page__content');
+    content.innerHTML = '';
+    const head = document.createElement('div');
+    head.classList.add('profile-page__header', 'font_big');
+    head.innerText = 'Подписки';
+    this.subscriptions.classList.add(
+        'profile-page__subscriptions',
+        'bg_content',
+        'font_regular',
+    );
+    content.append(head, this.subscriptions);
   }
 }

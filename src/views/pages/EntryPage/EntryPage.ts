@@ -54,11 +54,23 @@ export default class EntryPage extends UpgradeViewBase {
 
   protected render(): HTMLDivElement {
     const page = document.createElement('div');
-    page.className = 'entry-page entry-page__entry-page';
+    page.className = 'entry-page';
+
+    new Logo(page).addClassNames('entry-page__logo');
 
     const contentArea = document.createElement('div');
-    contentArea.className = 'entry-page__content-area';
-    new Logo(contentArea).addClassNames('entry-page__logo');
+    contentArea.classList.add(
+        'entry-page__content-area',
+        'bg_content',
+        'font_regular',
+    );
+    contentArea.innerText =
+      `ВДонате - сервис для монетизации цифрового контента.
+      Поддержи любимого автора, покупая его контент
+      и подписывайся на его профиль.
+      Также ты можешь создать свой профиль
+      и начать зарабатывать на своем контенте!`;
+
     page.appendChild(contentArea);
 
     const formArea = document.createElement('div');

@@ -6,8 +6,11 @@ import './button.styl';
  */
 export enum ButtonType {
   PRIMARY,
+  SUCCESS,
+  ERROR,
+  WARNING,
   OUTLINE,
-  FINGERS,
+  IMAGE_BG,
   ICON,
   IMAGE_LOADING,
 }
@@ -24,8 +27,11 @@ interface SimpleButtonOptions {
 interface TextButtonOptions {
   viewType:
     | ButtonType.PRIMARY
+    | ButtonType.SUCCESS
+    | ButtonType.ERROR
+    | ButtonType.WARNING
     | ButtonType.OUTLINE
-    | ButtonType.FINGERS
+    | ButtonType.IMAGE_BG
   innerText: string
 }
 
@@ -66,7 +72,7 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
         break;
       case ButtonType.PRIMARY:
       case ButtonType.OUTLINE:
-      case ButtonType.FINGERS:
+      case ButtonType.IMAGE_BG:
         if (this.options.innerText === data.inner) return;
         this.options.innerText = data.inner;
         querySelectorWithThrow(this.domElement, '.button__text').textContent =
@@ -92,16 +98,25 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
 
     switch (this.options.viewType) {
       case ButtonType.PRIMARY:
-        button.classList.add('button__back_style_primary');
+        button.classList.add('bg_button_primary');
+        break;
+      case ButtonType.SUCCESS:
+        button.classList.add('bg_button_success');
+        break;
+      case ButtonType.ERROR:
+        button.classList.add('bg_button_error');
+        break;
+      case ButtonType.WARNING:
+        button.classList.add('bg_button_warning');
         break;
       case ButtonType.OUTLINE:
-        button.classList.add('button__back_style_outline');
+        button.classList.add('bg_button_outline');
         break;
-      case ButtonType.FINGERS:
-        button.classList.add('button__back_style_fingers');
+      case ButtonType.IMAGE_BG:
+        button.classList.add('bg_button_image-bg');
         break;
       case ButtonType.ICON: {
-        button.classList.add('button__back_style_icon');
+        button.classList.add('bg_button_icon');
         const innerIcon = document.createElement('img');
         innerIcon.className = 'button__icon';
         innerIcon.src = this.options.innerIcon;
@@ -109,7 +124,7 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
         return button;
       }
       case ButtonType.IMAGE_LOADING: {
-        button.classList.add('button__back_style_icon');
+        button.classList.add('bg_button_icon');
         const innerIcon = document.createElement('img');
         innerIcon.className = 'button__icon';
         innerIcon.src = this.options.innerIcon;
@@ -136,7 +151,7 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
     }
 
     const innerText = document.createElement('span');
-    innerText.classList.add('button__text');
+    innerText.classList.add('button__text', 'font_regular');
     innerText.textContent = this.options.innerText;
     button.appendChild(innerText);
 

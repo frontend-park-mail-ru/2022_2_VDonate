@@ -7,6 +7,7 @@ import ProfileEditor from '@components/Editor/ProfileEditor';
 import SubscriptionEditor from '@components/Editor/SubscriptionEditor';
 import PayEditor from '@components/Editor/PayEditor';
 import UpgradeViewBase from '@app/UpgradeView';
+import './editor-container.styl';
 
 /** */
 export default
@@ -63,10 +64,14 @@ class EditorContainer
   }
 
   private displayEditor(newEditor: PayloadEditor) {
+    document.body.classList
+        .add('overflow-hidden');
     switch (newEditor.type) {
       case undefined:
         this.currentEditor?.remove();
         this.currentEditor = undefined;
+        document.body.classList
+            .remove('overflow-hidden');
         break;
       case EditorType.PROFILE: {
         this.editorType = EditorType.PROFILE;

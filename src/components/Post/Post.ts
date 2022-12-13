@@ -104,7 +104,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
 
   protected render(): HTMLDivElement {
     const post = document.createElement('div');
-    post.classList.add('post', 'post__back');
+    post.classList.add('post', 'post__back', 'bg_content');
     post.innerHTML = templatePost({
       username: this.options.author.username,
       date: this.options.dateCreated,
@@ -286,7 +286,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     if (this.options.postID !== -1) {
       const delBtn = new Button(formBtns, {
         actionType: 'button',
-        viewType: ButtonType.OUTLINE,
+        viewType: ButtonType.ERROR,
         innerText: 'Удалить',
         clickHandler: () => {
           deletePost(this.options.postID);

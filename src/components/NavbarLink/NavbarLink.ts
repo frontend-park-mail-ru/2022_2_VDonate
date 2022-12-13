@@ -23,9 +23,11 @@ class NavbarLink
     if (this.options.isActive === isActive) return;
     this.options.isActive = isActive;
     if (this.options.isActive) {
-      this.domElement.classList.add('navbar-unit__navbar-unit_choosen');
+      this.domElement.classList.add('bg_navbar-link_enable');
+      this.domElement.classList.remove('bg_navbar-link_disable');
     } else {
-      this.domElement.classList.remove('navbar-unit__navbar-unit_choosen');
+      this.domElement.classList.add('bg_navbar-link_disable');
+      this.domElement.classList.remove('bg_navbar-link_enable');
     }
   }
 
@@ -33,16 +35,16 @@ class NavbarLink
     const link = document.createElement('a');
     link.setAttribute('href', this.options.href);
     link.setAttribute('data-link', '');
-    link.classList.add('navbar-unit', 'navbar-unit__navbar-unit');
+    link.classList.add('navbar-link', 'navbar-link__back');
 
     const ico = document.createElement('img');
-    ico.classList.add('navbar-unit__icon');
+    ico.classList.add('navbar-link__icon');
     ico.src = this.options.icon;
-    const context = document.createElement('div');
-    context.classList.add('navbar-unit__context');
-    context.innerText = this.options.text;
+    const text = document.createElement('div');
+    text.classList.add('navbar-link__text', 'font_regular');
+    text.innerText = this.options.text;
     link.appendChild(ico);
-    link.appendChild(context);
+    link.appendChild(text);
 
     return link;
   }

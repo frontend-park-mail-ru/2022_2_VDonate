@@ -57,7 +57,7 @@ class SubscriptionEditor
 
   private createForm(): HTMLFormElement {
     const form = document.createElement('form');
-    form.className = 'editor__form';
+    form.classList.add('editor__form', 'bg_editor');
     form.insertAdjacentHTML(
         'afterbegin',
         template({
@@ -84,7 +84,7 @@ class SubscriptionEditor
   private addInputs(form: HTMLFormElement) {
     const inputsArea = querySelectorWithThrow(form, '.editor__inputs');
     const inputNumbers = document.createElement('div');
-    inputNumbers.classList.add('editor__form-buttons');
+    inputNumbers.classList.add('row-inputs');
     this.inputs
         .set('title', new InputField(inputsArea, {
           kind: InputType.text,
@@ -110,6 +110,8 @@ class SubscriptionEditor
           value: this.options?.tier.toString(),
           displayError: false,
         }));
+    this.inputs.get('price')?.addClassNames('row-inputs__input');
+    this.inputs.get('tier')?.addClassNames('row-inputs__input');
     inputsArea.appendChild(inputNumbers);
     this.inputs
         .set('text', new InputField(inputsArea, {
@@ -135,27 +137,20 @@ class SubscriptionEditor
       viewType: ButtonType.PRIMARY,
       innerText: this.options ? 'Изменить' : 'Создать',
       actionType: 'submit',
-    });
+    }).addClassNames('btn-area__btn');
     new Button(btnArea, {
       viewType: ButtonType.OUTLINE,
       innerText: 'Отменить',
       actionType: 'button',
       clickHandler: closeEditor,
-    });
+    }).addClassNames('btn-area__btn');
     if (this.options) {
       new Button(btnArea, {
-        viewType: ButtonType.OUTLINE,
+        viewType: ButtonType.ERROR,
         innerText: 'Удалить',
         actionType: 'button',
         clickHandler: deleteAuthorSubscription.bind(this, this.options.id),
-      });
+      }).addClassNames('btn-area__btn');
     }
   }
-
-  // update(errors: PayloadAuthorSubscriptionErrors): void {
-  //   this.inputs[0].update(Boolean(errors.title));
-  //   this.inputs[1].update(Boolean(errors.price));
-  //   this.inputs[2].update(Boolean(errors.tier));
-  //   this.inputs[3].update(Boolean(errors.text));
-  // }
 }

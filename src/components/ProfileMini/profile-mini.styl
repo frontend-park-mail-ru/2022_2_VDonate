@@ -1,20 +1,22 @@
 @require '@style/const.styl'
+@require '@style/mixin.styl'
 
-.profile-mini
++b(profile-mini)
   text-decoration: none
   display: flex
   align-items: center
-  flex-grow: 1;
   justify-content: flex-start;
   gap: 10px
   flex-wrap: wrap;
-  &__avatar
-    &_size
-      &_big
+  +e(avatar)
+    +m(size)
+      +m(big)
         width: 50px
-      &_small
+      +m(small)
         width: 30px
-  &__username
-    font-16()
-    color: color-font-light
-    
+
+
+@media  (max-width: mobile-size)
+  +b(profile-mini)
+    flex-wrap: nowrap
+    word-break: normal
