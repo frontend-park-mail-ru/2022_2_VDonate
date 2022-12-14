@@ -24,7 +24,7 @@ export default class FeedPage extends UpgradeViewBase {
       textWhenEmpty:
       `Тут будут посты интересующих Вас авторов\n
         Перейдите на страницу поиска и начните 
-        поддерживать интересующих авторов уже сейчас.`,
+        поддерживать авторов уже сейчас.`,
     });
     this.postsContainer.addClassNames('feed-page__content-area');
 
