@@ -5,6 +5,7 @@ import ComponentBase from '@flux/types/component';
 import {SubscriptionCardStatus}
   from '@components/SubscriptionCard/SubscriptionCard';
 import {closeEditor} from '@actions/handlers/editor';
+import closeIcon from '@icon/close.svg';
 
 interface PayEditorOptions {
   authorID: number,
@@ -26,13 +27,13 @@ class PayEditor extends ComponentBase<'div'> {
     const editor = document.createElement('div');
     editor.classList.add('editor', 'editor__back');
 
-    const popupGlass = document.createElement('div');
-    popupGlass.classList.add('editor__form', 'bg_main');
-    editor.appendChild(popupGlass);
+    const popup = document.createElement('div');
+    popup.classList.add('editor__form', 'bg_main');
+    editor.appendChild(popup);
 
     const text = document.createElement('span');
-    text.classList.add('editor_header', 'font_big');
-    popupGlass.appendChild(text);
+    text.classList.add('editor__header', 'font_big');
+    popup.appendChild(text);
 
     const btnArea = document.createElement('div');
     btnArea.classList.add('editor__btn-area', 'btn-area');
@@ -73,10 +74,16 @@ class PayEditor extends ComponentBase<'div'> {
       viewType: ButtonType.OUTLINE,
       innerText: 'Отмена',
       clickHandler: closeEditor,
-
     }).addClassNames('btn-area__btn');
 
-    popupGlass.appendChild(btnArea);
+    new Button(popup, {
+      viewType: ButtonType.ICON,
+      actionType: 'button',
+      innerIcon: closeIcon,
+      clickHandler: closeEditor,
+    }).addClassNames('editor__close-btn');
+
+    popup.appendChild(btnArea);
 
     return editor;
   }
