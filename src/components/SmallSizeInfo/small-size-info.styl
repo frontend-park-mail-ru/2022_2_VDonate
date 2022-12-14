@@ -1,0 +1,17 @@
+@require '@style/const.styl'
+@require '@style/mixin.styl'
+
++b(small-size-info)
+  display: none
+
+@media (max-width: min-width-site), (max-height: min-height-site)
+  +b(small-size-info)
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: flex-start
+    gap: 15px
+    +e(text)
+      text-align: center
+    +e(img)
+      width: 50vw
