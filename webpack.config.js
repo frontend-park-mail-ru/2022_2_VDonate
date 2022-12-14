@@ -9,9 +9,10 @@ module.exports = {
   context: path.resolve(__dirname, 'src'),
   entry: {
     main: './index.ts',
+    sw: './sw.js',
   },
   output: {
-    filename: '[name].[contenthash].js',
+    filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
   },
   resolve: {
