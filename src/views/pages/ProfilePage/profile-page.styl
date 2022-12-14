@@ -9,15 +9,22 @@
     width: 60vw
     display: flex
     flex-direction: column
+    align-items: center
     gap: 20px
     padding: 20px
   +e(header)
     text-align: center
   +e(subscriptions)
+    display: flex
+    flex-direction: column
+    gap: 20px
     text-align: center
     padding: 20px
+    width: 80%
 
 @media  (max-width: mobile-size)
   +b(profile-page)
     +e(content)
       width: 100vw
+    +e(subscriptions)
+      width: 100%
