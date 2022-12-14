@@ -4,6 +4,7 @@ import Button, {ButtonType} from '@components/Button/Button';
 import InputField, {InputType} from '@components/InputField/InputField';
 import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 import template from './editor.hbs';
+import closeIcon from '@icon/close.svg';
 import './editor.styl';
 
 interface ProfileEditorOptions {
@@ -124,5 +125,12 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
       actionType: 'button',
       clickHandler: closeEditor,
     }).addClassNames('btn-area__btn');
+
+    new Button(form, {
+      viewType: ButtonType.ICON,
+      actionType: 'button',
+      innerIcon: closeIcon,
+      clickHandler: closeEditor,
+    }).addClassNames('editor__close-btn');
   }
 }

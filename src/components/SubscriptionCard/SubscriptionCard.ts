@@ -134,7 +134,7 @@ class SubscriptionCard
       domElement: HTMLElement = this.domElement,
   ) {
     const btnArea =
-      querySelectorWithThrow(domElement, '.subscription-card__button');
+      querySelectorWithThrow(domElement, '.subscription-card__btn-area');
     switch (status) {
       case SubscriptionCardStatus.CAN_DONATE:
         this.button = new Button(btnArea, {
