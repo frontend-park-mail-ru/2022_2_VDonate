@@ -1,15 +1,12 @@
+import {SubscriptionCardStatus}
+  from '@components/SubscriptionCard/SubscriptionCard';
 import {IAction} from '@flux/types/actions';
 import {ActionType} from './action';
 
 export enum EditorType {
-  POST,
   PROFILE,
   SUBSCRIBTION,
-}
-
-interface PayloadPostEditor {
-  type: EditorType.POST
-  id?: number
+  PAY,
 }
 
 interface PayloadProfileEditor {
@@ -21,10 +18,17 @@ interface PayloadSubscribtionEditor {
   id?: number
 }
 
+interface PayloadPayEditor {
+  type: EditorType.PAY
+  authorID: number,
+  authorSubscriptionID: number,
+  currentCardStatus: SubscriptionCardStatus,
+}
+
 type PayloadOpenEditor =
-  | PayloadPostEditor
   | PayloadProfileEditor
-  | PayloadSubscribtionEditor;
+  | PayloadSubscribtionEditor
+  | PayloadPayEditor;
 
 type PayloadCloseEditor = Record<string, never>;
 

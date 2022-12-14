@@ -1,36 +1,13 @@
 @require '@style/const.styl'
+@require '@style/mixin.styl'
 
-.reaction
-  &__back
++b(post-action)
+  +e(back)
     display: flex
     gap: 4px
-    box-sizing: border-box
-    border: none
-    border-radius: 20px
     padding: 4px 16px
-    position: relative
-    &:before
-      content: ""
-      position: absolute
-      inset: 0
-      border-radius: 20px
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
-      -webkit-mask-composite: xor
-    &_outline
-      background: none
-      &:before 
-        padding: 2px
-        background:linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%)
-      &:hover
-        &:before
-          background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%)
-      &:active
-        &:before
-          background: linear-gradient(180deg, rgba(44, 45, 46, 0.2) 0%, rgba(255, 255, 255, 0.2) 100%)
-  &__text
-    font-21()
-    color: color-primary-light-3
-  &__icon
-    width: 24px
-  &_like
-    filter: invert(100%) sepia(85%) saturate(5703%) hue-rotate(341deg) brightness(90%) contrast(106%);
+    align-items: center
+  +e(icon)
+    width: 16px
+    +m(liked)
+      filter: invert(100%) sepia(85%) saturate(5703%) hue-rotate(341deg) brightness(90%) contrast(106%);

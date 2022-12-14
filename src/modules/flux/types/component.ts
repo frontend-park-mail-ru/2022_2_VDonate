@@ -3,7 +3,7 @@ abstract class ComponentBase
   <Tag extends keyof HTMLElementTagNameMap, Data = never> {
   protected domElement!: HTMLElementTagNameMap[Tag];
 
-  renderTo(element: HTMLElement) {
+  protected renderTo(element: HTMLElement) {
     this.domElement = this.render();
     element.appendChild(this.domElement);
   }

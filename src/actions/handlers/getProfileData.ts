@@ -6,14 +6,14 @@ import {
   PayloadProfileUser} from '@actions/types/getProfileData';
 import {PayloadPost} from '@actions/types/posts';
 import {Pages} from '@configs/router';
-import {Subscription} from '@actions/types/subscribe';
+import {PayloadSubscription} from '@actions/types/subscribe';
 
 
 const getAuthorData = async (user: PayloadProfileUser) => {
   const getSubscriptionsRes = await api.getAuthorSubscriptions(user.id);
   const getPostsRes = await api.getAuthorPosts(user.id);
   const authorSubscriptions = getSubscriptionsRes.ok ?
-    getSubscriptionsRes.body as Subscription[] : undefined;
+    getSubscriptionsRes.body as PayloadSubscription[] : undefined;
 
   const posts = getPostsRes.ok ?
     getPostsRes.body as PayloadPost[] : undefined;
@@ -26,21 +26,132 @@ const getAuthorData = async (user: PayloadProfileUser) => {
       posts,
     },
   });
+  switch (getSubscriptionsRes.status) {
+    case 400:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: `Ошибка при создании запроса 
+          на сервер при получении карт подписок`,
+        },
+      });
+      break;
+    case 401:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Ошибка авторизации',
+        },
+      });
+      break;
+    case 403:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Ошибка доступа',
+        },
+      });
+      break;
+    case 500:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Ошибка сервера при получении карт подписок',
+        },
+      });
+      break;
+    default:
+      break;
+  }
+  switch (getPostsRes.status) {
+    case 400:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: `Ошибка при создании запроса 
+          на сервер при получении постов`,
+        },
+      });
+      break;
+    case 401:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Ошибка авторизации',
+        },
+      });
+      break;
+    case 403:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Ошибка доступа',
+        },
+      });
+      break;
+    case 500:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Ошибка сервера при получении постов',
+        },
+      });
+      break;
+    default:
+      break;
+  }
 };
 
 const getDonaterData = async (user: PayloadProfileUser) => {
   const getSubscriptionsRes = await api.getSubscriptions(user.id);
   const subscriptions = getSubscriptionsRes.ok ?
-    getSubscriptionsRes.body as Subscription[] :
+    getSubscriptionsRes.body as PayloadSubscription[] :
     undefined;
 
   store.dispatch({
     type: ActionType.GETPROFILEDATA,
     payload: {
       user,
-      subscriptions,
+      userSubscriptions: subscriptions,
     },
   });
+  switch (getSubscriptionsRes.status) {
+    case 400:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: `Ошибка при создании запроса 
+          на сервер при получении подписок донатера`,
+        },
+      });
+      break;
+    case 401:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Ошибка авторизации',
+        },
+      });
+      break;
+    case 403:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Ошибка доступа',
+        },
+      });
+      break;
+    case 500:
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Ошибка сервера при получении подписок донатера',
+        },
+      });
+      break;
+    default:
+      break;
+  }
 };
 
 export default (id: number): void => {
@@ -55,7 +166,7 @@ export default (id: number): void => {
             countSubscriptions: res.body.countSubscriptions as number,
           };
           if (user.isAuthor) {
-            user.countSubscribers = res.body.countSubscribers as number;
+            user.countDonaters = res.body.countSubscribers as number;
             user.about = res.body.about as string;
             return getAuthorData(user);
           } else {
@@ -67,6 +178,7 @@ export default (id: number): void => {
               type: ActionType.ROUTING,
               payload: {
                 type: Pages.NOT_FOUND,
+                options: {},
               },
             });
           }
@@ -84,7 +196,7 @@ export default (id: number): void => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
         return;

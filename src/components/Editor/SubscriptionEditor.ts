@@ -19,10 +19,10 @@ interface SubscriptionEditorOptions {
 }
 
 interface SubscriptionEditorInputsErrors {
-  title?: boolean
-  price?: boolean
-  tier?: boolean
-  text?: boolean
+  title: boolean
+  price: boolean
+  tier: boolean
+  text: boolean
 }
 
 /** */
@@ -57,7 +57,7 @@ class SubscriptionEditor
 
   private createForm(): HTMLFormElement {
     const form = document.createElement('form');
-    form.className = 'editor__form';
+    form.classList.add('editor__form', 'bg_editor');
     form.insertAdjacentHTML(
         'afterbegin',
         template({
@@ -83,7 +83,8 @@ class SubscriptionEditor
 
   private addInputs(form: HTMLFormElement) {
     const inputsArea = querySelectorWithThrow(form, '.editor__inputs');
-
+    const inputNumbers = document.createElement('div');
+    inputNumbers.classList.add('row-inputs');
     this.inputs
         .set('title', new InputField(inputsArea, {
           kind: InputType.text,
@@ -91,32 +92,41 @@ class SubscriptionEditor
           name: 'title',
           placeholder: 'Придумайте заголовок для подписки',
           value: this.options?.title,
+          displayError: false,
         }))
-        .set('price', new InputField(inputsArea, {
-          kind: InputType.text,
+        .set('price', new InputField(inputNumbers, {
+          kind: InputType.number,
           label: 'Стоимость',
           name: 'price',
           placeholder: 'Введите стоимость подписки',
           value: this.options?.price.toString(),
+          displayError: false,
         }))
-        .set('tier', new InputField(inputsArea, {
-          kind: InputType.text,
+        .set('tier', new InputField(inputNumbers, {
+          kind: InputType.number,
           label: 'Уровень',
           name: 'tier',
           placeholder: 'Введите уровень подписки',
           value: this.options?.tier.toString(),
-        }))
+          displayError: false,
+        }));
+    this.inputs.get('price')?.addClassNames('row-inputs__input');
+    this.inputs.get('tier')?.addClassNames('row-inputs__input');
+    inputsArea.appendChild(inputNumbers);
+    this.inputs
         .set('text', new InputField(inputsArea, {
           kind: InputType.textarea,
           label: 'Текст',
           name: 'text',
           placeholder: 'Замотивируйте своих донатеров',
           value: this.options?.text,
+          displayError: false,
         }))
         .set('file', new InputField(inputsArea, {
-          kind: InputType.file,
+          kind: InputType.image,
           label: 'Загрузите картинку (.jpg)',
           name: 'file',
+          displayError: false,
         }));
   }
 
@@ -127,27 +137,20 @@ class SubscriptionEditor
       viewType: ButtonType.PRIMARY,
       innerText: this.options ? 'Изменить' : 'Создать',
       actionType: 'submit',
-    });
+    }).addClassNames('btn-area__btn');
     new Button(btnArea, {
       viewType: ButtonType.OUTLINE,
       innerText: 'Отменить',
       actionType: 'button',
-      clickCallback: closeEditor,
-    });
+      clickHandler: closeEditor,
+    }).addClassNames('btn-area__btn');
     if (this.options) {
       new Button(btnArea, {
-        viewType: ButtonType.OUTLINE,
+        viewType: ButtonType.ERROR,
         innerText: 'Удалить',
         actionType: 'button',
-        clickCallback: deleteAuthorSubscription.bind(this, this.options.id),
-      });
+        clickHandler: deleteAuthorSubscription.bind(this, this.options.id),
+      }).addClassNames('btn-area__btn');
     }
   }
-
-  // update(errors: PayloadAuthorSubscriptionErrors): void {
-  //   this.inputs[0].update(Boolean(errors.title));
-  //   this.inputs[1].update(Boolean(errors.price));
-  //   this.inputs[2].update(Boolean(errors.tier));
-  //   this.inputs[3].update(Boolean(errors.text));
-  // }
 }

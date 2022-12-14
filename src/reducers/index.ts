@@ -7,18 +7,18 @@ import editorReducer from './editor';
 import postsReducer from './posts';
 import profileReducer from './profile';
 import userReducer from './user';
-import UserSubscribersReducer from './userSubscribers';
+import userSubscriptionsReducer from './userSubscriptions';
 import authorReducer from './authors';
 import imageReducer from './image';
 
 export default combineReducers<Action>({
   location: locationReducer,
   user: userReducer,
+  userSubscriptions: userSubscriptionsReducer,
   profile: profileReducer,
   formErrors: formErrorsReducer,
   posts: postsReducer,
   notice: noticeReducer,
-  userSubscribers: UserSubscribersReducer,
   editor: editorReducer,
   authors: authorReducer,
   image: imageReducer,

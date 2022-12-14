@@ -1,21 +1,18 @@
 @require '@style/const.styl'
+@require '@style/mixin.styl'
 
-.subscriptions-item
++b(subscription-link)
   display: flex
   flex-direction: row
   text-decoration: none
   align-items: center
-  border-bottom: solid 1px rgba(255, 255, 255, 0.06)
-  &__subscriptions-item
+  gap: 10px
+  +e(back)
     padding: 5px
-  &__img
-    width: 50px
+    &_with-border
+      border-bottom: solid 1px rgba(255, 255, 255, 0.06)
+  +e(img)
     height: 50px
-  &__username
-    font-16()
-    color: color-font-light
-    margin-left: 20px
-  &__tier
-    font-16()
-    color: color-font-light
-    margin-left: auto
+  +e(tier)
+    flex-grow: 1
+    text-align: end

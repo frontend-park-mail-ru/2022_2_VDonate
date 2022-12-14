@@ -7,6 +7,7 @@ interface SubscriptionLinkOptions {
   imgPath: string
   username: string
   tier: string
+  isLast: boolean
 }
 
 /**
@@ -24,19 +25,22 @@ class SubscriptionLink extends ComponentBase<'a'> {
     subscription.setAttribute('href', `/profile?id=${this.options.id}`);
     subscription.setAttribute('data-link', '');
     subscription.classList.
-        add('subscriptions-item', 'subscriptions-item__subscriptions-item');
-
+        add('subscription-link', 'subscription-link__back');
+    if (!this.options.isLast) {
+      subscription.classList.
+          add('subscription-link__back_with-border');
+    }
     const avatar = new Avatar(subscription, {
-      image: this.options.imgPath,
+      imgPath: this.options.imgPath,
       viewType: AvatarType.AUTHOR,
     });
-    avatar.addClassNames('subscriptions-item__img');
+    avatar.addClassNames('subscription-link__img');
 
     const user = document.createElement('div');
-    user.classList.add('subscriptions-item__username');
+    user.classList.add('subscription-link__username', 'font_regular');
     user.innerText = this.options.username;
     const lvl = document.createElement('div');
-    lvl.classList.add('subscriptions-item__tier');
+    lvl.classList.add('subscription-link__tier', 'font_regular');
     lvl.innerText = this.options.tier;
 
     subscription.append(user, lvl);

@@ -24,10 +24,8 @@ const postsReducer: Reducer<Action> =
             post.isLiked = action.payload.isLiked;
             post.likesNum += action.payload.isLiked ? 1 : -1;
           }
-          if (action.payload.content !== undefined &&
-            action.payload.contentTemplate !== undefined) {
+          if (action.payload.content !== undefined) {
             post.content = action.payload.content;
-            post.contentTemplate = action.payload.contentTemplate;
           }
         }
         return state;
@@ -41,7 +39,12 @@ const postsReducer: Reducer<Action> =
         return state;
       case ActionType.SUBSCRIBE:
       case ActionType.UNSUBSCRIBE:
-        return createPostsMap(action.payload.posts ?? []);
+        return createPostsMap(action.payload.posts);
+      case ActionType.ROUTING:
+        if (action.payload.options.samePage) {
+          return state;
+        }
+        return new Map<number, PayloadPost>();
       default:
         return state;
     }

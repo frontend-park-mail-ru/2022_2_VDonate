@@ -1,6 +1,5 @@
-import {Glass, GlassType} from '@components/glass/glass';
 import Button, {ButtonType} from '@components/Button/Button';
-import './popup.styl';
+import './editor.styl';
 import {subscribe, unsubscribe} from '@actions/handlers/subscribe';
 import ComponentBase from '@flux/types/component';
 import {SubscriptionCardStatus}
@@ -9,7 +8,7 @@ import {SubscriptionCardStatus}
 interface PayEditorOptions {
   authorID: number,
   authorSubscriptionID: number,
-  subType: SubscriptionCardStatus,
+  currentCardStatus: SubscriptionCardStatus,
 }
 
 /**
@@ -24,54 +23,45 @@ class PayEditor extends ComponentBase<'div'> {
 
   protected render(): HTMLDivElement {
     const editor = document.createElement('div');
-    editor.classList.add('sub-popup__back');
+    editor.classList.add('editor', 'editor__back');
 
-    const popupGlass = new Glass(GlassType.lines);
-    popupGlass.element.classList.add('sub-popup__glass');
-    editor.appendChild(popupGlass.element);
+    const popupGlass = document.createElement('div');
+    popupGlass.classList.add('editor__form', 'bg_editor');
+    editor.appendChild(popupGlass);
 
     const text = document.createElement('span');
-    text.classList.add('sub-popup__text');
-    popupGlass.element.appendChild(text);
+    text.classList.add('editor_header', 'font_big');
+    popupGlass.appendChild(text);
 
-    const btnContainer = document.createElement('div');
-    btnContainer.classList.add('sub-popup__btn-container');
+    const btnArea = document.createElement('div');
+    btnArea.classList.add('editor__btn-area', 'btn-area');
 
-    new Button(btnContainer, {
-      actionType: 'button',
-      viewType: ButtonType.OUTLINE,
-      innerText: 'Отмена',
-      clickCallback: () => {
-        this.remove();
-      },
-    });
-
-    switch (this.options.subType) {
-      case SubscriptionCardStatus.DONATER:
-        new Button(btnContainer, {
+    switch (this.options.currentCardStatus) {
+      case SubscriptionCardStatus.CAN_DONATE:
+        new Button(btnArea, {
           actionType: 'button',
           viewType: ButtonType.PRIMARY,
           innerText: 'Задонатить',
-          clickCallback: () => {
+          clickHandler: () => {
             subscribe(this.options.authorID, this.options.authorSubscriptionID);
             this.remove();
           },
-        });
+        }).addClassNames('btn-area__btn');
         text.innerText = 'Вы действительно собиратесь задонатить?';
         break;
-      case SubscriptionCardStatus.OWNER:
-        new Button(btnContainer, {
+      case SubscriptionCardStatus.ALREADY_DONATED:
+        new Button(btnArea, {
           actionType: 'button',
           viewType: ButtonType.PRIMARY,
           innerText: 'Отписаться',
-          clickCallback: () => {
+          clickHandler: () => {
             unsubscribe(
                 this.options.authorID,
                 this.options.authorSubscriptionID,
             );
             this.remove();
           },
-        });
+        }).addClassNames('btn-area__btn');
         text.innerText = 'Вы действительно собиратесь отписаться?';
         break;
       default:
@@ -79,7 +69,16 @@ class PayEditor extends ComponentBase<'div'> {
         break;
     }
 
-    popupGlass.element.appendChild(btnContainer);
+    new Button(btnArea, {
+      actionType: 'button',
+      viewType: ButtonType.OUTLINE,
+      innerText: 'Отмена',
+      clickHandler: () => {
+        this.remove();
+      },
+    }).addClassNames('btn-area__btn');
+
+    popupGlass.appendChild(btnArea);
 
     return editor;
   }

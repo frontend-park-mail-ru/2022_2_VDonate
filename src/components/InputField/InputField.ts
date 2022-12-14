@@ -1,10 +1,12 @@
 import './input-field.styl';
-import templateInput from './input.hbs';
-import templateTextarea from './textarea.hbs';
+import templateInput from './input-field.hbs';
+import templateTextarea from './textarea-input.hbs';
 import userIcon from '@icon/user.svg';
 import emailIcon from '@icon/email.svg';
 import passwordIcon from '@icon/password.svg';
-import ComponentBase from '@flux/types/component';
+import levelsIcon from '@icon/levels.svg';
+
+import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 
 export enum InputType {
   username,
@@ -12,16 +14,18 @@ export enum InputType {
   password,
   text,
   textarea,
-  file,
+  image,
   checkbox,
+  number,
 }
 
 export interface InputOptions {
   kind: InputType
-  label: string
+  label?: string
   name: string
   placeholder?: string
   value?: string
+  displayError: boolean
 }
 
 /**
@@ -34,18 +38,30 @@ class InputField extends ComponentBase<'label', boolean> {
     this.renderTo(element);
   }
 
-  render(): HTMLLabelElement {
+  update(isError: boolean): void {
+    if (this.options.displayError === isError) return;
+    this.options.displayError = isError;
+    const back = querySelectorWithThrow(this.domElement, '.input-field__back');
+    if (this.options.displayError) {
+      back.classList.add('input-field__back_error');
+    } else {
+      back.classList.remove('input-field__back_error');
+    }
+  }
+
+  protected render(): HTMLLabelElement {
     const input = document.createElement('label');
-    input.classList.add('input-field');
+    input.classList.add('input-field', 'input-field__label', 'font_regular');
+    input.innerText = this.options.label ?? '';
+
 
     const templateContext: {
-      label: string
+      label?: string
       name: string
       placeholder?: string
       value?: string
       type?: string
       icon?: string
-      withAccept?: string
     } = {
       ...this.options,
     };
@@ -66,33 +82,46 @@ class InputField extends ComponentBase<'label', boolean> {
       case InputType.text:
         templateContext.type = 'text';
         break;
-      case InputType.file:
+      case InputType.image:
         templateContext.type = 'file';
-        templateContext.withAccept = 'image/jpeg';
         break;
       case InputType.checkbox:
         templateContext.type = 'checkbox';
         break;
       case InputType.textarea:
         input.classList.add('input-field_with-textarea');
-        input.insertAdjacentHTML(
-            'afterbegin',
-            templateTextarea(this.options),
-        );
-        return input;
+        templateContext.type = 'textarea';
+        break;
+      case InputType.number:
+        templateContext.type = 'number';
+        templateContext.icon = levelsIcon;
+        break;
       default: {
         const _exhaustiveCheck: never = this.options.kind;
         return _exhaustiveCheck;
       }
     }
-    input.insertAdjacentHTML('beforeend', templateInput(templateContext));
+
+    if (this.options.kind === InputType.textarea) {
+      input.insertAdjacentHTML('beforeend', templateTextarea(templateContext));
+    } else {
+      input.insertAdjacentHTML('beforeend', templateInput(templateContext));
+    }
+
+    switch (this.options.kind) {
+      case InputType.image: {
+        templateContext.type = 'file';
+        const inputEl =
+          querySelectorWithThrow(
+              input, '.input-field__input',
+          ) as HTMLInputElement;
+        inputEl.accept = 'image/*';
+        break;
+      }
+      default:
+        break;
+    }
 
     return input;
-  }
-
-  update(isError: boolean): void {
-    const back = this.domElement.querySelector('.input-field__back');
-    if (isError) back?.classList.add('input-field__back_error');
-    else back?.classList.remove('input-field__back_error');
   }
 }

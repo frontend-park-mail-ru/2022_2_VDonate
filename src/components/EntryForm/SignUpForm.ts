@@ -21,32 +21,36 @@ const signUpInputs: InputOptions[] = [
     label: 'Почта',
     placeholder: 'Для нашего личного общения',
     name: 'email',
+    displayError: false,
   },
   {
     kind: InputType.username,
     label: 'Псевдоним',
     placeholder: 'Ваше уникальное имя',
     name: 'username',
+    displayError: false,
   },
   {
     kind: InputType.password,
     label: 'Пароль',
     placeholder: 'Мы обещаем не продавать его',
     name: 'password',
+    displayError: false,
   },
   {
     kind: InputType.password,
     label: 'Повторите пароль',
     placeholder: 'Чтобы точно',
     name: 'repeatPassword',
+    displayError: false,
   },
 ];
 
 interface SignUpFormUpdateErrors {
-  username?: boolean
-  email?: boolean
-  password?: boolean
-  repeatPassword?: boolean
+  username: boolean
+  email: boolean
+  password: boolean
+  repeatPassword: boolean
 }
 
 /** Модель формы регистрации */
@@ -69,18 +73,18 @@ class SignUpForm
 
   protected render(): HTMLFormElement {
     const form = document.createElement('form');
-    form.classList.add('signlog', 'signlog__back');
+    form.classList.add('entry-form', 'entry-form__back', 'bg_interaction');
     form.innerHTML = template(signUpContext);
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       signup((e.target as HTMLFormElement).elements as SignUpFormElements);
     });
 
-    const inputsArea = querySelectorWithThrow(form, '.signlog__inputs');
+    const inputsArea = querySelectorWithThrow(form, '.entry-form__inputs');
     signUpInputs.forEach((options) =>
       this.inputs.set(options.name, new InputField(inputsArea, options)));
 
-    new Button(querySelectorWithThrow(form, '.signlog__submit'), {
+    new Button(querySelectorWithThrow(form, '.entry-form__submit'), {
       actionType: 'submit',
       innerText: 'Зарегистрироваться',
       viewType: ButtonType.PRIMARY,

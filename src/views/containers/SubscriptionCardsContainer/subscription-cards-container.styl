@@ -1,0 +1,31 @@
+@require '@style/const.styl'
+@require '@style/mixin.styl'
+
++b(subscription-cards-container)
+  display: flex 
+  flex-direction: column
+  gap: 10px
+  +e(title-area)
+    display: flex
+    flex-direction: row
+    align-items: center
+    justify-content: center
+    gap: 10px
+  +e(card-area)
+    display: flex
+    flex-direction: row
+    justify-content: center
+    align-items: stretch
+    gap: 10px
+    overflow-x: auto
+    overflow-y: hidden
+    white-space: nowrap
+    &::-webkit-scrollbar
+        height: 8px
+        background: transparent
+        &-thumb
+          background: color-scrollbar
+          border-radius: 10px
+  +e(empty)
+    text-align: center
+  

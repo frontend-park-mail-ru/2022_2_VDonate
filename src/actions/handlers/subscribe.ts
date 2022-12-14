@@ -3,14 +3,13 @@ import {ResponseData} from '@api/ajax';
 import {ActionType} from '@actions/types/action';
 import store from '@app/Store';
 import {
-  Subscription} from '@actions/types/subscribe';
+  PayloadSubscription} from '@actions/types/subscribe';
 import {FormErrorType} from '@actions/types/formError';
 import {
   priceCheck,
   textCheck,
   tierCheck,
   titleCheck} from '@validation/validation';
-import {PayloadNotice} from '@actions/types/notice';
 import {PayloadPost} from '@actions/types/posts';
 
 
@@ -35,7 +34,7 @@ const loadNewPosts =
           store.dispatch({
             type: ActionType.NOTICE,
             payload: {
-              message: err as string,
+              message: err as Error,
             },
           });
         });
@@ -52,7 +51,6 @@ export const subscribe = (
               type: ActionType.SUBSCRIBE,
               payload: {
                 authorSubscriptionID,
-                error: undefined,
                 posts,
               },
             });
@@ -70,7 +68,7 @@ export const subscribe = (
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       });
@@ -87,16 +85,15 @@ export const unsubscribe = (
               type: ActionType.UNSUBSCRIBE,
               payload: {
                 authorSubscriptionID,
-                error: undefined,
                 posts,
               },
             });
           });
         } else {
           store.dispatch({
-            type: ActionType.UNSUBSCRIBE,
+            type: ActionType.NOTICE,
             payload: {
-              error: 'Ошибка при попытке отписаться',
+              message: 'Ошибка при попытке отписаться',
             },
           });
         }
@@ -105,7 +102,7 @@ export const unsubscribe = (
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       });
@@ -120,17 +117,13 @@ export const getSubscritions = (id: number) => {
         if (res.ok) {
           store.dispatch({
             type: ActionType.GETSUBSCRIPTIONS,
-            payload: {
-              subscriptions: res.body as Subscription[],
-              error: undefined,
-            },
+            payload: res.body as PayloadSubscription[],
           });
         } else {
           store.dispatch({
-            type: ActionType.GETSUBSCRIPTIONS,
+            type: ActionType.NOTICE,
             payload: {
-              subscriptions: [],
-              error: res.body.message as string,
+              message: 'Ошибка при получении подписок',
             },
           });
         }
@@ -139,7 +132,7 @@ export const getSubscritions = (id: number) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       });
@@ -190,7 +183,7 @@ export const editAuthorSubscription = (
     tier: Number(form.tier.value),
     title: form.title.value,
   };
-  if (form.file?.files) {
+  if (form.file?.files && form.file.files.length > 0) {
     subData.file = form.file.files[0];
   }
 
@@ -224,7 +217,9 @@ export const editAuthorSubscription = (
         } else {
           store.dispatch({
             type: ActionType.NOTICE,
-            payload: res.body as PayloadNotice,
+            payload: {
+              message: 'Ошибка сервера при изменении подписки',
+            },
           });
         }
       })
@@ -232,7 +227,7 @@ export const editAuthorSubscription = (
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       });
@@ -295,7 +290,9 @@ export const createAuthorSubscription = (form: AuthorSubscrptionForm) => {
         } else {
           store.dispatch({
             type: ActionType.NOTICE,
-            payload: res.body as PayloadNotice,
+            payload: {
+              message: ' Ощибка при создании подписки',
+            },
           });
         }
       })
@@ -303,7 +300,7 @@ export const createAuthorSubscription = (form: AuthorSubscrptionForm) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       });
@@ -322,7 +319,9 @@ export const deleteAuthorSubscription = (id: number) => {
         } else {
           store.dispatch({
             type: ActionType.NOTICE,
-            payload: res.body as PayloadNotice,
+            payload: {
+              message: 'Ошибка сервера при удалении подписки',
+            },
           });
         }
       })
@@ -330,7 +329,7 @@ export const deleteAuthorSubscription = (id: number) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       });

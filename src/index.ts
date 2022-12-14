@@ -1,4 +1,4 @@
-import './style/index.styl';
+import '@style/index.styl';
 import Root from '@views/Root';
 
 if ('serviceWorker' in navigator) {
@@ -13,3 +13,4 @@ if ('serviceWorker' in navigator) {
 }
 
 new Root(document.body);
+

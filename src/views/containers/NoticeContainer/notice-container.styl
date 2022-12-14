@@ -1,14 +1,15 @@
 @require '@style/const.styl'
+@require '@style/mixin.styl'
 
-.notice-container
++b(notice-container)
   display: flex
   flex-direction: column-reverse
   align-items: stretch
-  &__notice
+  +e(notice)
     position: fixed
-    width: 30vw
+    width: max(30vw, 200px)
     gap: 5px
     padding: 5px
     bottom: 0
     right: 0
-    z-index: 2
+    z-index: 10

@@ -2,16 +2,16 @@ import {PayloadNotice} from '@actions/types/notice';
 import store from '@app/Store';
 import Notice from '@components/Notice/Notice';
 import './notice-container.styl';
-import ContainerBase from '@app/Container';
 import routing from '@actions/handlers/routing';
-import {RouteType} from '@actions/types/routing';
+import UpgradeViewBase from '@app/UpgradeView';
 /** */
-export default class NoticeContainer extends ContainerBase<string> {
+export default class NoticeContainer extends UpgradeViewBase {
   private notices = new Set<Notice>();
-  private noticeState?: PayloadNotice;
+  private noticeState: PayloadNotice;
 
   constructor(el: HTMLElement) {
     super();
+    this.noticeState = store.getState().notice as PayloadNotice;
     this.renderTo(el);
     this.notify();
   }
@@ -25,25 +25,47 @@ export default class NoticeContainer extends ContainerBase<string> {
 
   notify(): void {
     const noticeStateNew = store.getState().notice as PayloadNotice;
-    if (this.noticeState?.timestamp !== noticeStateNew.timestamp) {
+    if (this.noticeState.timestamp !== noticeStateNew.timestamp) {
       this.noticeState = noticeStateNew;
-      if (typeof this.noticeState.message === 'string' &&
-        /^[а-яёА-ЯЁ]/.test(this.noticeState.message)) {
-        this.update(this.noticeState.message);
-      }
+      if (typeof this.noticeState.message === 'string') {
+        if (this.noticeState.message == 'no existing session') {
+          routing('/login');
+          this.addNewNotice('Ошибка авторизации');
+        } else if (/^[а-яёА-ЯЁ]/.test(this.noticeState.message)) {
+          this.addNewNotice(this.noticeState.message);
+        } else {
+          this.addNewNotice('АХТУНГ! Всё идет не по плану ☆(＃××)');
+          console.error(this.noticeState.message);
+        }
+      } else
       if (Array.isArray(this.noticeState.message)) {
         this.noticeState.message.forEach(
-            (message) => this.update(message),
+            (message) => {
+              if (message == 'no existing session') {
+                routing('/login');
+                this.addNewNotice('Ошибка авторизации');
+              } else if (/^[а-яёА-ЯЁ]/.test(message)) {
+                this.addNewNotice(message);
+              }
+            },
         );
+      } else
+      if (this.noticeState.message instanceof Error) {
+        this.addNewNotice('АХТУНГ! Всё идет не по плану ☆(＃××)');
+        console.error(this.noticeState.message);
       }
     }
   }
 
-  update(message: string) {
+  protected onErase(): void {
+    return;
+  }
+
+  private addNewNotice(message: string) {
     const timeoutID = setTimeout(
         () => {
           this.removeNotice(notice);
-        }, 10000,
+        }, 5000,
     );
     const notice = new Notice(this.domElement, {
       message,
@@ -53,9 +75,6 @@ export default class NoticeContainer extends ContainerBase<string> {
       },
     });
     this.notices.add(notice);
-    if (message == 'no existing session') {
-      routing('/login', RouteType.POPSTATE);
-    }
   }
 
   private removeNotice(target: Notice) {

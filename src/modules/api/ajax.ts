@@ -50,21 +50,21 @@ const dataToQuery = (data: RequestData): string => {
   return queryString;
 };
 /** Поле для CSFR токена */
-const csrfField = 'csrf_token';
+// const csrfField = 'csrf_token';
 /**
  *  Сохрание CSRF токена в локальное хранилище
  * @returns успешное сохранение CSRF токена
  */
 export const saveCSRF = (): boolean => {
-  document.cookie = `${csrfField}=OjEM2QPpsGd8SjXybAtHwgENY8e3BFFz;`;
-  const csrfCookie = document.cookie.match(
-      new RegExp(`${csrfField}=([\\w-]+)`),
-  );
-  if (!csrfCookie) {
-    return false;
-  }
-  localStorage.setItem(csrfField, csrfCookie[1]);
   return true;
+  // const csrfCookie = document.cookie.match(
+  //     new RegExp(`${csrfField}=([\\w-]+)`),
+  // );
+  // if (!csrfCookie) {
+  //   return false;
+  // }
+  // localStorage.setItem(csrfField, csrfCookie[1]);
+  // return true;
 };
 /**
      * отправляет Request-запрос на заданный url,
@@ -99,19 +99,14 @@ export default async (
         const formData = new FormData();
 
         for (const [name, value] of Object.entries(data)) {
-          // eslint-disable-next-line @typescript-eslint/no-base-to-string
-          if (value instanceof Blob) {
-            formData.append(name, value, 'newfile.jpg');
-          } else {
-            switch (typeof value) {
-              case 'boolean':
-              case 'number':
-                formData.append(name, value.toString());
-                break;
-              default:
-                formData.append(name, value);
-                break;
-            }
+          switch (typeof value) {
+            case 'boolean':
+            case 'number':
+              formData.append(name, value.toString());
+              break;
+            default:
+              formData.append(name, value);
+              break;
           }
         }
         options.body = formData;
@@ -120,10 +115,10 @@ export default async (
         break;
     }
 
-    headers.append(
-        'X-CSRF-Token',
-        localStorage.getItem(`${csrfField}`) ?? '',
-    );
+    // headers.append(
+    //     'X-CSRF-Token',
+    //     localStorage.getItem(`${csrfField}`) ?? '',
+    // );
   }
   options.headers = headers;
   const response = await fetch(

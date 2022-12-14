@@ -30,7 +30,8 @@ module.exports = {
       '@style': path.resolve(__dirname, 'src/style'),
       '@icon': path.resolve(__dirname, 'static/icon'),
       '@img': path.resolve(__dirname, 'static/img'),
-      '@specialCompare': path.resolve(__dirname, 'src/modules/specialCompare'),
+      '@font': path.resolve(__dirname, 'static/font'),
+      '@date': path.resolve(__dirname, 'src/modules/date'),
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
@@ -81,7 +82,7 @@ module.exports = {
       },
       {
         test: /\.(png|svg|jpg|jpeg|ico)$/i,
-        loader: 'file-loader',
+        type: 'asset/resource',
       },
     ],
   },

@@ -32,20 +32,16 @@ export interface PayloadEditUser {
   id: number
   username?: string
   email?: string
-  about?: string
   password?: string
   repeatPassword?: string
-  isAuthor?: boolean
   file?: File
 }
 
 export interface PayloadEditUserSucces {
   id: number
   avatar?: string
-  isAuthor?: boolean
   username?: string
   email?: string
-  about?: string
 }
 /** Нагрузка в срез ошибок формы редактирования пользователя */
 export interface PayloadEditUserErrors {
@@ -54,8 +50,6 @@ export interface PayloadEditUserErrors {
   username: null | string
   password: null | string
   repeatPassword: null | string
-  about: null | string
-  isAuthor: null | string
   avatar: null | string
 }
 /** Интерфейс действия аутификации */
@@ -121,4 +115,18 @@ export interface ActionEditUseDataSuccess extends IAction {
 export interface ActionEditUserFail extends IAction {
   type: ActionType.CHANGEUSERDATA_FAIL
   payload: PayloadEditUserErrors
+}
+
+export interface ActionEditAbout extends IAction {
+  type: ActionType.EDIT_ABOUT
+  payload: {
+    about: string
+  }
+}
+
+export interface ActionBecomeAuthor extends IAction {
+  type: ActionType.BECOME_AUTHOR
+  payload: {
+    success: boolean
+  }
 }
