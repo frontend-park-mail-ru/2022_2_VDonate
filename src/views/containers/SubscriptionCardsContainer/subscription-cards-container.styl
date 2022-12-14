@@ -18,9 +18,11 @@
     justify-content: center
     align-items: stretch
     gap: 10px
+    white-space: nowrap
+  +e(overflow-area)
+    display: grid
     overflow-x: auto
     overflow-y: hidden
-    white-space: nowrap
     customScrollbar()
   +e(empty)
     text-align: center

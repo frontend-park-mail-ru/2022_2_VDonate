@@ -28,6 +28,7 @@ export default class ProfilePage extends UpgradeViewBase {
   private profileInfo!: ProfileInfo;
   private subscriptions: HTMLDivElement = document.createElement('div');
   private childViews: ProfilePageChildViews = {};
+  private about!: About;
 
   constructor(el: HTMLElement, private options: ProfileEditorOptions) {
     super();
@@ -75,6 +76,8 @@ export default class ProfilePage extends UpgradeViewBase {
           });
         });
       }
+    } else {
+      this.about.update(profileNew.user.about ?? '');
     }
   }
 
@@ -111,7 +114,7 @@ export default class ProfilePage extends UpgradeViewBase {
         changeable: this.options.changeable,
       });
 
-    new About(content, {
+    this.about = new About(content, {
       aboutTextHtml: 'Пользователь пока ничего о себе не написал',
       id: this.options.profileID,
       changeable: this.options.changeable,
