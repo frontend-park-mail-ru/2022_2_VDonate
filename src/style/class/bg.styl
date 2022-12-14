@@ -110,9 +110,6 @@ bg-edge = inset 0px -4px 2px rgba(0, 0, 0, 0.2), inset 0px 4px 2px rgba(255, 255
       &:hover
         &:before
           background: none
-      &:active
-        &:before
-          background: linear-gradient(180deg, rgba(44, 45, 46, 0.2) 0%, rgba(255, 255, 255, 0.2) 100%)
     +m(icon)
       background: none
       &:hover
@@ -133,10 +130,7 @@ bg-edge = inset 0px -4px 2px rgba(0, 0, 0, 0.2), inset 0px 4px 2px rgba(255, 255
         background:linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)
       &:hover
         &:before
-          background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%)
-      &:active
-        &:before
-          background: linear-gradient(180deg, rgba(44, 45, 46, 0.2) 0%, rgba(255, 255, 255, 0.2) 100%)
+          background: none
   +m(notice)
     position relative
     backdrop-filter: blur(20px)
@@ -149,7 +143,7 @@ bg-edge = inset 0px -4px 2px rgba(0, 0, 0, 0.2), inset 0px 4px 2px rgba(255, 255
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
       -webkit-mask-composite: xor
       border-radius: radius-medium
-      padding: 2px
+      padding: 3px
       background: color-error
   +m(navbar-link)
     +m(enable)

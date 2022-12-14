@@ -66,13 +66,12 @@ export default class ProfilePage extends UpgradeViewBase {
           'Донатер пока никого не поддерживает';
       } else {
         this.subscriptions.innerHTML = '';
-        profileNew.userSubscriptions.forEach((sub, idx, arr) => {
+        profileNew.userSubscriptions.forEach((sub) => {
           new SubscriptionLink(this.subscriptions, {
             id: sub.authorID,
             imgPath: sub.authorAvatar,
             username: sub.authorName,
             tier: `Уровень ${sub.tier}`,
-            isLast: idx === arr.length - 1,
           });
         });
       }

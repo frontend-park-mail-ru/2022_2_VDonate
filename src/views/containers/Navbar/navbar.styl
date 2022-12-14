@@ -2,6 +2,7 @@
 @require '@style/mixin.styl'
 
 navbar-indent = 20px
+navbar-indent-mobile = 10px
 
 +b(navbar)
   position: fixed
@@ -68,7 +69,7 @@ navbar-indent = 20px
       flex-direction: row
       flex-wrap: nowrap
       align-items: stretch
-      padding: 10px
+      padding: navbar-indent-mobile
       &:before
         border-radius: 0
     +e(logo)
@@ -79,9 +80,9 @@ navbar-indent = 20px
       margin-right: 6px
       align-self: flex-start
     +e(link)
-      padding: navbar-indent 5px 10px 5px
+      padding: navbar-indent-mobile 5px 10px 5px
       margin-left: 0
-      margin-top: - navbar-indent
+      margin-top: - navbar-indent-mobile
     +e(sub)
       padding: 0px
     +e(subs-list)

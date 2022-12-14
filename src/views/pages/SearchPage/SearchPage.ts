@@ -73,13 +73,12 @@ export default class SearchPage extends UpgradeViewBase {
       return;
     }
     this.listArea.innerHTML = '';
-    authors.forEach((author: PayloadUser, idx, arr) => {
+    authors.forEach((author: PayloadUser) => {
       new SubscriptionLink(this.listArea, {
         id: author.id,
         username: author.username,
         imgPath: author.avatar,
         tier: `донатеров ${author.countSubscribers ?? 0}`,
-        isLast: idx === arr.length - 1,
       });
     });
   }

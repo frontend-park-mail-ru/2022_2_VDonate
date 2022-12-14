@@ -65,7 +65,7 @@ export default class NoticeContainer extends UpgradeViewBase {
     const timeoutID = setTimeout(
         () => {
           this.removeNotice(notice);
-        }, 5000,
+        }, 5000000,
     );
     const notice = new Notice(this.domElement, {
       message,

@@ -13,13 +13,19 @@
   +e(avatar)
     +m(size)
       +m(big)
-        width: 50px
+        width: 40px
+        outline-width: 3px !important
+        margin: 3px
       +m(small)
         width: 30px
+        outline-width: 2px !important
+        margin: 2px
   +e(username)
     overflow: hidden
     text-overflow: ellipsis
     white-space: nowrap
+    +m(bold)
+      font-weight: 500
 
 @media  (max-width: mobile-size)
   +b(profile-mini)
