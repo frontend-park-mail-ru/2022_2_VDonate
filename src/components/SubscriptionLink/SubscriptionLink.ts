@@ -7,7 +7,6 @@ interface SubscriptionLinkOptions {
   imgPath: string
   username: string
   tier: string
-  isLast: boolean
 }
 
 /**
@@ -26,10 +25,6 @@ class SubscriptionLink extends ComponentBase<'a'> {
     subscription.setAttribute('data-link', '');
     subscription.classList.
         add('subscription-link', 'subscription-link__back');
-    if (!this.options.isLast) {
-      subscription.classList.
-          add('subscription-link__back_with-border');
-    }
     const avatar = new Avatar(subscription, {
       imgPath: this.options.imgPath,
       viewType: AvatarType.AUTHOR,

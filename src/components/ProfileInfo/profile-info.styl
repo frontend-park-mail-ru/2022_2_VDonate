@@ -14,9 +14,9 @@
     align-items: stretch
     gap: 15px
     padding: 20px
-    border-radius: 1rem 0px 0px 1rem
+    border-radius: radius-big 0px 0px radius-big
     &:before
-      border-radius: 1rem 0px 0px 1rem
+      border-radius: radius-big 0px 0px radius-big
   +e(img)
     width: 70%
     align-self: center
@@ -26,22 +26,25 @@
     flex-grow: 1
   +e(edit-btn)
     position: absolute
-    top: 20px
-    right: 20px
+    top: 1%
+    right: 3%
 
 +b(mini-statistic)
   display: flex
-  flex-direction: row
+  flex-direction: column
   flex-wrap: wrap
   justify-content: center
-  align-items: flex-start
+  align-items: stretch
   gap: 15px
   border-right: 2px rgba(0, 16, 61, 0.06)
   +e(container)
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    gap: 15px
+    color: color-font-secondary
+  +e(text)
+    color: color-font-secondary
       
 @media  (max-width: mobile-size)
   +b(profile-info)
@@ -65,3 +68,10 @@
       width: 25vw
     +e(edit-btn)
       top: 70px
+    +e(become-author)
+      width: 60%
+      align-self: center
+
+  +b(mini-statistic)
+    +e(container)
+      justify-content: space-evenly

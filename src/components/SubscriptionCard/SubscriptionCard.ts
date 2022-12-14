@@ -47,6 +47,7 @@ class SubscriptionCard
   constructor(el: HTMLElement, private options: SubscriptionCardOptions) {
     super();
     this.renderTo(el);
+    this.hideCard();
   }
 
   update(data: SubscriptionCardUpdateContext): void {
@@ -73,6 +74,7 @@ class SubscriptionCard
     }
     if (data.description !== this.options.description) {
       this.description.innerText = data.description;
+      this.hideCard();
     }
   }
 
@@ -81,7 +83,7 @@ class SubscriptionCard
     card.classList.add(
         'subscription-card',
         'subscription-card__back',
-        'bg_content',
+        'bg_main',
     );
     card.id = `subscription-card_${this.options.subscriptionID}`;
     card.innerHTML = template({
@@ -106,7 +108,12 @@ class SubscriptionCard
     this.price = querySelectorWithThrow(card, '.price__count');
     this.description =
     querySelectorWithThrow(card, '.subscription-card__motivation');
-    if (this.options.description.length >= 60) {
+
+    return card;
+  }
+
+  private hideCard() {
+    if (this.domElement.offsetHeight > 300) {
       this.description.classList.add('subscription-card__motivation_part');
       const showMore = document.createElement('a');
       showMore.classList.add('subscription-card__more', 'font_small');
@@ -115,10 +122,11 @@ class SubscriptionCard
         this.description.classList.remove('subscription-card__motivation_part');
         showMore.hidden = true;
       });
-      card.appendChild(showMore);
+      this.domElement.appendChild(showMore);
+    } else {
+      this.description.classList.remove('subscription-card__motivation_part');
+      this.domElement.querySelector('.subscription-card__more')?.remove();
     }
-
-    return card;
   }
 
   private renderButton(
@@ -144,7 +152,7 @@ class SubscriptionCard
         break;
       case SubscriptionCardStatus.ALREADY_DONATED:
         this.button = new Button(btnArea, {
-          viewType: ButtonType.ERROR,
+          viewType: ButtonType.SUB1,
           actionType: 'button',
           innerText: 'Отписаться',
           clickHandler: () => {
@@ -158,7 +166,7 @@ class SubscriptionCard
         break;
       case SubscriptionCardStatus.AUTHOR:
         this.button = new Button(btnArea, {
-          viewType: ButtonType.WARNING,
+          viewType: ButtonType.SUB2,
           actionType: 'button',
           innerText: 'Изменить',
           clickHandler: () => {

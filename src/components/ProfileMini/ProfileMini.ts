@@ -25,7 +25,7 @@ interface ProfileMiniUpdateContext {
 export default
 class ProfielMini extends ComponentBase<'a', ProfileMiniUpdateContext> {
   private avatar!: Avatar;
-  private username!: HTMLSpanElement;
+  private username: HTMLSpanElement = document.createElement('span');
 
   constructor(el: HTMLElement, private options: ProfileMiniOptions) {
     super();
@@ -58,9 +58,15 @@ class ProfielMini extends ComponentBase<'a', ProfileMiniUpdateContext> {
       imgPath: this.options.avatar,
       viewType: this.options.isAuthor ? AvatarType.AUTHOR : AvatarType.DONATER,
     });
+
+    this.username.classList.add('font_regular', 'profile-mini__username');
+    this.username.innerText = this.options.username;
+    container.appendChild(this.username);
+
     switch (this.options.type) {
       case ProfileMiniType.SESSION_PROFILE:
         this.avatar.addClassNames('profile-mini__avatar_size_big');
+        this.username.classList.add('profile-mini__username_bold');
         break;
       case ProfileMiniType.OTHER_PROFILE:
         this.avatar.addClassNames('profile-mini__avatar_size_small');
@@ -68,10 +74,6 @@ class ProfielMini extends ComponentBase<'a', ProfileMiniUpdateContext> {
       default:
         break;
     }
-    this.username = document.createElement('span');
-    this.username.classList.add('font_regular', 'profile-mini__username');
-    this.username.innerText = this.options.username;
-    container.appendChild(this.username);
 
     return container;
   }

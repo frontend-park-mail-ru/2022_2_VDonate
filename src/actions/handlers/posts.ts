@@ -1,5 +1,4 @@
 import {ActionType} from '@actions/types/action';
-import {PayloadGetProfileData} from '@actions/types/getProfileData';
 import {PayloadNotice} from '@actions/types/notice';
 import {PayloadPost} from '@actions/types/posts';
 import {PayloadUser} from '@actions/types/user';
@@ -7,29 +6,15 @@ import api from '@app/Api';
 import store from '@app/Store';
 
 export const createPost = (content: string, tier: number) => {
-  const tierIdx = (store.getState().profile as PayloadGetProfileData)
-      .authorSubscriptions?.map((sub) => {
-        return sub.tier;
-      }).findIndex((subTier) => subTier === tier);
-
-  if (
-    // Если тир указан
-    tier !== 0 &&
-    (
-      // И не существует
-      !tierIdx ||
-      // Или не найден в подписках
-      tierIdx === -1
-    )) {
+  if (tier < 1 || tier > 10000) {
     store.dispatch({
       type: ActionType.NOTICE,
       payload: {
-        message: 'Вы указали несуществующий уровень подписки',
+        message: 'Уровень должен быть в пределах от 1 до 10000',
       },
     });
     return;
   }
-
   api.createPost({
     tier,
     content,
@@ -96,83 +81,69 @@ export const createPost = (content: string, tier: number) => {
       );
 };
 
-export const updatePost = (id: number, content: string, tier: number) => {
-  const tierIdx = (store.getState().profile as PayloadGetProfileData)
-      .authorSubscriptions?.map((sub) => {
-        return sub.tier;
-      }).findIndex((subTier) => subTier === tier);
-
-  if (
-    // Если тир указан
-    tier !== 0 &&
-    (
-      // И не существует
-      !tierIdx ||
-      // Или не найден в подписках
-      tierIdx === -1
-    )) {
-    store.dispatch({
-      type: ActionType.NOTICE,
-      payload: {
-        message: 'Вы указали несуществующий уровень подписки',
-      },
-    });
-    return;
-  }
-
-  api.updatePost(id, {
-    tier,
-    content,
-  })
-      .then((res) => {
-        if (res.ok) {
-          store.dispatch({
-            type: ActionType.UPDATE_POST,
-            payload: {
-              postID: id,
-              content: res.body.content as string,
-            },
-          });
-        } else {
-          let msg: PayloadNotice = {
-            message: '',
-          };
-          switch (res.status) {
-            case 400:
-              msg.message = 'Ошибка при создании запроса на сервер';
-              break;
-            case 401:
-              msg.message = 'Ошибка авторизации';
-              break;
-            case 403:
-              msg.message = 'Ошибка доступа';
-              break;
-            case 404:
-              msg.message = 'Ошибка сервера\n Пост не найден';
-              break;
-            case 500:
-              msg.message = 'Ошибка сервера при изменении поста';
-              break;
-            default:
-              msg = res.body as PayloadNotice;
-              break;
+export const updatePost =
+  (id: number, content: string, tier: number) => {
+    if (tier < 1 || tier > 10000) {
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Уровень должен быть в пределах от 1 до 10000',
+        },
+      });
+    }
+    api.updatePost(id, {
+      tier,
+      content,
+    })
+        .then((res) => {
+          if (res.ok) {
+            store.dispatch({
+              type: ActionType.UPDATE_POST,
+              payload: {
+                postID: id,
+                content: res.body.content as string,
+              },
+            });
+          } else {
+            let msg: PayloadNotice = {
+              message: '',
+            };
+            switch (res.status) {
+              case 400:
+                msg.message = 'Ошибка при создании запроса на сервер';
+                break;
+              case 401:
+                msg.message = 'Ошибка авторизации';
+                break;
+              case 403:
+                msg.message = 'Ошибка доступа';
+                break;
+              case 404:
+                msg.message = 'Ошибка сервера\n Пост не найден';
+                break;
+              case 500:
+                msg.message = 'Ошибка сервера при изменении поста';
+                break;
+              default:
+                msg = res.body as PayloadNotice;
+                break;
+            }
+            store.dispatch({
+              type: ActionType.NOTICE,
+              payload: msg,
+            });
           }
+        })
+        .catch((err) => {
           store.dispatch({
             type: ActionType.NOTICE,
-            payload: msg,
+            payload: {
+              message: err as Error,
+            },
           });
-        }
-      })
-      .catch((err) => {
-        store.dispatch({
-          type: ActionType.NOTICE,
-          payload: {
-            message: err as Error,
-          },
-        });
-      },
-      );
-};
+        },
+        );
+  };
 
 export const deletePost = (postID: number) => {
   api.deletePost(postID)

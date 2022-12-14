@@ -36,12 +36,10 @@ class PostAction extends ComponentBase<'button', PostActionUpdateContent> {
     if (this.options.reactType === PostActionType.COMMENT) return;
     if (this.options.isActive !== data.isActive) {
       this.options.isActive = data.isActive;
-      const icon =
-        querySelectorWithThrow(this.domElement, '.post-action__icon');
       if (this.options.isActive) {
-        icon.classList.add('post-action__icon_liked');
+        this.domElement.classList.add('post-action__back_pressed');
       } else {
-        icon.classList.remove('post-action__icon_liked');
+        this.domElement.classList.remove('post-action__back_pressed');
       }
     }
     if (this.options.count !== data.likesNum) {
@@ -70,7 +68,7 @@ class PostAction extends ComponentBase<'button', PostActionUpdateContent> {
       case PostActionType.LIKE:
         innerIcon.src = likeIcon;
         if (this.options.isActive) {
-          innerIcon.classList.add('post-action__icon_liked');
+          button.classList.add('post-action__back_pressed');
         }
         button.appendChild(innerIcon);
         break;

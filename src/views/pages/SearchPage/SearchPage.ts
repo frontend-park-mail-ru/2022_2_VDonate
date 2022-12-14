@@ -49,7 +49,7 @@ export default class SearchPage extends UpgradeViewBase {
     });
     this.listArea.classList.add(
         'search-page__list-area',
-        'bg_content',
+        'bg_main',
         'font_regular',
     );
 
@@ -73,13 +73,12 @@ export default class SearchPage extends UpgradeViewBase {
       return;
     }
     this.listArea.innerHTML = '';
-    authors.forEach((author: PayloadUser, idx, arr) => {
+    authors.forEach((author: PayloadUser) => {
       new SubscriptionLink(this.listArea, {
         id: author.id,
         username: author.username,
         imgPath: author.avatar,
         tier: `донатеров ${author.countSubscribers ?? 0}`,
-        isLast: idx === arr.length - 1,
       });
     });
   }

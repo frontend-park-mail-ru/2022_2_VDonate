@@ -8,17 +8,12 @@
   gap: 20px
   text-decoration: none
   flex-wrap: wrap
-  +e(back)
-    padding: 5px
   +e(icon)
-    width: 20px
+    width: icon-size
     filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(8deg) brightness(111%) contrast(101%)
 
 @media  (max-width: mobile-size)
   +b(navbar-link)
-    +e(back)
-      &:before
-        border-radius: 0 0 0.5rem 0.5rem
     +e(text)
       display: none
     

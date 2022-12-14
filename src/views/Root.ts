@@ -103,7 +103,7 @@ export default class Root extends UpgradeViewBase {
 
   protected render(): HTMLDivElement {
     const root = document.createElement('div');
-    root.style.display = 'contents';
+    root.classList.add('v-donate');
 
     this.childViews.notice = new NoticeContainer(root);
 

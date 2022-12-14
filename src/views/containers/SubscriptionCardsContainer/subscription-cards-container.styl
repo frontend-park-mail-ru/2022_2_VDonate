@@ -4,7 +4,8 @@
 +b(subscription-cards-container)
   display: flex 
   flex-direction: column
-  gap: 10px
+  gap: 20px
+  max-width: 100%
   +e(title-area)
     display: flex
     flex-direction: row
@@ -20,12 +21,7 @@
     overflow-x: auto
     overflow-y: hidden
     white-space: nowrap
-    &::-webkit-scrollbar
-        height: 8px
-        background: transparent
-        &-thumb
-          background: color-scrollbar
-          border-radius: 10px
+    customScrollbar()
   +e(empty)
     text-align: center
   

@@ -105,7 +105,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
 
   protected render(): HTMLDivElement {
     const post = document.createElement('div');
-    post.classList.add('post', 'post__back', 'bg_content');
+    post.classList.add('post', 'post__back', 'bg_main');
     post.innerHTML = templatePost({
       username: this.options.author.username,
       date: this.options.dateCreated.length === 0 ?

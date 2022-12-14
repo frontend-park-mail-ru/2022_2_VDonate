@@ -1,11 +1,19 @@
 @require '@style/const.styl'
 @require '@style/mixin.styl'
 
-bg-edge = 5px 10px 10px rgba(0, 0, 0, 0.2), inset 0px -4px 2px rgba(0, 0, 0, 0.2), inset 0px 4px 2px rgba(255, 255, 255, 0.12), inset 4px 4px 26px rgba(255, 255, 255, 0.12)
+bg-edge = inset 0px -4px 2px rgba(0, 0, 0, 0.2), inset 0px 4px 2px rgba(255, 255, 255, 0.12), inset 4px 4px 26px rgba(255, 255, 255, 0.12)
 
-.bg
++b(bg)
+  +m(main)
+    background-color: color-bg-block
+    border-radius: radius-big
+    backdrop-filter: blur(20px)
+    -webkit-backdrop-filter: blur(20px)
+  +m(sub-menu)
+    background-color: color-bg-block
+    border-radius: radius-medium
   +m(interaction)
-    border-radius: 1rem
+    border-radius: radius-big
     position relative
     &:before
       content: ""
@@ -14,222 +22,119 @@ bg-edge = 5px 10px 10px rgba(0, 0, 0, 0.2), inset 0px -4px 2px rgba(0, 0, 0, 0.2
       z-index: -1
       mix-blend-mode: soft-light
       box-shadow: bg-edge
-      border-radius: 1rem
+      border-radius: radius-big
       background: "url(%s)" % glass-image-1
       background-size: cover
   +m(input)
     background: color-bg-input
-    border-radius: 0.5rem 
+    border-radius: radius-small
   +m(button)
     +m(primary)
       position: relative
-      border-radius: 0.5rem
-      background: linear-gradient(
-                                  101.7deg, 
-                                  rgba(255, 255, 255, 0.2) 0%, 
-                                  rgba(255, 255, 255, 0.2) 21.5%, 
-                                  rgba(255, 255, 255, 0.28) 21.51%, 
-                                  rgba(255, 255, 255, 0) 45.14%
-                                  ), 
-                  radial-gradient(
-                                  100% 144.66% at 0% 0%, 
-                                  color-primary-gradient-1 0%, 
-                                  color-primary-gradient-2 100%
-                                  )
-      box-shadow: 2.5px 5px 10px color-primary-shadow
+      border-radius: radius-small
+      background: color-primary
       &:before
         content: ""
         position: absolute
         inset: 0
-        border-radius: 0.5rem
+        border-radius: radius-small
         -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
         -webkit-mask-composite: xor
         padding: 2px
-        background:linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%)    
+        background:linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)    
       &:hover
-        box-shadow: none
-        &:before
-          background: none
-      &:active
-        box-shadow: inset 0px 0px 20px color-primary-dark-2
         &:before
           background: none
     +m(error)
       position: relative
-      border-radius: 0.5rem
-      background: linear-gradient(
-                                  101.7deg, 
-                                  rgba(255, 255, 255, 0.2) 0%, 
-                                  rgba(255, 255, 255, 0.2) 21.5%, 
-                                  rgba(255, 255, 255, 0.28) 21.51%, 
-                                  rgba(255, 255, 255, 0) 45.14%
-                                  ), 
-                  radial-gradient(
-                                  100% 144.66% at 0% 0%, 
-                                  color-error 0%, 
-                                  color-error 100%
-                                  )
-      box-shadow: 2.5px 5px 10px color-primary-shadow
+      border-radius: radius-small
+      background: color-error
       &:before
         content: ""
         position: absolute
         inset: 0
-        border-radius: 0.5rem
+        border-radius: radius-small
         -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
         -webkit-mask-composite: xor
         padding: 2px
-        background:linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%)    
+        background:linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)    
       &:hover
-        box-shadow: none
         &:before
           background: none
-      &:active
-        box-shadow: inset 0px 0px 20px color-primary-dark-2
-        &:before
-          background: none
-    +m(success)
+    +m(sub-1)
       position: relative
-      border-radius: 0.5rem
-      background: linear-gradient(
-                                  101.7deg, 
-                                  rgba(255, 255, 255, 0.2) 0%, 
-                                  rgba(255, 255, 255, 0.2) 21.5%, 
-                                  rgba(255, 255, 255, 0.28) 21.51%, 
-                                  rgba(255, 255, 255, 0) 45.14%
-                                  ), 
-                  radial-gradient(
-                                  100% 144.66% at 0% 0%, 
-                                  color-success 0%, 
-                                  color-success 100%
-                                  )
-      box-shadow: 2.5px 5px 10px color-primary-shadow
+      border-radius: radius-small
+      background: color-sub-1
       &:before
         content: ""
         position: absolute
         inset: 0
-        border-radius: 0.5rem
+        border-radius: radius-small
         -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
         -webkit-mask-composite: xor
         padding: 2px
-        background:linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%)    
+        background:linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)    
       &:hover
-        box-shadow: none
         &:before
           background: none
-      &:active
-        box-shadow: inset 0px 0px 20px color-primary-dark-2
-        &:before
-          background: none
-    +m(warning)
+    +m(sub-2)
       position: relative
-      border-radius: 0.5rem
-      background: linear-gradient(
-                                  101.7deg, 
-                                  rgba(255, 255, 255, 0.2) 0%, 
-                                  rgba(255, 255, 255, 0.2) 21.5%, 
-                                  rgba(255, 255, 255, 0.28) 21.51%, 
-                                  rgba(255, 255, 255, 0) 45.14%
-                                  ), 
-                  radial-gradient(
-                                  100% 144.66% at 0% 0%, 
-                                  color-warning 0%, 
-                                  color-warning 100%
-                                  )
-      box-shadow: 2.5px 5px 10px color-primary-shadow
+      border-radius: radius-small
+      background: color-sub-2
       &:before
         content: ""
         position: absolute
         inset: 0
-        border-radius: 0.5rem
+        border-radius: radius-small
         -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
         -webkit-mask-composite: xor
         padding: 2px
-        background:linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%)    
+        background:linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)    
       &:hover
-        box-shadow: none
-        &:before
-          background: none
-      &:active
-        box-shadow: inset 0px 0px 20px color-primary-dark-2
         &:before
           background: none
     +m(outline)
       position: relative
-      border-radius: 0.5rem
+      border-radius: radius-small
       background: none
       border: 1px solid color-primary
-      box-shadow: 2.5px 5px 10px color-primary-shadow
       &:before
         content: ""
         position: absolute
         inset: 0
-        border-radius: 0.5rem
+        border-radius: radius-small
         -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
         -webkit-mask-composite: xor
         padding: 2px
-        background:linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%)    
+        background:linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)    
       &:hover
         &:before
           background: none
-      &:active
-        &:before
-          background: linear-gradient(180deg, rgba(44, 45, 46, 0.2) 0%, rgba(255, 255, 255, 0.2) 100%)
     +m(icon)
       background: none
       &:hover
         transform: scale(1.1)
-    +m(image-bg)
-      position: relative
-      border-radius: 0.5rem
-      background-image: "url(%s)" % glass-image-2
-      background-size: cover
-      min-height: 100%
-      min-width: 100%
-      &:before
-        content: ""
-        position: absolute
-        inset: 0
-        border-radius: 0.5rem
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
-        -webkit-mask-composite: xor
-        padding: 2px
-        box-shadow: inset 0px -4px 2px rgba(0, 0, 0, 0.05), inset 0px 4px 2px rgba(255, 255, 255, 0.25), inset 4px 4px 26px rgba(255, 255, 255, 0.25)
-        filter: drop-shadow(0px 40px 80px rgba(0, 0, 0, 0.38))
-        backdrop-filter: blur(40px)
-      &:hover
-        &:before
-          background-blend-mode: soft-light;
-          box-shadow: none
-          backdrop-filter: blur(40px);
-      &:active
-        &:before
-          background-blend-mode: soft-light;
-          box-shadow: inset 0px -4px 2px rgba(255, 255, 255, 0.25), inset 4px 8px 4px rgba(100, 100, 100, 0.25), inset 4px 4px 26px rgba(0, 0, 0, 0.05);
-          backdrop-filter: blur(40px);
     +m(action)
       position: relative
       background: none
-      border-radius: 20px
+      border-radius: radius-small
       border: none
       &:before
         content: ""
         position: absolute
         inset: 0
-        border-radius: 20px
+        border-radius: radius-small
         -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
         -webkit-mask-composite: xor
         padding: 2px
-        background:linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%)
+        background:linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)
       &:hover
         &:before
-          background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%)
-      &:active
-        &:before
-          background: linear-gradient(180deg, rgba(44, 45, 46, 0.2) 0%, rgba(255, 255, 255, 0.2) 100%)
+          background: none
   +m(notice)
     position relative
     backdrop-filter: blur(20px)
-    border-radius: 0.5rem
+    border-radius: radius-medium
     &:before
       z-index: -1
       content: ""
@@ -237,40 +142,16 @@ bg-edge = 5px 10px 10px rgba(0, 0, 0, 0.2), inset 0px -4px 2px rgba(0, 0, 0, 0.2
       inset: 0
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
       -webkit-mask-composite: xor
-      border-radius: 0.5rem
-      padding: 2px
-      background:linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%)
-  +m(content)
-    position: relative
-    &:before
-      content: ""
-      position: absolute
-      inset: 0
-      z-index: -1
-      background-color: color-bg-content
-      box-shadow: bg-edge
-      backdrop-filter: blur(20px)
-      background-size: cover
-      opacity: 0.6
-      border-radius: 1rem
+      border-radius: radius-medium
+      padding: 3px
+      background: color-error
   +m(navbar-link)
-    +m(disable)
-      border-radius: 0px 0.5rem 0.5rem 0px
     +m(enable)
-      border-radius: 0px 0.5rem 0.5rem 0px
+      border-radius: 0px radius-small radius-small 0px
       position relative
-      &:before
-        content: ""
-        position: absolute
-        inset: 0
-        z-index: -1
-        mix-blend-mode: soft-light
-        box-shadow: bg-edge
-        border-radius: 0px 0.5rem 0.5rem 0px
-        background: "url(%s)" % glass-image-2
-        background-size: cover
+      background-color: color-bg-block
   +m(editor)
-    border-radius: 1rem
+    border-radius: radius-big
     position relative
     &:before
       content: ""
@@ -279,8 +160,19 @@ bg-edge = 5px 10px 10px rgba(0, 0, 0, 0.2), inset 0px -4px 2px rgba(0, 0, 0, 0.2
       z-index: -1
       mix-blend-mode: soft-light
       box-shadow: bg-edge
-      border-radius: 1rem
+      border-radius: radius-big
       background: "url(%s)" % glass-image-1
       background-size: cover
+  +m(hr)
+    background-color: color-hr
+    border-radius: 0px radius-small radius-small 0px
 
-    
+@media (max-width: mobile-size)
+  +b(bg)
+    +m(sub-menu)
+      border-radius: 0 0 0 radius-small
+      backdrop-filter: blur(20px)
+      -webkit-backdrop-filter: blur(20px)
+    +m(navbar-link)
+      +m(enable)
+        border-radius: 0px 0px radius-small radius-small

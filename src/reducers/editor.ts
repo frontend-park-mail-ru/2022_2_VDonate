@@ -13,6 +13,8 @@ const editorReducer: Reducer<Action> =
       case ActionType.CREATE_POST:
       case ActionType.DELETE_POST:
       case ActionType.DELETEAUTHORSUBSCRIPTION:
+      case ActionType.SUBSCRIBE:
+      case ActionType.UNSUBSCRIBE:
         return {};
       case ActionType.CREATEAUTHORSUBSRIPTION:
       case ActionType.EDITAUTHORSUBSRIPTION: {

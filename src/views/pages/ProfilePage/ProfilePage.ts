@@ -66,13 +66,12 @@ export default class ProfilePage extends UpgradeViewBase {
           'Донатер пока никого не поддерживает';
       } else {
         this.subscriptions.innerHTML = '';
-        profileNew.userSubscriptions.forEach((sub, idx, arr) => {
+        profileNew.userSubscriptions.forEach((sub) => {
           new SubscriptionLink(this.subscriptions, {
             id: sub.authorID,
             imgPath: sub.authorAvatar,
             username: sub.authorName,
             tier: `Уровень ${sub.tier}`,
-            isLast: idx === arr.length - 1,
           });
         });
       }
@@ -137,7 +136,7 @@ export default class ProfilePage extends UpgradeViewBase {
     head.innerText = 'Подписки';
     this.subscriptions.classList.add(
         'profile-page__subscriptions',
-        'bg_content',
+        'bg_main',
         'font_regular',
     );
     content.append(head, this.subscriptions);

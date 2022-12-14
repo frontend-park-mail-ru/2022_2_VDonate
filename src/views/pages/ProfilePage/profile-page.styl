@@ -6,18 +6,27 @@
   flex-direction: column
   align-items: center
   +e(content)
+    max-width: 800px
     width: 60vw
     display: flex
     flex-direction: column
+    align-items: stretch
     gap: 20px
     padding: 20px
   +e(header)
     text-align: center
   +e(subscriptions)
+    display: flex
+    flex-direction: column
+    gap: 15px
     text-align: center
-    padding: 20px
+    padding: 15px
+    width: 100%;
+    max-width: 600px;
 
 @media  (max-width: mobile-size)
   +b(profile-page)
     +e(content)
       width: 100vw
+    +e(subscriptions)
+      width: 100%

@@ -7,26 +7,27 @@
   align-items: center
   white-space: normal
   gap: 5px
-  padding: 10px
+  padding: 20px
   +e(back)
-    min-width: 100px 
-    width: 18vw
+    min-width: 180px 
     max-width: 180px
   +e(img)
-    width: 96px
+    width: 80px
+    outline-width: 2px !important
   +e(title)
     display: flex
     justify-content: center
     align-items: center
     text-align: center
   +e(motivation)
+    width: 100%
     &_part
       max-height: 50px
       background: linear-gradient(180deg, rgba(255, 255, 255, 1) 70%, rgba(255, 255, 255, 0) 100%)
       -webkit-background-clip: text
       -webkit-text-fill-color: transparent
   +e(more)
-    color: color-primary-light-3
+    color: color-primary-light
     cursor: pointer
     margin-top: -15px
   +e(btn-area)
@@ -37,9 +38,3 @@
   flex-direction: column
   justify-content: center
   align-items: center
-  +e(count)
-    font-16()
-    color: color-font-light
-  +e(period)
-    font-12()
-    color: color-font-secondary

@@ -1,7 +1,7 @@
 @require '@style/const.styl'
 @require '@style/mixin.styl'
 
-.editor
++b(editor)
   display: grid
   justify-items: center
   align-items: center
@@ -15,19 +15,14 @@
     background-color:rgba(0,0,0,0.7)
     padding: 20px 
     overflow: overlay
-    &::-webkit-scrollbar
-      width: 8px
-      background: transparent
-      &-thumb
-        background: color-scrollbar
-        border-radius: 10px
+    customScrollbar()
   +e(form)
     display: flex
     flex-direction: column
     align-items: stretch
     padding: 20px
     gap: 24px
-    width: 50vw
+    width: 40vw
     height: min-content
   +e(header)
     text-align: center
@@ -45,4 +40,10 @@
   gap: 10px
   +e(input)
     flex-grow: 1
+
+@media (max-width: mobile-size)
+  +b(editor)
+    +e(form)
+     margin-top: 50px
+     width: 80vw
   

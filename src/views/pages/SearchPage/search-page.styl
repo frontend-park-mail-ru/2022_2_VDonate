@@ -9,6 +9,7 @@
   +e(back)
     margin-left: 20vw
     padding: 20px
+    max-width: 600px
     width: 60vw
   +e(title)
     text-align: center
@@ -22,7 +23,11 @@
   +e(input-field)
     flex-grow: 1
   +e(list-area)
-    max-width: 800px
+    display: flex
+    flex-direction: column
+    align-items: stretch
+    flex-wrap: nowrap
+    gap: 10px
     width: 100%
     text-align: center
     padding: 20px
