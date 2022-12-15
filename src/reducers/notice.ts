@@ -44,7 +44,10 @@ const noticeReducer: Reducer<Action> =
         };
       }
       default:
-        return state;
+        return {
+          timestamp: -1,
+          message: '',
+        };
     }
   };
 

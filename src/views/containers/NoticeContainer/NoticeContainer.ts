@@ -6,7 +6,7 @@ import routing from '@actions/handlers/routing';
 import UpgradeViewBase from '@app/UpgradeView';
 /** */
 export default class NoticeContainer extends UpgradeViewBase {
-  private notices = new Set<Notice>();
+  private notices = new Map<Notice, NodeJS.Timeout>();
   private noticeState: PayloadNotice;
 
   constructor(el: HTMLElement) {
@@ -25,6 +25,10 @@ export default class NoticeContainer extends UpgradeViewBase {
 
   notify(): void {
     const noticeStateNew = store.getState().notice as PayloadNotice;
+    if (noticeStateNew.timestamp === -1) {
+      this.removeAllNotices();
+      return;
+    }
     if (this.noticeState.timestamp !== noticeStateNew.timestamp) {
       this.noticeState = noticeStateNew;
       if (typeof this.noticeState.message === 'string') {
@@ -54,6 +58,7 @@ export default class NoticeContainer extends UpgradeViewBase {
         this.addNewNotice('Ошибка! Всё идет не по плану ☆(＃××)');
         console.error(this.noticeState.message);
       }
+      return;
     }
   }
 
@@ -65,16 +70,24 @@ export default class NoticeContainer extends UpgradeViewBase {
     const timeoutID = setTimeout(
         () => {
           this.removeNotice(notice);
-        }, 5000,
+        }, 10000,
     );
     const notice = new Notice(this.domElement, {
       message,
       onDelete: () => {
-        this.removeNotice(notice);
         clearTimeout(timeoutID);
+        this.removeNotice(notice);
       },
     });
-    this.notices.add(notice);
+    this.notices.set(notice, timeoutID);
+  }
+
+  private removeAllNotices() {
+    this.notices.forEach((timeoutID, notice) => {
+      clearTimeout(timeoutID);
+      notice.remove();
+    });
+    this.notices.clear();
   }
 
   private removeNotice(target: Notice) {
