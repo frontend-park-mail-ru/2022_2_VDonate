@@ -87,7 +87,6 @@ const subscribeOnly = (
     });
 
 const switchSubscription = (
-    userSubscriptions: Map<number, PayloadSubscription>,
     authorID: number,
     oldSubscriptionID: number,
     newSubscriptionID: number,
@@ -154,20 +153,17 @@ export const subscribe = (
     authorSubscriptionID: number): void => {
   const userSubscriptions = store.getState()
       .userSubscriptions as Map<number, PayloadSubscription>;
-  let hasSubscription = false;
-  userSubscriptions.forEach((sub) => {
-    if (!hasSubscription && sub.authorID === authorID) {
-      switchSubscription(
-          userSubscriptions,
-          authorID,
-          sub.id,
-          authorSubscriptionID,
-      );
-      hasSubscription = true;
-    }
-  });
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (!hasSubscription) {
+  const userSubscriptionsArr = [...userSubscriptions.entries()];
+  const oldSubscriptionIdx = userSubscriptionsArr
+      .findIndex(([, sub]) => sub.authorID === authorID);
+
+  if (oldSubscriptionIdx !== -1) {
+    switchSubscription(
+        authorID,
+        userSubscriptionsArr[oldSubscriptionIdx][0],
+        authorSubscriptionID,
+    );
+  } else {
     void subscribeOnly(authorID, authorSubscriptionID, (posts) => {
       store.dispatch({
         type: ActionType.SUBSCRIBE,
