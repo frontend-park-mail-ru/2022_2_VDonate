@@ -15,6 +15,7 @@ const editorReducer: Reducer<Action> =
       case ActionType.DELETEAUTHORSUBSCRIPTION:
       case ActionType.SUBSCRIBE:
       case ActionType.UNSUBSCRIBE:
+      case ActionType.SWITCH_SUBSCRIPTION:
         return {};
       case ActionType.CREATEAUTHORSUBSRIPTION:
       case ActionType.EDITAUTHORSUBSRIPTION: {

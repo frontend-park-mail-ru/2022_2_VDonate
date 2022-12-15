@@ -5,6 +5,7 @@ import {
   ActionEditAuthorSubscription,
   ActionGetSubscriptions,
   ActionSubscribe,
+  ActionSwitchSubscription,
   ActionUnsubscribe} from './subscribe';
 import {ActionNotice} from './notice';
 import {
@@ -60,6 +61,7 @@ export enum ActionType {
   PUT_IMAGE,
   EDIT_ABOUT,
   BECOME_AUTHOR,
+  SWITCH_SUBSCRIPTION,
 }
 /** Объединение действий */
 export type Action =
@@ -90,4 +92,5 @@ export type Action =
   | ActionSearch
   | ActionPutImage
   | ActionEditAbout
-  | ActionBecomeAuthor;
+  | ActionBecomeAuthor
+  | ActionSwitchSubscription;

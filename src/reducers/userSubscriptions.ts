@@ -50,6 +50,35 @@ const userSubscriptionsReducer: Reducer<Action> =
         (state as Map<number, PayloadSubscription>)
             .delete(action.payload.authorSubscriptionID);
         return state;
+      case ActionType.SWITCH_SUBSCRIPTION: {
+        (state as Map<number, PayloadSubscription>)
+            .delete(action.payload.oldSubscriptionID);
+
+        const profile =
+          store.getState().profile as PayloadGetProfileData;
+
+        if (!profile.authorSubscriptions) return state;
+        const authorSub =
+        profile.authorSubscriptions.find((sub) =>
+          sub.id == action.payload.newSubscriptionID);
+        if (authorSub) {
+          const subscription: PayloadSubscription = {
+            authorAvatar: profile.user.avatar,
+            authorID: authorSub.authorID,
+            authorName: profile.user.username,
+            id: authorSub.id,
+            img: authorSub.img,
+            price: authorSub.price,
+            text: authorSub.text,
+            tier: authorSub.tier,
+            title: authorSub.title,
+          };
+          (state as Map<number, PayloadSubscription>)
+              .set(subscription.id, subscription);
+        }
+
+        return state;
+      }
       case ActionType.LOGOUT_SUCCESS:
         return new Map<number, PayloadSubscription>();
       default:

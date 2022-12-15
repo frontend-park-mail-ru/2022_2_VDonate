@@ -59,20 +59,22 @@ const profileReducer: Reducer<Action> =
           action.payload.user.username;
         }
         return state;
-      case ActionType.SUBSCRIBE:
+      case ActionType.SUBSCRIBE: {
         const user = (state as PayloadGetProfileData).user;
         if (action.payload.authorSubscriptionID &&
         user.countDonaters !== undefined) {
           user.countDonaters += 1;
         }
         return state;
-      case ActionType.UNSUBSCRIBE:
-        const userr = (state as PayloadGetProfileData).user;
+      }
+      case ActionType.UNSUBSCRIBE: {
+        const user = (state as PayloadGetProfileData).user;
         if (action.payload.authorSubscriptionID &&
-        userr.countDonaters !== undefined) {
-          userr.countDonaters -= 1;
+        user.countDonaters !== undefined) {
+          user.countDonaters -= 1;
         }
         return state;
+      }
       case ActionType.ROUTING:
         if (action.payload.options.samePage) {
           return state;

@@ -39,6 +39,7 @@ const postsReducer: Reducer<Action> =
         return state;
       case ActionType.SUBSCRIBE:
       case ActionType.UNSUBSCRIBE:
+      case ActionType.SWITCH_SUBSCRIPTION:
         return createPostsMap(action.payload.posts);
       case ActionType.ROUTING:
         if (action.payload.options.samePage) {

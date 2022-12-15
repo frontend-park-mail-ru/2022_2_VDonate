@@ -20,6 +20,12 @@ export interface PayloadSubscription {
   title: string
 }
 
+export interface PayloadSwitchSubscription {
+  oldSubscriptionID: number
+  newSubscriptionID: number
+  posts: PayloadPost[]
+}
+
 export interface ActionSubscribe extends IAction {
   type: ActionType.SUBSCRIBE
   payload: PayloadSubscribe
@@ -28,6 +34,11 @@ export interface ActionSubscribe extends IAction {
 export interface ActionUnsubscribe extends IAction {
   type: ActionType.UNSUBSCRIBE
   payload: PayloadSubscribe
+}
+
+export interface ActionSwitchSubscription extends IAction {
+  type: ActionType.SWITCH_SUBSCRIPTION
+  payload: PayloadSwitchSubscription
 }
 
 export interface ActionGetSubscriptions extends IAction {
