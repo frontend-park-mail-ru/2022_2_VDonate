@@ -69,7 +69,7 @@ class SubscriptionCard
       this.options.img = data.img;
     }
     if (data.price !== this.options.price) {
-      this.price.innerText = '&#8381;' + data.price.toString();
+      this.price.innerHTML = data.price.toString() + '&#8381;';
       this.options.price = data.price;
     }
     if (data.description !== this.options.description) {

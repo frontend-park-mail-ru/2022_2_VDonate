@@ -72,7 +72,7 @@ export default class ProfilePage extends UpgradeViewBase {
             id: sub.authorID,
             imgPath: sub.authorAvatar,
             username: sub.authorName,
-            tier: `Уровень ${sub.tier}`,
+            tier: `${sub.tier} уровень`,
           });
         });
       }

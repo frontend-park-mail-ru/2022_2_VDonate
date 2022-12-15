@@ -78,7 +78,7 @@ export default class SearchPage extends UpgradeViewBase {
         id: author.id,
         username: author.username,
         imgPath: author.avatar,
-        tier: `донатеров ${author.countSubscribers ?? 0}`,
+        tier: `${author.countSubscribers ?? 0} донатеров`,
       });
     });
   }

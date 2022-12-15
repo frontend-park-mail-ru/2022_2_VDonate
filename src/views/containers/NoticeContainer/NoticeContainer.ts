@@ -34,7 +34,7 @@ export default class NoticeContainer extends UpgradeViewBase {
         } else if (/^[а-яёА-ЯЁ]/.test(this.noticeState.message)) {
           this.addNewNotice(this.noticeState.message);
         } else {
-          this.addNewNotice('АХТУНГ! Всё идет не по плану ☆(＃××)');
+          this.addNewNotice('Ошибка! Всё идет не по плану ☆(＃××)');
           console.error(this.noticeState.message);
         }
       } else
@@ -51,7 +51,7 @@ export default class NoticeContainer extends UpgradeViewBase {
         );
       } else
       if (this.noticeState.message instanceof Error) {
-        this.addNewNotice('АХТУНГ! Всё идет не по плану ☆(＃××)');
+        this.addNewNotice('Ошибка! Всё идет не по плану ☆(＃××)');
         console.error(this.noticeState.message);
       }
     }

@@ -108,7 +108,8 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     post.classList.add('post', 'post__back', 'bg_main');
     post.innerHTML = templatePost({
       username: this.options.author.username,
-      date: this.options.dateCreated.length === 0 ?
+      date: (typeof this.options.dateCreated == 'undefined' ||
+             this.options.dateCreated.length === 0) ?
         'В процессе...' : dateFormate(this.options.dateCreated),
     });
     const avatarArea = querySelectorWithThrow(post, '.post__author-avatar');
@@ -227,14 +228,20 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     });
     buttonsArea.appendChild(form);
 
-
-    const tierBtn = new InputField(form, {
+    const tierField = document.createElement('div');
+    tierField.classList.add('post-edit-form__tier');
+    const tierText = document.createElement('div');
+    tierText.classList.add('post-edit-form__tier-text', 'font_regular');
+    tierText.innerText = 'Уровень подписки:';
+    tierField.appendChild(tierText);
+    const tierBtn = new InputField(tierField, {
       name: 'tier',
       kind: InputType.number,
       value: this.options.tier.toString(),
       displayError: false,
     });
-    tierBtn.addClassNames('post-edit-form__tier');
+    tierBtn.addClassNames('post-edit-form__tier-input');
+    form.appendChild(tierField);
 
     const headerBtn = new Button(form, {
       actionType: 'button',

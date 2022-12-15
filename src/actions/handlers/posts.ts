@@ -6,11 +6,11 @@ import api from '@app/Api';
 import store from '@app/Store';
 
 export const createPost = (content: string, tier: number) => {
-  if (tier < 1 || tier > 10000) {
+  if (tier < 0 || tier > 10000) {
     store.dispatch({
       type: ActionType.NOTICE,
       payload: {
-        message: 'Уровень должен быть в пределах от 1 до 10000',
+        message: 'Уровень должен быть в пределах от 0 до 10000',
       },
     });
     return;
@@ -83,11 +83,11 @@ export const createPost = (content: string, tier: number) => {
 
 export const updatePost =
   (id: number, content: string, tier: number) => {
-    if (tier < 1 || tier > 10000) {
+    if (tier < 0 || tier > 10000) {
       store.dispatch({
         type: ActionType.NOTICE,
         payload: {
-          message: 'Уровень должен быть в пределах от 1 до 10000',
+          message: 'Уровень должен быть в пределах от 0 до 10000',
         },
       });
     }
