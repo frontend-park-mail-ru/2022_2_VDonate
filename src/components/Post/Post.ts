@@ -92,12 +92,12 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
         this.options.content = data.content;
         this.options.tier = data.tier;
 
-        querySelectorWithThrow(this.domElement, '.post__content').innerHTML =
-          templateContent({
-            isAllowed: data.isAllowed,
-            text: data.content,
-            tier: data.tier,
-          });
+        querySelectorWithThrow(this.domElement, '.post__content-area')
+            .innerHTML = templateContent({
+              isAllowed: data.isAllowed,
+              text: data.content,
+              tier: data.tier,
+            });
       }
       return;
     }
@@ -119,7 +119,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     });
     avatar.addClassNames('post__img');
 
-    const contentArea = querySelectorWithThrow(post, '.post__content');
+    const contentArea = querySelectorWithThrow(post, '.post__content-area');
     contentArea.innerHTML = templateContent({
       isAllowed: this.options.isAllowed,
       text: this.options.content,
@@ -138,10 +138,8 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
           innerIcon: editIcon,
           clickHandler: () => {
             if (this.options.inEditState) {
-              this.options.inEditState = false;
               this.closeEditor();
             } else {
-              this.options.inEditState = true;
               this.openEditor();
             }
           },
@@ -191,6 +189,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
   }
 
   private openEditor(domElement?: HTMLElement) {
+    this.options.inEditState = true;
     this.content =
       querySelectorWithThrow(domElement ?? this.domElement, '.post-content');
     this.content.setAttribute('contenteditable', 'true');
@@ -308,6 +307,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
   }
 
   private closeEditor() {
+    this.options.inEditState = false;
     if (this.options.postID === -1) {
       this.remove();
     } else {
