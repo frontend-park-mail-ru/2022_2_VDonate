@@ -12,7 +12,7 @@ const logInContext = {
   title: 'Вход',
   greeting: 'Мы ждали тебя!',
   link: '/signup',
-  textLink: 'Ещё не с нами? Зарегиструйся!',
+  textLink: 'Ещё не с нами? Зарегистрируйся!',
 };
 /** Контекст для полей ввода */
 const logInInputs: InputOptions[] = [

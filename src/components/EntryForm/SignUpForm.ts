@@ -12,7 +12,7 @@ const signUpContext = {
   title: 'Регистрация',
   greeting: 'Скорее присоединяйся к нам!',
   link: '/login',
-  textLink: 'Мне кажется, или мы знакомы? Войти',
+  textLink: 'Мне кажется, или мы знакомы? Входи!',
 };
 /** Контекст для полей ввода */
 const signUpInputs: InputOptions[] = [
