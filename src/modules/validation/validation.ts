@@ -34,11 +34,11 @@ const sizes = {
     max: 30,
   },
   title: {
-    min: 5,
+    min: 1,
     max: 30,
   },
   text: {
-    min: 10,
+    min: 1,
     max: 128,
   },
   tier: {
@@ -166,38 +166,38 @@ export const repeatPasswordCheck = (
   return null;
 };
 
-/**
- * @param tier строка для валидации
- * @returns null или сообщение об ошибке
- */
-export const tierCheck = (tier: string): null | string => {
-  if (Number(tier) < sizes.tier.min) {
-    return `Уровень меьше ${sizes.tier.min}`;
-  }
-  if (Number(tier) > sizes.tier.max) {
-    return `Уровень больше ${sizes.tier.max}`;
-  }
-  const tierReg = /^[0-9]+$/;
-  if (!tierReg.test(tier)) {
-    return 'Укажите уровень используя только цифры';
-  }
-  return null;
-};
+// /**
+//  * @param tier строка для валидации
+//  * @returns null или сообщение об ошибке
+//  */
+// export const tierCheck = (tier: string): null | string => {
+//   const tierReg = /^[0-9]+$/;
+//   if (!tierReg.test(tier)) {
+//     return 'Укажите уровень используя только цифры';
+//   }
+//   if (Number(tier) < sizes.tier.min) {
+//     return `Уровень меьше ${sizes.tier.min}`;
+//   }
+//   if (Number(tier) > sizes.tier.max) {
+//     return `Уровень больше ${sizes.tier.max}`;
+//   }
+//   return null;
+// };
 
 /**
  * @param price строка для валидации
  * @returns null или сообщение об ошибке
  */
 export const priceCheck = (price: string): null | string => {
+  const priceReg = /^[-+0-9]?[0-9]*$/;
+  if (!priceReg.test(price)) {
+    return 'Укажите цену, используя только цифры';
+  }
   if (Number(price) < sizes.price.min) {
-    return `Цена меньше ${sizes.price.min}`;
+    return `Укажите цену не меньше ${sizes.price.min}`;
   }
   if (Number(price) > sizes.price.max) {
-    return `Цена больше ${sizes.price.max}`;
-  }
-  const priceReg = /^[0-9]+$/;
-  if (!priceReg.test(price)) {
-    return 'Укажите  используя только цифры';
+    return `Укажите цену не больше ${sizes.price.max}`;
   }
   return null;
 };
@@ -229,10 +229,10 @@ export const titleCheck = (title: string): null | string => {
  */
 export const textCheck = (text: string): null | string => {
   if (text.length < sizes.text.min) {
-    return `Символов в тексте мотивации меньше ${sizes.text.min}`;
+    return `Символов в тексте меньше ${sizes.text.min}`;
   }
   if (text.length > sizes.text.max) {
-    return `Символов в тексте мотивации больше ${sizes.text.max}`;
+    return `Символов в тексте больше ${sizes.text.max}`;
   }
   return null;
 };

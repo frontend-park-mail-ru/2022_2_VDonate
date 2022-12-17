@@ -4,19 +4,18 @@ import templateTextarea from './textarea-input.hbs';
 import userIcon from '@icon/user.svg';
 import emailIcon from '@icon/email.svg';
 import passwordIcon from '@icon/password.svg';
-import levelsIcon from '@icon/levels.svg';
+import rubleIcon from '@icon/ruble.svg';
 
 import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 
 export enum InputType {
-  username,
-  email,
-  password,
-  text,
-  textarea,
-  image,
-  checkbox,
-  number,
+  USERNAME,
+  EMAIL,
+  PASSWORD,
+  TEXT,
+  TEXTAREA,
+  IMAGE,
+  PRICE,
 }
 
 export interface InputOptions {
@@ -67,34 +66,31 @@ class InputField extends ComponentBase<'label', boolean> {
     };
 
     switch (this.options.kind) {
-      case InputType.username:
+      case InputType.USERNAME:
         templateContext.type = 'text';
         templateContext.icon = userIcon;
         break;
-      case InputType.email:
+      case InputType.EMAIL:
         templateContext.type = 'text';
         templateContext.icon = emailIcon;
         break;
-      case InputType.password:
+      case InputType.PASSWORD:
         templateContext.type = 'password';
         templateContext.icon = passwordIcon;
         break;
-      case InputType.text:
+      case InputType.TEXT:
         templateContext.type = 'text';
         break;
-      case InputType.image:
+      case InputType.IMAGE:
         templateContext.type = 'file';
         break;
-      case InputType.checkbox:
-        templateContext.type = 'checkbox';
-        break;
-      case InputType.textarea:
+      case InputType.TEXTAREA:
         input.classList.add('input-field_with-textarea');
         templateContext.type = 'textarea';
         break;
-      case InputType.number:
+      case InputType.PRICE:
         templateContext.type = 'number';
-        templateContext.icon = levelsIcon;
+        templateContext.icon = rubleIcon;
         break;
       default: {
         const _exhaustiveCheck: never = this.options.kind;
@@ -102,20 +98,27 @@ class InputField extends ComponentBase<'label', boolean> {
       }
     }
 
-    if (this.options.kind === InputType.textarea) {
+    if (this.options.kind === InputType.TEXTAREA) {
       input.insertAdjacentHTML('beforeend', templateTextarea(templateContext));
     } else {
       input.insertAdjacentHTML('beforeend', templateInput(templateContext));
     }
 
     switch (this.options.kind) {
-      case InputType.image: {
-        templateContext.type = 'file';
+      case InputType.IMAGE: {
         const inputEl =
           querySelectorWithThrow(
               input, '.input-field__input',
           ) as HTMLInputElement;
         inputEl.accept = 'image/*';
+        break;
+      }
+      case InputType.PRICE: {
+        const inputEl =
+          querySelectorWithThrow(
+              input, '.input-field__input',
+          ) as HTMLInputElement;
+        inputEl.min = '1';
         break;
       }
       default:

@@ -34,11 +34,11 @@ class SubscriptionLink extends ComponentBase<'a'> {
     const user = document.createElement('div');
     user.classList.add('subscription-link__username', 'font_regular');
     user.innerText = this.options.username;
-    const lvl = document.createElement('div');
-    lvl.classList.add('subscription-link__tier', 'font_regular');
-    lvl.innerText = this.options.tier;
+    const tier = document.createElement('div');
+    tier.classList.add('subscription-link__tier', 'font_regular');
+    tier.innerText = this.options.tier;
 
-    subscription.append(user, lvl);
+    subscription.append(user, tier);
 
     return subscription;
   }

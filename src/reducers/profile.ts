@@ -11,40 +11,64 @@ const profileReducer: Reducer<Action> =
     switch (action.type) {
       case ActionType.GETPROFILEDATA:
         return action.payload;
-      case ActionType.CREATEAUTHORSUBSRIPTION:
+      case ActionType.CREATEAUTHORSUBSRIPTION: {
         if (!action.payload.subscription) {
           return state;
         }
         const newSub: PayloadSubscription = action.payload.subscription;
-        (state as PayloadGetProfileData).authorSubscriptions?.push(newSub);
-        return state;
-      case ActionType.EDITAUTHORSUBSRIPTION:
-        const authorSub = (state as PayloadGetProfileData).authorSubscriptions
-            ?.find((sub) =>
-              sub.id == action.payload.subscription?.id);
-        const payload = action.payload.subscription;
-        if (payload && authorSub) {
-          authorSub.img = payload.img;
-          authorSub.price = payload.price;
-          authorSub.text = payload.text;
-          authorSub.tier = payload.tier;
-          authorSub.title = payload.title;
+        const authorSubscriptions = (state as PayloadGetProfileData)
+            .authorSubscriptions;
+        if (authorSubscriptions) {
+          authorSubscriptions.push(newSub);
+          authorSubscriptions.sort((a, b) => a.price - b.price);
+          authorSubscriptions.forEach((sub, idx) => {
+            sub.tier = idx + 1;
+          });
         }
         return state;
-      case ActionType.DELETEAUTHORSUBSCRIPTION:
-        const subscriptions = (state as PayloadGetProfileData)
+      }
+      case ActionType.EDITAUTHORSUBSRIPTION: {
+        const authorSubscriptions = (state as PayloadGetProfileData)
             .authorSubscriptions;
-        if (subscriptions?.length == 1 &&
-          subscriptions[0].id == action.payload.id) {
+        if (!authorSubscriptions) return state;
+
+        const targetSubscription = authorSubscriptions.find((sub) =>
+          sub.id == action.payload.subscription?.id);
+        const payload = action.payload.subscription;
+        if (payload && targetSubscription) {
+          targetSubscription.img = payload.img;
+          targetSubscription.price = payload.price;
+          targetSubscription.text = payload.text;
+          targetSubscription.tier = payload.tier;
+          targetSubscription.title = payload.title;
+          authorSubscriptions.sort((a, b) => a.price - b.price);
+          authorSubscriptions.forEach((sub, idx) => {
+            sub.tier = idx + 1;
+          });
+        }
+        return state;
+      }
+      case ActionType.DELETEAUTHORSUBSCRIPTION: {
+        const authorSubscriptions = (state as PayloadGetProfileData)
+            .authorSubscriptions;
+        if (!authorSubscriptions) return state;
+
+        if (authorSubscriptions.length == 1 &&
+          authorSubscriptions[0].id == action.payload.id) {
           (state as PayloadGetProfileData).authorSubscriptions = [];
           return state;
         }
-        const idx = subscriptions
-            ?.findIndex((sub) => sub.id == action.payload.id);
-        if (idx && idx > -1) {
-          (state as PayloadGetProfileData).authorSubscriptions?.splice(idx, 1);
+        const idx = authorSubscriptions
+            .findIndex((sub) => sub.id == action.payload.id);
+        if (idx > -1) {
+          authorSubscriptions.splice(idx, 1);
+          authorSubscriptions.sort((a, b) => a.price - b.price);
+          authorSubscriptions.forEach((sub, idx) => {
+            sub.tier = idx + 1;
+          });
         }
         return state;
+      }
       case ActionType.CHANGEUSERDATA_SUCCESS:
         if ((state as PayloadGetProfileData).user.id !==
             action.payload.user.id) {

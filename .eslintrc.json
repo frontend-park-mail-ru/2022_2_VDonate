@@ -44,7 +44,8 @@
         "space-infix-ops": "off",
         "@typescript-eslint/space-infix-ops": "warn",
         "space-before-blocks": "off",
-        "@typescript-eslint/space-before-blocks": "warn"
+        "@typescript-eslint/space-before-blocks": "warn",
+        "indent": 2
     },
     "overrides": []
 }

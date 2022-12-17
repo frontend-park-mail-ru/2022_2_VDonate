@@ -139,8 +139,6 @@ class PostsContainer
         userID: user.id,
         username: user.username,
       },
-      inEditState: true,
-      changable: true,
       isAllowed: true,
       isLiked: false,
       likesNum: 0,
@@ -149,6 +147,8 @@ class PostsContainer
       commentsNum: 0,
       content: '',
       dateCreated: '',
+      changable: true,
+      inEditState: true,
     });
   }
 }

@@ -15,10 +15,8 @@
     width: 80px
     outline-width: 2px !important
   +e(title)
-    display: flex
-    justify-content: center
-    align-items: center
     text-align: center
+    height: 44px
   +e(motivation)
     width: 100%
     &_part
@@ -34,6 +32,13 @@
     display: contents
   +e(button)
     align-self: stretch
+  +e(header)
+    display: flex
+    flex-direction: column
+    align-items: center
+  +e(tier)
+    color: color-font-secondary
+    // display: none
 
 +b(price)
   display: flex

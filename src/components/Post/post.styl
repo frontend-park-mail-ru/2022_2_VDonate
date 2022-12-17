@@ -41,24 +41,34 @@
   +e(edit-form)
     flex-grow: 1
 
+
 .post-edit-form
   display: grid
   grid-template-areas: "tier h1 img"\
                         "btn btn btn"
   grid-template-columns: 1fr repeat(2, min-content)
-  gap: 5px
+  align-items: end
+  gap: 15px 5px
   +e(tier)
     grid-area: tier
-    display: flex
-    flex-direction: row
-    flex-wrap: nowrap
-    align-items: center
+    // display: flex
+    // flex-direction: row
+    // flex-wrap: wrap
+    // align-items: stretch
+    // row-gap: 5px
+    // column-gap: 10px
   +e(h1)
     grid-area: h1
+    padding-bottom: 6px
   +e(img)
     grid-area: img
+    padding-bottom: 6px
   +e(btn)
     grid-area: btn
+  +e(tier-text)
+    align-self: center
+  +e(tier-dropbox)
+    flex-grow: 1
 
 .post-content
   +m(blured)

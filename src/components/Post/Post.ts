@@ -4,7 +4,7 @@ import templateContent from './content.hbs';
 import editIcon from '@icon/edit.svg';
 import headerIcon from '@icon/header.svg';
 import loadImageIcon from '@icon/loadImage.svg';
-
+import store from '@app/Store';
 import './post.styl';
 
 import {PayloadPost} from '@actions/types/posts';
@@ -19,8 +19,9 @@ import {
 import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 import Avatar, {AvatarType} from '@components/Avatar/Avatar';
 import PostAction, {PostActionType} from '@components/PostAction/PostAction';
-import InputField, {InputType} from '@components/InputField/InputField';
 import dateFormate from '@date/dateFormate';
+import Dropbox from '@components/Dropbox/Dropbox';
+import {PayloadGetProfileData} from '@actions/types/getProfileData';
 
 type PostOptions = PayloadPost & {
   changable: boolean
@@ -46,7 +47,7 @@ export type PostUpdateContext =
   | EditPostUpdateContext;
 
 interface EditForm extends HTMLCollection {
-  tier: HTMLInputElement;
+  tier: HTMLSelectElement;
 }
 
 /**
@@ -227,20 +228,36 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     });
     buttonsArea.appendChild(form);
 
-    const tierField = document.createElement('div');
-    tierField.classList.add('post-edit-form__tier');
-    const tierText = document.createElement('div');
-    tierText.classList.add('post-edit-form__tier-text', 'font_regular');
-    tierText.innerText = 'Уровень подписки:';
-    tierField.appendChild(tierText);
-    const tierBtn = new InputField(tierField, {
-      name: 'tier',
-      kind: InputType.number,
-      value: this.options.tier.toString(),
-      displayError: false,
+    // const tierField = document.createElement('div');
+    // tierField.classList.add('post-edit-form__tier');
+    // const tierText = document.createElement('div');
+    // tierText.classList.add('post-edit-form__tier-text', 'font_regular');
+
+    // tierText.innerText = 'Ранг:';
+    // tierField.appendChild(tierText);
+    const subs = (store.getState().profile as PayloadGetProfileData)
+        .authorSubscriptions;
+    if (!subs) {
+      throw new Error('Error: no author subs for open post editor');
+    }
+    const dropboxOptions = Array.from(subs, (sub) => {
+      return {
+        text: sub.title,
+        value: sub.tier.toString(),
+      };
     });
-    tierBtn.addClassNames('post-edit-form__tier-input');
-    form.appendChild(tierField);
+    dropboxOptions.unshift({
+      text: 'Без ограничения',
+      value: '0',
+    });
+
+    const tierBtn = new Dropbox(form, {
+      label: 'Ограничение:',
+      name: 'tier',
+      options: dropboxOptions,
+    });
+    tierBtn.addClassNames('post-edit-form__tier');
+    // form.appendChild(tierField);
 
     const headerBtn = new Button(form, {
       actionType: 'button',

@@ -73,7 +73,7 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
     const inputsArea = querySelectorWithThrow(form, '.editor__inputs');
     this.inputs
         .set('email', new InputField(inputsArea, {
-          kind: InputType.email,
+          kind: InputType.EMAIL,
           label: 'Почта',
           name: 'email',
           placeholder: 'Введите почту',
@@ -81,7 +81,7 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
           displayError: false,
         }))
         .set('username', new InputField(inputsArea, {
-          kind: InputType.username,
+          kind: InputType.USERNAME,
           label: 'Псевдноним',
           name: 'username',
           placeholder: 'Введите псевдоним',
@@ -90,21 +90,21 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
         }));
     this.inputs
         .set('password', new InputField(inputsArea, {
-          kind: InputType.password,
+          kind: InputType.PASSWORD,
           label: 'Пароль',
           name: 'password',
           placeholder: 'Введите пароль',
           displayError: false,
         }))
         .set('repeatPassword', new InputField(inputsArea, {
-          kind: InputType.password,
+          kind: InputType.PASSWORD,
           label: 'Повторите пароль',
           name: 'repeatPassword',
           placeholder: 'Точно также',
           displayError: false,
         }))
         .set('avatar', new InputField(inputsArea, {
-          kind: InputType.image,
+          kind: InputType.IMAGE,
           label: 'Загрузите аватарку',
           name: 'avatar',
           displayError: false,

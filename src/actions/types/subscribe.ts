@@ -50,7 +50,7 @@ export interface PayloadAuthorSubscriptionErrors {
   type: FormErrorType.AUTHOR_SUBSCRIPTION
   price: null | string
   text: null | string
-  tier: null | string
+  // tier: null | string
   title: null | string
   file: null | string
 }

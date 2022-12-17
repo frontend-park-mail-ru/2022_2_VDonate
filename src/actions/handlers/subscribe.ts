@@ -8,10 +8,10 @@ import {FormErrorType} from '@actions/types/formError';
 import {
   priceCheck,
   textCheck,
-  tierCheck,
   titleCheck} from '@validation/validation';
 import {PayloadPost} from '@actions/types/posts';
-
+import {
+  PayloadGetProfileData} from '@actions/types/getProfileData';
 
 const loadNewPosts =
   (authorID: number, dispatch: (posts: PayloadPost[]) => void) =>
@@ -54,7 +54,7 @@ const subscribeOnly = (
             store.dispatch({
               type: ActionType.NOTICE,
               payload: {
-                message: 'Error: 400 - subscribeOnly handler',
+                message: 'Error: 400 - subscribeOnly',
               },
             });
             break;
@@ -62,7 +62,8 @@ const subscribeOnly = (
             store.dispatch({
               type: ActionType.NOTICE,
               payload: {
-                message: 'Упс! Подписаться не удалось. Повторите попытку.',
+                message:
+                  'Упс! Подписаться не удалось. Повторите попытку позже.',
               },
             });
             break;
@@ -70,7 +71,7 @@ const subscribeOnly = (
             store.dispatch({
               type: ActionType.NOTICE,
               payload: {
-                message: 'Error: subscribeOnly handler',
+                message: 'Error: subscribeOnly',
               },
             });
             break;
@@ -114,7 +115,7 @@ const switchSubscription = (
               store.dispatch({
                 type: ActionType.NOTICE,
                 payload: {
-                  message: 'Error: 400 - switchSubscription handler',
+                  message: 'Error: 400 - switchSubscription',
                 },
               });
               break;
@@ -123,7 +124,7 @@ const switchSubscription = (
                 type: ActionType.NOTICE,
                 payload: {
                   message:
-                    'Упс! Сменить подписку не удалось. Повторите попытку.',
+                  'Упс! Сменить подписку не удалось. Повторите попытку позже.',
                 },
               });
               break;
@@ -243,19 +244,62 @@ export const getSubscritions = (id: number) => {
 export interface AuthorSubscrptionForm extends HTMLCollection {
   title: HTMLInputElement
   price: HTMLInputElement
-  tier: HTMLInputElement
   text: HTMLInputElement
   file?: HTMLInputElement
 }
 
+const updateSubscriptions =
+  async (
+      copy: PayloadSubscription[],
+      src: PayloadSubscription[],
+      priceChanged: boolean,
+  ) => {
+    if (!priceChanged) return;
+    for (const sub of src) {
+      const newTier = copy.findIndex((subCopy) => subCopy.id === sub.id) + 1;
+      if (newTier && sub.tier !== newTier) {
+        const subData = {
+          id: sub.id,
+          tier: newTier,
+        };
+        const res = await api.editAuthorSubscription(subData);
+        if (!res.ok) {
+          throw new Error(`Error: ${res.status} - updateSubscriptions`);
+        }
+      }
+    }
+  };
+
 export const editAuthorSubscription = (
-    subId: number,
+    subID: number,
     form: AuthorSubscrptionForm) => {
-  const priceErr = priceCheck(form.price.value);
+  let priceErr = priceCheck(form.price.value);
   const textErr = textCheck(form.text.value);
-  const tierErr = tierCheck(form.tier.value);
   const titleErr = titleCheck(form.title.value);
-  if (priceErr || textErr || tierErr || titleErr) {
+
+  const authorSubscriptions =
+    (store.getState().profile as PayloadGetProfileData).authorSubscriptions;
+  if (authorSubscriptions === undefined) {
+    store.dispatch({
+      type: ActionType.NOTICE,
+      payload: {
+        message:
+          'Error: editAuthorSubscription вызвался для профиля без подписок',
+      },
+    });
+    return;
+  }
+  const copyAuthorSubscriptions =
+    JSON.parse(JSON.stringify(authorSubscriptions)) as PayloadSubscription[];
+
+  if (priceErr === null) {
+    priceErr = copyAuthorSubscriptions.find((sub) => {
+      if (subID === sub.id) return false;
+      return sub.price === Number(form.price.value);
+    }) ? 'Подписка с такой ценой уже создана.' : null;
+  }
+
+  if (priceErr || textErr || titleErr) {
     store.dispatch({
       type: ActionType.EDITAUTHORSUBSRIPTION,
       payload: {
@@ -263,7 +307,6 @@ export const editAuthorSubscription = (
           type: FormErrorType.AUTHOR_SUBSCRIPTION,
           price: priceErr,
           text: textErr,
-          tier: tierErr,
           title: titleErr,
           file: null,
         },
@@ -271,25 +314,57 @@ export const editAuthorSubscription = (
     });
     return;
   }
-  const subData: {
-    id: number,
-    price: number,
-    text: string,
-    tier: number,
-    title: string,
-    file?: File,
-  } = {
-    id: subId,
+  const subData: PayloadSubscription & {file?: File} = {
+    id: subID,
     price: Number(form.price.value),
     text: form.text.value,
-    tier: Number(form.tier.value),
+    tier: -1,
     title: form.title.value,
+    authorAvatar: '',
+    authorID: -1,
+    authorName: '',
+    img: '',
   };
   if (form.file?.files && form.file.files.length > 0) {
     subData.file = form.file.files[0];
   }
 
-  api.editAuthorSubscription(subData)
+  const oldSub =
+    copyAuthorSubscriptions.find((sub) => sub.id === subID);
+  let tier = oldSub?.tier ?? 0;
+  const priceChanged =
+    oldSub && oldSub.price !== Number(form.price.value);
+  if (priceChanged) {
+    oldSub.price = Number(form.price.value);
+    copyAuthorSubscriptions.sort((a, b) => a.price - b.price);
+    tier = copyAuthorSubscriptions.findIndex((sub) => sub.id === subID) + 1;
+  }
+
+  if (!tier) {
+    store.dispatch({
+      type: ActionType.NOTICE,
+      payload: {
+        message: 'Error: подписка потеряна - editAuthorSubscription',
+      },
+    });
+    return;
+  }
+  subData.tier = tier;
+  updateSubscriptions(
+      copyAuthorSubscriptions,
+      authorSubscriptions,
+      Boolean(priceChanged),
+  )
+      .then(() => {
+        return api.editAuthorSubscription({
+          id: subData.id,
+          price: subData.price,
+          text: subData.text,
+          tier: subData.tier,
+          title: subData.title,
+          file: subData.file,
+        });
+      })
       .then((res: ResponseData) => {
         if (res.ok) {
           store.dispatch({
@@ -303,26 +378,61 @@ export const editAuthorSubscription = (
                 img: res.body.imgPath as string,
                 price: Number(form.price.value),
                 text: form.text.value,
-                tier: Number(form.tier.value),
+                tier: tier,
                 title: form.title.value,
               },
               formErrors: {
                 type: FormErrorType.AUTHOR_SUBSCRIPTION,
                 price: null,
                 text: null,
-                tier: null,
                 title: null,
                 file: null,
               },
             },
           });
         } else {
-          store.dispatch({
-            type: ActionType.NOTICE,
-            payload: {
-              message: 'Ошибка сервера при изменении подписки',
-            },
-          });
+          switch (res.status) {
+            case 400:
+              store.dispatch({
+                type: ActionType.NOTICE,
+                payload: {
+                  message: 'Error: 400 - editAuthorSubscription',
+                },
+              });
+              break;
+            case 401:
+              store.dispatch({
+                type: ActionType.NOTICE,
+                payload: {
+                  message: 'Error: 401 - editAuthorSubscription',
+                },
+              });
+              break;
+            case 403:
+              store.dispatch({
+                type: ActionType.NOTICE,
+                payload: {
+                  message: 'Error: 403 - editAuthorSubscription',
+                },
+              });
+              break;
+            case 500:
+              store.dispatch({
+                type: ActionType.NOTICE,
+                payload: {
+                  message: 'Error: 500 - editAuthorSubscription',
+                },
+              });
+              break;
+            default:
+              store.dispatch({
+                type: ActionType.NOTICE,
+                payload: {
+                  message: 'Error: editAuthorSubscription',
+                },
+              });
+              break;
+          }
         }
       })
       .catch((err) => {
@@ -336,19 +446,39 @@ export const editAuthorSubscription = (
 };
 
 export const createAuthorSubscription = (form: AuthorSubscrptionForm) => {
-  const priceErr = priceCheck(form.price.value);
+  let priceErr = priceCheck(form.price.value);
   const textErr = textCheck(form.text.value);
-  const tierErr = tierCheck(form.tier.value);
   const titleErr = titleCheck(form.title.value);
-  if (priceErr || textErr || tierErr || titleErr) {
+
+  const authorSubscriptions =
+    (store.getState().profile as PayloadGetProfileData).authorSubscriptions;
+  if (authorSubscriptions === undefined) {
     store.dispatch({
-      type: ActionType.CREATEAUTHORSUBSRIPTION,
+      type: ActionType.NOTICE,
+      payload: {
+        message:
+          'Error: createAuthorSubscription вызвался для профиля без подписок',
+      },
+    });
+    return;
+  }
+  const copyAuthorSubscriptions =
+    JSON.parse(JSON.stringify(authorSubscriptions)) as PayloadSubscription[];
+
+  if (priceErr === null) {
+    priceErr = copyAuthorSubscriptions.find((sub) => {
+      return sub.price === Number(form.price.value);
+    }) ? 'Подписка с такой ценой уже создана.' : null;
+  }
+
+  if (priceErr || textErr || titleErr) {
+    store.dispatch({
+      type: ActionType.EDITAUTHORSUBSRIPTION,
       payload: {
         formErrors: {
           type: FormErrorType.AUTHOR_SUBSCRIPTION,
           price: priceErr,
           text: textErr,
-          tier: tierErr,
           title: titleErr,
           file: null,
         },
@@ -356,13 +486,46 @@ export const createAuthorSubscription = (form: AuthorSubscrptionForm) => {
     });
     return;
   }
-  api.createAuthorSubscription({
+
+  const subData: PayloadSubscription & {file?: File} = {
+    id: -1,
     price: Number(form.price.value),
     text: form.text.value,
-    tier: Number(form.tier.value),
+    tier: -1,
     title: form.title.value,
-    file: form.file?.files ? form.file.files[0] : undefined,
-  })
+    authorAvatar: '',
+    authorID: -1,
+    authorName: '',
+    img: '',
+  };
+  if (form.file?.files && form.file.files.length > 0) {
+    subData.file = form.file.files[0];
+  }
+
+  copyAuthorSubscriptions.push(subData);
+  copyAuthorSubscriptions.sort((a, b) => a.price - b.price);
+  const tier = copyAuthorSubscriptions.findIndex((sub) => sub.id === -1) + 1;
+  if (!tier) {
+    store.dispatch({
+      type: ActionType.NOTICE,
+      payload: {
+        message: 'Error: подписка потеряна - createAuthorSubscription',
+      },
+    });
+    return;
+  }
+  subData.tier = tier;
+
+  updateSubscriptions(copyAuthorSubscriptions, authorSubscriptions, true)
+      .then(() => {
+        return api.createAuthorSubscription({
+          price: subData.price,
+          text: subData.text,
+          tier: subData.tier,
+          title: subData.title,
+          file: subData.file,
+        });
+      })
       .then((res: ResponseData) => {
         if (res.ok) {
           store.dispatch({
@@ -376,14 +539,14 @@ export const createAuthorSubscription = (form: AuthorSubscrptionForm) => {
                 img: res.body.imgPath as string,
                 price: Number(form.price.value),
                 text: form.text.value,
-                tier: Number(form.tier.value),
+                tier: tier,
                 title: form.title.value,
               },
               formErrors: {
                 type: FormErrorType.AUTHOR_SUBSCRIPTION,
                 price: null,
                 text: null,
-                tier: null,
+                // tier: null,
                 title: null,
                 file: null,
               },
@@ -393,7 +556,7 @@ export const createAuthorSubscription = (form: AuthorSubscrptionForm) => {
           store.dispatch({
             type: ActionType.NOTICE,
             payload: {
-              message: ' Ощибка при создании подписки',
+              message: 'Ошибка при создании подписки',
             },
           });
         }
@@ -412,12 +575,48 @@ export const deleteAuthorSubscription = (id: number) => {
   api.deleteAuthorSubscription(id)
       .then((res: ResponseData) => {
         if (res.ok) {
-          store.dispatch({
-            type: ActionType.DELETEAUTHORSUBSCRIPTION,
-            payload: {
-              id,
-            },
-          });
+          const authorSubscriptions =
+    (store.getState().profile as PayloadGetProfileData).authorSubscriptions;
+          if (authorSubscriptions === undefined) {
+            store.dispatch({
+              type: ActionType.NOTICE,
+              payload: {
+                message:
+          'Error: createAuthorSubscription вызвался для профиля без подписок',
+              },
+            });
+            return;
+          }
+
+          let copyAuthorSubscriptions =
+            JSON.parse(JSON
+                .stringify(authorSubscriptions)) as PayloadSubscription[];
+
+          if (copyAuthorSubscriptions.length == 1 &&
+          copyAuthorSubscriptions[0].id == id) {
+            copyAuthorSubscriptions = [];
+          } else {
+            const idx = copyAuthorSubscriptions.findIndex(
+                (sub) => sub.id == id,
+            );
+            if (idx > -1) {
+              copyAuthorSubscriptions.splice(idx, 1);
+            }
+          }
+
+          return updateSubscriptions(
+              copyAuthorSubscriptions,
+              authorSubscriptions,
+              true,
+          )
+              .then(() => {
+                store.dispatch({
+                  type: ActionType.DELETEAUTHORSUBSCRIPTION,
+                  payload: {
+                    id,
+                  },
+                });
+              });
         } else {
           store.dispatch({
             type: ActionType.NOTICE,
