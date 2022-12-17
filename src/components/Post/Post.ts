@@ -93,11 +93,15 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
         this.options.content = data.content;
         this.options.tier = data.tier;
 
+        const subscriptionTitle =
+          (store.getState().profile as PayloadGetProfileData)
+              .authorSubscriptions?.at(data.tier - 1)?.title;
+
         querySelectorWithThrow(this.domElement, '.post__content-area')
             .innerHTML = templateContent({
               isAllowed: data.isAllowed,
               text: data.content,
-              tier: data.tier,
+              subscriptionTitle,
             });
       }
       return;
@@ -121,10 +125,15 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     avatar.addClassNames('post__img');
 
     const contentArea = querySelectorWithThrow(post, '.post__content-area');
+
+    const subscriptionTitle =
+          (store.getState().profile as PayloadGetProfileData)
+              .authorSubscriptions?.at(this.options.tier - 1)?.title;
+
     contentArea.innerHTML = templateContent({
       isAllowed: this.options.isAllowed,
       text: this.options.content,
-      tier: this.options.tier,
+      subscriptionTitle,
     });
 
     if (this.options.inEditState) {
