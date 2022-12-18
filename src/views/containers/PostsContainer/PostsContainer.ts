@@ -9,6 +9,7 @@ import Button, {ButtonType} from '@components/Button/Button';
 import {PayloadUser} from '@actions/types/user';
 import UpgradeViewBase from '@app/UpgradeView';
 import {EditorType, PayloadEditor} from '@actions/types/editor';
+import {createNewPost} from '@actions/handlers/editor';
 
 interface PostsContainerOptions {
   withCreateBtn: boolean
@@ -44,7 +45,7 @@ class PostsContainer
             viewType: ButtonType.ICON,
             actionType: 'button',
             innerIcon: plusIcon,
-            clickHandler: this.addNewPost.bind(this),
+            clickHandler: createNewPost,
           });
     }
     querySelectorWithThrow(container, '.posts-container__empty')
@@ -111,17 +112,24 @@ class PostsContainer
       this.editorState = editorStateNew;
       switch (this.editorState.type) {
         case EditorType.POST:
-          this.posts.get(this.editorState.id)?.update({
-            contextType: ContextType.CHANGE_EDIT_STATE,
-            NewEditState: true,
-          });
+          if (this.editorState.id == -1) {
+            this.addNewPost();
+          } else {
+            this.posts.get(this.editorState.id)?.update({
+              contextType: ContextType.CHANGE_EDIT_STATE,
+              NewEditState: true,
+            });
+          }
           break;
         case EditorType.CLOSE_POST:
-          this.deletePost(-1);
-          this.posts.get(this.editorState.id)?.update({
-            contextType: ContextType.CHANGE_EDIT_STATE,
-            NewEditState: false,
-          });
+          if (this.editorState.id == -1) {
+            this.deletePost(-1);
+          } else {
+            this.posts.get(this.editorState.id)?.update({
+              contextType: ContextType.CHANGE_EDIT_STATE,
+              NewEditState: false,
+            });
+          }
           break;
         default:
           break;

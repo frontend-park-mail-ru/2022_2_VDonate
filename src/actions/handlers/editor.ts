@@ -30,6 +30,15 @@ export const openPostEditor = (id: number) =>
     },
   });
 
+export const createNewPost = () =>
+  store.dispatch({
+    type: ActionType.EDITOR_OPEN,
+    payload: {
+      type: EditorType.POST,
+      id: -1,
+    },
+  });
+
 export const openPayEditor = (
     authorID: number,
     authorSubscriptionID: number,
