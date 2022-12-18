@@ -93,6 +93,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
         this.options.inEditState = data.NewEditState;
         break;
       case ContextType.EDIT_POST_UPDATE:
+        // eslint-disable-next-line no-case-declarations
         const image = document.createElement('img');
         image.src = data.url;
         image.classList.add('post-content__image');
