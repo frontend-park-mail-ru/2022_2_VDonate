@@ -22,7 +22,6 @@ interface SubscriptionEditorOptions {
 interface SubscriptionEditorInputsErrors {
   title: boolean
   price: boolean
-  // tier: boolean
   text: boolean
 }
 
@@ -105,16 +104,7 @@ class SubscriptionEditor
           value: this.options?.price.toString(),
           displayError: false,
         }));
-    // .set('tier', new InputField(inputNumbers, {
-    //   kind: InputType.number,
-    //   label: 'Уровень',
-    //   name: 'tier',
-    //   placeholder: 'Введите уровень подписки',
-    //   value: this.options?.tier.toString(),
-    //   displayError: false,
-    // }));
     this.inputs.get('price')?.addClassNames('row-inputs__input');
-    // this.inputs.get('tier')?.addClassNames('row-inputs__input');
     inputsArea.appendChild(inputNumbers);
     this.inputs
         .set('text', new InputField(inputsArea, {

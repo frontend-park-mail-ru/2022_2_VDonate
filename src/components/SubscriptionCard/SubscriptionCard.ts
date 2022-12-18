@@ -43,6 +43,7 @@ class SubscriptionCard
   private price!: HTMLElement;
   private button!: Button;
   private description!: HTMLElement;
+  private showMore!: HTMLAnchorElement;
 
   constructor(el: HTMLElement, private options: SubscriptionCardOptions) {
     super();
@@ -107,7 +108,15 @@ class SubscriptionCard
     this.renderButton(this.options.subscriptionStatus, card);
     this.price = querySelectorWithThrow(card, '.price__count');
     this.description =
-    querySelectorWithThrow(card, '.subscription-card__motivation');
+      querySelectorWithThrow(card, '.subscription-card__motivation');
+
+    this.showMore = document.createElement('a');
+    this.showMore.classList.add('subscription-card__more', 'font_small');
+    this.showMore.textContent = 'показать еще';
+    this.showMore.addEventListener('click', () => {
+      this.description.classList.remove('subscription-card__motivation_part');
+      this.showMore.hidden = true;
+    });
 
     return card;
   }
@@ -115,17 +124,11 @@ class SubscriptionCard
   private hideCard() {
     if (this.domElement.offsetHeight > 300) {
       this.description.classList.add('subscription-card__motivation_part');
-      const showMore = document.createElement('a');
-      showMore.classList.add('subscription-card__more', 'font_small');
-      showMore.textContent = 'показать еще';
-      showMore.addEventListener('click', () => {
-        this.description.classList.remove('subscription-card__motivation_part');
-        showMore.hidden = true;
-      });
-      this.domElement.appendChild(showMore);
+      this.showMore.hidden = false;
+      this.domElement.appendChild(this.showMore);
     } else {
       this.description.classList.remove('subscription-card__motivation_part');
-      this.domElement.querySelector('.subscription-card__more')?.remove();
+      this.showMore.hidden = true;
     }
   }
 
