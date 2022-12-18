@@ -4,4 +4,3 @@ import Root from '@views/Root';
 
 new SmallSizeInfo(document.body);
 new Root(document.body);
-

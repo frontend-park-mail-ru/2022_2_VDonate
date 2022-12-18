@@ -28,7 +28,7 @@ export default class SearchPage extends UpgradeViewBase {
     searchForm.classList.add('search-page__search-form');
 
     const input = new InputField(searchForm, {
-      kind: InputType.text,
+      kind: InputType.TEXT,
       label: '',
       name: 'searchField',
       placeholder: 'Введите псевдоним автора',

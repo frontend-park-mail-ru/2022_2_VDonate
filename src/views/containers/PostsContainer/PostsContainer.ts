@@ -166,8 +166,6 @@ class PostsContainer
         userID: user.id,
         username: user.username,
       },
-      inEditState: true,
-      changable: true,
       isAllowed: true,
       isLiked: false,
       likesNum: 0,
@@ -177,23 +175,5 @@ class PostsContainer
       content: '',
       dateCreated: '',
     }));
-    // const user = store.getState().user as PayloadUser;
-    // this.newPost = new Post(postsArea, {
-    //   author: {
-    //     imgPath: user.avatar,
-    //     userID: user.id,
-    //     username: user.username,
-    //   },
-    //   inEditState: true,
-    //   changable: true,
-    //   isAllowed: true,
-    //   isLiked: false,
-    //   likesNum: 0,
-    //   postID: -1,
-    //   tier: 0,
-    //   commentsNum: 0,
-    //   content: '',
-    //   dateCreated: '',
-    // });
   }
 }

@@ -146,7 +146,7 @@ class EditorContainer
             price: Boolean(errors.price),
             title: Boolean(errors.title),
             text: Boolean(errors.text),
-            tier: Boolean(errors.tier),
+            // tier: Boolean(errors.tier),
           });
         }
         break;

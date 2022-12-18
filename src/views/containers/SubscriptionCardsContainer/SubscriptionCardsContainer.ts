@@ -67,24 +67,49 @@ export default class SubscriptionCardsContainer
   }
 
   notify(): void {
-    const newSubscriptionsState = new Map<number, PayloadSubscription>();
-    (store.getState().profile as PayloadGetProfileData)
-        .authorSubscriptions?.forEach((sub) => {
-          newSubscriptionsState.set(sub.id, sub);
-        });
-    if (newSubscriptionsState.size == 0) {
+    const subscriptionsArr = (store.getState().profile as PayloadGetProfileData)
+        .authorSubscriptions ?? [];
+    if (subscriptionsArr.length == 0) {
       querySelectorWithThrow(
           this.domElement,
           '.subscription-cards-container__empty',
-      )
-          .hidden = false;
-    } else {
-      querySelectorWithThrow(
-          this.domElement,
-          '.subscription-cards-container__empty',
-      )
-          .hidden = true;
+      ).hidden = false;
+      return;
     }
+    querySelectorWithThrow(
+        this.domElement,
+        '.subscription-cards-container__empty',
+    ).hidden = true;
+
+    const newSubscriptionsState = new Map<number, PayloadSubscription>();
+    subscriptionsArr.forEach((sub) => {
+      newSubscriptionsState.set(sub.id, sub);
+    });
+
+    if (subscriptionsArr.findIndex((sub) => {
+      const oldSub = this.subscriptionsState.get(sub.id);
+      if (!oldSub) return false;
+      return oldSub.tier !== sub.tier;
+    }) !== -1) {
+      this.onErase();
+      newSubscriptionsState.forEach((sub) => {
+        this.addSubcriptionCard(sub);
+      });
+    }
+
+    // if (newSubscriptionsState.size == 0) {
+    //   querySelectorWithThrow(
+    //       this.domElement,
+    //       '.subscription-cards-container__empty',
+    //   )
+    //       .hidden = false;
+    // } else {
+    //   querySelectorWithThrow(
+    //       this.domElement,
+    //       '.subscription-cards-container__empty',
+    //   )
+    //       .hidden = true;
+    // }
     this.subscriptionsState.forEach((_, subID) => {
       if (!newSubscriptionsState.has(subID)) {
         this.deleteSubscriptionCard(subID);
@@ -92,7 +117,7 @@ export default class SubscriptionCardsContainer
     });
 
     newSubscriptionsState.forEach(
-        (subcription, subID) => {
+        (subscription, subID) => {
           const oldSubscriptionCard = this.subscriptionsState.get(subID);
           if (oldSubscriptionCard) {
             let status: SubscriptionCardStatus;
@@ -107,14 +132,14 @@ export default class SubscriptionCardsContainer
             }
             this.subscriptionCards.get(subID)?.update({
               subscriptionStatus: status,
-              subscriptionName: subcription.title,
-              lvl: subcription.tier,
-              img: subcription.img,
-              price: subcription.price,
-              description: subcription.text,
+              subscriptionName: subscription.title,
+              tier: subscription.tier,
+              img: subscription.img,
+              price: subscription.price,
+              description: subscription.text,
             });
           } else {
-            this.addSubcriptionCard(subcription);
+            this.addSubcriptionCard(subscription);
           }
         },
     );
@@ -143,14 +168,14 @@ export default class SubscriptionCardsContainer
       authorID: sub.authorID,
       subscriptionID: sub.id,
       subscriptionName: sub.title,
-      lvl: sub.tier,
+      tier: sub.tier,
       img: sub.img,
       price: sub.price,
       description: sub.text,
     });
     card.addClassNames('subscription-cards-container__card');
     this.subscriptionCards.set(sub.id, card);
-    this.subscriptionsState.set(sub.id, sub);
+    this.subscriptionsState.set(sub.id, Object.assign({}, sub));
   }
 
   private deleteSubscriptionCard(subID: number) {

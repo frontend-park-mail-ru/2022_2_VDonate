@@ -16,7 +16,7 @@ interface SubscriptionCardOptions {
   authorID: number,
   subscriptionID: number,
   subscriptionName: string,
-  lvl: number,
+  tier: number,
   img: string,
   price: number,
   description: string,
@@ -25,7 +25,7 @@ interface SubscriptionCardOptions {
 interface SubscriptionCardUpdateContext {
   subscriptionStatus: SubscriptionCardStatus,
   subscriptionName: string,
-  lvl: number,
+  tier: number,
   img: string,
   price: number,
   description: string,
@@ -38,11 +38,12 @@ export default
 class SubscriptionCard
   extends ComponentBase<'div', SubscriptionCardUpdateContext> {
   private name!: HTMLElement;
-  private lvl!: HTMLElement;
+  private tier!: HTMLElement;
   private avatar!: Avatar;
   private price!: HTMLElement;
   private button!: Button;
   private description!: HTMLElement;
+  private showMore!: HTMLAnchorElement;
 
   constructor(el: HTMLElement, private options: SubscriptionCardOptions) {
     super();
@@ -60,9 +61,9 @@ class SubscriptionCard
       this.name.innerText = data.subscriptionName;
       this.options.subscriptionName = data.subscriptionName;
     }
-    if (data.lvl !== this.options.lvl) {
-      this.lvl.innerText = data.lvl.toString();
-      this.options.lvl = data.lvl;
+    if (data.tier !== this.options.tier) {
+      this.tier.innerText = 'Ранг ' + data.tier.toString();
+      this.options.tier = data.tier;
     }
     if (data.img.length > 0 && data.img !== this.options.img) {
       this.avatar.update(data.img);
@@ -89,12 +90,12 @@ class SubscriptionCard
     card.innerHTML = template({
       id: this.options.subscriptionID,
       subName: this.options.subscriptionName,
-      lvl: this.options.lvl.toString(),
+      tier: this.options.tier.toString(),
       price: this.options.price,
       description: this.options.description,
     });
     this.name = querySelectorWithThrow(card, '.subscription-card__title');
-    this.lvl = querySelectorWithThrow(card, '.subscription-card__lvl');
+    this.tier = querySelectorWithThrow(card, '.subscription-card__tier');
     const imageArea = querySelectorWithThrow(card, '.subscription-card__img');
     imageArea.style.display = 'contents';
 
@@ -107,7 +108,15 @@ class SubscriptionCard
     this.renderButton(this.options.subscriptionStatus, card);
     this.price = querySelectorWithThrow(card, '.price__count');
     this.description =
-    querySelectorWithThrow(card, '.subscription-card__motivation');
+      querySelectorWithThrow(card, '.subscription-card__motivation');
+
+    this.showMore = document.createElement('a');
+    this.showMore.classList.add('subscription-card__more', 'font_small');
+    this.showMore.textContent = 'показать еще';
+    this.showMore.addEventListener('click', () => {
+      this.description.classList.remove('subscription-card__motivation_part');
+      this.showMore.hidden = true;
+    });
 
     return card;
   }
@@ -115,17 +124,11 @@ class SubscriptionCard
   private hideCard() {
     if (this.domElement.offsetHeight > 300) {
       this.description.classList.add('subscription-card__motivation_part');
-      const showMore = document.createElement('a');
-      showMore.classList.add('subscription-card__more', 'font_small');
-      showMore.textContent = 'показать еще';
-      showMore.addEventListener('click', () => {
-        this.description.classList.remove('subscription-card__motivation_part');
-        showMore.hidden = true;
-      });
-      this.domElement.appendChild(showMore);
+      this.showMore.hidden = false;
+      this.domElement.appendChild(this.showMore);
     } else {
       this.description.classList.remove('subscription-card__motivation_part');
-      this.domElement.querySelector('.subscription-card__more')?.remove();
+      this.showMore.hidden = true;
     }
   }
 

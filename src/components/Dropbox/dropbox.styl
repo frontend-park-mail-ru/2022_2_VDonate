@@ -1,0 +1,31 @@
+@require '@style/const.styl'
+@require '@style/mixin.styl'
+
+arrow = '@icon/triangle.svg'
+
++b(dropbox) 
+  display: flex
+  flex-direction: column
+  align-items: stretch
+  gap: 5px
+  +e(label)
+    text-align: left   
+  +e(select)
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 5px 30px 5px 5px
+    background-image: "url(%s)" % arrow
+    background-size: 24px, auto 
+    background-position: calc(100% - 12px) center
+    background-repeat: no-repeat
+    border-radius: radius-small
+    color: color-font-input
+    border: none
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%
+    &:focus
+      outline: none
+  +e(option)
+    color: color-font-input
+    background: color-font-secondary

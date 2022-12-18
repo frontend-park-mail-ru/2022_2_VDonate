@@ -4,7 +4,7 @@ import templateContent from './content.hbs';
 import editIcon from '@icon/edit.svg';
 import headerIcon from '@icon/header.svg';
 import loadImageIcon from '@icon/loadImage.svg';
-
+import store from '@app/Store';
 import './post.styl';
 
 import {PayloadPost} from '@actions/types/posts';
@@ -19,9 +19,10 @@ import {
 import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 import Avatar, {AvatarType} from '@components/Avatar/Avatar';
 import PostAction, {PostActionType} from '@components/PostAction/PostAction';
-import InputField, {InputType} from '@components/InputField/InputField';
 import dateFormate from '@date/dateFormate';
 import {closeEditor, openPostEditor} from '@actions/handlers/editor';
+import Dropbox from '@components/Dropbox/Dropbox';
+import {PayloadGetProfileData} from '@actions/types/getProfileData';
 
 export enum ContextType {
   RUNTIME_POST_UPDATE,
@@ -61,7 +62,7 @@ export type PostUpdateContext =
   | ChangeEditStateContext;
 
 interface EditForm extends HTMLCollection {
-  tier: HTMLInputElement;
+  tier: HTMLSelectElement;
 }
 
 /**
@@ -92,12 +93,11 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
         this.options.inEditState = data.NewEditState;
         break;
       case ContextType.EDIT_POST_UPDATE:
-        // eslint-disable-next-line no-case-declarations
         const image = document.createElement('img');
         image.src = data.url;
         image.classList.add('post-content__image');
         this.content.appendChild(image);
-        return;
+        break;
       case ContextType.RUNTIME_POST_UPDATE:
         this.options.isLiked = data.isLiked;
         this.options.likesNum = data.likesNum;
@@ -105,6 +105,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
           isActive: data.isLiked,
           likesNum: data.likesNum,
         });
+
         if (
         // Изменился уровень доступа
           data.isAllowed !== this.options.isAllowed ||
@@ -116,11 +117,16 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
           this.options.isAllowed = data.isAllowed;
           this.options.content = data.content;
           this.options.tier = data.tier;
+
+          const subscriptionTitle =
+            (store.getState().profile as PayloadGetProfileData)
+                .authorSubscriptions?.at(data.tier - 1)?.title;
+
           querySelectorWithThrow(this.domElement, '.post__content-area')
               .innerHTML = templateContent({
                 isAllowed: data.isAllowed,
                 text: data.content,
-                tier: data.tier,
+                subscriptionTitle,
               });
         }
         break;
@@ -148,10 +154,15 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     avatar.addClassNames('post__img');
 
     const contentArea = querySelectorWithThrow(post, '.post__content-area');
+
+    const subscriptionTitle =
+          (store.getState().profile as PayloadGetProfileData)
+              .authorSubscriptions?.at(this.options.tier - 1)?.title;
+
     contentArea.innerHTML = templateContent({
       isAllowed: this.options.isAllowed,
       text: this.options.content,
-      tier: this.options.tier,
+      subscriptionTitle,
     });
 
     if (this.options.inEditState) {
@@ -254,20 +265,36 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     });
     buttonsArea.appendChild(form);
 
-    const tierField = document.createElement('div');
-    tierField.classList.add('post-edit-form__tier');
-    const tierText = document.createElement('div');
-    tierText.classList.add('post-edit-form__tier-text', 'font_regular');
-    tierText.innerText = 'Уровень подписки:';
-    tierField.appendChild(tierText);
-    const tierBtn = new InputField(tierField, {
-      name: 'tier',
-      kind: InputType.number,
-      value: this.options.tier.toString(),
-      displayError: false,
+    // const tierField = document.createElement('div');
+    // tierField.classList.add('post-edit-form__tier');
+    // const tierText = document.createElement('div');
+    // tierText.classList.add('post-edit-form__tier-text', 'font_regular');
+
+    // tierText.innerText = 'Ранг:';
+    // tierField.appendChild(tierText);
+    const subs = (store.getState().profile as PayloadGetProfileData)
+        .authorSubscriptions;
+    if (!subs) {
+      throw new Error('Error: no author subs for open post editor');
+    }
+    const dropboxOptions = Array.from(subs, (sub) => {
+      return {
+        text: sub.title,
+        value: sub.tier.toString(),
+      };
     });
-    tierBtn.addClassNames('post-edit-form__tier-input');
-    form.appendChild(tierField);
+    dropboxOptions.unshift({
+      text: 'Без ограничения',
+      value: '0',
+    });
+
+    const tierBtn = new Dropbox(form, {
+      label: 'Ограничение:',
+      name: 'tier',
+      options: dropboxOptions,
+    });
+    tierBtn.addClassNames('post-edit-form__tier');
+    // form.appendChild(tierField);
 
     const headerBtn = new Button(form, {
       actionType: 'button',

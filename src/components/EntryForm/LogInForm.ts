@@ -17,14 +17,14 @@ const logInContext = {
 /** Контекст для полей ввода */
 const logInInputs: InputOptions[] = [
   {
-    kind: InputType.username,
+    kind: InputType.USERNAME,
     label: 'Псевдоним',
     placeholder: 'Введите свой псеводим',
     name: 'username',
     displayError: false,
   },
   {
-    kind: InputType.password,
+    kind: InputType.PASSWORD,
     label: 'Пароль',
     placeholder: 'Введите свой пароль',
     name: 'password',

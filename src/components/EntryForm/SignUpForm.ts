@@ -17,28 +17,28 @@ const signUpContext = {
 /** Контекст для полей ввода */
 const signUpInputs: InputOptions[] = [
   {
-    kind: InputType.email,
+    kind: InputType.EMAIL,
     label: 'Почта',
     placeholder: 'Для нашего личного общения',
     name: 'email',
     displayError: false,
   },
   {
-    kind: InputType.username,
+    kind: InputType.USERNAME,
     label: 'Псевдоним',
     placeholder: 'Ваше уникальное имя',
     name: 'username',
     displayError: false,
   },
   {
-    kind: InputType.password,
+    kind: InputType.PASSWORD,
     label: 'Пароль',
     placeholder: 'Мы обещаем не продавать его',
     name: 'password',
     displayError: false,
   },
   {
-    kind: InputType.password,
+    kind: InputType.PASSWORD,
     label: 'Повторите пароль',
     placeholder: 'Чтобы точно',
     name: 'repeatPassword',
