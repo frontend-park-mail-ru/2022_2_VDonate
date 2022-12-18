@@ -139,7 +139,9 @@ class SubscriptionEditor
       viewType: ButtonType.OUTLINE,
       innerText: 'Отменить',
       actionType: 'button',
-      clickHandler: closeEditor,
+      clickHandler: () => {
+        closeEditor();
+      },
     }).addClassNames('btn-area__btn');
     if (this.options) {
       new Button(btnArea, {
@@ -155,7 +157,9 @@ class SubscriptionEditor
       viewType: ButtonType.ICON,
       actionType: 'button',
       innerIcon: closeIcon,
-      clickHandler: closeEditor,
+      clickHandler: () => {
+        closeEditor();
+      },
     }).addClassNames('editor__close-btn');
   }
 }

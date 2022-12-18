@@ -73,14 +73,18 @@ class PayEditor extends ComponentBase<'div'> {
       actionType: 'button',
       viewType: ButtonType.OUTLINE,
       innerText: 'Отмена',
-      clickHandler: closeEditor,
+      clickHandler: () => {
+        closeEditor();
+      },
     }).addClassNames('btn-area__btn');
 
     new Button(popup, {
       viewType: ButtonType.ICON,
       actionType: 'button',
       innerIcon: closeIcon,
-      clickHandler: closeEditor,
+      clickHandler: () => {
+        closeEditor();
+      },
     }).addClassNames('editor__close-btn');
 
     popup.appendChild(btnArea);

@@ -1,4 +1,5 @@
 import {Action, ActionType} from '@actions/types/action';
+import {EditorType} from '@actions/types/editor';
 import {Reducer} from '@flux/types/reducer';
 import {PropTree} from '@flux/types/store';
 
@@ -8,10 +9,14 @@ const editorReducer: Reducer<Action> =
       case ActionType.EDITOR_OPEN:
       case ActionType.EDITOR_CLOSE:
         return action.payload;
-      case ActionType.CHANGEUSERDATA_SUCCESS:
       case ActionType.UPDATE_POST:
       case ActionType.CREATE_POST:
+        return {
+          type: EditorType.CLOSE_POST,
+          id: action.payload.postID,
+        };
       case ActionType.DELETE_POST:
+      case ActionType.CHANGEUSERDATA_SUCCESS:
       case ActionType.DELETEAUTHORSUBSCRIPTION:
       case ActionType.SUBSCRIBE:
       case ActionType.UNSUBSCRIBE:

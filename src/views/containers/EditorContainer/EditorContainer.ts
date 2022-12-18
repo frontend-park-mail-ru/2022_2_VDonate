@@ -116,6 +116,11 @@ class EditorContainer
           currentCardStatus: newEditor.currentCardStatus,
         });
         break;
+      case EditorType.POST:
+      case EditorType.CLOSE_POST:
+        document.body.classList
+            .remove('overflow-hidden');
+        break;
       default: {
         const _: never = newEditor;
         return _;

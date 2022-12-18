@@ -123,14 +123,18 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
       viewType: ButtonType.OUTLINE,
       innerText: 'Отменить',
       actionType: 'button',
-      clickHandler: closeEditor,
+      clickHandler: () => {
+        closeEditor();
+      },
     }).addClassNames('btn-area__btn');
 
     new Button(form, {
       viewType: ButtonType.ICON,
       actionType: 'button',
       innerIcon: closeIcon,
-      clickHandler: closeEditor,
+      clickHandler: () => {
+        closeEditor();
+      },
     }).addClassNames('editor__close-btn');
   }
 }

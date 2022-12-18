@@ -7,6 +7,8 @@ export enum EditorType {
   PROFILE,
   SUBSCRIBTION,
   PAY,
+  POST,
+  CLOSE_POST,
 }
 
 interface PayloadProfileEditor {
@@ -18,6 +20,14 @@ interface PayloadSubscribtionEditor {
   id?: number
 }
 
+interface PayloadPostEditor {
+  type: EditorType.POST
+  id: number
+}
+interface PayloadclosePostEditor {
+  type: EditorType.CLOSE_POST
+  id: number
+}
 interface PayloadPayEditor {
   type: EditorType.PAY
   authorID: number,
@@ -28,9 +38,11 @@ interface PayloadPayEditor {
 type PayloadOpenEditor =
   | PayloadProfileEditor
   | PayloadSubscribtionEditor
-  | PayloadPayEditor;
+  | PayloadPayEditor
+  | PayloadPostEditor;
 
-type PayloadCloseEditor = Record<string, never>;
+type PayloadCloseEditor = Record<string, never>
+  | PayloadclosePostEditor;
 
 export type PayloadEditor =
   | PayloadCloseEditor
