@@ -21,6 +21,13 @@ import Avatar, {AvatarType} from '@components/Avatar/Avatar';
 import PostAction, {PostActionType} from '@components/PostAction/PostAction';
 import InputField, {InputType} from '@components/InputField/InputField';
 import dateFormate from '@date/dateFormate';
+import {closeEditor, openPostEditor} from '@actions/handlers/editor';
+
+export enum ContextType {
+  RUNTIME_POST_UPDATE,
+  EDIT_POST_UPDATE,
+  CHANGE_EDIT_STATE,
+}
 
 type PostOptions = PayloadPost & {
   changable: boolean
@@ -28,6 +35,7 @@ type PostOptions = PayloadPost & {
 };
 
 interface RuntimePostUpdateContext {
+  contextType: ContextType.RUNTIME_POST_UPDATE
   inEditState: false
   content: string
   isLiked: boolean
@@ -37,13 +45,20 @@ interface RuntimePostUpdateContext {
 }
 
 interface EditPostUpdateContext {
+  contextType: ContextType.EDIT_POST_UPDATE
   inEditState: true
   url: string
 }
 
+interface ChangeEditStateContext {
+  contextType: ContextType.CHANGE_EDIT_STATE
+  NewEditState: boolean
+}
+
 export type PostUpdateContext =
   | RuntimePostUpdateContext
-  | EditPostUpdateContext;
+  | EditPostUpdateContext
+  | ChangeEditStateContext;
 
 interface EditForm extends HTMLCollection {
   tier: HTMLInputElement;
@@ -65,41 +80,54 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
   }
 
   update(data: PostUpdateContext): void {
-    if (data.inEditState && this.options.inEditState) {
-      const image = document.createElement('img');
-      image.src = data.url;
-      image.classList.add('post-content__image');
-      this.content.appendChild(image);
-      return;
-    }
-    if (!data.inEditState && !this.options.inEditState) {
-      this.options.isLiked = data.isLiked;
-      this.options.likesNum = data.likesNum;
-      this.likeBtn.update({
-        isActive: data.isLiked,
-        likesNum: data.likesNum,
-      });
-
-      if (
-      // Изменился уровень доступа
-        data.isAllowed !== this.options.isAllowed ||
-      // У нас нет доступа и изменился тир
-      !this.options.isAllowed && data.tier != this.options.tier ||
-      // Изменился контент
-      data.content !== this.options.content
-      ) {
-        this.options.isAllowed = data.isAllowed;
-        this.options.content = data.content;
-        this.options.tier = data.tier;
-
-        querySelectorWithThrow(this.domElement, '.post__content-area')
-            .innerHTML = templateContent({
-              isAllowed: data.isAllowed,
-              text: data.content,
-              tier: data.tier,
-            });
+    switch (data.contextType) {
+      case ContextType.CHANGE_EDIT_STATE:
+        if (data.NewEditState) {
+          this.openEditor(this.domElement);
+        } else {
+          if (this.options.inEditState) {
+            this.closeEditor();
+          }
+        }
+        this.options.inEditState = data.NewEditState;
+        break;
+      case ContextType.EDIT_POST_UPDATE:
+        // eslint-disable-next-line no-case-declarations
+        const image = document.createElement('img');
+        image.src = data.url;
+        image.classList.add('post-content__image');
+        this.content.appendChild(image);
+        return;
+      case ContextType.RUNTIME_POST_UPDATE:
+        this.options.isLiked = data.isLiked;
+        this.options.likesNum = data.likesNum;
+        this.likeBtn.update({
+          isActive: data.isLiked,
+          likesNum: data.likesNum,
+        });
+        if (
+        // Изменился уровень доступа
+          data.isAllowed !== this.options.isAllowed ||
+        // У нас нет доступа и изменился тир
+        !this.options.isAllowed && data.tier != this.options.tier ||
+        // Изменился контент
+        data.content !== this.options.content
+        ) {
+          this.options.isAllowed = data.isAllowed;
+          this.options.content = data.content;
+          this.options.tier = data.tier;
+          querySelectorWithThrow(this.domElement, '.post__content-area')
+              .innerHTML = templateContent({
+                isAllowed: data.isAllowed,
+                text: data.content,
+                tier: data.tier,
+              });
+        }
+        break;
+      default: {
+        const _: never = data;
+        return _;
       }
-      return;
     }
   }
 
@@ -138,9 +166,9 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
           innerIcon: editIcon,
           clickHandler: () => {
             if (this.options.inEditState) {
-              this.closeEditor();
+              closeEditor(this.options.postID);
             } else {
-              this.openEditor();
+              openPostEditor(this.options.postID);
             }
           },
           viewType: ButtonType.ICON,
@@ -223,7 +251,6 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
                 .tier.value),
         );
       }
-      this.closeEditor();
     });
     buttonsArea.appendChild(form);
 
@@ -286,7 +313,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
       innerText: 'Отмена',
       clickHandler: () => {
         this.content.innerHTML = this.options.content;
-        this.closeEditor();
+        closeEditor(this.options.postID);
       },
     });
     cancelBtn.addClassNames('btn-area__btn');

@@ -21,6 +21,15 @@ export const openSubscribtionEditor = (id?: number) =>
     },
   });
 
+export const openPostEditor = (id: number) =>
+  store.dispatch({
+    type: ActionType.EDITOR_OPEN,
+    payload: {
+      type: EditorType.POST,
+      id,
+    },
+  });
+
 export const openPayEditor = (
     authorID: number,
     authorSubscriptionID: number,
@@ -36,8 +45,11 @@ export const openPayEditor = (
   });
 };
 
-export const closeEditor = () =>
+export const closeEditor = (id?: number) =>
   store.dispatch({
     type: ActionType.EDITOR_CLOSE,
-    payload: {},
+    payload: id ? {
+      type: EditorType.CLOSE_POST,
+      id,
+    } : {},
   });

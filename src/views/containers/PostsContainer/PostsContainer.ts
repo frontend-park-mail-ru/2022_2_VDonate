@@ -1,6 +1,6 @@
 import {PayloadPost, PayloadPutImage} from '@actions/types/posts';
 import store from '@app/Store';
-import Post from '@components/Post/Post';
+import Post, {ContextType} from '@components/Post/Post';
 import plusIcon from '@icon/plus.svg';
 import './posts-container.styl';
 import template from './posts-container.hbs';
@@ -8,6 +8,7 @@ import {querySelectorWithThrow} from '@flux/types/component';
 import Button, {ButtonType} from '@components/Button/Button';
 import {PayloadUser} from '@actions/types/user';
 import UpgradeViewBase from '@app/UpgradeView';
+import {EditorType, PayloadEditor} from '@actions/types/editor';
 
 interface PostsContainerOptions {
   withCreateBtn: boolean
@@ -23,6 +24,7 @@ class PostsContainer
   private imageState: PayloadPutImage;
 
   private newPost!: Post;
+  editorState!: PayloadEditor;
 
   constructor(el: HTMLElement, private options: PostsContainerOptions) {
     super();
@@ -70,6 +72,7 @@ class PostsContainer
         (postPayload, postID) => {
           if (this.postsState.has(postID)) {
             this.posts.get(postID)?.update({
+              contextType: ContextType.RUNTIME_POST_UPDATE,
               inEditState: false,
               isLiked: postPayload.isLiked,
               likesNum: postPayload.likesNum,
@@ -91,14 +94,37 @@ class PostsContainer
       // TODO: add image to post
       if (imageNew.postID !== -1) {
         this.posts.get(imageNew.postID)?.update({
+          contextType: ContextType.EDIT_POST_UPDATE,
           inEditState: true,
           url: imageNew.url,
         });
       } else {
         this.newPost.update({
+          contextType: ContextType.EDIT_POST_UPDATE,
           inEditState: true,
           url: imageNew.url,
         });
+      }
+    }
+    const editorStateNew = store.getState().editor as PayloadEditor;
+    if (JSON.stringify(editorStateNew) !== JSON.stringify(this.editorState)) {
+      this.editorState = editorStateNew;
+      switch (this.editorState.type) {
+        case EditorType.POST:
+          this.posts.get(this.editorState.id)?.update({
+            contextType: ContextType.CHANGE_EDIT_STATE,
+            NewEditState: true,
+          });
+          break;
+        case EditorType.CLOSE_POST:
+          this.deletePost(-1);
+          this.posts.get(this.editorState.id)?.update({
+            contextType: ContextType.CHANGE_EDIT_STATE,
+            NewEditState: false,
+          });
+          break;
+        default:
+          break;
       }
     }
   }
@@ -128,12 +154,13 @@ class PostsContainer
   }
 
   private addNewPost() {
+    this.deletePost(-1);
     const postsArea = querySelectorWithThrow(
         this.domElement,
         '.posts-container__posts-area',
     );
     const user = store.getState().user as PayloadUser;
-    this.newPost = new Post(postsArea, {
+    this.posts.set(-1, new Post(postsArea, {
       author: {
         imgPath: user.avatar,
         userID: user.id,
@@ -149,6 +176,24 @@ class PostsContainer
       commentsNum: 0,
       content: '',
       dateCreated: '',
-    });
+    }));
+    // const user = store.getState().user as PayloadUser;
+    // this.newPost = new Post(postsArea, {
+    //   author: {
+    //     imgPath: user.avatar,
+    //     userID: user.id,
+    //     username: user.username,
+    //   },
+    //   inEditState: true,
+    //   changable: true,
+    //   isAllowed: true,
+    //   isLiked: false,
+    //   likesNum: 0,
+    //   postID: -1,
+    //   tier: 0,
+    //   commentsNum: 0,
+    //   content: '',
+    //   dateCreated: '',
+    // });
   }
 }

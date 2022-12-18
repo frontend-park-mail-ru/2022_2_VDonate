@@ -37,7 +37,7 @@ export const createPost = (content: string, tier: number) => {
               likesNum: 0,
               postID: res.body.postID as number,
               // tags
-              tier: 0,
+              tier: tier,
               commentsNum: 0,
             },
           });
@@ -90,6 +90,7 @@ export const updatePost =
           message: 'Уровень должен быть в пределах от 0 до 10000',
         },
       });
+      return;
     }
     api.updatePost(id, {
       tier,
