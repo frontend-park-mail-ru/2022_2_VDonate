@@ -166,14 +166,16 @@ class PostsContainer
         userID: user.id,
         username: user.username,
       },
+      content: '',
+      dateCreated: '',
       isAllowed: true,
       isLiked: false,
       likesNum: 0,
       postID: -1,
       tier: 0,
       commentsNum: 0,
-      content: '',
-      dateCreated: '',
+      inEditState: true,
+      changable: true,
     }));
   }
 }
