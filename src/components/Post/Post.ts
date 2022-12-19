@@ -230,7 +230,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     form.classList.add('new-comment__form');
     const input = document.createElement('div');
     input.setAttribute('contenteditable', 'true');
-    input.classList.add('new-comment__input', 'bg_input');
+    input.classList.add('new-comment__input', 'bg_input', 'font_regular');
     form.appendChild(input);
     new Button(form, {
       actionType: 'submit',

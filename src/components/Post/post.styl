@@ -42,8 +42,12 @@
     flex-grow: 1
   +e(comment-area)
     width: 100%
+    display: flex
+    flex-direction: column
+    gap: 10px
   +e(new-comment)
     width: 100%
+    margin-top: 12px
 
 .post-edit-form
   display: grid
@@ -85,6 +89,7 @@
 .post-hr
   border: none
   height: 3px
+  width: 100%
 
 .new-comment
   +e(form)
