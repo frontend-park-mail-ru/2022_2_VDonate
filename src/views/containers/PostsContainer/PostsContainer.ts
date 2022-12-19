@@ -107,7 +107,7 @@ class PostsContainer
           url: imageNew.url,
         });
       } else {
-        this.newPost.update({
+        this.posts.get(-1)?.update({
           contextType: ContextType.EDIT_POST_UPDATE,
           inEditState: true,
           url: imageNew.url,
