@@ -89,6 +89,7 @@ class PostsContainer
               tier: postPayload.tier,
             });
           } else {
+            this.deletePost(-1);
             this.addPost(postPayload);
           }
         },
