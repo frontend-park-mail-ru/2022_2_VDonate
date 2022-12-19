@@ -50,6 +50,9 @@ export default class NoticeContainer extends UpgradeViewBase {
                 this.addNewNotice('Ошибка авторизации');
               } else if (/^[а-яёА-ЯЁ]/.test(message)) {
                 this.addNewNotice(message);
+              } else {
+                this.addNewNotice('Ошибка! Всё идет не по плану ☆(＃××)');
+                console.error(message);
               }
             },
         );

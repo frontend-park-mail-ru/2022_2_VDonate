@@ -12,6 +12,7 @@ import {
 import {PayloadPost} from '@actions/types/posts';
 import {
   PayloadGetProfileData} from '@actions/types/getProfileData';
+import {auth} from './user';
 
 const loadNewPosts =
   (authorID: number, dispatch: (posts: PayloadPost[]) => void) =>
@@ -25,7 +26,10 @@ const loadNewPosts =
               type: ActionType.NOTICE,
               payload: {
                 message:
-                  'Ошибка при попытке получить посты после смены подписки',
+                  [
+                    'Ошибка при попытке получить посты после смены подписки',
+                    `Error: ${res.status} loadNewPosts`,
+                  ],
               },
             });
           }
@@ -261,7 +265,7 @@ export const unsubscribe = (
 /**
  * @param id id пользователя
  */
-export const getSubscritions = (id: number) => {
+export const getSubscriptions = (id: number) => {
   api.getSubscriptions(id)
       .then((res: ResponseData) => {
         if (res.ok) {
@@ -270,12 +274,28 @@ export const getSubscritions = (id: number) => {
             payload: res.body as PayloadSubscription[],
           });
         } else {
-          store.dispatch({
-            type: ActionType.NOTICE,
-            payload: {
-              message: 'Ошибка при получении подписок',
-            },
-          });
+          switch (res.status) {
+            case 401:
+              auth();
+              break;
+            case 403:
+              store.dispatch({
+                type: ActionType.NOTICE,
+                payload: {
+                  message:
+                'У вас нет доступа к получениям подписок данного пользователя.',
+                },
+              });
+              break;
+            default:
+              store.dispatch({
+                type: ActionType.NOTICE,
+                payload: {
+                  message: `Error: ${res.status} - getSubscriptions`,
+                },
+              });
+              break;
+          }
         }
       })
       .catch((err) => {

@@ -7,6 +7,7 @@ import {
 import {PayloadPost} from '@actions/types/posts';
 import {Pages} from '@configs/router';
 import {PayloadSubscription} from '@actions/types/subscribe';
+import {auth} from './user';
 
 
 const getAuthorData = async (user: PayloadProfileUser) => {
@@ -177,21 +178,27 @@ export default (id: number): void => {
             return getDonaterData(user);
           }
         } else {
-          if (res.status === 404) {
-            store.dispatch({
-              type: ActionType.ROUTING,
-              payload: {
-                type: Pages.NOT_FOUND,
-                options: {},
-              },
-            });
+          switch (res.status) {
+            case 404:
+              store.dispatch({
+                type: ActionType.ROUTING,
+                payload: {
+                  type: Pages.NOT_FOUND,
+                  options: {},
+                },
+              });
+              break;
+            case 401:
+              return auth();
+            default:
+              store.dispatch({
+                type: ActionType.NOTICE,
+                payload: {
+                  message: res.body.message as string,
+                },
+              });
+              break;
           }
-          store.dispatch({
-            type: ActionType.NOTICE,
-            payload: {
-              message: res.body.message as string,
-            },
-          });
           return;
         }
       },

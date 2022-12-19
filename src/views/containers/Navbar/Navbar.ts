@@ -10,7 +10,7 @@ import {openProfileEditor} from '@actions/handlers/editor';
 import Logo from '@components/Logo/Logo';
 import NavbarLink from '@components/NavbarLink/NavbarLink';
 import Button, {ButtonType} from '@components/Button/Button';
-import {getSubscritions} from '@actions/handlers/subscribe';
+import {getSubscriptions} from '@actions/handlers/subscribe';
 import ProfielMini, {ProfileMiniType}
   from '@components/ProfileMini/ProfileMini';
 import SubscriptionsListContainer
@@ -58,7 +58,7 @@ export default class Navbar extends UpgradeViewBase {
     super();
     this.locationState = store.getState().location as PayloadLocation;
     this.renderTo(el);
-    getSubscritions(options);
+    getSubscriptions(options);
   }
 
   protected render(): HTMLDivElement {

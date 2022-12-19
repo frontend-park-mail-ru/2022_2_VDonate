@@ -15,6 +15,7 @@ import {
   repeatPasswordCheck,
   usernameCheck} from '@validation/validation';
 import {FormErrorType} from '@actions/types/formError';
+import {Pages} from '@configs/router';
 
 
 export interface SignUpFormElements extends HTMLCollection {
@@ -60,12 +61,27 @@ const getUser = (id: number, dispatch: (user: PayloadUser) => void) => {
           }
           dispatch(payload);
         } else {
-          store.dispatch({
-            type: ActionType.NOTICE,
-            payload: {
-              message: res.body.message as string,
-            },
-          });
+          switch (res.status) {
+            case 404:
+              store.dispatch({
+                type: ActionType.ROUTING,
+                payload: {
+                  type: Pages.NOT_FOUND,
+                  options: {},
+                },
+              });
+              break;
+            case 401:
+              return auth();
+            default:
+              store.dispatch({
+                type: ActionType.NOTICE,
+                payload: {
+                  message: res.body.message as string,
+                },
+              });
+              break;
+          }
         }
       },
       );
