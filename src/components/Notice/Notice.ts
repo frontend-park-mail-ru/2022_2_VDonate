@@ -3,7 +3,13 @@ import ComponentBase from '@flux/types/component';
 import closeIcon from '@icon/close.svg';
 import './notice.styl';
 
+export enum NoticeType {
+  ERROR,
+  INFO,
+}
+
 interface NoticeOptions {
+  type: NoticeType
   message: string
   onDelete: () => void
 }
@@ -18,7 +24,18 @@ class Notice extends ComponentBase<'div'> {
 
   protected render(): HTMLDivElement {
     const notice = document.createElement('div');
-    notice.classList.add('notice', 'notice__back', 'bg_notice');
+    notice.classList.add('notice', 'notice__back');
+
+    switch (this.options.type) {
+      case NoticeType.ERROR:
+        notice.classList.add('bg_notice-error');
+        break;
+      case NoticeType.INFO:
+        notice.classList.add('bg_notice-info');
+        break;
+      default:
+        break;
+    }
 
     const message = document.createElement('span');
     message.classList.add('notice__msg', 'font_regular');

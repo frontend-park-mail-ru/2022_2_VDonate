@@ -4,6 +4,7 @@ import './dropbox.styl';
 interface DropboxOptions {
   label: string
   name: string
+  selected: string
   options: {
     value: string
     text: string
@@ -31,6 +32,9 @@ export default class Dropbox extends ComponentBase<'label'> {
       option.classList.add('dropbox__option', 'font_regular');
       option.value = optionContext.value;
       option.innerText = optionContext.text;
+      if (optionContext.value === this.options.selected) {
+        option.selected = true;
+      }
       dropbox.appendChild(option);
     });
 

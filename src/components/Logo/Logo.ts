@@ -1,6 +1,7 @@
 import './logo.styl';
 import donutIco from '@icon/favicon.ico';
 import ComponentBase from '@flux/types/component';
+import routing from '@actions/handlers/routing';
 
 /**
  * Компонент лого
@@ -26,6 +27,10 @@ export default class Logo extends ComponentBase<'div'> {
     logo.appendChild(vd);
     logo.appendChild(donut);
     logo.appendChild(nate);
+
+    logo.addEventListener('click', () => {
+      routing('/feed');
+    });
     return logo;
   }
 
