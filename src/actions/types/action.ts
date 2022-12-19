@@ -7,7 +7,11 @@ import {
   ActionSubscribe,
   ActionSwitchSubscription,
   ActionUnsubscribe} from './subscribe';
-import {ActionNotice} from './notice';
+import {
+  ActionAddBackNotice,
+  ActionClearBackNotice,
+  ActionNotice,
+} from './notice';
 import {
   ActionCreatePost,
   ActionDeletePost,
@@ -62,6 +66,8 @@ export enum ActionType {
   EDIT_ABOUT,
   BECOME_AUTHOR,
   SWITCH_SUBSCRIPTION,
+  ADD_BACK_NOTICE,
+  CLEAR_BACK_NOTICE,
 }
 /** Объединение действий */
 export type Action =
@@ -93,4 +99,6 @@ export type Action =
   | ActionPutImage
   | ActionEditAbout
   | ActionBecomeAuthor
-  | ActionSwitchSubscription;
+  | ActionSwitchSubscription
+  | ActionAddBackNotice
+  | ActionClearBackNotice;

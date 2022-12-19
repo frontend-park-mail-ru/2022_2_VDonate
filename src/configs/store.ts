@@ -1,6 +1,6 @@
 import {PayloadEditor} from '@actions/types/editor';
 import {PayloadProfileUser} from '@actions/types/getProfileData';
-import {PayloadNotice} from '@actions/types/notice';
+import {PayloadBackNotice, PayloadNotice} from '@actions/types/notice';
 import {PayloadPost} from '@actions/types/posts';
 import {PayloadLocation} from '@actions/types/routing';
 import {PayloadSubscription} from '@actions/types/subscribe';
@@ -21,6 +21,7 @@ const initinalState: {
     url: string,
   },
   userSubscriptions: Map<number, PayloadSubscription>,
+  backNotice: PayloadBackNotice[],
 } = {
   location: {
     type: Pages.PRELOAD,
@@ -49,6 +50,7 @@ const initinalState: {
     url: '',
   },
   userSubscriptions: new Map<number, PayloadSubscription>(),
+  backNotice: [],
 };
 
 export default initinalState;

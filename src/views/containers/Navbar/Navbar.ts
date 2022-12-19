@@ -18,6 +18,8 @@ import SubscriptionsListContainer
 import UpgradeViewBase from '@app/UpgradeView';
 import {PayloadLocation} from '@actions/types/routing';
 import {Pages} from '@configs/router';
+import NoticeBell from '@components/NoticeBell/NoticeBell';
+import {PayloadBackNotice} from '@actions/types/notice';
 
 
 const links = [
@@ -50,6 +52,7 @@ export default class Navbar extends UpgradeViewBase {
   private profileMini!: ProfielMini;
   private subscriptionsListContainer!: SubscriptionsListContainer;
   private subMenu: HTMLElement = document.createElement('div');
+  private noticeBell!: NoticeBell;
 
   constructor(el: HTMLElement, private options: number) {
     super();
@@ -103,6 +106,10 @@ export default class Navbar extends UpgradeViewBase {
       type: ProfileMiniType.SESSION_PROFILE,
     });
     this.profileMini.addClassNames('botton-area__profile-mini');
+
+    this.noticeBell = new NoticeBell(this.profile, {
+      hasNewNotices: true,
+    });
 
     this.subMenu.classList.add('bg_sub-menu');
     this.subMenu.style.display = 'none';
@@ -175,6 +182,13 @@ export default class Navbar extends UpgradeViewBase {
     }
 
     this.switchMenu(false);
+
+    const backNoticeState = store.getState().backNotice as PayloadBackNotice[];
+    if (backNoticeState.length === 0) {
+      this.noticeBell.update(false);
+    } else {
+      this.noticeBell.update(true);
+    }
   }
 
   protected onErase(): void {

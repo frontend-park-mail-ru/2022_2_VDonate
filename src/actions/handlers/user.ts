@@ -7,6 +7,7 @@ import {
 import router from '@app/Router';
 import store from '@app/Store';
 import api from '@app/Api';
+import ws from '@app/WebSocketNotice';
 import {PayloadNotice} from '@actions/types/notice';
 import {
   emailCheck,
@@ -83,6 +84,7 @@ export const auth = (): void => {
           return;
         }
         if (res.ok) {
+          ws.init(res.body.id as number);
           return getUser(
             res.body.id as number,
             (user: PayloadUser) => {
@@ -150,6 +152,7 @@ export const login = (props: LogInFormElements): void => {
           });
           return;
         }
+        ws.init(res.body.id as number);
         switch (res.status) {
           case 200:
             return getUser(
@@ -247,6 +250,7 @@ export const signup = (props: SignUpFormElements): void => {
           });
           return;
         }
+        ws.init(res.body.id as number);
         switch (res.status) {
           case 200:
             return getUser(
@@ -339,6 +343,7 @@ export const logout = (): void => {
   api.logout()
       .then((res: ResponseData) => {
         if (res.ok) {
+          ws.close();
           store.dispatch({
             type: ActionType.LOGOUT_SUCCESS,
             payload: {

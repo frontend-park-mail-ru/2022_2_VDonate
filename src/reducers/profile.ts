@@ -122,6 +122,7 @@ const profileReducer: Reducer<Action> =
         return state;
       case ActionType.BECOME_AUTHOR:
         (state as PayloadGetProfileData).user.isAuthor = action.payload.success;
+        (state as PayloadGetProfileData).authorSubscriptions = [];
         return state;
       default:
         return state;

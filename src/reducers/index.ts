@@ -10,6 +10,7 @@ import userReducer from './user';
 import userSubscriptionsReducer from './userSubscriptions';
 import authorReducer from './authors';
 import imageReducer from './image';
+import backNoticeReducer from './backNotice';
 
 export default combineReducers<Action>({
   location: locationReducer,
@@ -22,4 +23,5 @@ export default combineReducers<Action>({
   editor: editorReducer,
   authors: authorReducer,
   image: imageReducer,
+  backNotice: backNoticeReducer,
 });
