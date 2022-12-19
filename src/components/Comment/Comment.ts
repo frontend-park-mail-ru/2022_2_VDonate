@@ -49,6 +49,7 @@ class Comment extends ComponentBase<'div', string> {
     commentArea.append(username, text);
     comment.appendChild(commentArea);
     if (this.options.userID == (store.getState().user as PayloadUser).id ||
+    // TODO если на беке починят обновление постов, то раскомитить
     // ) {
     //   new Button(comment, {
     //     actionType: 'button',
