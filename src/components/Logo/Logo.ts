@@ -32,7 +32,7 @@ export default class Logo extends ComponentBase<'div'> {
 
     logo.addEventListener('click', () => {
       if ((store.getState().user as PayloadUser).id) {
-        routing('/');
+        routing('/feed');
       }
     });
     return logo;
