@@ -10,7 +10,6 @@ const profileReducer: Reducer<Action> =
   (state: PropTree, action: Action): PropTree => {
     switch (action.type) {
       case ActionType.GETPROFILEDATA:
-        console.log(action.payload.user);
         return action.payload;
       case ActionType.CREATEAUTHORSUBSRIPTION: {
         if (!action.payload.subscription) {

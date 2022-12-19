@@ -76,7 +76,6 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
     }
 
     if (this.options.isAuthor) {
-      console.log(this.options);
       if (this.options.countDonaters !== data.countDonaters) {
         this.options.countDonaters = data.countDonaters;
         this.countDonaters.innerText = data.countDonaters.toString();
