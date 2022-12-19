@@ -33,3 +33,10 @@
   +e(btn-area)
     display: none
 
+@media  (max-width: mobile-size)
+  +b(notice-bell)
+    &:hover
+      & .notice-bell__btn-area
+          top: 30px
+          bottom: auto
+          border-radius: 15px
