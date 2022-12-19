@@ -3,11 +3,11 @@ import {ActionType} from './action';
 
 export interface PayloadComment {
   id: number // id комента
-  authorId: number // id автора поста
-  userId: number // id автора комента
+  authorID: number // id автора поста
+  userID: number // id автора комента
   userImg: string // аватар автора комента
   userUsername: string // имя автора комента
-  text: string // комент
+  content: string // комент
 }
 
 export interface PayloadGetComments {

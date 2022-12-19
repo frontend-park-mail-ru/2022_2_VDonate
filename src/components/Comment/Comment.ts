@@ -5,7 +5,8 @@ import './comment.styl';
 import {PayloadUser} from '@actions/types/user';
 import store from '@app/Store';
 import Button, {ButtonType} from '@components/Button/Button';
-import editIcon from '@icon/edit.svg';
+import closeIcon from '@icon/close.svg';
+// import editIcon from '@icon/edit.svg';
 import {notice} from '@actions/handlers/notice';
 import {deleteComment, updateComment} from '@actions/handlers/comments';
 import {commentSize} from '@validation/validation';
@@ -32,33 +33,37 @@ class Comment extends ComponentBase<'div', string> {
     comment.classList.add('comment');
     new Avatar(comment, {
       imgPath: this.options.userImg,
-      viewType: this.options.authorId == this.options.userId ?
+      viewType: this.options.authorID == this.options.userID ?
           AvatarType.AUTHOR : AvatarType.DONATER,
     }).addClassNames('comment__avatar');
     const commentArea = document.createElement('div');
     commentArea.classList.add('comment__area');
     const username = document.createElement('a');
     username.setAttribute('data-link', '');
-    username.setAttribute('href', `/profile?id=${this.options.userId}`);
+    username.setAttribute('href', `/profile?id=${this.options.userID}`);
     username.classList.add('comment__username', 'font_regular');
     username.innerText = this.options.userUsername;
     const text = document.createElement('div');
     text.classList.add('comment__text', 'font_regular');
-    text.innerText = this.options.text;
+    text.innerText = this.options.content;
     commentArea.append(username, text);
     comment.appendChild(commentArea);
-    console.log(this.options.userId, (store.getState().user as PayloadUser).id);
-    if (this.options.userId == (store.getState().user as PayloadUser).id) {
+    if (this.options.userID == (store.getState().user as PayloadUser).id ||
+    this.options.authorID == (store.getState().user as PayloadUser).id) {
       new Button(comment, {
         actionType: 'button',
-        innerIcon: editIcon,
+        innerIcon: closeIcon,
         clickHandler: () => {
-          if (this.options.inEditState) {
-            this.closeEditor();
-          } else {
-            this.openEditor();
-          }
+          deleteComment(this.options.postID, this.options.id);
         },
+        // innerIcon: editIcon,
+        // clickHandler: () => {
+        //   if (this.options.inEditState) {
+        //     this.closeEditor();
+        //   } else {
+        //     this.openEditor();
+        //   }
+        // },
         viewType: ButtonType.ICON,
       }).addClassNames('comment__edit-btn');
     }
@@ -83,7 +88,7 @@ class Comment extends ComponentBase<'div', string> {
           deleteComment(this.options.postID, this.options.id);
         } else {
           updateComment(this.options.postID, this.options.id, text.innerText);
-          this.options.text = text.innerText;
+          this.options.content = text.innerText;
           this.closeEditor();
         }
       },
@@ -112,7 +117,7 @@ class Comment extends ComponentBase<'div', string> {
     this.options.inEditState = false;
     const text = querySelectorWithThrow(this.domElement, '.comment__text');
     text.setAttribute('contenteditable', 'false');
-    text.innerText = this.options.text;
+    text.innerText = this.options.content;
     querySelectorWithThrow(this.domElement, '.comment__edit-btn-area').remove();
   }
 }

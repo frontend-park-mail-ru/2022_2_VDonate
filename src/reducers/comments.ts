@@ -37,7 +37,7 @@ const commentsReducer: Reducer<Action> =
         postID: action.payload.postID,
       };
     default:
-      return state;
+      return {};
   }
 };
 
