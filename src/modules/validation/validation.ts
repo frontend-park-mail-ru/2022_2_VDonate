@@ -26,7 +26,7 @@ const sizes = {
     max: 63,
   },
   username: {
-    min: 5,
+    min: 3,
     max: 20,
   },
   password: {
