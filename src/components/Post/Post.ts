@@ -456,6 +456,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
       this.comments.set(comment.id,
           new Comment(commentArea, {
             ...comment,
+            authorID: this.options.author.userID,
             inEditState: false,
             postID: this.options.postID,
           }),
