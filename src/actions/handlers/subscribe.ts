@@ -47,6 +47,8 @@ const subscribeOnly = (
 ) => api.subscribe(authorID, authorSubscriptionID)
     .then((res: ResponseData) => {
       if (res.ok) {
+        window.open(res.body.payUrl as string, '_blank');
+        // TODO сделать в отдельной логике через уведомления обновление поста
         return loadNewPosts(authorID, dispatch);
       } else {
         switch (res.status) {
