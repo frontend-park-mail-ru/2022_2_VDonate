@@ -51,6 +51,8 @@ const sizes = {
   },
 };
 
+export const commentSize = 100;
+
 /**
  * Проверка строки почты на верный формат
  * @param email - строка для валидации почты

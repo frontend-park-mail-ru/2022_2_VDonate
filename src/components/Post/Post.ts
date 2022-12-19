@@ -23,16 +23,26 @@ import dateFormate from '@date/dateFormate';
 import {closeEditor, openPostEditor} from '@actions/handlers/editor';
 import Dropbox from '@components/Dropbox/Dropbox';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
+import {
+  addComment,
+  closeComments,
+  getComments} from '@actions/handlers/comments';
+import {PayloadComment} from '@actions/types/comments';
+import Comment from '@components/Comment/Comment';
+import {notice} from '@actions/handlers/notice';
+import {commentSize} from '@validation/validation';
 
 export enum ContextType {
   RUNTIME_POST_UPDATE,
   EDIT_POST_UPDATE,
   CHANGE_EDIT_STATE,
+  COMMENTS,
 }
 
 type PostOptions = PayloadPost & {
   changable: boolean
   inEditState: boolean
+  commentsOpened: boolean
 };
 
 interface RuntimePostUpdateContext {
@@ -55,11 +65,17 @@ interface ChangeEditStateContext {
   contextType: ContextType.CHANGE_EDIT_STATE
   NewEditState: boolean
 }
-
+interface CommentsContext {
+  contextType: ContextType.COMMENTS
+  commentMap?: Map<number, PayloadComment>
+  commentID?: number
+  comment?: PayloadComment
+}
 export type PostUpdateContext =
   | RuntimePostUpdateContext
   | EditPostUpdateContext
-  | ChangeEditStateContext;
+  | ChangeEditStateContext
+  | CommentsContext;
 
 interface EditForm extends HTMLCollection {
   tier: HTMLSelectElement;
@@ -74,6 +90,8 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
   private commentBtn!: PostAction;
   private content!: HTMLElement;
   private htmlTextElementsInContent = new Set<HTMLElement>();
+  private commentsState = new Map<number, PayloadComment>();
+  private comments = new Map<number, Comment>();
 
   constructor(el: HTMLElement, private options: PostOptions) {
     super();
@@ -129,6 +147,24 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
                 text: data.content,
                 subscriptionTitle,
               });
+        }
+        break;
+      case ContextType.COMMENTS:
+        if (data.commentMap) {
+          this.commentsState = data.commentMap;
+          this.openComments(data.commentMap);
+        } else if (data.comment) {
+          if (data.commentID) {
+            // обновить комент (вроде сам обновится)
+          } else {
+            querySelectorWithThrow(this.domElement, '.new-comment__input')
+                .innerText = '';
+            this.addComment(data.comment);
+          }
+        } else if (data.commentID) {
+          this.deleteComment(data.commentID);
+        } else {
+          this.closeComments();
         }
         break;
       default: {
@@ -188,6 +224,32 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
         editBtn.addClassNames('post__header-btn');
       }
     }
+    const newComment =
+    querySelectorWithThrow(post, '.new-comment');
+    const form = document.createElement('form');
+    form.classList.add('new-comment__form');
+    const input = document.createElement('div');
+    input.setAttribute('contenteditable', 'true');
+    input.classList.add('new-comment__input', 'bg_input', 'font_regular');
+    form.appendChild(input);
+    new Button(form, {
+      actionType: 'submit',
+      viewType: ButtonType.PRIMARY,
+      innerText: 'Отправить',
+    }).addClassNames('new-comment__submit');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (input.innerText.length == 0) {
+        notice('Вы ввели пустой коментарий', 'error');
+      } else if (input.innerText.length > commentSize) {
+        notice(
+            `Коментарий должен быть меньше ${commentSize} символов`, 'error');
+      } else {
+        addComment(this.options.postID, input.innerText);
+      }
+    });
+    newComment.appendChild(form);
+    newComment.hidden = true;
     return post;
   }
 
@@ -214,7 +276,11 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
       count: 0, // this.options.commentsNum,
       isActive: false,
       clickCallback: () => {
-        // TODO экшен на открытие комментариев
+        if (this.options.commentsOpened) {
+          closeComments(this.options.postID);
+        } else {
+          getComments(this.options.postID);
+        }
       },
     });
   }
@@ -266,13 +332,6 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     });
     buttonsArea.appendChild(form);
 
-    // const tierField = document.createElement('div');
-    // tierField.classList.add('post-edit-form__tier');
-    // const tierText = document.createElement('div');
-    // tierText.classList.add('post-edit-form__tier-text', 'font_regular');
-
-    // tierText.innerText = 'Ранг:';
-    // tierField.appendChild(tierText);
     const subs = (store.getState().profile as PayloadGetProfileData)
         .authorSubscriptions;
     if (!subs) {
@@ -373,6 +432,57 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
       this.renderActions();
     }
     this.htmlTextElementsInContent.clear();
+  }
+
+  private openComments(comments: Map<number, PayloadComment>) {
+    this.commentsState = comments;
+    this.options.commentsOpened = true;
+    const commentArea =
+      querySelectorWithThrow(this.domElement, '.post__comment-area');
+    const hr = document.createElement('hr');
+    hr.classList.add('post-hr', 'bg_hr');
+    commentArea.appendChild(hr);
+    comments.forEach((comment) => {
+      this.comments.set(comment.id,
+          new Comment(commentArea, {
+            ...comment,
+            inEditState: false,
+            postID: this.options.postID,
+          }),
+      );
+    });
+    querySelectorWithThrow(this.domElement, '.new-comment').hidden = false;
+  }
+
+  private addComment(comment: PayloadComment) {
+    this.commentsState.set(comment.id, comment);
+    this.comments.set(
+        comment.id,
+        new Comment(
+            querySelectorWithThrow(this.domElement, '.post__comment-area'),
+            {
+              ...comment,
+              inEditState: false,
+              postID: this.options.postID,
+            },
+        ),
+    );
+  }
+
+  private deleteComment(commentID: number) {
+    this.comments.get(commentID)?.remove();
+    this.comments.delete(commentID);
+    this.commentsState.delete(commentID);
+  }
+
+  private closeComments() {
+    this.commentsState = new Map<number, PayloadComment>();
+    this.comments.forEach((o) => o.remove());
+    this.comments = new Map<number, Comment>();
+    this.options.commentsOpened = false;
+    querySelectorWithThrow(this.domElement, '.post__comment-area')
+        .innerHTML = '';
+    querySelectorWithThrow(this.domElement, '.new-comment').hidden = true;
   }
 }
 

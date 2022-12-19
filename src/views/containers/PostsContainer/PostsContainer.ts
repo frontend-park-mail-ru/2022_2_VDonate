@@ -10,12 +10,19 @@ import {PayloadUser} from '@actions/types/user';
 import UpgradeViewBase from '@app/UpgradeView';
 import {EditorType, PayloadEditor} from '@actions/types/editor';
 import {createNewPost} from '@actions/handlers/editor';
+import {PayloadComment} from '@actions/types/comments';
 
 interface PostsContainerOptions {
   withCreateBtn: boolean
   textWhenEmpty: string
 }
 
+interface CommentState {
+  postID: number
+  commentMap?: Map<number, PayloadComment>
+  commentID?: number
+  comment?: PayloadComment
+}
 /** */
 export default
 class PostsContainer
@@ -23,7 +30,7 @@ class PostsContainer
   private postsState = new Map<number, PayloadPost>();
   private posts = new Map<number, Post>();
   private imageState: PayloadPutImage;
-
+  private commentState!: CommentState;
   private newPost!: Post;
   editorState!: PayloadEditor;
 
@@ -82,6 +89,7 @@ class PostsContainer
               tier: postPayload.tier,
             });
           } else {
+            this.deletePost(-1);
             this.addPost(postPayload);
           }
         },
@@ -100,7 +108,7 @@ class PostsContainer
           url: imageNew.url,
         });
       } else {
-        this.newPost.update({
+        this.posts.get(-1)?.update({
           contextType: ContextType.EDIT_POST_UPDATE,
           inEditState: true,
           url: imageNew.url,
@@ -135,6 +143,16 @@ class PostsContainer
           break;
       }
     }
+    const newCommentsState =
+      store.getState().comments as CommentState;
+    if (JSON.stringify(newCommentsState) !==
+        JSON.stringify(this.commentState)) {
+      this.commentState = newCommentsState;
+      this.posts.get(this.commentState.postID)?.update({
+        contextType: ContextType.COMMENTS,
+        ...this.commentState,
+      });
+    }
   }
 
   protected onErase(): void {
@@ -158,6 +176,7 @@ class PostsContainer
       changable: postPayload.author.userID ===
         (store.getState().user as PayloadUser).id,
       inEditState: false,
+      commentsOpened: false,
     }));
   }
 
@@ -184,6 +203,7 @@ class PostsContainer
       commentsNum: 0,
       inEditState: true,
       changable: true,
+      commentsOpened: false,
     }));
   }
 }
