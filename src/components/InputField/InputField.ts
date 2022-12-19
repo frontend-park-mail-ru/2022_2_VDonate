@@ -22,6 +22,7 @@ export interface InputOptions {
   kind: InputType
   label?: string
   name: string
+  title: string
   placeholder?: string
   value?: string
   displayError: boolean
@@ -57,6 +58,7 @@ class InputField extends ComponentBase<'label', boolean> {
     const templateContext: {
       label?: string
       name: string
+      title: string
       placeholder?: string
       value?: string
       type?: string

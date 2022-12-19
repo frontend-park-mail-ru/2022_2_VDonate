@@ -95,6 +95,7 @@ class SubscriptionEditor
           placeholder: 'Придумайте заголовок для подписки',
           value: this.options?.title,
           displayError: false,
+          title: 'Введите заголовок подписки (не более 30 символов)',
         }))
         .set('price', new InputField(inputNumbers, {
           kind: InputType.PRICE,
@@ -103,6 +104,7 @@ class SubscriptionEditor
           placeholder: 'Введите стоимость подписки',
           value: this.options?.price.toString(),
           displayError: false,
+          title: 'Введите стоимость подписки в рублях',
         }));
     this.inputs.get('price')?.addClassNames('row-inputs__input');
     inputsArea.appendChild(inputNumbers);
@@ -114,12 +116,14 @@ class SubscriptionEditor
           placeholder: 'Замотивируйте своих донатеров',
           value: this.options?.text,
           displayError: false,
+          title: 'Введите текст подписки (не более 128 символов)',
         }))
         .set('file', new InputField(inputsArea, {
           kind: InputType.IMAGE,
           label: 'Загрузите картинку (.jpg)',
           name: 'file',
           displayError: false,
+          title: 'Загрузите картинку',
         }));
     if (!this.options) {
       querySelectorWithThrow(form, 'input[name="title"]')

@@ -33,6 +33,7 @@ export default class SearchPage extends UpgradeViewBase {
       name: 'searchField',
       placeholder: 'Введите псевдоним автора',
       displayError: false,
+      title: 'Строка поиска. Для поиска введите псевдоним автора.',
     });
     input.addClassNames('search-page__input-field');
     const btn = new Button(searchForm, {

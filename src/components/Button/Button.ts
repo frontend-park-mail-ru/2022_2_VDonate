@@ -41,8 +41,9 @@ interface IconButtonOptions {
 }
 
 type ButtonOptions =
-  (TextButtonOptions | IconButtonOptions) &
-  (SubmitButtonOptions | SimpleButtonOptions);
+  & {title?: string}
+  & (TextButtonOptions | IconButtonOptions)
+  & (SubmitButtonOptions | SimpleButtonOptions);
 
 interface ButtonUpdateContext {
   inner: string
@@ -92,6 +93,10 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
       button.addEventListener('click', this.options.clickHandler);
     }
 
+    // Add title
+    if (this.options.title) {
+      button.title = this.options.title;
+    }
 
     switch (this.options.viewType) {
       case ButtonType.PRIMARY:

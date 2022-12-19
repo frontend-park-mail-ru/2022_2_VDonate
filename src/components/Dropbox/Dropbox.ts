@@ -5,6 +5,7 @@ interface DropboxOptions {
   label: string
   name: string
   selected: string
+  title: string
   options: {
     value: string
     text: string
@@ -25,6 +26,7 @@ export default class Dropbox extends ComponentBase<'label'> {
     const dropbox = document.createElement('select');
     dropbox.classList.add('dropbox__select', 'font_regular', 'bg_input');
     dropbox.name = this.options.name;
+    dropbox.title = this.options.title;
     label.appendChild(dropbox);
 
     this.options.options.forEach((optionContext) => {
