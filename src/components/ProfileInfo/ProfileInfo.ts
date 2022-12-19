@@ -84,12 +84,14 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
         this.options.countPosts = data.countPosts;
         this.countPosts.innerText = data.countPosts.toString();
       }
-      if (this.options.countProfitMounth !== data.countProfitMounth) {
+      if (this.options.changeable &&
+          this.options.countProfitMounth !== data.countProfitMounth) {
         this.options.countProfitMounth = data.countProfitMounth;
         this.countProfitMounth.innerHTML =
           data.countProfitMounth.toString() + '&#8381;';
       }
-      if (this.options.countSubscribersMounth !== data.countSubscribersMounth) {
+      if (this.options.changeable &&
+        this.options.countSubscribersMounth !== data.countSubscribersMounth) {
         this.options.countSubscribersMounth = data.countSubscribersMounth;
         this.countSubscribersMounth.innerText =
           data.countSubscribersMounth.toString();
@@ -194,32 +196,34 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
       this.options.countPosts?.toString() ?? '0';
     postsContainer.append(posts, this.countPosts);
     miniStatistic.appendChild(postsContainer);
-    const profitContainer = document.createElement('div');
-    profitContainer.classList
-        .add('mini-statistic__container');
-    const profit = document.createElement('span');
-    profit.classList.add('mini-statistic__text', 'font_regular');
-    profit.innerText = 'Заработок за месяц';
-    this.countProfitMounth = document.createElement('span');
-    this.countProfitMounth
-        .classList.add('mini-statistic__text', 'font_regular');
-    this.countProfitMounth.innerText =
+    if (this.options.changeable) {
+      const profitContainer = document.createElement('div');
+      profitContainer.classList
+          .add('mini-statistic__container');
+      const profit = document.createElement('span');
+      profit.classList.add('mini-statistic__text', 'font_regular');
+      profit.innerText = 'Заработок за месяц';
+      this.countProfitMounth = document.createElement('span');
+      this.countProfitMounth
+          .classList.add('mini-statistic__text', 'font_regular');
+      this.countProfitMounth.innerText =
       this.options.countProfitMounth?.toString() ?? '0';
-    this.countProfitMounth.innerHTML += '&#8381;';
-    profitContainer.append(profit, this.countProfitMounth);
-    miniStatistic.appendChild(profitContainer);
-    const subPerMounthContainer = document.createElement('div');
-    subPerMounthContainer.classList
-        .add('mini-statistic__container');
-    const subPerMounth = document.createElement('span');
-    subPerMounth.classList.add('mini-statistic__text', 'font_regular');
-    subPerMounth.innerText = 'Подписчиков за месяц';
-    this.countSubscribersMounth = document.createElement('span');
-    this.countSubscribersMounth
-        .classList.add('mini-statistic__text', 'font_regular');
-    this.countSubscribersMounth.innerText =
+      this.countProfitMounth.innerHTML += '&#8381;';
+      profitContainer.append(profit, this.countProfitMounth);
+      miniStatistic.appendChild(profitContainer);
+      const subPerMounthContainer = document.createElement('div');
+      subPerMounthContainer.classList
+          .add('mini-statistic__container');
+      const subPerMounth = document.createElement('span');
+      subPerMounth.classList.add('mini-statistic__text', 'font_regular');
+      subPerMounth.innerText = 'Донатеров за месяц';
+      this.countSubscribersMounth = document.createElement('span');
+      this.countSubscribersMounth
+          .classList.add('mini-statistic__text', 'font_regular');
+      this.countSubscribersMounth.innerText =
       this.options.countSubscribersMounth?.toString() ?? '0';
-    subPerMounthContainer.append(subPerMounth, this.countSubscribersMounth);
-    miniStatistic.appendChild(subPerMounthContainer);
+      subPerMounthContainer.append(subPerMounth, this.countSubscribersMounth);
+      miniStatistic.appendChild(subPerMounthContainer);
+    }
   }
 }
