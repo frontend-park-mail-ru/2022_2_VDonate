@@ -6,7 +6,7 @@ export interface PayloadComment {
   authorID: number // id автора поста
   userID: number // id автора комента
   userImg: string // аватар автора комента
-  userUsername: string // имя автора комента
+  username: string // имя автора комента
   content: string // комент
 }
 

@@ -11,6 +11,9 @@ export interface PayloadProfileUser {
   countSubscriptions: number,
   about?: string,
   countDonaters?: number,
+  countPosts?: number,
+  countProfitMounth?: number,
+  countSubscribersMounth?: number,
 }
 
 /** Результат успешной аутификации */

@@ -42,7 +42,7 @@ class Comment extends ComponentBase<'div', string> {
     username.setAttribute('data-link', '');
     username.setAttribute('href', `/profile?id=${this.options.userID}`);
     username.classList.add('comment__username', 'font_regular');
-    username.innerText = this.options.userUsername;
+    username.innerText = this.options.username;
     const text = document.createElement('div');
     text.classList.add('comment__text', 'font_regular');
     text.innerText = this.options.content;

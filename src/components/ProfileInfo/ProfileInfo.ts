@@ -12,6 +12,9 @@ interface ProfileInfoOptions {
   username: string
   countSubscriptions: number
   countDonaters?: number
+  countPosts?: number
+  countProfitMounth?: number
+  countSubscribersMounth?: number
   id: number
   changeable: boolean
 }
@@ -22,6 +25,9 @@ interface ProfileInfoUpdateContext {
   username: string
   countSubscriptions: number
   countDonaters: number
+  countPosts: number
+  countProfitMounth: number
+  countSubscribersMounth: number
 }
 
 /**
@@ -33,7 +39,9 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
   private username!: HTMLSpanElement;
   private countSubscriptions!: HTMLSpanElement;
   private countDonaters!: HTMLSpanElement;
-
+  private countPosts!: HTMLSpanElement;
+  private countProfitMounth!: HTMLSpanElement;
+  private countSubscribersMounth!: HTMLSpanElement;
 
   constructor(el: HTMLElement, private options: ProfileInfoOptions) {
     super();
@@ -57,17 +65,7 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
       this.options.isAuthor = data.isAuthor;
       const info =
         querySelectorWithThrow(this.domElement, '.mini-statistic');
-      const donatersContainer = document.createElement('div');
-      donatersContainer.classList
-          .add('mini-statistic__container');
-      const donaters = document.createElement('span');
-      donaters.classList.add('mini-statistic__text', 'font_regular');
-      donaters.innerText = 'Донатеров';
-      this.countDonaters = document.createElement('span');
-      this.countDonaters.classList.add('mini-statistic__text', 'font_regular');
-      this.countDonaters.innerText = data.countDonaters.toString();
-      donatersContainer.append(donaters, this.countDonaters);
-      info.appendChild(donatersContainer);
+      this.renderStatistic(info);
       if (this.options.changeable) {
         querySelectorWithThrow(this.domElement, '.profile-info__become-author')
             .remove();
@@ -77,10 +75,24 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
       this.countDonaters.parentElement?.remove();
     }
 
-    if (this.options.isAuthor &&
-      this.options.countDonaters !== data.countDonaters) {
-      this.options.countDonaters = data.countDonaters;
-      this.countDonaters.innerText = data.countDonaters.toString();
+    if (this.options.isAuthor) {
+      if (this.options.countDonaters !== data.countDonaters) {
+        this.options.countDonaters = data.countDonaters;
+        this.countDonaters.innerText = data.countDonaters.toString();
+      }
+      if (this.options.countPosts !== data.countPosts) {
+        this.options.countPosts = data.countPosts;
+        this.countPosts.innerText = data.countPosts.toString();
+      }
+      if (this.options.countProfitMounth !== data.countProfitMounth) {
+        this.options.countProfitMounth = data.countProfitMounth;
+        this.countProfitMounth.innerText = data.countProfitMounth.toString();
+      }
+      if (this.options.countSubscribersMounth !== data.countSubscribersMounth) {
+        this.options.countSubscribersMounth = data.countSubscribersMounth;
+        this.countSubscribersMounth.innerText =
+          data.countSubscribersMounth.toString();
+      }
     }
   }
 
@@ -128,18 +140,7 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
     back.append(this.username, info);
 
     if (this.options.isAuthor) {
-      const donatersContainer = document.createElement('div');
-      donatersContainer.classList
-          .add('mini-statistic__container');
-      const donaters = document.createElement('span');
-      donaters.classList.add('mini-statistic__text', 'font_regular');
-      donaters.innerText = 'Донатеров';
-      this.countDonaters = document.createElement('span');
-      this.countDonaters.classList.add('mini-statistic__text', 'font_regular');
-      this.countDonaters.innerText =
-        this.options.countDonaters?.toString() ?? '0';
-      donatersContainer.append(donaters, this.countDonaters);
-      miniStatistic.appendChild(donatersContainer);
+      this.renderStatistic(miniStatistic);
     } else if (this.options.changeable) {
       const becomeAuthorBtn = new Button(back, {
         viewType: ButtonType.PRIMARY,
@@ -165,5 +166,58 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
 
     profileInfo.append(back);
     return profileInfo;
+  }
+
+  private renderStatistic(miniStatistic: HTMLElement) {
+    const donatersContainer = document.createElement('div');
+    donatersContainer.classList
+        .add('mini-statistic__container');
+    const donaters = document.createElement('span');
+    donaters.classList.add('mini-statistic__text', 'font_regular');
+    donaters.innerText = 'Донатеров';
+    this.countDonaters = document.createElement('span');
+    this.countDonaters.classList.add('mini-statistic__text', 'font_regular');
+    this.countDonaters.innerText =
+      this.options.countDonaters?.toString() ?? '0';
+    donatersContainer.append(donaters, this.countDonaters);
+    miniStatistic.appendChild(donatersContainer);
+    const postsContainer = document.createElement('div');
+    postsContainer.classList
+        .add('mini-statistic__container');
+    const posts = document.createElement('span');
+    posts.classList.add('mini-statistic__text', 'font_regular');
+    posts.innerText = 'Постов';
+    this.countPosts = document.createElement('span');
+    this.countPosts.classList.add('mini-statistic__text', 'font_regular');
+    this.countPosts.innerText =
+      this.options.countPosts?.toString() ?? '0';
+    postsContainer.append(posts, this.countPosts);
+    miniStatistic.appendChild(postsContainer);
+    const profitContainer = document.createElement('div');
+    profitContainer.classList
+        .add('mini-statistic__container');
+    const profit = document.createElement('span');
+    profit.classList.add('mini-statistic__text', 'font_regular');
+    profit.innerText = 'Заработок за месяц';
+    this.countProfitMounth = document.createElement('span');
+    this.countProfitMounth
+        .classList.add('mini-statistic__text', 'font_regular');
+    this.countProfitMounth.innerText =
+      this.options.countProfitMounth?.toString() ?? '0';
+    profitContainer.append(profit, this.countProfitMounth);
+    miniStatistic.appendChild(profitContainer);
+    const subPerMounthContainer = document.createElement('div');
+    subPerMounthContainer.classList
+        .add('mini-statistic__container');
+    const subPerMounth = document.createElement('span');
+    subPerMounth.classList.add('mini-statistic__text', 'font_regular');
+    subPerMounth.innerText = 'Подписчиков за месяц';
+    this.countSubscribersMounth = document.createElement('span');
+    this.countSubscribersMounth
+        .classList.add('mini-statistic__text', 'font_regular');
+    this.countSubscribersMounth.innerText =
+      this.options.countSubscribersMounth?.toString() ?? '0';
+    subPerMounthContainer.append(subPerMounth, this.countSubscribersMounth);
+    miniStatistic.appendChild(subPerMounthContainer);
   }
 }
