@@ -152,9 +152,9 @@ export const login = (props: LogInFormElements): void => {
           });
           return;
         }
-        ws.init(res.body.id as number);
         switch (res.status) {
           case 200:
+            ws.init(res.body.id as number);
             return getUser(
                 res.body.id as PayloadUser['id'],
                 (user: PayloadUser) => {
@@ -250,9 +250,9 @@ export const signup = (props: SignUpFormElements): void => {
           });
           return;
         }
-        ws.init(res.body.id as number);
         switch (res.status) {
           case 200:
+            ws.init(res.body.id as number);
             return getUser(
               res.body.id as PayloadUser['id'],
               (user: PayloadUser) => {
