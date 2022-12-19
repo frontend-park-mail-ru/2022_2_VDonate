@@ -264,6 +264,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
       label: 'Ограничение:',
       name: 'tier',
       options: dropboxOptions,
+      selected: this.options.tier.toString(),
     });
     tierBtn.addClassNames('post-edit-form__tier');
     // form.appendChild(tierField);
