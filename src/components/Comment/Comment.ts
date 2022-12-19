@@ -95,7 +95,7 @@ class Comment extends ComponentBase<'div', string> {
           deleteComment(this.options.postID, this.options.id);
         } else {
           updateComment(this.options.postID, this.options.id, text.innerText);
-          this.options.content = text.innerText;
+          // this.options.content = text.innerText;
           this.closeEditor();
         }
       },

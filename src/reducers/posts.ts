@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import {Action, ActionType} from '@actions/types/action';
 import {PayloadPost} from '@actions/types/posts';
 import {Reducer} from '@flux/types/reducer';
@@ -46,6 +47,20 @@ const postsReducer: Reducer<Action> =
           return state;
         }
         return new Map<number, PayloadPost>();
+      case ActionType.ADD_COMMENT:
+        const post =
+          (state as Map<number, PayloadPost>).get(action.payload.postID);
+        if (post) {
+          post.commentsNum++;
+        }
+        return state;
+      case ActionType.DELETE_COMMENT:
+        const poost =
+          (state as Map<number, PayloadPost>).get(action.payload.postID);
+        if (poost) {
+          poost.commentsNum--;
+        }
+        return state;
       default:
         return state;
     }

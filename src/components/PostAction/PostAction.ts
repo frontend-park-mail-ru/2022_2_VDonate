@@ -33,7 +33,6 @@ class PostAction extends ComponentBase<'button', PostActionUpdateContent> {
   }
 
   update(data: PostActionUpdateContent): void {
-    if (this.options.reactType === PostActionType.COMMENT) return;
     if (this.options.isActive !== data.isActive) {
       this.options.isActive = data.isActive;
       if (this.options.isActive) {
@@ -72,13 +71,13 @@ class PostAction extends ComponentBase<'button', PostActionUpdateContent> {
           button.classList.add('post-action__back_pressed');
         }
         button.appendChild(innerIcon);
-        innerText.classList.add('post-action__text', 'font_regular');
-        innerText.textContent = this.options.count.toString();
-        button.appendChild(innerText);
         break;
       default:
         break;
     }
+    innerText.classList.add('post-action__text', 'font_regular');
+    innerText.textContent = this.options.count.toString();
+    button.appendChild(innerText);
     return button;
   }
 }

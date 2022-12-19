@@ -40,84 +40,132 @@ const loadNewPosts =
         });
 
 
-const subscribeOnly = (
-    authorID: number,
-    authorSubscriptionID: number,
-    dispatch: (posts: PayloadPost[]) => void,
-) => api.subscribe(authorID, authorSubscriptionID)
-    .then((res: ResponseData) => {
-      if (res.ok) {
-        window.open(res.body.payUrl as string, '_blank');
-        // TODO сделать в отдельной логике через уведомления обновление поста
-        return loadNewPosts(authorID, dispatch);
-      } else {
-        switch (res.status) {
-          case 400:
-            store.dispatch({
-              type: ActionType.NOTICE,
-              payload: {
-                message: 'Error: 400 - subscribeOnly',
-              },
-            });
-            break;
-          case 500:
-            store.dispatch({
-              type: ActionType.NOTICE,
-              payload: {
-                message:
-                  'Упс! Подписаться не удалось. Повторите попытку позже.',
-              },
-            });
-            break;
-          default:
-            store.dispatch({
-              type: ActionType.NOTICE,
-              payload: {
-                message: 'Error: subscribeOnly',
-              },
-            });
-            break;
-        }
-      }
-    })
-    .catch((err) => {
-      store.dispatch({
-        type: ActionType.NOTICE,
-        payload: {
-          message: err as Error,
-        },
-      });
-    });
+// const subscribeOnly = (
+//     authorID: number,
+//     authorSubscriptionID: number,
+//     dispatch: (posts: PayloadPost[]) => void,
+// ) => api.subscribe(authorID, authorSubscriptionID)
+//     .then((res: ResponseData) => {
+//       if (res.ok) {
+//         window.open(res.body.payUrl as string, '_blank');
+//         // TODO сделать в отдельной логике через уведомления обновление поста
+//         return loadNewPosts(authorID, dispatch);
+//       } else {
+//         switch (res.status) {
+//           case 400:
+//             store.dispatch({
+//               type: ActionType.NOTICE,
+//               payload: {
+//                 message: 'Error: 400 - subscribeOnly',
+//               },
+//             });
+//             break;
+//           case 500:
+//             store.dispatch({
+//               type: ActionType.NOTICE,
+//               payload: {
+//                 message:
+//                   'Упс! Подписаться не удалось. Повторите попытку позже.',
+//               },
+//             });
+//             break;
+//           default:
+//             store.dispatch({
+//               type: ActionType.NOTICE,
+//               payload: {
+//                 message: 'Error: subscribeOnly',
+//               },
+//             });
+//             break;
+//         }
+//       }
+//     })
+//     .catch((err) => {
+//       store.dispatch({
+//         type: ActionType.NOTICE,
+//         payload: {
+//           message: err as Error,
+//         },
+//       });
+//     });
 
-const switchSubscription = (
+// const switchSubscription = (
+//     authorID: number,
+//     oldSubscriptionID: number,
+//     newSubscriptionID: number,
+// ) => {
+//   api.unsubscribe(authorID, oldSubscriptionID)
+//       .then((res: ResponseData) => {
+//         if (res.ok) {
+//           return subscribeOnly(
+//               authorID,
+//               newSubscriptionID,
+//               (posts) => {
+//                 store.dispatch({
+//                   type: ActionType.SWITCH_SUBSCRIPTION,
+//                   payload: {
+//                     oldSubscriptionID,
+//                     newSubscriptionID,
+//                     posts,
+//                   },
+//                 });
+//               },
+//           );
+//         } else {
+//           switch (res.status) {
+//             case 400:
+//               store.dispatch({
+//                 type: ActionType.NOTICE,
+//                 payload: {
+//                   message: 'Error: 400 - switchSubscription',
+//                 },
+//               });
+//               break;
+//             case 500:
+//               store.dispatch({
+//                 type: ActionType.NOTICE,
+//                 payload: {
+//                   message:
+//              'Упс! Сменить подписку не удалось. Повторите попытку позже.',
+//                 },
+//               });
+//               break;
+//             default:
+//               store.dispatch({
+//                 type: ActionType.NOTICE,
+//                 payload: {
+//                   message: 'Error: switchSubscription handler',
+//                 },
+//               });
+//               break;
+//           }
+//         }
+//       })
+//       .catch((err) => {
+//         store.dispatch({
+//           type: ActionType.NOTICE,
+//           payload: {
+//             message: err as Error,
+//           },
+//         });
+//       });
+// };
+
+export const subscribe = (
     authorID: number,
-    oldSubscriptionID: number,
-    newSubscriptionID: number,
-) => {
-  api.unsubscribe(authorID, oldSubscriptionID)
+    authorSubscriptionID: number): void => {
+  api.subscribe(authorID, authorSubscriptionID)
       .then((res: ResponseData) => {
         if (res.ok) {
-          return subscribeOnly(
-              authorID,
-              newSubscriptionID,
-              (posts) => {
-                store.dispatch({
-                  type: ActionType.SWITCH_SUBSCRIPTION,
-                  payload: {
-                    oldSubscriptionID,
-                    newSubscriptionID,
-                    posts,
-                  },
-                });
-              },
-          );
+          window.open(res.body.payUrl as string, '_blank');
+          // TODO сделать в отдельной логике через уведомления обновление поста
         } else {
           switch (res.status) {
             case 400:
               store.dispatch({
                 type: ActionType.NOTICE,
                 payload: {
-                  message: 'Error: 400 - switchSubscription',
+                  message: 'Error: 400 - subscribeOnly',
                 },
               });
               break;
@@ -126,7 +174,7 @@ const switchSubscription = (
                 type: ActionType.NOTICE,
                 payload: {
                   message:
-                  'Упс! Сменить подписку не удалось. Повторите попытку позже.',
+                    'Упс! Подписаться не удалось. Повторите попытку позже.',
                 },
               });
               break;
@@ -134,7 +182,7 @@ const switchSubscription = (
               store.dispatch({
                 type: ActionType.NOTICE,
                 payload: {
-                  message: 'Error: switchSubscription handler',
+                  message: 'Error: subscribeOnly',
                 },
               });
               break;
@@ -149,34 +197,30 @@ const switchSubscription = (
           },
         });
       });
-};
 
-export const subscribe = (
-    authorID: number,
-    authorSubscriptionID: number): void => {
-  const userSubscriptions = store.getState()
-      .userSubscriptions as Map<number, PayloadSubscription>;
-  const userSubscriptionsArr = [...userSubscriptions.entries()];
-  const oldSubscriptionIdx = userSubscriptionsArr
-      .findIndex(([, sub]) => sub.authorID === authorID);
+  // const userSubscriptions = store.getState()
+  //     .userSubscriptions as Map<number, PayloadSubscription>;
+  // const userSubscriptionsArr = [...userSubscriptions.entries()];
+  // const oldSubscriptionIdx = userSubscriptionsArr
+  //     .findIndex(([, sub]) => sub.authorID === authorID);
 
-  if (oldSubscriptionIdx !== -1) {
-    switchSubscription(
-        authorID,
-        userSubscriptionsArr[oldSubscriptionIdx][0],
-        authorSubscriptionID,
-    );
-  } else {
-    void subscribeOnly(authorID, authorSubscriptionID, (posts) => {
-      store.dispatch({
-        type: ActionType.SUBSCRIBE,
-        payload: {
-          authorSubscriptionID,
-          posts,
-        },
-      });
-    });
-  }
+  // if (oldSubscriptionIdx !== -1) {
+  //   switchSubscription(
+  //       authorID,
+  //       userSubscriptionsArr[oldSubscriptionIdx][0],
+  //       authorSubscriptionID,
+  //   );
+  // } else {
+  //   void subscribeOnly(authorID, authorSubscriptionID, (posts) => {
+  //     store.dispatch({
+  //       type: ActionType.SUBSCRIBE,
+  //       payload: {
+  //         authorSubscriptionID,
+  //         posts,
+  //       },
+  //     });
+  //   });
+  // }
 };
 
 export const unsubscribe = (

@@ -51,6 +51,7 @@ interface RuntimePostUpdateContext {
   content: string
   isLiked: boolean
   likesNum: number
+  commentsNum: number
   isAllowed: boolean
   tier: number
 }
@@ -120,9 +121,14 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
       case ContextType.RUNTIME_POST_UPDATE:
         this.options.isLiked = data.isLiked;
         this.options.likesNum = data.likesNum;
+        this.options.commentsNum = data.commentsNum;
         this.likeBtn.update({
           isActive: data.isLiked,
           likesNum: data.likesNum,
+        });
+        this.commentBtn.update({
+          isActive: false,
+          likesNum: data.commentsNum,
         });
 
         if (
@@ -155,7 +161,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
           this.openComments(data.commentMap);
         } else if (data.comment) {
           if (data.commentID) {
-            // обновить комент (вроде сам обновится)
+            this.comments.get(data.commentID)?.update(data.comment.content);
           } else {
             querySelectorWithThrow(this.domElement, '.new-comment__input')
                 .innerText = '';
@@ -273,7 +279,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     });
     this.commentBtn = new PostAction(buttonsArea, {
       reactType: PostActionType.COMMENT,
-      count: 0, // this.options.commentsNum,
+      count: this.options.commentsNum,
       isActive: false,
       clickCallback: () => {
         if (this.options.commentsOpened) {

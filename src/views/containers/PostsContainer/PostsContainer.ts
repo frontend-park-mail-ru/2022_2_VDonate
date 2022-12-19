@@ -84,6 +84,7 @@ class PostsContainer
               inEditState: false,
               isLiked: postPayload.isLiked,
               likesNum: postPayload.likesNum,
+              commentsNum: postPayload.commentsNum,
               content: postPayload.content,
               isAllowed: postPayload.isAllowed,
               tier: postPayload.tier,
