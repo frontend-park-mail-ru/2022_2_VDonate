@@ -5,8 +5,7 @@ import store from '@app/Store';
 interface LikeBackNoticeModel {
   name: 'like'
   data: {
-    user_id: number
-    post_id: number
+    username: number
   }
   time: string
 }
@@ -31,13 +30,19 @@ interface SubscriberBackNoticeModel {
   time: string
 }
 
+enum PaymentStatus {
+  SUCCESS = 'PAID',
+  FAIL = 'REJECTED',
+  TIMEOUT = 'EXPIRED',
+}
+
 interface PaymentBackNoticeModel {
   name: 'payment'
   data: {
     user_id: number
     author_id: number
     sub_id: number
-    status: string // FIXME: unknown
+    status: PaymentStatus
   }
   time: string
 }
@@ -64,28 +69,50 @@ export const addBackNotice =
     const payload: PayloadBackNotice[] = [];
     notices.forEach((notice) => {
       let message = '';
+      let type: 'info' | 'error';
       switch (notice.name) {
         case 'like':
-          message = 'Пользователь оценил ваш пост';
+          message = `Пользователь ${notice.data.username} оценил ваш пост.`;
+          type = 'info';
           break;
         case 'post':
-          message = `Пользователь ${notice.data.author_name} опубликовал пост`;
+          message = `Пользователь ${notice.data.author_name} опубликовал пост.`;
+          type = 'info';
           break;
         case 'subscriber':
           message =
-          `Пользователь ${notice.data.subscriberName} подписался на вас`;
+            `Пользователь ${notice.data.subscriberName} подписался на вас.`;
+          type = 'info';
           break;
         case 'payment':
-          message =
-          `Оплатата прошла со статусом ${notice.data.status}`;
+          switch (notice.data.status) {
+            case PaymentStatus.SUCCESS:
+              message = 'Оплата прошла успешно.';
+              type = 'info';
+              break;
+            case PaymentStatus.FAIL:
+              message = 'Оплата не выполнена. Повторите попытку.';
+              type = 'error';
+              break;
+            case PaymentStatus.TIMEOUT:
+              message = 'Время ожидания оплаты вышло. Повторите попытку.';
+              type = 'error';
+              break;
+            default:
+              message = 'Error: неизветный тип статуса оплаты';
+              type = 'error';
+              break;
+          }
           break;
         default:
+          message = 'Error: неизветный тип уведомления';
+          type = 'error';
           break;
       }
       payload.push({
         message,
         timestamp: new Date(notice.time),
-        type: 'info',
+        type,
       });
     });
 

@@ -7,14 +7,7 @@
   position: relative
   &:hover
     & .notice-bell__btn-area
-        position: absolute
         display: flex
-        flex-direction: column
-        align-items: stretch
-        padding: 10px
-        gap: 10px
-        bottom: 45px
-        right: -45px
   +e(icon)
     height: 24px
     filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(298deg) brightness(102%) contrast(102%)
@@ -24,7 +17,7 @@
     width: 6px
     position: absolute
     top: 8px
-    right: -4px
+    right: 0px
     background: color-secondary
     border: 1px solid color-secondary
     border-radius: 50%
@@ -32,11 +25,24 @@
       display: block
   +e(btn-area)
     display: none
+    position: fixed
+    flex-direction: column
+    align-items: stretch
+    padding: 10px
+    gap: 10px
+    bottom: 61px
+    left: 0
+    width: 20vw
+    max-width: 300px
 
 @media  (max-width: mobile-size)
   +b(notice-bell)
     &:hover
       & .notice-bell__btn-area
-          top: 30px
           bottom: auto
-          border-radius: 15px
+          left: auto
+          top: 50px
+          right: 3px
+          width: 200px
+    +e(new-notices)
+      top: 0

@@ -40,11 +40,24 @@ navbar-indent-mobile = 10px
     gap: 5px
   +e(sub-menu-btn)
     min-width: auto
+  +e(menu-btn)
+    height: 100%
+    padding: 0 5px
+  +e(notice-bell)
+    padding-right: 5px
+
++b(menu-btn)
+  display: flex
+  align-items: center
+  +e(icon)
+    height: 24px
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(298deg) brightness(102%) contrast(102%)
 
 +b(sub-menu)
   +e(sub-menu)
+    display: none
     position: fixed
-    bottom: 80px
+    bottom: 61px
     left: 0
     flex-direction: column
     align-items: stretch
@@ -52,6 +65,8 @@ navbar-indent-mobile = 10px
     gap: 5px
     width: 20vw
     max-width: 300px
+    +m(active)
+      display: flex
 
 +b(navbar-hr)
   border: none
@@ -59,9 +74,14 @@ navbar-indent-mobile = 10px
   margin: 0
   margin-left: - navbar-indent
 
+.bottom-area__menu-btn
+  &:hover
+    & .sub-menu
+        display: flex
+
 @media  (max-width: mobile-size)
   +b(navbar)
-    z-index: 10
+    z-index: 2
     +e(back)
       border-radius: 0
       height: 50px
@@ -103,8 +123,8 @@ navbar-indent-mobile = 10px
       bottom: auto
       left: auto
       top: 50px
-      right: 0
-      width: 110px
+      right: 3px
+      width: 200px
       
   +b(navbar-hr)
     display: none

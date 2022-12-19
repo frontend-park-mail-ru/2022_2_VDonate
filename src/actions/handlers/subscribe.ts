@@ -157,7 +157,8 @@ export const subscribe = (
   api.subscribe(authorID, authorSubscriptionID)
       .then((res: ResponseData) => {
         if (res.ok) {
-          window.open(res.body.payUrl as string, '_blank');
+          window.location.href = res.body.payUrl as string;
+          // window.open(res.body.payUrl as string, '_blank');
           // TODO сделать в отдельной логике через уведомления обновление поста
         } else {
           switch (res.status) {

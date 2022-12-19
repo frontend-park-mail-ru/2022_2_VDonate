@@ -110,22 +110,40 @@ export default class Navbar extends UpgradeViewBase {
     this.noticeBell = new NoticeBell(this.profile, {
       hasNewNotices: true,
     });
+    this.noticeBell.addClassNames('botton-area__notice-bell');
 
     this.subMenu.classList.add('bg_sub-menu');
-    this.subMenu.style.display = 'none';
+    // this.subMenu.style.display = 'none';
     navbar.appendChild(this.subMenu);
 
-    const menuBtn = new Button(this.profile, {
-      viewType: ButtonType.ICON,
-      actionType: 'button',
-      innerIcon: menuIcon,
-      clickHandler: () => {
-        this.switchMenu(this.subMenu.style.display == 'none');
-      },
-    });
-    menuBtn.addClassNames('botton-area__menu-btn');
+    // const menuBtn = new Button(this.profile, {
+    //   viewType: ButtonType.ICON,
+    //   actionType: 'button',
+    //   innerIcon: menuIcon,
+    //   clickHandler: () => {
+    //     this.switchMenu(this.subMenu.style.display == 'none');
+    //   },
+    // });
+    // menuBtn.addClassNames('botton-area__menu-btn');
 
-    this.subMenu.style.display = 'none';
+    const menuBtn = document.createElement('div');
+    menuBtn.classList.add('botton-area__menu-btn', 'menu-btn');
+
+    const menuImg = document.createElement('img');
+    menuImg.src = menuIcon;
+    menuImg.classList.add('menu-btn__icon');
+
+    menuBtn.appendChild(menuImg);
+    menuBtn.addEventListener('mouseenter', () => {
+      this.subMenu.classList.add('sub-menu__sub-menu_active');
+    });
+    menuBtn.addEventListener('mouseleave', () => {
+      this.subMenu.classList.remove('sub-menu__sub-menu_active');
+    });
+    this.profile.appendChild(menuBtn);
+
+
+    // this.subMenu.style.display = 'none';
     this.subMenu.classList.add('sub-menu', 'sub-menu__sub-menu');
 
     const profileLink = new Button(this.subMenu, {
@@ -181,7 +199,7 @@ export default class Navbar extends UpgradeViewBase {
       this.renderLocation(locationNew.type);
     }
 
-    this.switchMenu(false);
+    // this.switchMenu(false);
 
     const backNoticeState = store.getState().backNotice as PayloadBackNotice[];
     if (backNoticeState.length === 0) {
@@ -230,11 +248,11 @@ export default class Navbar extends UpgradeViewBase {
     this.domElement.removeAttribute('style');
   }
 
-  private switchMenu(isClosed: boolean) {
-    if (isClosed) {
-      this.subMenu.style.display = 'flex';
-    } else {
-      this.subMenu.style.display = 'none';
-    }
-  }
+  // private switchMenu(isClosed: boolean) {
+  //   if (isClosed) {
+  //     this.subMenu.style.display = 'flex';
+  //   } else {
+  //     this.subMenu.style.display = 'none';
+  //   }
+  // }
 }
