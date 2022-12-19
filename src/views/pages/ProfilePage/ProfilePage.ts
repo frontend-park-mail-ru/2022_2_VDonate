@@ -51,6 +51,7 @@ export default class ProfilePage extends UpgradeViewBase {
       this.isAuthor ? this.renderAuthorContent() :
         this.renderDonaterContent();
     }
+    console.log(profileNew.user);
     this.profileInfo.update({
       isAuthor: profileNew.user.isAuthor,
       avatar: profileNew.user.avatar,

@@ -76,6 +76,7 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
     }
 
     if (this.options.isAuthor) {
+      console.log(this.options);
       if (this.options.countDonaters !== data.countDonaters) {
         this.options.countDonaters = data.countDonaters;
         this.countDonaters.innerText = data.countDonaters.toString();
@@ -86,7 +87,8 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
       }
       if (this.options.countProfitMounth !== data.countProfitMounth) {
         this.options.countProfitMounth = data.countProfitMounth;
-        this.countProfitMounth.innerText = data.countProfitMounth.toString();
+        this.countProfitMounth.innerHTML =
+          data.countProfitMounth.toString() + '&#8381;';
       }
       if (this.options.countSubscribersMounth !== data.countSubscribersMounth) {
         this.options.countSubscribersMounth = data.countSubscribersMounth;
@@ -204,6 +206,7 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
         .classList.add('mini-statistic__text', 'font_regular');
     this.countProfitMounth.innerText =
       this.options.countProfitMounth?.toString() ?? '0';
+    this.countProfitMounth.innerHTML += '&#8381;';
     profitContainer.append(profit, this.countProfitMounth);
     miniStatistic.appendChild(profitContainer);
     const subPerMounthContainer = document.createElement('div');

@@ -168,6 +168,10 @@ export default (id: number): void => {
           if (user.isAuthor) {
             user.countDonaters = res.body.countSubscribers as number;
             user.about = res.body.about as string;
+            user.countPosts = res.body.countPosts as number;
+            user.countProfitMounth = res.body.countProfitMounth as number;
+            user.countSubscribersMounth =
+              res.body.countSubscribersMounth as number;
             return getAuthorData(user);
           } else {
             return getDonaterData(user);
