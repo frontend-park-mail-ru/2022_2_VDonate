@@ -282,10 +282,14 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
       count: this.options.commentsNum,
       isActive: false,
       clickCallback: () => {
-        if (this.options.commentsOpened) {
-          closeComments(this.options.postID);
+        if (this.options.isAllowed) {
+          if (this.options.commentsOpened) {
+            closeComments(this.options.postID);
+          } else {
+            getComments(this.options.postID);
+          }
         } else {
-          getComments(this.options.postID);
+          notice('Нет доступа к коментариям', 'info');
         }
       },
     });
