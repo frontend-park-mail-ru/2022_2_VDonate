@@ -35,6 +35,12 @@ import {
 } from './user';
 import {ActionEditorClose, ActionEditorOpen} from './editor';
 import {ActionSearch} from './searchAuthor';
+import {
+  ActionAddComment,
+  ActionCloseComments,
+  ActionDeleteComment,
+  ActionGetComments,
+  ActionUpdateComment} from './comments';
 /** Типы действий */
 export enum ActionType {
   LOGIN_SUCCESS,
@@ -68,6 +74,11 @@ export enum ActionType {
   SWITCH_SUBSCRIPTION,
   ADD_BACK_NOTICE,
   CLEAR_BACK_NOTICE,
+  GET_COMMENTS,
+  ADD_COMMENT,
+  UPDATE_COMMENT,
+  DELETE_COMMENT,
+  CLOSE_COMMENTS,
 }
 /** Объединение действий */
 export type Action =
@@ -101,4 +112,9 @@ export type Action =
   | ActionBecomeAuthor
   | ActionSwitchSubscription
   | ActionAddBackNotice
-  | ActionClearBackNotice;
+  | ActionClearBackNotice
+  | ActionGetComments
+  | ActionAddComment
+  | ActionUpdateComment
+  | ActionDeleteComment
+  | ActionCloseComments;

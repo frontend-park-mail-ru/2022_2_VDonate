@@ -60,6 +60,7 @@ class PostAction extends ComponentBase<'button', PostActionUpdateContent> {
     button.addEventListener('click', this.options.clickCallback);
     const innerIcon = document.createElement('img');
     innerIcon.className = 'post-action__icon';
+    const innerText = document.createElement('span');
     switch (this.options.reactType) {
       case PostActionType.COMMENT:
         innerIcon.src = commentIcon;
@@ -71,15 +72,13 @@ class PostAction extends ComponentBase<'button', PostActionUpdateContent> {
           button.classList.add('post-action__back_pressed');
         }
         button.appendChild(innerIcon);
+        innerText.classList.add('post-action__text', 'font_regular');
+        innerText.textContent = this.options.count.toString();
+        button.appendChild(innerText);
         break;
       default:
         break;
     }
-    const innerText = document.createElement('span');
-    innerText.classList.add('post-action__text', 'font_regular');
-    innerText.textContent = this.options.count.toString();
-    button.appendChild(innerText);
-
     return button;
   }
 }

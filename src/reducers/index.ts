@@ -11,6 +11,7 @@ import userSubscriptionsReducer from './userSubscriptions';
 import authorReducer from './authors';
 import imageReducer from './image';
 import backNoticeReducer from './backNotice';
+import commentsReducer from './comments';
 
 export default combineReducers<Action>({
   location: locationReducer,
@@ -24,4 +25,5 @@ export default combineReducers<Action>({
   authors: authorReducer,
   image: imageReducer,
   backNotice: backNoticeReducer,
+  comments: commentsReducer,
 });

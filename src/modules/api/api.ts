@@ -304,4 +304,38 @@ export default class Api {
         {file},
     );
   }
+
+  getComments(postID: number): Promise<ResponseData> {
+    return this.request(
+        `/posts/${postID}/comments`,
+        Method.GET,
+        ContentType.json,
+    );
+  }
+
+  addComment(postID: number, content: string): Promise<ResponseData> {
+    return this.request(
+        `/posts/${postID}/comments`,
+        Method.POST,
+        ContentType.json,
+        {content},
+    );
+  }
+
+  updateComment(commentID: number, content: string): Promise<ResponseData> {
+    return this.request(
+        `/posts/comments/${commentID}`,
+        Method.PUT,
+        ContentType.json,
+        {content},
+    );
+  }
+
+  deleteComment(commentID: number): Promise<ResponseData> {
+    return this.request(
+        `/posts/comments/${commentID}`,
+        Method.DELETE,
+        ContentType.json,
+    );
+  }
 }

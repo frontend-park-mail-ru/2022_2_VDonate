@@ -40,7 +40,10 @@
     text-align: center
   +e(edit-form)
     flex-grow: 1
-
+  +e(comment-area)
+    width: 100%
+  +e(new-comment)
+    width: 100%
 
 .post-edit-form
   display: grid
@@ -78,6 +81,24 @@
     padding: 2px
   & h1
     font-size: inherit
+
+.post-hr
+  border: none
+  height: 3px
+
+.new-comment
+  +e(form)
+    display: flex
+    flex-direction: row
+    flex-wrap: nowrap
+    align-items: center
+    gap: 10px
+  +e(input)
+    width: 100%
+    padding: 5px
+    white-space: pre-wrap
+  +e(submit)
+    //
 
 @media  (max-width: mobile-size)
   .post-content
