@@ -6,7 +6,7 @@ import {PayloadUser} from '@actions/types/user';
 import store from '@app/Store';
 import Button, {ButtonType} from '@components/Button/Button';
 import closeIcon from '@icon/close.svg';
-import editIcon from '@icon/edit.svg';
+// import editIcon from '@icon/edit.svg';
 import {notice} from '@actions/handlers/notice';
 import {deleteComment, updateComment} from '@actions/handlers/comments';
 import {commentSize} from '@validation/validation';
@@ -48,20 +48,21 @@ class Comment extends ComponentBase<'div', string> {
     text.innerText = this.options.content;
     commentArea.append(username, text);
     comment.appendChild(commentArea);
-    if (this.options.userID == (store.getState().user as PayloadUser).id) {
-      new Button(comment, {
-        actionType: 'button',
-        innerIcon: editIcon,
-        clickHandler: () => {
-          if (this.options.inEditState) {
-            this.closeEditor();
-          } else {
-            this.openEditor();
-          }
-        },
-        viewType: ButtonType.ICON,
-      }).addClassNames('comment__edit-btn');
-    } else if (
+    if (this.options.userID == (store.getState().user as PayloadUser).id ||
+    // ) {
+    //   new Button(comment, {
+    //     actionType: 'button',
+    //     innerIcon: editIcon,
+    //     clickHandler: () => {
+    //       if (this.options.inEditState) {
+    //         this.closeEditor();
+    //       } else {
+    //         this.openEditor();
+    //       }
+    //     },
+    //     viewType: ButtonType.ICON,
+    //   }).addClassNames('comment__edit-btn');
+    // } else if (
       this.options.authorID == (store.getState().user as PayloadUser).id) {
       new Button(comment, {
         actionType: 'button',
