@@ -63,14 +63,6 @@ class PostsContainer
   notify(): void {
     const newPostsState = store.getState().posts as Map<number, PayloadPost>;
 
-    if (newPostsState.size == 0) {
-      querySelectorWithThrow(this.domElement, '.posts-container__empty')
-          .hidden = false;
-    } else {
-      querySelectorWithThrow(this.domElement, '.posts-container__empty')
-          .hidden = true;
-    }
-
     this.postsState.forEach((_, postID) => {
       if (!newPostsState.has(postID)) {
         this.deletePost(postID);
@@ -154,6 +146,13 @@ class PostsContainer
         ...this.commentState,
       });
     }
+    if (newPostsState.size == 0 && !this.posts.get(-1)) {
+      querySelectorWithThrow(this.domElement, '.posts-container__empty')
+          .hidden = false;
+    } else {
+      querySelectorWithThrow(this.domElement, '.posts-container__empty')
+          .hidden = true;
+    }
   }
 
   protected onErase(): void {
@@ -182,7 +181,7 @@ class PostsContainer
   }
 
   private addNewPost() {
-    this.deletePost(-1);
+    if (this.posts.get(-1)) return;
     const postsArea = querySelectorWithThrow(
         this.domElement,
         '.posts-container__posts-area',
