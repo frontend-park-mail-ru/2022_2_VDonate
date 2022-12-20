@@ -15,6 +15,8 @@ const editorReducer: Reducer<Action> =
           type: EditorType.CLOSE_POST,
           id: action.payload.postID,
         };
+      case ActionType.ROUTING:
+        return {};
       case ActionType.DELETE_POST:
       case ActionType.CHANGEUSERDATA_SUCCESS:
       case ActionType.DELETEAUTHORSUBSCRIPTION:
