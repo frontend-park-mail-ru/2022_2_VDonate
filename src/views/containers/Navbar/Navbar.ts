@@ -9,7 +9,7 @@ import {logout} from '@actions/handlers/user';
 import {openProfileEditor} from '@actions/handlers/editor';
 import Logo from '@components/Logo/Logo';
 import NavbarLink from '@components/NavbarLink/NavbarLink';
-import Button, {ButtonType} from '@components/Button/Button';
+import {ButtonType} from '@components/Button/Button';
 import {getSubscriptions} from '@actions/handlers/subscribe';
 import ProfielMini, {ProfileMiniType}
   from '@components/ProfileMini/ProfileMini';
@@ -20,7 +20,9 @@ import {PayloadLocation} from '@actions/types/routing';
 import {Pages} from '@configs/router';
 import NoticeBell from '@components/NoticeBell/NoticeBell';
 import {PayloadBackNotice} from '@actions/types/notice';
-
+import SubMenu from '@components/SubMenu/SubmMenu';
+import {notice} from '@actions/handlers/notice';
+import ws from '@app/WebSocketNotice';
 
 const links = [
   {
@@ -51,7 +53,7 @@ export default class Navbar extends UpgradeViewBase {
   private locationState: PayloadLocation;
   private profileMini!: ProfielMini;
   private subscriptionsListContainer!: SubscriptionsListContainer;
-  private subMenu: HTMLElement = document.createElement('div');
+  // private subMenu!: SubMenu;
   private noticeBell!: NoticeBell;
 
   constructor(el: HTMLElement, private options: number) {
@@ -107,14 +109,70 @@ export default class Navbar extends UpgradeViewBase {
     });
     this.profileMini.addClassNames('botton-area__profile-mini');
 
+    const noticeSubMenu = new SubMenu(navbar, {
+      buttonsOptions: [
+        {
+          actionType: 'button',
+          viewType: ButtonType.OUTLINE,
+          innerText: 'Показать все',
+          clickHandler: () => {
+            const backNotices =
+              store.getState().backNotice as PayloadBackNotice[];
+            backNotices.forEach((backNotice) => {
+              notice(backNotice.message, 'info');
+            });
+          },
+        },
+        {
+          actionType: 'button',
+          viewType: ButtonType.OUTLINE,
+          innerText: 'Удалить все',
+          clickHandler: ws.clearAll.bind(ws),
+        },
+      ],
+    });
+
     this.noticeBell = new NoticeBell(this.profile, {
       hasNewNotices: true,
+      onHover(isEnter) {
+        if (isEnter) {
+          noticeSubMenu.addClassNames('sub-menu_active');
+        } else {
+          noticeSubMenu.removeClassNames('sub-menu_active');
+        }
+      },
     });
     this.noticeBell.addClassNames('botton-area__notice-bell');
 
-    this.subMenu.classList.add('bg_sub-menu');
+    const profileSubMenu = new SubMenu(navbar, {
+      buttonsOptions: [
+        {
+          viewType: ButtonType.OUTLINE,
+          actionType: 'button',
+          innerText: 'Профиль',
+          clickHandler: () => {
+            const user = store.getState().user as PayloadUser;
+            routing(`/profile?id=${user.id}`);
+          },
+        },
+        {
+          viewType: ButtonType.OUTLINE,
+          actionType: 'button',
+          innerText: 'Изменить данные',
+          clickHandler: openProfileEditor,
+        },
+        {
+          viewType: ButtonType.OUTLINE,
+          actionType: 'button',
+          innerText: 'Выйти',
+          clickHandler: logout,
+        },
+      ],
+    });
+
+    // this.subMenu.classList.add('bg_sub-menu');
     // this.subMenu.style.display = 'none';
-    navbar.appendChild(this.subMenu);
+    // navbar.appendChild(this.subMenu);
 
     // const menuBtn = new Button(this.profile, {
     //   viewType: ButtonType.ICON,
@@ -135,47 +193,49 @@ export default class Navbar extends UpgradeViewBase {
 
     menuBtn.appendChild(menuImg);
     menuBtn.addEventListener('mouseenter', () => {
-      this.subMenu.classList.add('sub-menu__sub-menu_active');
+      profileSubMenu.addClassNames('sub-menu_active');
+      // this.subMenu.classList.add('sub-menu__sub-menu_active');
     });
     menuBtn.addEventListener('mouseleave', () => {
-      this.subMenu.classList.remove('sub-menu__sub-menu_active');
+      profileSubMenu.removeClassNames('sub-menu_active');
+      // this.subMenu.classList.remove('sub-menu__sub-menu_active');
     });
     this.profile.appendChild(menuBtn);
 
 
     // this.subMenu.style.display = 'none';
-    this.subMenu.classList.add('sub-menu', 'sub-menu__sub-menu');
+    // this.subMenu.classList.add('sub-menu', 'sub-menu__sub-menu');
 
-    const profileLink = new Button(this.subMenu, {
-      viewType: ButtonType.OUTLINE,
-      actionType: 'button',
-      innerText: 'Профиль',
-      clickHandler: () => {
-        const user = store.getState().user as PayloadUser;
-        routing(`/profile?id=${user.id}`);
-      },
-    });
-    profileLink.addClassNames('botton-area__sub-menu-btn');
+    // const profileLink = new Button(this.subMenu, {
+    //   viewType: ButtonType.OUTLINE,
+    //   actionType: 'button',
+    //   innerText: 'Профиль',
+    //   clickHandler: () => {
+    //     const user = store.getState().user as PayloadUser;
+    //     routing(`/profile?id=${user.id}`);
+    //   },
+    // });
+    // profileLink.addClassNames('botton-area__sub-menu-btn');
 
-    const change = new Button(this.subMenu, {
-      viewType: ButtonType.OUTLINE,
-      actionType: 'button',
-      innerText: 'Изменить данные',
-      clickHandler: () => {
-        openProfileEditor();
-      },
-    });
-    change.addClassNames('botton-area__sub-menu-btn');
+    // const change = new Button(this.subMenu, {
+    //   viewType: ButtonType.OUTLINE,
+    //   actionType: 'button',
+    //   innerText: 'Изменить данные',
+    //   clickHandler: () => {
+    //     openProfileEditor();
+    //   },
+    // });
+    // change.addClassNames('botton-area__sub-menu-btn');
 
-    const logoutBtn = new Button(this.subMenu, {
-      viewType: ButtonType.OUTLINE,
-      actionType: 'button',
-      innerText: 'Выйти',
-      clickHandler: () => {
-        logout();
-      },
-    });
-    logoutBtn.addClassNames('botton-area__sub-menu-btn');
+    // const logoutBtn = new Button(this.subMenu, {
+    //   viewType: ButtonType.OUTLINE,
+    //   actionType: 'button',
+    //   innerText: 'Выйти',
+    //   clickHandler: () => {
+    //     logout();
+    //   },
+    // });
+    // logoutBtn.addClassNames('botton-area__sub-menu-btn');
 
     profileContainer.appendChild(this.profile);
     back.appendChild(profileContainer);

@@ -40,7 +40,7 @@ interface IconButtonOptions {
   innerIcon: string
 }
 
-type ButtonOptions =
+export type ButtonOptions =
   & {title?: string}
   & (TextButtonOptions | IconButtonOptions)
   & (SubmitButtonOptions | SimpleButtonOptions);
