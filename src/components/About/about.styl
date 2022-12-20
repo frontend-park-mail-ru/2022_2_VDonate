@@ -1,15 +1,22 @@
 @require '@style/const.styl'
+@require '@style/mixin.styl'
 
-.about
-  &__about
-    margin-top: 10vh
-    width: 100%
-    padding: 1vh
-  &__head
-    font-27()
++b(about)
+  +e(about)
+    padding: 20px
+  +e(header)
+    display: flex
+    flex-direction: row
+  +e(header-title)
+    flex-grow: 1
     text-align: center
-    color: color-font-light
-  &__text
-    font-16()
-    color: color-font-light
-    padding: 1vh
+  +e(text)
+     padding: 5px 10px
+  +e(form)
+    display: flex
+    padding: 4px
+    gap: 16px
+  +e(header-btn)
+    position: absolute
+    top: 17px
+    right: 15px

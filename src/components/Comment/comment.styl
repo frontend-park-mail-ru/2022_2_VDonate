@@ -1,0 +1,32 @@
+@require '@style/const.styl'
+@require '@style/mixin.styl'
+
++b(comment)
+  display: flex;
+  align-items: flex-start
+  flex-direction: row
+  gap: 12px
+  +e(avatar)
+    outline-width: 2px !important
+    width: 30px
+  +e(area)
+    display: flex
+    justify-content: flex-start
+    flex-direction: column
+    align-items: flex-start
+    width: 100%
+  +e(username)
+    text-decoration: none
+    color: color-primary-light
+  +e(text)
+    width: 100%
+    white-space: pre-wrap
+  +e(edit-btn)
+    position: absolute
+    right: 20px
+  +e(edit-btn-area)
+    width: 100%
+
++b(edit-btn-area)
+  +e(btn-area__btn)
+    //

@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import {Action, ActionType} from '@actions/types/action';
 import {PayloadPost} from '@actions/types/posts';
 import {Reducer} from '@flux/types/reducer';
@@ -24,10 +25,8 @@ const postsReducer: Reducer<Action> =
             post.isLiked = action.payload.isLiked;
             post.likesNum += action.payload.isLiked ? 1 : -1;
           }
-          if (action.payload.content !== undefined &&
-            action.payload.contentTemplate !== undefined) {
+          if (action.payload.content !== undefined) {
             post.content = action.payload.content;
-            post.contentTemplate = action.payload.contentTemplate;
           }
         }
         return state;
@@ -41,7 +40,27 @@ const postsReducer: Reducer<Action> =
         return state;
       case ActionType.SUBSCRIBE:
       case ActionType.UNSUBSCRIBE:
-        return createPostsMap(action.payload.posts ?? []);
+      case ActionType.SWITCH_SUBSCRIPTION:
+        return createPostsMap(action.payload.posts);
+      case ActionType.ROUTING:
+        if (action.payload.options.samePage) {
+          return state;
+        }
+        return new Map<number, PayloadPost>();
+      case ActionType.ADD_COMMENT:
+        const post =
+          (state as Map<number, PayloadPost>).get(action.payload.postID);
+        if (post) {
+          post.commentsNum++;
+        }
+        return state;
+      case ActionType.DELETE_COMMENT:
+        const poost =
+          (state as Map<number, PayloadPost>).get(action.payload.postID);
+        if (poost) {
+          poost.commentsNum--;
+        }
+        return state;
       default:
         return state;
     }

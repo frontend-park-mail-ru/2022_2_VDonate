@@ -1,0 +1,39 @@
+@require '@style/const.styl'
+@require '@style/mixin.styl'
+
++b(profile-mini)
+  text-decoration: none
+  display: flex
+  align-items: center
+  justify-content: flex-start;
+  gap: 15px
+  flex-wrap: nowrap;
+  min-width: 0
+  width: 100%
+  +e(avatar)
+    +m(size)
+      +m(big)
+        width: 40px
+        outline-width: 3px !important
+        margin: 3px
+      +m(small)
+        width: 30px
+        outline-width: 2px !important
+        margin: 2px
+  +e(username)
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+    +m(bold)
+      font-weight: 500
+
+@media  (max-width: mobile-size)
+  +b(profile-mini)
+    flex-wrap: nowrap
+    word-break: normal
+    width: 100px
+    min-width: 25px
+    +e(avatar)
+      +m(size)
+        +m(small)
+          width: 26px

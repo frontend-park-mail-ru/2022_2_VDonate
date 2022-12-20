@@ -12,7 +12,7 @@ import SearchPage from './pages/SearchPage/SearchPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import {PayloadUser} from '@actions/types/user';
 import FeedPage from './pages/FeedPage/FeedPage';
-import PageBase from '@app/Page';
+import UpgradeViewBase from '@app/UpgradeView';
 
 interface RootChildViews {
   navbar?: Navbar
@@ -28,7 +28,7 @@ interface RootChildViews {
 }
 
 /** Класс корневой вьюшки */
-export default class Root extends PageBase {
+export default class Root extends UpgradeViewBase {
   // private page: RootModel;
   /** Состояния расположения в приложении */
   private locationState: PayloadLocation;
@@ -45,8 +45,9 @@ export default class Root extends PageBase {
   /** Оповещение об изменением хранилища */
   notify(): void {
     const locationNew = store.getState().location as PayloadLocation;
-    if (locationNew.type !== this.locationState.type ||
-        locationNew.options?.id != this.locationState.options?.id) {
+    if (!locationNew.options.samePage &&
+        (locationNew.type !== this.locationState.type ||
+        locationNew.options.id != this.locationState.options.id)) {
       this.locationState = locationNew;
       this.update(this.locationState);
     }
@@ -81,7 +82,7 @@ export default class Root extends PageBase {
           profileID:
             Number(new URL(window.location.href).searchParams.get('id')),
           changeable:
-          Number(new URL(window.location.href).searchParams.get('id')) ==
+          Number(new URL(window.location.href).searchParams.get('id')) ===
               (store.getState().user as PayloadUser).id,
         });
         break;
@@ -104,10 +105,7 @@ export default class Root extends PageBase {
     const root = document.createElement('div');
     root.classList.add('v-donate');
 
-    // this.navbar = new Navbar(root);
-    // new EditorContainer(root);
     this.childViews.notice = new NoticeContainer(root);
-    // this.update(this.locationState);
 
     return root;
   }

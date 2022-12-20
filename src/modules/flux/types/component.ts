@@ -3,7 +3,7 @@ abstract class ComponentBase
   <Tag extends keyof HTMLElementTagNameMap, Data = never> {
   protected domElement!: HTMLElementTagNameMap[Tag];
 
-  renderTo(element: HTMLElement) {
+  protected renderTo(element: HTMLElement) {
     this.domElement = this.render();
     element.appendChild(this.domElement);
   }
@@ -12,7 +12,7 @@ abstract class ComponentBase
     this.domElement.classList.add(...classNames);
   }
 
-  removeClassName(...classNames: string[]) {
+  removeClassNames(...classNames: string[]) {
     this.domElement.classList.remove(...classNames);
   }
 

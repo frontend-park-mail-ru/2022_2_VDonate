@@ -1,0 +1,177 @@
+@require '@style/const.styl'
+@require '@style/mixin.styl'
+
+bg-edge = inset 0px -4px 2px rgba(0, 0, 0, 0.2), inset 0px 4px 2px rgba(255, 255, 255, 0.12), inset 4px 4px 26px rgba(255, 255, 255, 0.12)
+
++b(bg)
+  +m(main)
+    background-color: color-bg-block
+    border-radius: radius-big
+    backdrop-filter: blur(20px)
+    -webkit-backdrop-filter: blur(20px)
+  +m(sub-menu)
+    background-color: color-bg-block
+    // border-radius: radius-medium
+  +m(interaction)
+    border-radius: radius-big
+    position relative
+    &:before
+      content: ""
+      position: absolute
+      inset: 0
+      z-index: -1
+      mix-blend-mode: soft-light
+      box-shadow: bg-edge
+      border-radius: radius-big
+      background: "url(%s)" % glass-image-1
+      background-size: cover
+  +m(input)
+    background: color-bg-input
+    border-radius: radius-small
+  +m(button)
+    +m(primary)
+      position: relative
+      border-radius: radius-small
+      background: color-primary
+      &:before
+        content: ""
+        position: absolute
+        inset: 0
+        border-radius: radius-small
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
+        -webkit-mask-composite: xor
+        mask-composite: exclude
+        padding: 2px
+        background:linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)    
+      &:hover
+        &:before
+          background: none
+    +m(error)
+      position: relative
+      border-radius: radius-small
+      background: color-error
+      &:before
+        content: ""
+        position: absolute
+        inset: 0
+        border-radius: radius-small
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
+        -webkit-mask-composite: xor
+        mask-composite: exclude
+        padding: 2px
+        background:linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)    
+      &:hover
+        &:before
+          background: none
+    +m(sub-1)
+      position: relative
+      border-radius: radius-small
+      background: color-sub-1
+      &:before
+        content: ""
+        position: absolute
+        inset: 0
+        border-radius: radius-small
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
+        -webkit-mask-composite: xor
+        mask-composite: exclude
+        padding: 2px
+        background:linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)    
+      &:hover
+        &:before
+          background: none
+    +m(sub-2)
+      position: relative
+      border-radius: radius-small
+      background: color-sub-2
+      &:before
+        content: ""
+        position: absolute
+        inset: 0
+        border-radius: radius-small
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
+        -webkit-mask-composite: xor
+        mask-composite: exclude
+        padding: 2px
+        background:linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)    
+      &:hover
+        &:before
+          background: none
+    +m(outline)
+      position: relative
+      border-radius: radius-small
+      background: none
+      &:before
+        content: ""
+        position: absolute
+        inset: 0
+        border-radius: radius-small
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
+        -webkit-mask-composite: xor
+        mask-composite: exclude
+        padding: 2px
+        background:linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)    
+      &:hover
+        &:before
+          background: none
+    +m(icon)
+      background: none
+      &:hover
+        transform: scale(1.1)
+    +m(action)
+      position: relative
+      background: none
+      border-radius: radius-small
+      border: none
+      &:before
+        content: ""
+        position: absolute
+        inset: 0
+        border-radius: radius-small
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
+        -webkit-mask-composite: xor
+        mask-composite: exclude
+        padding: 2px
+        background:linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)
+      &:hover
+        &:before
+          background: none
+  +m(notice-error)
+    backdrop-filter: blur(20px)
+    border-radius: radius-medium
+    border: 3px solid color-error
+  +m(notice-info)
+    backdrop-filter: blur(20px)
+    border-radius: radius-medium
+    border: 3px solid color-secondary
+  +m(navbar-link)
+    +m(enable)
+      border-radius: 0px radius-small radius-small 0px
+      position relative
+      background-color: color-bg-block
+  +m(editor)
+    border-radius: radius-big
+    position relative
+    &:before
+      content: ""
+      position: absolute
+      inset: 0
+      z-index: -1
+      mix-blend-mode: soft-light
+      box-shadow: bg-edge
+      border-radius: radius-big
+      background: "url(%s)" % glass-image-1
+      background-size: cover
+  +m(hr)
+    background-color: color-hr
+    border-radius: 0px radius-small radius-small 0px
+
+@media (max-width: mobile-size)
+  +b(bg)
+    +m(sub-menu)
+      border-radius: 0 0 0 radius-small
+      backdrop-filter: blur(20px)
+      -webkit-backdrop-filter: blur(20px)
+    +m(navbar-link)
+      +m(enable)
+        border-radius: 0px 0px radius-small radius-small

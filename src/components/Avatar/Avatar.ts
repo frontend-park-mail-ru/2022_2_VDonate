@@ -1,6 +1,6 @@
 import './avatar.styl';
 import altAvatar from '@img/altAvatar.jpg';
-import altAuthorSub from '@img/altAuthorSub.jpg';
+import altSubscriptionAvatar from '@img/altAuthorSub.jpg';
 import ComponentBase from '@flux/types/component';
 /**
  * Перечисление типов аватара
@@ -12,12 +12,13 @@ export enum AvatarType {
 }
 interface AvatarOptions {
   viewType: AvatarType
-  image: string
+  imgPath: string
 }
+
 /**
  * Компонент аватар
  */
-export default class Avatar extends ComponentBase<'img', string> {
+export default class Avatar extends ComponentBase<'img', string | AvatarType> {
   constructor(el: HTMLElement, private options: AvatarOptions) {
     super();
     this.renderTo(el);
@@ -25,37 +26,74 @@ export default class Avatar extends ComponentBase<'img', string> {
 
   protected render(): HTMLImageElement {
     const image = document.createElement('img');
-    image.classList.add('image');
+    image.classList.add('avatar');
     switch (this.options.viewType) {
       case AvatarType.AUTHOR:
-        image.classList.add('image_style_author');
+        image.classList.add('avatar_style_author');
         break;
       case AvatarType.DONATER:
-        image.classList.add('image_style_donater');
+        image.classList.add('avatar_style_donater');
         break;
       case AvatarType.SUBSCRIPTION:
-        image.classList.add('image_style_sub');
+        image.classList.add('avatar_style_subscription');
         break;
       default:
         break;
     }
-    if (this.options.image) {
-      image.setAttribute('src', this.options.image);
-    } else {
-      image.setAttribute(
-          'src', this.options.viewType == AvatarType.SUBSCRIPTION ?
-        altAuthorSub : altAvatar);
-    }
+    image.src = this.options.imgPath ||
+     (this.options.viewType == AvatarType.SUBSCRIPTION ?
+        altSubscriptionAvatar : altAvatar);
     return image;
   }
 
-  update(imgPath: string): void {
-    if (imgPath) {
-      this.domElement.src = imgPath;
+  update(data: string | AvatarType): void {
+    if (typeof data === 'string') {
+      this.updateImage(data);
     } else {
-      this.domElement.src = this.options.viewType == AvatarType.SUBSCRIPTION ?
-        altAuthorSub : altAvatar;
+      this.updateViewType(data);
     }
-    this.options.image = imgPath;
+  }
+
+  private updateImage(imgPath: string): void {
+    if (this.options.imgPath === imgPath) return;
+    this.options.imgPath = imgPath;
+
+    this.domElement.src = this.options.imgPath ||
+      (this.options.viewType == AvatarType.SUBSCRIPTION ?
+        altSubscriptionAvatar : altAvatar);
+  }
+
+  private updateViewType(viewType: AvatarType): void {
+    if (this.options.viewType === viewType) return;
+
+    switch (this.options.viewType) {
+      case AvatarType.AUTHOR:
+        this.domElement.classList.remove('avatar_style_author');
+        break;
+      case AvatarType.DONATER:
+        this.domElement.classList.remove('avatar_style_donater');
+        break;
+      case AvatarType.SUBSCRIPTION:
+        this.domElement.classList.remove('avatar_style_sub');
+        break;
+      default:
+        break;
+    }
+
+    switch (viewType) {
+      case AvatarType.AUTHOR:
+        this.domElement.classList.add('avatar_style_author');
+        break;
+      case AvatarType.DONATER:
+        this.domElement.classList.add('avatar_style_donater');
+        break;
+      case AvatarType.SUBSCRIPTION:
+        this.domElement.classList.add('avatar_style_sub');
+        break;
+      default:
+        break;
+    }
+
+    this.options.viewType = viewType;
   }
 }

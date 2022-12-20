@@ -1,94 +1,109 @@
 @require '@style/const.styl'
+@require '@style/mixin.styl'
 
-.left-navbar
+navbar-indent = 20px
+navbar-indent-mobile = 10px
+
++b(navbar)
   position: fixed
   top: 0
   left: 0
-  &__glass
-    border-radius: 0px 16px 16px 0px
+  +e(back)
+    border-radius: 0px radius-big radius-big 0px
     height: 100vh
     width: 20vw
     max-width: 300px
-    min-width: 150px
-    position: sticky
-    left: 0
-    padding: 0px
-  &__logo
-    padding: 12px 0px 24px 8px
-  &__subs-list
     display: flex
     flex-direction: column
-    align-items: flex-start
     gap: 10px
-    max-height: 52vh
+    padding: 15px 10px 15px navbar-indent
+    &:before
+      border-radius: 0px radius-big radius-big 0px
+  +e(link)
+    padding: 5px 5px 5px navbar-indent
+    margin-left: - navbar-indent
+  +e(subs-list)
+    flex-grow: 1
     overflow: auto
-    scrollbar-color: color-font-secondary
-    scrollbar-width: 4px
-    &::-webkit-scrollbar
-      width: 4px;
-      height: 16px;
-      &-thumb
-        background: #CBE0FD
-        border-radius: 16px;
-        box-shadow: inset 2px 2px 2px hsla(0,0%,100%,.25),inset -2px -2px 2px rgba(0,0,0,.25);
-      &-track 
-        background: none
-  &__sub
-    font-16()
-    color: color-font-light
+    customScrollbar()
+  +e(botton-area)
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+
++b(botton-area)
+  +e(profile)
     display: flex
     flex-direction: row
-    justify-content: center
-    align-items: center
-    padding-left: 16px
-    gap: 8px
-    text-decoration: none
-  &__sub-avatar
-    width: 30px
-  &__down
-    position: fixed;
-    left: 0
-    right: 0
-    bottom: 0
-    align-items: left 
-    padding-bottom: 10px
-    gap: 10px
+    align-items: stretch
+    justify-content: space-between
+    gap: 5px
+  +e(sub-menu-btn)
+    min-width: auto
+  +e(menu-btn)
+    height: 100%
+    padding: 0 5px
+  +e(notice-bell)
+    padding-right: 5px
 
-.down
-  &__profile
-    display: flex
-    flex-direction: row
-    align-items: center
-    padding: 5px 10px
-    gap: 10px
-    font-16()
-    color: color-font-light
-    flex-wrap: wrap
-    justify-content: space-evenly
-    width: 75%
-    cursor: pointer
-  &__avatar
-    width: 50px
-  &__menu-btn
-    position: fixed
-    right: 20px
-    bottom: 20px
-  &__popup
-    flex-direction: column
-    align-items: center
-    padding: 8px
-    gap: 8px
-  &__popup-btn
-    width: 100%
++b(menu-btn)
+  display: flex
+  align-items: center
+  +e(icon)
+    height: 24px
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(298deg) brightness(102%) contrast(102%)
 
-.navbar-hr
-  background-color: rgba(#00103D, 0.10)
++b(navbar-hr)
   border: none
-  border-radius: 0px 5px 5px 0px
-  &__navbar-hr
-    height: 7px
-    width: 18vw
-    min-width 135px
-    max-width: 280px
-    border-radius: 0px 5px 5px 0px
-    margin: 16px 20px 16px 0px
+  height: 3px
+  margin: 0
+  margin-left: - navbar-indent
+
+.bottom-area__menu-btn
+  &:hover
+    & .sub-menu
+        display: flex
+
+@media  (max-width: mobile-size)
+  +b(navbar)
+    z-index: 2
+    +e(back)
+      border-radius: 0
+      height: 60px
+      width: calc(100vw + 4px)
+      max-width: calc(100vw + 4px)
+      display: flex
+      flex-direction: row
+      flex-wrap: nowrap
+      align-items: center
+      padding: 0 10px
+      &:before
+        border-radius: 0
+    +e(logo)
+      zoom: 0.8
+      display: flex
+      flex-wrap: nowrap
+      word-break: normal
+      margin-right: 6px
+    +e(link)
+      padding: 20px 5px 5px 5px;
+      margin-left: 0;
+      margin-top: -15px;
+    +e(sub)
+      padding: 0px
+    +e(subs-list)
+      flex-grow: 1
+      overflow-y: hidden
+      overflow-x: auto
+      customScrollbar(1px, 1px)
+
+  +b(botton-area)
+    +e(profile-mini)
+      display: none !important
+
+  +b(menu-btn)
+    +e(icon)
+      height: icon-size-mobile
+      
+  +b(navbar-hr)
+    display: none

@@ -1,0 +1,22 @@
+b(name)
+  .{name}
+    {block}
+
+e(name)
+  &__{name}
+    {block}
+
+m(name)
+  &_{name}
+    {block}
+
+customScrollbar(width = 8px, height = 8px)
+  &::-webkit-scrollbar
+    -webkit-appearance: none
+    width: width
+    height: height
+    background: transparent
+    &-thumb
+      background: transparent
+      border: 1px solid color-scrollbar
+      border-radius: 10px

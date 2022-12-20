@@ -1,33 +1,23 @@
 import {ActionType} from '@actions/types/action';
-import {PayloadGetProfileData} from '@actions/types/getProfileData';
 import {PayloadNotice} from '@actions/types/notice';
 import {PayloadPost} from '@actions/types/posts';
 import {PayloadUser} from '@actions/types/user';
 import api from '@app/Api';
 import store from '@app/Store';
 
-export interface PostForm extends HTMLCollection {
-  text: HTMLTextAreaElement
-  tier: HTMLInputElement
-}
-
-export const createPost = (author: PayloadPost['author'], form: PostForm) => {
-  const tierIdx = (store.getState().profile as PayloadGetProfileData)
-      .authorSubscriptions?.map((sub) => {
-        return sub.tier;
-      }).findIndex((tier) => tier == Number(form.tier.value));
-  if (!tierIdx && tierIdx == -1) {
+export const createPost = (content: string, tier: number) => {
+  if (tier < 0 || tier > 10000) {
     store.dispatch({
       type: ActionType.NOTICE,
       payload: {
-        message: 'Вы указали несуществующий уровень подписки',
+        message: 'Уровень должен быть в пределах от 0 до 10000',
       },
     });
     return;
   }
   api.createPost({
-    tier: Number(form.tier.value),
-    contentTemplate: form.text.value,
+    tier,
+    content,
   })
       .then((res) => {
         if (res.ok) {
@@ -41,22 +31,41 @@ export const createPost = (author: PayloadPost['author'], form: PostForm) => {
                 username: user.username,
               },
               content: res.body.content as string,
-              contentTemplate: res.body.contentTemplate as string,
-              dateCreated: new Date(Date.now()),
+              dateCreated: res.body.dateCreated as string,
               isAllowed: true,
               isLiked: false,
               likesNum: 0,
               postID: res.body.postID as number,
               // tags
-              tier: 0,
-              userID: user.id,
+              tier: tier,
               commentsNum: 0,
             },
           });
         } else {
+          let msg: PayloadNotice = {
+            message: '',
+          };
+          switch (res.status) {
+            case 400:
+              msg.message = 'Ошибка при создании запроса на сервер';
+              break;
+            case 401:
+              msg.message = 'Ошибка авторизации';
+              break;
+            case 403:
+              msg.message = 'Ошибка доступа';
+              break;
+            case 404:
+            case 500:
+              msg.message = 'Ошибка сервера при создании поста';
+              break;
+            default:
+              msg = res.body as PayloadNotice;
+              break;
+          }
           store.dispatch({
             type: ActionType.NOTICE,
-            payload: res.body as PayloadNotice,
+            payload: msg,
           });
         }
       },
@@ -65,58 +74,77 @@ export const createPost = (author: PayloadPost['author'], form: PostForm) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       },
       );
 };
 
-export const updatePost = (id: number, form: PostForm) => {
-  const tierIdx = (store.getState().profile as PayloadGetProfileData)
-      .authorSubscriptions?.map((sub) => {
-        return sub.tier;
-      }).findIndex((tier) => tier == Number(form.tier.value));
-  if (!tierIdx && tierIdx == -1) {
-    store.dispatch({
-      type: ActionType.NOTICE,
-      payload: {
-        message: 'Вы указали несуществующий уровень подписки',
-      },
-    });
-    return;
-  }
-  api.updatePost(id, {
-    tier: Number(form.tier.value),
-    contentTemplate: form.text.value,
-  })
-      .then((res) => {
-        if (res.ok) {
-          store.dispatch({
-            type: ActionType.UPDATE_POST,
-            payload: {
-              postID: id,
-              content: res.body.content as string,
-              contentTemplate: res.body.contentTemplate as string,
-            },
-          });
-        } else {
+export const updatePost =
+  (id: number, content: string, tier: number) => {
+    if (tier < 0 || tier > 10000) {
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Уровень должен быть в пределах от 0 до 10000',
+        },
+      });
+      return;
+    }
+    api.updatePost(id, {
+      tier,
+      content,
+    })
+        .then((res) => {
+          if (res.ok) {
+            store.dispatch({
+              type: ActionType.UPDATE_POST,
+              payload: {
+                postID: id,
+                content: res.body.content as string,
+              },
+            });
+          } else {
+            let msg: PayloadNotice = {
+              message: '',
+            };
+            switch (res.status) {
+              case 400:
+                msg.message = 'Ошибка при создании запроса на сервер';
+                break;
+              case 401:
+                msg.message = 'Ошибка авторизации';
+                break;
+              case 403:
+                msg.message = 'Ошибка доступа';
+                break;
+              case 404:
+                msg.message = 'Ошибка сервера\n Пост не найден';
+                break;
+              case 500:
+                msg.message = 'Ошибка сервера при изменении поста';
+                break;
+              default:
+                msg = res.body as PayloadNotice;
+                break;
+            }
+            store.dispatch({
+              type: ActionType.NOTICE,
+              payload: msg,
+            });
+          }
+        })
+        .catch((err) => {
           store.dispatch({
             type: ActionType.NOTICE,
-            payload: res.body as PayloadNotice,
+            payload: {
+              message: err as Error,
+            },
           });
-        }
-      })
-      .catch((err) => {
-        store.dispatch({
-          type: ActionType.NOTICE,
-          payload: {
-            message: err as string,
-          },
-        });
-      },
-      );
-};
+        },
+        );
+  };
 
 export const deletePost = (postID: number) => {
   api.deletePost(postID)
@@ -129,9 +157,32 @@ export const deletePost = (postID: number) => {
             },
           });
         } else {
+          let msg: PayloadNotice = {
+            message: '',
+          };
+          switch (res.status) {
+            case 400:
+              msg.message = 'Ошибка при создании запроса на сервер';
+              break;
+            case 401:
+              msg.message = 'Ошибка авторизации';
+              break;
+            case 403:
+              msg.message = 'Ошибка доступа';
+              break;
+            case 404:
+              msg.message = 'Ошибка сервера\n Пост не найден';
+              break;
+            case 500:
+              msg.message = 'Ошибка сервера при удалении поста';
+              break;
+            default:
+              msg = res.body as PayloadNotice;
+              break;
+          }
           store.dispatch({
             type: ActionType.NOTICE,
-            payload: res.body as PayloadNotice,
+            payload: msg,
           });
         }
       },
@@ -140,7 +191,7 @@ export const deletePost = (postID: number) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       },
@@ -159,9 +210,29 @@ export const likePost = (id: number) => {
             },
           });
         } else {
+          let msg: PayloadNotice = {
+            message: '',
+          };
+          switch (res.status) {
+            case 400:
+              msg.message = 'Ошибка при создании запроса на сервер';
+              break;
+            case 401:
+              msg.message = 'Ошибка авторизации';
+              break;
+            case 404:
+              msg.message = 'Ошибка сервера\n Пост не найден';
+              break;
+            case 500:
+              msg.message = 'Ошибка сервера при лайке поста';
+              break;
+            default:
+              msg = res.body as PayloadNotice;
+              break;
+          }
           store.dispatch({
             type: ActionType.NOTICE,
-            payload: res.body as PayloadNotice,
+            payload: msg,
           });
         }
       })
@@ -169,7 +240,7 @@ export const likePost = (id: number) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       },
@@ -198,7 +269,7 @@ export const unlikePost = (id: number) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       },
@@ -209,24 +280,6 @@ export const getFeed = () => {
   api.getFeed()
       .then((res) => {
         if (res.ok) {
-          // const posts = (res.body as PostResponse[]).map(
-          //     (postResponse) => {
-          //       const post: PayloadPost = {
-          //         author: postResponse.author,
-          //         postID: postResponse.postID,
-          //         content: {
-          //           img: postResponse.img,
-          //           text: postResponse.text,
-          //           title: postResponse.title,
-          //         },
-          //         likesNum: postResponse.likesNum,
-          //         isLiked: postResponse.isLiked,
-          //         commentsNum: 0, // TODO получать из запроса
-          //         date: new Date(Date.now()), // TODO получать из запроса
-          //       };
-          //       return post;
-          //     },
-          // );
           store.dispatch({
             type: ActionType.GET_POSTS,
             payload: res.body as PayloadPost[],
@@ -242,20 +295,21 @@ export const getFeed = () => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       },
       );
 };
 
-export const putImage = (file: File) => {
+export const putImage = (postID: number, file: File) => {
   api.putImage(file)
       .then((res) => {
         if (res.ok) {
           store.dispatch({
             type: ActionType.PUT_IMAGE,
             payload: {
+              postID,
               url: res.body.url as string,
             },
           });
@@ -270,7 +324,7 @@ export const putImage = (file: File) => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       });

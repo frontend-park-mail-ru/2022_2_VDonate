@@ -1,53 +1,79 @@
 @require '@style/const.styl'
+@require '@style/mixin.styl'
 
-.right-navbar
++b(profile-info)
   position: fixed
   top: 0
   right: 0
-  &__back
+  +e(back)
     height: 100vh
-    // min-width: 200px
-    width: 24vw
+    width: 20vw
     max-width: 300px
-    position: sticky
-    right: 0
-    border-radius: 16px 0px 0px 16px
     display: flex
     flex-direction: column
-    padding-right: 0px
-    margin: auto
-    margin-right: 0px
-    align-items: center
-    gap: 14px
-  &__img
-    // min-width: 150px
-    width: 16vw
-    max-width: 250px
-    margin: 8px
-  &__username
-    font-27()
-    color: color-font-light
+    align-items: stretch
+    gap: 15px
+    padding: 20px
+    border-radius: radius-big 0px 0px radius-big
+    &:before
+      border-radius: radius-big 0px 0px radius-big
+  +e(img)
+    width: 70%
+    align-self: center
+  +e(username)
+    text-align: center
+  +e(info-area)
+    flex-grow: 1
+  +e(edit-btn)
+    position: absolute
+    top: 1%
+    right: 3%
 
-.profile-info
++b(mini-statistic)
   display: flex
-  flex-direction: row
+  flex-direction: column
   flex-wrap: wrap
   justify-content: center
-  align-items: center
+  align-items: stretch
   gap: 15px
   border-right: 2px rgba(0, 16, 61, 0.06)
-  &__container
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-  &__donaters
-    font-21()
-    color: #FF9E00
-  &__subs
-    font-21()
-    color: color-primary
-  &__count
-    font-16()
-    color: color-font-light
+  +e(container)
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    gap: 15px
+    color: color-font-secondary
+  +e(text)
+    color: color-font-secondary
+    word-break: initial
       
+@media  (max-width: mobile-size)
+  +b(profile-info)
+    position: relative
+    top: auto
+    right: auto
+    +e(back)
+      height: auto
+      width: 100vw
+      max-width: 100vw
+      position: relative
+      background: none
+      border: none
+      backdrop-filter: none
+      gap: 14px
+      padding: 0
+      padding-top: 55px
+      &:before
+        display: none
+    +e(img)
+      width: 25vw
+    +e(edit-btn)
+      top: 70px
+    +e(become-author)
+      width: 60%
+      align-self: center
+
+  +b(mini-statistic)
+    align-items: center
+    +e(container)
+      justify-content: space-evenly

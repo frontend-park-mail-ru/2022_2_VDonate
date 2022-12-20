@@ -1,0 +1,29 @@
+@require '@style/const.styl'
+@require '@style/mixin.styl'
+
++b(subscription-cards-container)
+  display: flex 
+  flex-direction: column
+  gap: 20px
+  max-width: 100%
+  +e(title-area)
+    display: flex
+    flex-direction: row
+    align-items: center
+    justify-content: center
+    gap: 10px
+  +e(card-area)
+    display: flex
+    flex-direction: row
+    justify-content: center
+    align-items: stretch
+    gap: 10px
+    white-space: nowrap
+  +e(overflow-area)
+    display: grid
+    overflow-x: auto
+    overflow-y: hidden
+    customScrollbar()
+  +e(empty)
+    text-align: center
+  

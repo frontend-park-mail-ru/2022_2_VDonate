@@ -1,59 +1,52 @@
 @require '@style/const.styl'
+@require '@style/mixin.styl'
 
-.sub
++b(subscription-card)
   display: flex
   flex-direction: column
   align-items: center
   white-space: normal
-  &__sub
-    width: 18vw
+  gap: 5px
+  padding: 20px
+  +e(back)
+    min-width: 180px 
     max-width: 180px
-    min-height: 320px
-  &__img
-    width: 96px
-  &__name
-    display: flex
-    justify-content: center
-    align-items: center
-    font-21()
-    color: color-font-light
+  +e(img)
+    width: 80px
+    outline-width: 2px !important
+  +e(title)
     text-align: center
-    min-height: 50px
-  &__lvl
-    font-16()
-    color: color-font-secondary
-  &__button
-    &_style
-      &_owner
-        filter: hue-rotate(135deg) contrast(150%)
-      &_donater
-        filter: hue-rotate(280deg) contrast(150%)
-      &_author
-        filter: hue-rotate(201deg) contrast(150%)
-  &__motivation
-    max-width: 16vw
-    padding: 12px
-    font-12()
-    color: color-font-light
+    height: 44px
+  +e(motivation)
+    width: 100%
+    white-space: pre-wrap
     &_part
       max-height: 50px
       background: linear-gradient(180deg, rgba(255, 255, 255, 1) 70%, rgba(255, 255, 255, 0) 100%)
       -webkit-background-clip: text
       -webkit-text-fill-color: transparent
-  &__more
-    font-12()
-    color: color-primary-light-2
+  +e(more)
+    color: color-primary-light
     cursor: pointer
+    margin-top: -15px
+  +e(btn-area)
+    display: contents
+  +e(button)
+    align-self: stretch
+  +e(header)
+    display: flex
+    flex-direction: column
+    align-items: center
+  +e(tier)
+    color: color-font-secondary
+    display: none
 
-.price
++b(price)
   display: flex
   flex-direction: column
   justify-content: center
   align-items: center
-  padding: 6px
-  &__count
-    font-16()
-    color: color-font-light
-  &__period
-    font-12()
-    color: color-font-secondary
+
+@media  (max-width: mobile-size)
+  +b(subscription-card)
+    padding: 15px

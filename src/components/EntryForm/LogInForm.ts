@@ -12,27 +12,31 @@ const logInContext = {
   title: 'Вход',
   greeting: 'Мы ждали тебя!',
   link: '/signup',
-  textLink: 'Ещё не с нами? Зарегиструйся!',
+  textLink: 'Ещё не с нами? Зарегистрируйся!',
 };
 /** Контекст для полей ввода */
 const logInInputs: InputOptions[] = [
   {
-    kind: InputType.username,
+    kind: InputType.USERNAME,
     label: 'Псевдоним',
     placeholder: 'Введите свой псеводим',
     name: 'username',
+    displayError: false,
+    title: 'Псевдоним должен содержать не менее 3 символов',
   },
   {
-    kind: InputType.password,
+    kind: InputType.PASSWORD,
     label: 'Пароль',
     placeholder: 'Введите свой пароль',
     name: 'password',
+    displayError: false,
+    title: 'Пароль должен содержать не менее 5 символов',
   },
 ];
 
 interface LogInFormUpdateContent {
-  username?: boolean
-  password?: boolean
+  username: boolean
+  password: boolean
 }
 
 /** Модель формы входа */
@@ -55,18 +59,21 @@ class LogInForm
 
   protected render(): HTMLFormElement {
     const form = document.createElement('form');
-    form.classList.add('signlog', 'signlog__back');
+    form.classList.add('entry-form', 'entry-form__back', 'bg_interaction');
     form.innerHTML = template(logInContext);
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       login((e.target as HTMLFormElement).elements as LogInFormElements);
     });
 
-    const inputsArea = querySelectorWithThrow(form, '.signlog__inputs');
+    const inputsArea = querySelectorWithThrow(form, '.entry-form__inputs');
     logInInputs.forEach((options) =>
       this.inputs.set(options.name, new InputField(inputsArea, options)));
 
-    new Button(querySelectorWithThrow(form, '.signlog__submit'), {
+    querySelectorWithThrow(form, 'input[name="username"]')
+        .setAttribute('autofocus', 'true');
+
+    new Button(querySelectorWithThrow(form, '.entry-form__submit'), {
       actionType: 'submit',
       innerText: 'Войти',
       viewType: ButtonType.PRIMARY,

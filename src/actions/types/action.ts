@@ -5,8 +5,13 @@ import {
   ActionEditAuthorSubscription,
   ActionGetSubscriptions,
   ActionSubscribe,
+  ActionSwitchSubscription,
   ActionUnsubscribe} from './subscribe';
-import {ActionNotice} from './notice';
+import {
+  ActionAddBackNotice,
+  ActionClearBackNotice,
+  ActionNotice,
+} from './notice';
 import {
   ActionCreatePost,
   ActionDeletePost,
@@ -25,9 +30,17 @@ import {
   ActionLogOutFail,
   ActionEditUseDataSuccess,
   ActionEditUserFail,
+  ActionEditAbout,
+  ActionBecomeAuthor,
 } from './user';
 import {ActionEditorClose, ActionEditorOpen} from './editor';
 import {ActionSearch} from './searchAuthor';
+import {
+  ActionAddComment,
+  ActionCloseComments,
+  ActionDeleteComment,
+  ActionGetComments,
+  ActionUpdateComment} from './comments';
 /** Типы действий */
 export enum ActionType {
   LOGIN_SUCCESS,
@@ -56,6 +69,16 @@ export enum ActionType {
   DELETE_POST,
   SEARCH_AUTHORS,
   PUT_IMAGE,
+  EDIT_ABOUT,
+  BECOME_AUTHOR,
+  SWITCH_SUBSCRIPTION,
+  ADD_BACK_NOTICE,
+  CLEAR_BACK_NOTICE,
+  GET_COMMENTS,
+  ADD_COMMENT,
+  UPDATE_COMMENT,
+  DELETE_COMMENT,
+  CLOSE_COMMENTS,
 }
 /** Объединение действий */
 export type Action =
@@ -84,4 +107,14 @@ export type Action =
   | ActionCreatePost
   | ActionDeletePost
   | ActionSearch
-  | ActionPutImage;
+  | ActionPutImage
+  | ActionEditAbout
+  | ActionBecomeAuthor
+  | ActionSwitchSubscription
+  | ActionAddBackNotice
+  | ActionClearBackNotice
+  | ActionGetComments
+  | ActionAddComment
+  | ActionUpdateComment
+  | ActionDeleteComment
+  | ActionCloseComments;

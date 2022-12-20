@@ -1,13 +1,15 @@
 @require '@style/const.styl'
+@require '@style/mixin.styl'
 
-.image
-  box-sizing: border-box
-  border-radius: 40%
++b(avatar)
+  border-radius: radius-avatar
   aspect-ratio: 1
-  &_style
-    &_author
-      border: 2px solid color-primary
-    &_donater
-      border: 2px solid #FF9E00
-    &_sub
-      border: 2px solid color-font-light
+  object-fit: cover
+  margin: 5px
+  +m(style)
+    +m(author)
+      outline: 5px solid color-avatar-author
+    +m(donater)
+      outline: 5px solid color-avatar-donater
+    +m(subscription)
+      outline: 5px solid color-avatar-subscription

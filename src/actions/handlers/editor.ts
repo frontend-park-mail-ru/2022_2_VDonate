@@ -1,15 +1,8 @@
 import {ActionType} from '@actions/types/action';
 import {EditorType} from '@actions/types/editor';
 import store from '@app/Store';
-
-export const openPostEditor = (id?: number) =>
-  store.dispatch({
-    type: ActionType.EDITOR_OPEN,
-    payload: {
-      type: EditorType.POST,
-      id,
-    },
-  });
+import {SubscriptionCardStatus}
+  from '@components/SubscriptionCard/SubscriptionCard';
 
 export const openProfileEditor = () =>
   store.dispatch({
@@ -28,8 +21,44 @@ export const openSubscribtionEditor = (id?: number) =>
     },
   });
 
-export const closeEditor = () =>
+export const openPostEditor = (id: number) =>
+  store.dispatch({
+    type: ActionType.EDITOR_OPEN,
+    payload: {
+      type: EditorType.POST,
+      id,
+    },
+  });
+
+export const createNewPost = () =>
+  store.dispatch({
+    type: ActionType.EDITOR_OPEN,
+    payload: {
+      type: EditorType.POST,
+      id: -1,
+    },
+  });
+
+export const openPayEditor = (
+    authorID: number,
+    authorSubscriptionID: number,
+    currentCardStatus: SubscriptionCardStatus) => {
+  store.dispatch({
+    type: ActionType.EDITOR_OPEN,
+    payload: {
+      type: EditorType.PAY,
+      authorID,
+      authorSubscriptionID,
+      currentCardStatus,
+    },
+  });
+};
+
+export const closeEditor = (id?: number) =>
   store.dispatch({
     type: ActionType.EDITOR_CLOSE,
-    payload: {},
+    payload: id ? {
+      type: EditorType.CLOSE_POST,
+      id,
+    } : {},
   });

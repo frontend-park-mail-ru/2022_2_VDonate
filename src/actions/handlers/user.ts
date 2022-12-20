@@ -7,6 +7,7 @@ import {
 import router from '@app/Router';
 import store from '@app/Store';
 import api from '@app/Api';
+import ws from '@app/WebSocketNotice';
 import {PayloadNotice} from '@actions/types/notice';
 import {
   emailCheck,
@@ -14,6 +15,7 @@ import {
   repeatPasswordCheck,
   usernameCheck} from '@validation/validation';
 import {FormErrorType} from '@actions/types/formError';
+import {Pages} from '@configs/router';
 
 
 export interface SignUpFormElements extends HTMLCollection {
@@ -59,12 +61,27 @@ const getUser = (id: number, dispatch: (user: PayloadUser) => void) => {
           }
           dispatch(payload);
         } else {
-          store.dispatch({
-            type: ActionType.NOTICE,
-            payload: {
-              message: res.body.message as string,
-            },
-          });
+          switch (res.status) {
+            case 404:
+              store.dispatch({
+                type: ActionType.ROUTING,
+                payload: {
+                  type: Pages.NOT_FOUND,
+                  options: {},
+                },
+              });
+              break;
+            case 401:
+              return auth();
+            default:
+              store.dispatch({
+                type: ActionType.NOTICE,
+                payload: {
+                  message: res.body.message as string,
+                },
+              });
+              break;
+          }
         }
       },
       );
@@ -83,6 +100,7 @@ export const auth = (): void => {
           return;
         }
         if (res.ok) {
+          ws.init(res.body.id as number);
           return getUser(
             res.body.id as number,
             (user: PayloadUser) => {
@@ -101,6 +119,7 @@ export const auth = (): void => {
                   user,
                   location: {
                     type: router.go(location.pathname + location.search),
+                    options: {},
                   },
                 },
               });
@@ -110,6 +129,7 @@ export const auth = (): void => {
           type: ActionType.ROUTING,
           payload: {
             type: router.go('/login'),
+            options: {},
           },
         });
       })
@@ -117,7 +137,7 @@ export const auth = (): void => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       });
@@ -150,6 +170,7 @@ export const login = (props: LogInFormElements): void => {
         }
         switch (res.status) {
           case 200:
+            ws.init(res.body.id as number);
             return getUser(
                 res.body.id as PayloadUser['id'],
                 (user: PayloadUser) => {
@@ -159,6 +180,7 @@ export const login = (props: LogInFormElements): void => {
                       user,
                       location: {
                         type: router.go('/feed'),
+                        options: {},
                       },
                       formErrors: {
                         type: FormErrorType.LOGIN,
@@ -168,13 +190,23 @@ export const login = (props: LogInFormElements): void => {
                     },
                   });
                 });
-          case 401:
+          case 400:
             store.dispatch({
               type: ActionType.LOGIN_FAIL,
               payload: {
                 type: FormErrorType.LOGIN,
-                username: 'Неверный псевдоним или пароль',
-                password: 'Неверный псевдоним или пароль',
+                username: null,
+                password: 'Неверный пароль',
+              },
+            });
+            break;
+          case 404:
+            store.dispatch({
+              type: ActionType.LOGIN_FAIL,
+              payload: {
+                type: FormErrorType.LOGIN,
+                username: 'Неверный псевдоним',
+                password: null,
               },
             });
             break;
@@ -198,7 +230,7 @@ export const login = (props: LogInFormElements): void => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       });
@@ -236,6 +268,7 @@ export const signup = (props: SignUpFormElements): void => {
         }
         switch (res.status) {
           case 200:
+            ws.init(res.body.id as number);
             return getUser(
               res.body.id as PayloadUser['id'],
               (user: PayloadUser) => {
@@ -245,6 +278,7 @@ export const signup = (props: SignUpFormElements): void => {
                     user,
                     location: {
                       type: router.go('/feed'),
+                      options: {},
                     },
                     formErrors: {
                       type: FormErrorType.SIGNUP,
@@ -257,16 +291,43 @@ export const signup = (props: SignUpFormElements): void => {
                 });
               });
           case 409:
-            store.dispatch({
-              type: ActionType.SIGNUP_FAIL,
-              payload: {
-                type: FormErrorType.SIGNUP,
-                email: 'Неверная почта',
-                username: 'Неверный псевдоним или пароль',
-                password: 'Неверный псевдоним или пароль',
-                repeatPassword: null,
-              },
-            });
+            switch (res.body.message as string) {
+              case 'email exists':
+                store.dispatch({
+                  type: ActionType.SIGNUP_FAIL,
+                  payload: {
+                    type: FormErrorType.SIGNUP,
+                    email: 'Почта уже занята',
+                    username: null,
+                    password: null,
+                    repeatPassword: null,
+                  },
+                });
+                break;
+              case 'username exists':
+                store.dispatch({
+                  type: ActionType.SIGNUP_FAIL,
+                  payload: {
+                    type: FormErrorType.SIGNUP,
+                    email: null,
+                    username: 'Псевдоним уже занят',
+                    password: null,
+                    repeatPassword: null,
+                  },
+                });
+                break;
+              default:
+                store.dispatch({
+                  type: ActionType.SIGNUP_FAIL,
+                  payload: {
+                    type: FormErrorType.SIGNUP,
+                    email: 'Неверная почта',
+                    username: 'Неверный псевдоним или пароль',
+                    password: 'Неверный псевдоним или пароль',
+                    repeatPassword: null,
+                  },
+                });
+            }
             break;
           case 0:
             store.dispatch({
@@ -288,7 +349,7 @@ export const signup = (props: SignUpFormElements): void => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       });
@@ -298,11 +359,13 @@ export const logout = (): void => {
   api.logout()
       .then((res: ResponseData) => {
         if (res.ok) {
+          ws.close();
           store.dispatch({
             type: ActionType.LOGOUT_SUCCESS,
             payload: {
               location: {
                 type: router.go('/login'),
+                options: {},
               },
             },
           });
@@ -319,7 +382,7 @@ export const logout = (): void => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
           },
         });
       });
@@ -339,14 +402,8 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
     userData.password = form.password.value;
     userData.repeatPassword = form.repeatPassword.value;
   }
-  if (form.isAuthor?.checked) {
-    userData.isAuthor = true;
-  }
   if (form.avatar?.files) {
     userData.file = form.avatar.files[0];
-  }
-  if (form.about) {
-    userData.about = form.about.value;
   }
   const emailErr = userData.email ? emailCheck(userData.email) : null;
   const usernameErr =
@@ -366,8 +423,6 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
         username: usernameErr,
         password: passwordErr,
         repeatPassword: repeatPasswordErr,
-        isAuthor: null,
-        about: null,
         avatar: null,
       },
     });
@@ -388,12 +443,6 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
           if (userData.email) {
             user.email = userData.email;
           }
-          if (userData.isAuthor) {
-            user.isAuthor = userData.isAuthor;
-          }
-          if (userData.about) {
-            user.about = userData.about;
-          }
           store.dispatch({
             type: ActionType.CHANGEUSERDATA_SUCCESS,
             payload: {
@@ -404,8 +453,6 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
                 username: null,
                 password: null,
                 repeatPassword: null,
-                isAuthor: null,
-                about: null,
                 avatar: null,
               },
             },
@@ -437,8 +484,6 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
                   username: 'Неверный псевдоним или пароль',
                   password: 'Неверный псевдоним или пароль',
                   repeatPassword: null,
-                  isAuthor: 'Error',
-                  about: 'Error',
                   avatar: 'Error',
                 },
               });
@@ -449,7 +494,79 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
         store.dispatch({
           type: ActionType.NOTICE,
           payload: {
-            message: err as string,
+            message: err as Error,
+          },
+        });
+      });
+};
+
+export const editAbout = (id: number, about: string): void => {
+  if (about.length > 1024) {
+    store.dispatch({
+      type: ActionType.NOTICE,
+      payload: {
+        message: 'Поле \'Обо мне\' должно содержать меньше 1024 символов',
+      },
+    });
+  }
+  api.putUserData({
+    id,
+    about,
+  })
+      .then((res: ResponseData) => {
+        if (res.ok) {
+          store.dispatch({
+            type: ActionType.EDIT_ABOUT,
+            payload: {
+              about,
+            },
+          });
+        } else {
+          store.dispatch({
+            type: ActionType.NOTICE,
+            payload: {
+              message: 'Ошибка при изменении поля о Вас',
+            },
+          });
+        }
+      })
+      .catch((err) => {
+        store.dispatch({
+          type: ActionType.NOTICE,
+          payload: {
+            message: err as Error,
+          },
+        });
+      });
+};
+
+export const becomeAuthor = (id: number): void => {
+  api.putUserData({
+    id,
+    isAuthor: true,
+  })
+      .then((res: ResponseData) => {
+        if (res.ok) {
+          store.dispatch({
+            type: ActionType.BECOME_AUTHOR,
+            payload: {
+              success: true,
+            },
+          });
+        } else {
+          store.dispatch({
+            type: ActionType.NOTICE,
+            payload: {
+              message: 'Ошибка при становлении автором',
+            },
+          });
+        }
+      })
+      .catch((err) => {
+        store.dispatch({
+          type: ActionType.NOTICE,
+          payload: {
+            message: err as Error,
           },
         });
       });

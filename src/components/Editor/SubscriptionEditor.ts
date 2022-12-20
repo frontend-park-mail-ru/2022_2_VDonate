@@ -8,6 +8,7 @@ import Button, {ButtonType} from '@components/Button/Button';
 import InputField, {InputType} from '@components/InputField/InputField';
 import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 import template from './editor.hbs';
+import closeIcon from '@icon/close.svg';
 import './editor.styl';
 
 interface SubscriptionEditorOptions {
@@ -19,10 +20,9 @@ interface SubscriptionEditorOptions {
 }
 
 interface SubscriptionEditorInputsErrors {
-  title?: boolean
-  price?: boolean
-  tier?: boolean
-  text?: boolean
+  title: boolean
+  price: boolean
+  text: boolean
 }
 
 /** */
@@ -57,7 +57,8 @@ class SubscriptionEditor
 
   private createForm(): HTMLFormElement {
     const form = document.createElement('form');
-    form.className = 'editor__form';
+    form.classList.add('editor__form', 'bg_main');
+    form.noValidate = true;
     form.insertAdjacentHTML(
         'afterbegin',
         template({
@@ -76,6 +77,7 @@ class SubscriptionEditor
             createAuthorSubscription(
               (e.target as HTMLFormElement).elements as AuthorSubscrptionForm);
           }
+          return false;
         },
     );
     return form;
@@ -83,41 +85,50 @@ class SubscriptionEditor
 
   private addInputs(form: HTMLFormElement) {
     const inputsArea = querySelectorWithThrow(form, '.editor__inputs');
-
+    const inputNumbers = document.createElement('div');
+    inputNumbers.classList.add('row-inputs');
     this.inputs
         .set('title', new InputField(inputsArea, {
-          kind: InputType.text,
+          kind: InputType.TEXT,
           label: 'Заголовок',
           name: 'title',
           placeholder: 'Придумайте заголовок для подписки',
           value: this.options?.title,
+          displayError: false,
+          title: 'Введите заголовок подписки (не более 30 символов)',
         }))
-        .set('price', new InputField(inputsArea, {
-          kind: InputType.text,
+        .set('price', new InputField(inputNumbers, {
+          kind: InputType.PRICE,
           label: 'Стоимость',
           name: 'price',
           placeholder: 'Введите стоимость подписки',
           value: this.options?.price.toString(),
-        }))
-        .set('tier', new InputField(inputsArea, {
-          kind: InputType.text,
-          label: 'Уровень',
-          name: 'tier',
-          placeholder: 'Введите уровень подписки',
-          value: this.options?.tier.toString(),
-        }))
+          displayError: false,
+          title: 'Введите стоимость подписки в рублях',
+        }));
+    this.inputs.get('price')?.addClassNames('row-inputs__input');
+    inputsArea.appendChild(inputNumbers);
+    this.inputs
         .set('text', new InputField(inputsArea, {
-          kind: InputType.textarea,
+          kind: InputType.TEXTAREA,
           label: 'Текст',
           name: 'text',
           placeholder: 'Замотивируйте своих донатеров',
           value: this.options?.text,
+          displayError: false,
+          title: 'Введите текст подписки (не более 128 символов)',
         }))
         .set('file', new InputField(inputsArea, {
-          kind: InputType.file,
+          kind: InputType.IMAGE,
           label: 'Загрузите картинку (.jpg)',
           name: 'file',
+          displayError: false,
+          title: 'Загрузите картинку',
         }));
+    if (!this.options) {
+      querySelectorWithThrow(form, 'input[name="title"]')
+          .setAttribute('autofocus', 'true');
+    }
   }
 
   private addButtons(form: HTMLFormElement) {
@@ -127,27 +138,32 @@ class SubscriptionEditor
       viewType: ButtonType.PRIMARY,
       innerText: this.options ? 'Изменить' : 'Создать',
       actionType: 'submit',
-    });
+    }).addClassNames('btn-area__btn');
     new Button(btnArea, {
       viewType: ButtonType.OUTLINE,
       innerText: 'Отменить',
       actionType: 'button',
-      clickCallback: closeEditor,
-    });
+      clickHandler: () => {
+        closeEditor();
+      },
+    }).addClassNames('btn-area__btn');
     if (this.options) {
       new Button(btnArea, {
-        viewType: ButtonType.OUTLINE,
+        viewType: ButtonType.ERROR,
         innerText: 'Удалить',
         actionType: 'button',
-        clickCallback: deleteAuthorSubscription.bind(this, this.options.id),
-      });
+        clickHandler: deleteAuthorSubscription
+            .bind(this, this.options.id, this.options.tier),
+      }).addClassNames('btn-area__btn');
     }
-  }
 
-  // update(errors: PayloadAuthorSubscriptionErrors): void {
-  //   this.inputs[0].update(Boolean(errors.title));
-  //   this.inputs[1].update(Boolean(errors.price));
-  //   this.inputs[2].update(Boolean(errors.tier));
-  //   this.inputs[3].update(Boolean(errors.text));
-  // }
+    new Button(form, {
+      viewType: ButtonType.ICON,
+      actionType: 'button',
+      innerIcon: closeIcon,
+      clickHandler: () => {
+        closeEditor();
+      },
+    }).addClassNames('editor__close-btn');
+  }
 }

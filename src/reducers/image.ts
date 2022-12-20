@@ -7,6 +7,13 @@ const imageReducer: Reducer<Action> =
     switch (action.type) {
       case ActionType.PUT_IMAGE:
         return action.payload;
+      case ActionType.ROUTING:
+        if (action.payload.options.samePage) {
+          return state;
+        }
+        return {
+          url: '',
+        };
       default:
         return state;
     }

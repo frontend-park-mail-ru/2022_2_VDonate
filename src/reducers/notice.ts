@@ -6,10 +6,8 @@ const noticeReducer: Reducer<Action> =
   (state: PropTree, action: Action): PropTree => {
     switch (action.type) {
       case ActionType.NOTICE:
-        return {
-          timestamp: performance.now(),
-          ...action.payload,
-        };
+        action.payload.timestamp = performance.now();
+        return action.payload;
       case ActionType.LOGIN_FAIL:
       case ActionType.SIGNUP_FAIL:
       case ActionType.CHANGEUSERDATA_FAIL:
@@ -43,16 +41,14 @@ const noticeReducer: Reducer<Action> =
           message: msgArr,
         };
       }
-      case ActionType.SUBSCRIBE:
-      case ActionType.UNSUBSCRIBE:
-        if (action.payload.error) {
-          return {
-            timestamp: performance.now(),
-            message: [action.payload.error],
-          };
-        } else {
-          return state;
-        }
+      case ActionType.CHANGEUSERDATA_SUCCESS:
+      case ActionType.LOGIN_SUCCESS:
+      case ActionType.SIGNUP_SUCCESS:
+      case ActionType.LOGOUT_SUCCESS:
+        return {
+          timestamp: -1,
+          message: '',
+        };
       default:
         return state;
     }

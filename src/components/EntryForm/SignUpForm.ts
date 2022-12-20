@@ -12,41 +12,49 @@ const signUpContext = {
   title: 'Регистрация',
   greeting: 'Скорее присоединяйся к нам!',
   link: '/login',
-  textLink: 'Мне кажется, или мы знакомы? Войти',
+  textLink: 'Мне кажется, или мы знакомы? Входи!',
 };
 /** Контекст для полей ввода */
 const signUpInputs: InputOptions[] = [
   {
-    kind: InputType.email,
+    kind: InputType.EMAIL,
     label: 'Почта',
     placeholder: 'Для нашего личного общения',
     name: 'email',
+    displayError: false,
+    title: 'Введите почту корректном в формате',
   },
   {
-    kind: InputType.username,
+    kind: InputType.USERNAME,
     label: 'Псевдоним',
     placeholder: 'Ваше уникальное имя',
     name: 'username',
+    displayError: false,
+    title: 'Псевдоним должен содержать не менее 3 символов',
   },
   {
-    kind: InputType.password,
+    kind: InputType.PASSWORD,
     label: 'Пароль',
     placeholder: 'Мы обещаем не продавать его',
     name: 'password',
+    displayError: false,
+    title: 'Пароль должен содержать не менее 5 символов',
   },
   {
-    kind: InputType.password,
+    kind: InputType.PASSWORD,
     label: 'Повторите пароль',
     placeholder: 'Чтобы точно',
     name: 'repeatPassword',
+    displayError: false,
+    title: 'Пароли должны совпадать',
   },
 ];
 
 interface SignUpFormUpdateErrors {
-  username?: boolean
-  email?: boolean
-  password?: boolean
-  repeatPassword?: boolean
+  username: boolean
+  email: boolean
+  password: boolean
+  repeatPassword: boolean
 }
 
 /** Модель формы регистрации */
@@ -69,18 +77,21 @@ class SignUpForm
 
   protected render(): HTMLFormElement {
     const form = document.createElement('form');
-    form.classList.add('signlog', 'signlog__back');
+    form.classList.add('entry-form', 'entry-form__back', 'bg_interaction');
     form.innerHTML = template(signUpContext);
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       signup((e.target as HTMLFormElement).elements as SignUpFormElements);
     });
 
-    const inputsArea = querySelectorWithThrow(form, '.signlog__inputs');
+    const inputsArea = querySelectorWithThrow(form, '.entry-form__inputs');
     signUpInputs.forEach((options) =>
       this.inputs.set(options.name, new InputField(inputsArea, options)));
 
-    new Button(querySelectorWithThrow(form, '.signlog__submit'), {
+    querySelectorWithThrow(form, 'input[name="email"]')
+        .setAttribute('autofocus', 'true');
+
+    new Button(querySelectorWithThrow(form, '.entry-form__submit'), {
       actionType: 'submit',
       innerText: 'Зарегистрироваться',
       viewType: ButtonType.PRIMARY,

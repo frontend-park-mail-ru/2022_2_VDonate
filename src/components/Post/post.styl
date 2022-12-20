@@ -1,64 +1,115 @@
 @require '@style/const.styl'
+@require '@style/mixin.styl'
 
 .post
-  &__back
-    padding: 30px
-    position: relative
-    &:before
-      content: ""
-      position: absolute
-      inset: 0
-      z-index: -1
-      background-color: rgba(0, 16, 61, 0.30)
-      box-shadow: 0px 40px 80px rgba(0, 0, 0, 0.2), inset 0px -4px 2px rgba(0, 0, 0, 0.2), inset 0px 4px 2px rgba(255, 255, 255, 0.12), inset 4px 4px 26px rgba(255, 255, 255, 0.12)
-      backdrop-filter: blur(40px)
-      background-size: cover
-      opacity: 0.6
-      border-radius: 20px
-  &__header
+  display: flex
+  flex-direction: column
+  gap: 5px
+  padding: 30px
+  +e(header)
     display: grid
     grid-template-areas: "avatar username edit"\
                           "avatar date edit"
     grid-template-columns: min-content 1fr min-content
     column-gap: 10px
-  &__header-btn
-    position: absolute
-    right: 20px
-  &__img
+    align-items: center
+  +e(header-btn)
+    grid-area: edit
+  +e(img)
     width: 40px
-  &__author-name
+    outline-width: 3px !important
+    margin: 3px
+  +e(author-name)
     grid-area: username
     align-self: end
-    font-16()
-    color: color-font-light
-  &__date-created
+  +e(date-created)
     grid-area: date
     align-self: start
-    font-9()
-    color: color-font-light
-  &__content
-    padding: 8px
-  &__reaction
+  +e(content-area)
+    display: contents
+  +e(content)
+    padding: 0 10px
+  +e(btn-area)
     display: flex
     flex-direction: row
     gap: 8px
-    padding: 8px
-  &__author-avatar
+    margin-top: 10px
+  +e(author-avatar)
     grid-area: avatar
-  &__not-allowed
-    font-21()
-    color: color-font-secondary
-    margin-bottom: 10px
+  +e(not-allowed)
     text-align: center
+  +e(edit-form)
+    flex-grow: 1
+  +e(comment-area)
+    width: 100%
+    display: flex
+    flex-direction: column
+    gap: 10px
+  +e(new-comment)
+    width: 100%
+    margin-top: 12px
+
+.post-edit-form
+  display: grid
+  grid-template-areas: "tier h1 img"\
+                        "btn btn btn"
+  grid-template-columns: 1fr repeat(2, min-content)
+  align-items: end
+  gap: 15px 5px
+  +e(tier)
+    grid-area: tier
+    // display: flex
+    // flex-direction: row
+    // flex-wrap: wrap
+    // align-items: stretch
+    // row-gap: 5px
+    // column-gap: 10px
+  +e(h1)
+    grid-area: h1
+    padding-bottom: 6px
+  +e(img)
+    grid-area: img
+    padding-bottom: 6px
+  +e(btn)
+    grid-area: btn
+  +e(tier-text)
+    align-self: center
+  +e(tier-dropbox)
+    flex-grow: 1
 
 .post-content
-  display: flex
-  flex-direction: column
-  gap: 10px
-  &_blured
+  +m(blured)
     filter: blur(10px)
-  &__text
-    font-16()
-    color: color-font-light
-  &__image
-    max-width: 30vw 
+  +e(image)
+    max-width: 20vw 
+    padding: 2px
+  & h1
+    font-size: inherit
+
+.post-hr
+  border: none
+  height: 3px
+  width: 100%
+
+.new-comment
+  +e(form)
+    display: flex
+    flex-direction: row
+    flex-wrap: nowrap
+    align-items: center
+    gap: 10px
+  +e(input)
+    width: 100%
+    padding: 5px
+    white-space: pre-wrap
+    background: rgba(255, 255, 255, 0.2)
+  +e(submit)
+    //
+
+@media  (max-width: mobile-size)
+  .post-content
+    +e(image)
+      max-width: 100%
+
+  .post
+    padding: 12px

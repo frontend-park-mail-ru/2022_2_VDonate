@@ -26,7 +26,7 @@ const sizes = {
     max: 63,
   },
   username: {
-    min: 5,
+    min: 3,
     max: 20,
   },
   password: {
@@ -34,22 +34,24 @@ const sizes = {
     max: 30,
   },
   title: {
-    min: 5,
+    min: 1,
     max: 30,
   },
   text: {
-    min: 10,
-    max: 250,
+    min: 1,
+    max: 128,
   },
   tier: {
     min: 1,
-    max: 10,
+    max: 10000, // 10k
   },
   price: {
-    min: 3,
-    max: 9,
+    min: 1,
+    max: 1000000000, // 1mlrd
   },
 };
+
+export const commentSize = 100;
 
 /**
  * Проверка строки почты на верный формат
@@ -166,38 +168,38 @@ export const repeatPasswordCheck = (
   return null;
 };
 
-/**
- * @param tier строка для валидации
- * @returns null или сообщение об ошибке
- */
-export const tierCheck = (tier: string): null | string => {
-  if (tier.length < sizes.tier.min) {
-    return `Символов в уровне меньше ${sizes.tier.min}`;
-  }
-  if (tier.length > sizes.tier.max) {
-    return `Символов в уровне больше ${sizes.tier.max}`;
-  }
-  const tierReg = /^[0-9]+$/;
-  if (!tierReg.test(tier)) {
-    return 'Укажите уровень используя только цифры';
-  }
-  return null;
-};
+// /**
+//  * @param tier строка для валидации
+//  * @returns null или сообщение об ошибке
+//  */
+// export const tierCheck = (tier: string): null | string => {
+//   const tierReg = /^[0-9]+$/;
+//   if (!tierReg.test(tier)) {
+//     return 'Укажите уровень используя только цифры';
+//   }
+//   if (Number(tier) < sizes.tier.min) {
+//     return `Уровень меьше ${sizes.tier.min}`;
+//   }
+//   if (Number(tier) > sizes.tier.max) {
+//     return `Уровень больше ${sizes.tier.max}`;
+//   }
+//   return null;
+// };
 
 /**
  * @param price строка для валидации
  * @returns null или сообщение об ошибке
  */
 export const priceCheck = (price: string): null | string => {
-  if (price.length < sizes.price.min) {
-    return `Символов в цене меньше ${sizes.price.min}`;
-  }
-  if (price.length > sizes.price.max) {
-    return `Символов в цене больше ${sizes.price.max}`;
-  }
-  const priceReg = /^[0-9]+$/;
+  const priceReg = /^[-+0-9]?[0-9]*$/;
   if (!priceReg.test(price)) {
-    return 'Укажите  используя только цифры';
+    return 'Укажите цену, используя только цифры';
+  }
+  if (Number(price) < sizes.price.min) {
+    return `Укажите цену не меньше ${sizes.price.min}`;
+  }
+  if (Number(price) > sizes.price.max) {
+    return `Укажите цену не больше ${sizes.price.max}`;
   }
   return null;
 };
@@ -214,10 +216,10 @@ export const titleCheck = (title: string): null | string => {
   if (title.length > sizes.title.max) {
     return `Символов в заголовке больше ${sizes.title.max}`;
   }
-  const titleReg = /^[\d\wа-яёА-ЯЁ]+( [\d\wа-яёА-ЯЁ]+)*$/;
+  const titleReg = /^[\d\w!@#$%^&*а-яёА-ЯЁ]+( [\d\w!@#$%^&*а-яёА-ЯЁ]+)*$/;
   if (!titleReg.test(title)) {
-    return `В заголовке разрешены латиница, кириллица, числа, знак нижнего 
-    подчеркивания и пробел между словами`;
+    return `В заголовке разрешены латиница, кириллица, числа, 
+    символы !@#$%^&*_ и пробел между словами`;
   }
   return null;
 };
@@ -229,10 +231,10 @@ export const titleCheck = (title: string): null | string => {
  */
 export const textCheck = (text: string): null | string => {
   if (text.length < sizes.text.min) {
-    return `Символов в тексте мотивации меньше ${sizes.text.min}`;
+    return `Символов в тексте меньше ${sizes.text.min}`;
   }
   if (text.length > sizes.text.max) {
-    return `Символов в тексте мотивации больше ${sizes.text.max}`;
+    return `Символов в тексте больше ${sizes.text.max}`;
   }
   return null;
 };

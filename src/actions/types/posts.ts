@@ -8,22 +8,19 @@ export interface PayloadPost {
     username: string
   }
   content: string
-  contentTemplate: string
-  dateCreated: Date
+  dateCreated: string
   isAllowed: boolean
   isLiked: boolean
   likesNum: number
   postID: number
   // tags
   tier: number
-  userID: number
   commentsNum: number
 }
 
 export interface PayloadPostUpdate {
   postID: number
   content?: string
-  contentTemplate?: string
   likesNum?: number
   isLiked?: boolean
   commentsNum?: number
@@ -31,6 +28,11 @@ export interface PayloadPostUpdate {
 
 export interface PayloadPostDelete {
   postID: number
+}
+
+export interface PayloadPutImage {
+  postID: number
+  url: string
 }
 
 export interface ActionGetPosts extends IAction {
@@ -55,7 +57,5 @@ export interface ActionDeletePost extends IAction {
 
 export interface ActionPutImage extends IAction {
   type: ActionType.PUT_IMAGE,
-  payload: {
-    url: string,
-  }
+  payload: PayloadPutImage
 }

@@ -1,27 +1,31 @@
 import './input-field.styl';
-import templateInput from './input.hbs';
-import templateTextarea from './textarea.hbs';
+import templateInput from './input-field.hbs';
+import templateTextarea from './textarea-input.hbs';
 import userIcon from '@icon/user.svg';
 import emailIcon from '@icon/email.svg';
 import passwordIcon from '@icon/password.svg';
-import ComponentBase from '@flux/types/component';
+import rubleIcon from '@icon/ruble.svg';
+
+import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 
 export enum InputType {
-  username,
-  email,
-  password,
-  text,
-  textarea,
-  file,
-  checkbox,
+  USERNAME,
+  EMAIL,
+  PASSWORD,
+  TEXT,
+  TEXTAREA,
+  IMAGE,
+  PRICE,
 }
 
 export interface InputOptions {
   kind: InputType
-  label: string
+  label?: string
   name: string
+  title: string
   placeholder?: string
   value?: string
+  displayError: boolean
 }
 
 /**
@@ -34,65 +38,101 @@ class InputField extends ComponentBase<'label', boolean> {
     this.renderTo(element);
   }
 
-  render(): HTMLLabelElement {
+  update(isError: boolean): void {
+    if (this.options.displayError === isError) return;
+    this.options.displayError = isError;
+    const back = querySelectorWithThrow(this.domElement, '.input-field__back');
+    if (this.options.displayError) {
+      back.classList.add('input-field__back_error');
+    } else {
+      back.classList.remove('input-field__back_error');
+    }
+  }
+
+  protected render(): HTMLLabelElement {
     const input = document.createElement('label');
-    input.classList.add('input-field');
+    input.classList.add('input-field', 'input-field__label', 'font_regular');
+    input.innerText = this.options.label ?? '';
+
 
     const templateContext: {
-      label: string
+      label?: string
       name: string
+      title: string
       placeholder?: string
       value?: string
       type?: string
       icon?: string
-      withAccept?: string
     } = {
       ...this.options,
     };
 
     switch (this.options.kind) {
-      case InputType.username:
+      case InputType.USERNAME:
         templateContext.type = 'text';
         templateContext.icon = userIcon;
         break;
-      case InputType.email:
+      case InputType.EMAIL:
         templateContext.type = 'text';
         templateContext.icon = emailIcon;
         break;
-      case InputType.password:
+      case InputType.PASSWORD:
         templateContext.type = 'password';
         templateContext.icon = passwordIcon;
         break;
-      case InputType.text:
+      case InputType.TEXT:
         templateContext.type = 'text';
         break;
-      case InputType.file:
+      case InputType.IMAGE:
         templateContext.type = 'file';
-        templateContext.withAccept = 'image/jpeg';
         break;
-      case InputType.checkbox:
-        templateContext.type = 'checkbox';
-        break;
-      case InputType.textarea:
+      case InputType.TEXTAREA:
         input.classList.add('input-field_with-textarea');
-        input.insertAdjacentHTML(
-            'afterbegin',
-            templateTextarea(this.options),
-        );
-        return input;
+        templateContext.type = 'textarea';
+        break;
+      case InputType.PRICE:
+        templateContext.type = 'number';
+        templateContext.icon = rubleIcon;
+        break;
       default: {
         const _exhaustiveCheck: never = this.options.kind;
         return _exhaustiveCheck;
       }
     }
-    input.insertAdjacentHTML('beforeend', templateInput(templateContext));
+
+    if (this.options.kind === InputType.TEXTAREA) {
+      input.insertAdjacentHTML('beforeend', templateTextarea(templateContext));
+    } else {
+      input.insertAdjacentHTML('beforeend', templateInput(templateContext));
+    }
+
+    switch (this.options.kind) {
+      case InputType.IMAGE: {
+        const inputEl =
+          querySelectorWithThrow(
+              input, '.input-field__input',
+          ) as HTMLInputElement;
+        inputEl.accept = 'image/*';
+        break;
+      }
+      case InputType.PRICE: {
+        const inputEl =
+          querySelectorWithThrow(
+              input, '.input-field__input',
+          ) as HTMLInputElement;
+        inputEl.min = '1';
+        inputEl.addEventListener('keypress', (evt) => {
+          if (evt.which != 8 && evt.which != 0 &&
+              evt.which < 48 || evt.which > 57) {
+            evt.preventDefault();
+          }
+        });
+        break;
+      }
+      default:
+        break;
+    }
 
     return input;
-  }
-
-  update(isError: boolean): void {
-    const back = this.domElement.querySelector('.input-field__back');
-    if (isError) back?.classList.add('input-field__back_error');
-    else back?.classList.remove('input-field__back_error');
   }
 }
