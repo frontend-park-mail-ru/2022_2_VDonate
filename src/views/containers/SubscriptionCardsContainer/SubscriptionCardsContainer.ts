@@ -52,9 +52,10 @@ export default class SubscriptionCardsContainer
     }
     this.container.classList.add('subscription-cards-container__card-area');
     const empty = document.createElement('div');
-    empty.classList.add('subscription-cards-container__empty', 'font_regular');
+    empty.classList
+        .add('subscription-cards-container__empty', 'font_regular', 'bg_main');
     empty.innerText = this.options.changeable ?
-      `Пока что подписок нет
+      `Пока что подписок нет,
       но вы можете их создать` :
       `Этот автор пока что не создал ни одной подписки`;
     const overflowContainer = document.createElement('div');

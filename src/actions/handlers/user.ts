@@ -525,7 +525,7 @@ export const editAbout = (id: number, about: string): void => {
           store.dispatch({
             type: ActionType.NOTICE,
             payload: {
-              message: 'Ошибка при изменении поля о Вас',
+              message: 'Ошибка при изменении поля о вас',
             },
           });
         }

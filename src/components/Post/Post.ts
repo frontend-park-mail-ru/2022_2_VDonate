@@ -30,7 +30,9 @@ import {
 import {PayloadComment} from '@actions/types/comments';
 import Comment from '@components/Comment/Comment';
 import {notice} from '@actions/handlers/notice';
-import {commentSize} from '@validation/validation';
+import {
+  commentSize,
+  deleteEnterAndSpacebarsInEndOfString} from '@validation/validation';
 
 export enum ContextType {
   RUNTIME_POST_UPDATE,
@@ -245,13 +247,15 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     }).addClassNames('new-comment__submit');
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      if (input.innerText.length == 0) {
+      let commentText = input.innerText;
+      commentText = deleteEnterAndSpacebarsInEndOfString(commentText);
+      if (commentText.length == 0) {
         notice('Вы ввели пустой коментарий', 'error');
-      } else if (input.innerText.length > commentSize) {
+      } else if (commentText.length > commentSize) {
         notice(
             `Коментарий должен быть меньше ${commentSize} символов`, 'error');
       } else {
-        addComment(this.options.postID, input.innerText);
+        addComment(this.options.postID, commentText);
       }
     });
     newComment.appendChild(form);
@@ -349,17 +353,17 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     }
     const dropboxOptions = Array.from(subs, (sub) => {
       return {
-        text: sub.title,
+        text: `по подписке ${sub.title}`,
         value: sub.tier.toString(),
       };
     });
     dropboxOptions.unshift({
-      text: 'Без ограничения',
+      text: 'для всех',
       value: '0',
     });
 
     const tierBtn = new Dropbox(form, {
-      label: 'Ограничение:',
+      label: 'Доступно:',
       name: 'tier',
       options: dropboxOptions,
       selected: this.options.tier.toString(),

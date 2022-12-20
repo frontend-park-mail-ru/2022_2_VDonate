@@ -9,7 +9,9 @@ import closeIcon from '@icon/close.svg';
 // import editIcon from '@icon/edit.svg';
 import {notice} from '@actions/handlers/notice';
 import {deleteComment, updateComment} from '@actions/handlers/comments';
-import {commentSize} from '@validation/validation';
+import {
+  commentSize,
+  deleteEnterAndSpacebarsInEndOfString} from '@validation/validation';
 
 type CommentOptions = PayloadComment & {
   inEditState: boolean,
@@ -88,13 +90,15 @@ class Comment extends ComponentBase<'div', string> {
       viewType: ButtonType.PRIMARY,
       innerText: 'Сохранить',
       clickHandler: () => {
-        if (text.innerText.length > commentSize) {
+        let commentText = text.innerText;
+        commentText = deleteEnterAndSpacebarsInEndOfString(commentText);
+        if (commentText.length > commentSize) {
           notice(
               `Коментарий должен быть меньше ${commentSize} символов`, 'error');
-        } else if (text.innerText.length == 0) {
+        } else if (commentText.length == 0) {
           deleteComment(this.options.postID, this.options.id);
         } else {
-          updateComment(this.options.postID, this.options.id, text.innerText);
+          updateComment(this.options.postID, this.options.id, commentText);
           // this.options.content = text.innerText;
           this.closeEditor();
         }

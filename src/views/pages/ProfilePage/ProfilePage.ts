@@ -66,7 +66,7 @@ export default class ProfilePage extends UpgradeViewBase {
         profileNew.userSubscriptions.length === 0) {
         this.subscriptions.innerHTML = this.options.changeable ?
           `Вы пока никого не поддерживаете<br> <br>
-          Попробуйте найти интересующих Вас авторов на странице поиска` :
+          Попробуйте найти интересующих вас авторов на странице поиска` :
           'Донатер пока никого не поддерживает';
       } else {
         this.subscriptions.innerHTML = '';
@@ -127,7 +127,7 @@ export default class ProfilePage extends UpgradeViewBase {
     this.childViews.postContainer = new PostsContainer(content, {
       withCreateBtn: this.options.changeable && user.isAuthor,
       textWhenEmpty: this.options.changeable && user.isAuthor ?
-      `Тут будут Ваши посты\n
+      `Тут будут ваши посты\n
         Начните радовать своих донатеров новым контентом уже сейчас` :
         `Автор пока что не создал ни одного поста`,
     });

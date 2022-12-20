@@ -142,7 +142,7 @@ export const passwordCheck = (password: string): null | string => {
   }
   const passwordReg = /^[\w!@#$%^&* ]+$/;
   if (!passwordReg.test(password)) {
-    return `В пароле разрешены только латинца, числа, символы !@#$%^&*_ и 
+    return `В пароле разрешены только латиница, числа, символы !@#$%^&*_ и 
     пробелы`;
   }
 
@@ -239,4 +239,12 @@ export const textCheck = (text: string): null | string => {
   return null;
 };
 
+export const deleteEnterAndSpacebarsInEndOfString = (text: string): string => {
+  while (text.endsWith(' ') ||
+         text.endsWith('\n') &&
+         text.length !== 0) {
+    text = text.slice(0, -1);
+  }
+  return text;
+};
 

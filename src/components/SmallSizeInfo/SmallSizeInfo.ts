@@ -15,7 +15,7 @@ export default class SmallSizeInfo extends ComponentBase<'div'> {
     const infoText = document.createElement('span');
     infoText.classList.add('small-size-info__text');
     infoText.innerText = `
-      Извините, Ваш экран слишком мал
+      Извините, ваш экран слишком мал
       ¯\\_(ツ)_/¯
       Попробуйте перейти в альбомную ориентацию или воспользоваться 
       другим устройством

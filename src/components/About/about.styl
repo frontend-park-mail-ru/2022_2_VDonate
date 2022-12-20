@@ -2,20 +2,40 @@
 @require '@style/mixin.styl'
 
 +b(about)
+  display: flex
+  flex-direction: column
+  gap: 20px
+  width: 100%
+  margin-bottom: 20px
   +e(about)
     padding: 20px
+    width: 100%
+    display: flex
+    flex-direction: column
+    gap: 10px
   +e(header)
     display: flex
     flex-direction: row
+    align-items: center
+    justify-content: center
+    gap: 10px
+    width: 100%
   +e(header-title)
-    flex-grow: 1
     text-align: center
   +e(text)
-     padding: 5px 10px
+    padding: 5px 10px
+  +e(empty)
+    text-align: center
   +e(form)
     display: flex
-    padding: 4px
-    gap: 16px
+    flex-direction: row
+    align-items: flex-start
+    gap: 15px
+    justify-content: space-between
+    flex-wrap: wrap
+    padding: 5px
+  +e(form-btn)
+    flex-grow: 1
   +e(header-btn)
     position: absolute
     top: 17px
