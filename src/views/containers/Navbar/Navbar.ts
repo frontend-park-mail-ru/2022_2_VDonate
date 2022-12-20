@@ -9,8 +9,8 @@ import {logout} from '@actions/handlers/user';
 import {openProfileEditor} from '@actions/handlers/editor';
 import Logo from '@components/Logo/Logo';
 import NavbarLink from '@components/NavbarLink/NavbarLink';
-import Button, {ButtonType} from '@components/Button/Button';
-import {getSubscritions} from '@actions/handlers/subscribe';
+import {ButtonType} from '@components/Button/Button';
+import {getSubscriptions} from '@actions/handlers/subscribe';
 import ProfielMini, {ProfileMiniType}
   from '@components/ProfileMini/ProfileMini';
 import SubscriptionsListContainer
@@ -20,7 +20,9 @@ import {PayloadLocation} from '@actions/types/routing';
 import {Pages} from '@configs/router';
 import NoticeBell from '@components/NoticeBell/NoticeBell';
 import {PayloadBackNotice} from '@actions/types/notice';
-
+import SubMenu from '@components/SubMenu/SubmMenu';
+import {notice} from '@actions/handlers/notice';
+import ws from '@app/WebSocketNotice';
 
 const links = [
   {
@@ -51,14 +53,14 @@ export default class Navbar extends UpgradeViewBase {
   private locationState: PayloadLocation;
   private profileMini!: ProfielMini;
   private subscriptionsListContainer!: SubscriptionsListContainer;
-  private subMenu: HTMLElement = document.createElement('div');
+  // private subMenu!: SubMenu;
   private noticeBell!: NoticeBell;
 
   constructor(el: HTMLElement, private options: number) {
     super();
     this.locationState = store.getState().location as PayloadLocation;
     this.renderTo(el);
-    getSubscritions(options);
+    getSubscriptions(options);
   }
 
   protected render(): HTMLDivElement {
@@ -107,57 +109,133 @@ export default class Navbar extends UpgradeViewBase {
     });
     this.profileMini.addClassNames('botton-area__profile-mini');
 
+    const noticeSubMenu = new SubMenu(navbar, {
+      buttonsOptions: [
+        {
+          actionType: 'button',
+          viewType: ButtonType.OUTLINE,
+          innerText: 'Показать все',
+          clickHandler: () => {
+            const backNotices =
+              store.getState().backNotice as PayloadBackNotice[];
+            backNotices.forEach((backNotice) => {
+              notice(backNotice.message, 'info');
+            });
+          },
+        },
+        {
+          actionType: 'button',
+          viewType: ButtonType.OUTLINE,
+          innerText: 'Удалить все',
+          clickHandler: ws.clearAll.bind(ws),
+        },
+      ],
+    });
+
     this.noticeBell = new NoticeBell(this.profile, {
       hasNewNotices: true,
-    });
-
-    this.subMenu.classList.add('bg_sub-menu');
-    this.subMenu.style.display = 'none';
-    navbar.appendChild(this.subMenu);
-
-    const menuBtn = new Button(this.profile, {
-      viewType: ButtonType.ICON,
-      actionType: 'button',
-      innerIcon: menuIcon,
-      clickHandler: () => {
-        this.switchMenu(this.subMenu.style.display == 'none');
+      onHover(isEnter) {
+        if (isEnter) {
+          noticeSubMenu.addClassNames('sub-menu_active');
+        } else {
+          noticeSubMenu.removeClassNames('sub-menu_active');
+        }
       },
     });
-    menuBtn.addClassNames('botton-area__menu-btn');
+    this.noticeBell.addClassNames('botton-area__notice-bell');
 
-    this.subMenu.style.display = 'none';
-    this.subMenu.classList.add('sub-menu', 'sub-menu__sub-menu');
-
-    const profileLink = new Button(this.subMenu, {
-      viewType: ButtonType.OUTLINE,
-      actionType: 'button',
-      innerText: 'Профиль',
-      clickHandler: () => {
-        const user = store.getState().user as PayloadUser;
-        routing(`/profile?id=${user.id}`);
-      },
+    const profileSubMenu = new SubMenu(navbar, {
+      buttonsOptions: [
+        {
+          viewType: ButtonType.OUTLINE,
+          actionType: 'button',
+          innerText: 'Профиль',
+          clickHandler: () => {
+            const user = store.getState().user as PayloadUser;
+            routing(`/profile?id=${user.id}`);
+          },
+        },
+        {
+          viewType: ButtonType.OUTLINE,
+          actionType: 'button',
+          innerText: 'Изменить данные',
+          clickHandler: openProfileEditor,
+        },
+        {
+          viewType: ButtonType.OUTLINE,
+          actionType: 'button',
+          innerText: 'Выйти',
+          clickHandler: logout,
+        },
+      ],
     });
-    profileLink.addClassNames('botton-area__sub-menu-btn');
 
-    const change = new Button(this.subMenu, {
-      viewType: ButtonType.OUTLINE,
-      actionType: 'button',
-      innerText: 'Изменить данные',
-      clickHandler: () => {
-        openProfileEditor();
-      },
-    });
-    change.addClassNames('botton-area__sub-menu-btn');
+    // this.subMenu.classList.add('bg_sub-menu');
+    // this.subMenu.style.display = 'none';
+    // navbar.appendChild(this.subMenu);
 
-    const logoutBtn = new Button(this.subMenu, {
-      viewType: ButtonType.OUTLINE,
-      actionType: 'button',
-      innerText: 'Выйти',
-      clickHandler: () => {
-        logout();
-      },
+    // const menuBtn = new Button(this.profile, {
+    //   viewType: ButtonType.ICON,
+    //   actionType: 'button',
+    //   innerIcon: menuIcon,
+    //   clickHandler: () => {
+    //     this.switchMenu(this.subMenu.style.display == 'none');
+    //   },
+    // });
+    // menuBtn.addClassNames('botton-area__menu-btn');
+
+    const menuBtn = document.createElement('div');
+    menuBtn.classList.add('botton-area__menu-btn', 'menu-btn');
+
+    const menuImg = document.createElement('img');
+    menuImg.src = menuIcon;
+    menuImg.classList.add('menu-btn__icon');
+
+    menuBtn.appendChild(menuImg);
+    menuBtn.addEventListener('mouseenter', () => {
+      profileSubMenu.addClassNames('sub-menu_active');
+      // this.subMenu.classList.add('sub-menu__sub-menu_active');
     });
-    logoutBtn.addClassNames('botton-area__sub-menu-btn');
+    menuBtn.addEventListener('mouseleave', () => {
+      profileSubMenu.removeClassNames('sub-menu_active');
+      // this.subMenu.classList.remove('sub-menu__sub-menu_active');
+    });
+    this.profile.appendChild(menuBtn);
+
+
+    // this.subMenu.style.display = 'none';
+    // this.subMenu.classList.add('sub-menu', 'sub-menu__sub-menu');
+
+    // const profileLink = new Button(this.subMenu, {
+    //   viewType: ButtonType.OUTLINE,
+    //   actionType: 'button',
+    //   innerText: 'Профиль',
+    //   clickHandler: () => {
+    //     const user = store.getState().user as PayloadUser;
+    //     routing(`/profile?id=${user.id}`);
+    //   },
+    // });
+    // profileLink.addClassNames('botton-area__sub-menu-btn');
+
+    // const change = new Button(this.subMenu, {
+    //   viewType: ButtonType.OUTLINE,
+    //   actionType: 'button',
+    //   innerText: 'Изменить данные',
+    //   clickHandler: () => {
+    //     openProfileEditor();
+    //   },
+    // });
+    // change.addClassNames('botton-area__sub-menu-btn');
+
+    // const logoutBtn = new Button(this.subMenu, {
+    //   viewType: ButtonType.OUTLINE,
+    //   actionType: 'button',
+    //   innerText: 'Выйти',
+    //   clickHandler: () => {
+    //     logout();
+    //   },
+    // });
+    // logoutBtn.addClassNames('botton-area__sub-menu-btn');
 
     profileContainer.appendChild(this.profile);
     back.appendChild(profileContainer);
@@ -181,7 +259,7 @@ export default class Navbar extends UpgradeViewBase {
       this.renderLocation(locationNew.type);
     }
 
-    this.switchMenu(false);
+    // this.switchMenu(false);
 
     const backNoticeState = store.getState().backNotice as PayloadBackNotice[];
     if (backNoticeState.length === 0) {
@@ -230,11 +308,11 @@ export default class Navbar extends UpgradeViewBase {
     this.domElement.removeAttribute('style');
   }
 
-  private switchMenu(isClosed: boolean) {
-    if (isClosed) {
-      this.subMenu.style.display = 'flex';
-    } else {
-      this.subMenu.style.display = 'none';
-    }
-  }
+  // private switchMenu(isClosed: boolean) {
+  //   if (isClosed) {
+  //     this.subMenu.style.display = 'flex';
+  //   } else {
+  //     this.subMenu.style.display = 'none';
+  //   }
+  // }
 }

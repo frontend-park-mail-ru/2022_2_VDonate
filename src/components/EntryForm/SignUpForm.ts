@@ -22,6 +22,7 @@ const signUpInputs: InputOptions[] = [
     placeholder: 'Для нашего личного общения',
     name: 'email',
     displayError: false,
+    title: 'Введите почту корректном в формате',
   },
   {
     kind: InputType.USERNAME,
@@ -29,6 +30,7 @@ const signUpInputs: InputOptions[] = [
     placeholder: 'Ваше уникальное имя',
     name: 'username',
     displayError: false,
+    title: 'Псевдоним должен содержать не менее 3 символов',
   },
   {
     kind: InputType.PASSWORD,
@@ -36,6 +38,7 @@ const signUpInputs: InputOptions[] = [
     placeholder: 'Мы обещаем не продавать его',
     name: 'password',
     displayError: false,
+    title: 'Пароль должен содержать не менее 5 символов',
   },
   {
     kind: InputType.PASSWORD,
@@ -43,6 +46,7 @@ const signUpInputs: InputOptions[] = [
     placeholder: 'Чтобы точно',
     name: 'repeatPassword',
     displayError: false,
+    title: 'Пароли должны совпадать',
   },
 ];
 

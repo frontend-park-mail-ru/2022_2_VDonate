@@ -1,14 +1,10 @@
 import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 import alertIcon from '@icon/alert.svg';
 import './notice-bell.styl';
-import Button, {ButtonType} from '@components/Button/Button';
-import ws from '@app/WebSocketNotice';
-import store from '@app/Store';
-import {PayloadBackNotice} from '@actions/types/notice';
-import {notice} from '@actions/handlers/notice';
 
 interface NoticeBellOptions {
   hasNewNotices: boolean;
+  onHover: (isEnter: boolean) => void;
 }
 
 export default class NoticeBell extends ComponentBase<'div', boolean> {
@@ -20,6 +16,8 @@ export default class NoticeBell extends ComponentBase<'div', boolean> {
   protected render(): HTMLDivElement {
     const bell = document.createElement('div');
     bell.className = 'notice-bell';
+    bell.addEventListener('mouseenter', this.options.onHover.bind(this, true));
+    bell.addEventListener('mouseleave', this.options.onHover.bind(this, false));
 
     const icon = document.createElement('img');
     icon.src = alertIcon;
@@ -35,31 +33,7 @@ export default class NoticeBell extends ComponentBase<'div', boolean> {
 
     bell.appendChild(newNotices);
 
-    const btnArea = document.createElement('div');
-    btnArea.classList.add('notice-bell__btn-area', 'bg_sub-menu');
-    bell.appendChild(btnArea);
-
-    new Button(btnArea, {
-      actionType: 'button',
-      viewType: ButtonType.OUTLINE,
-      innerText: 'Показать все',
-      clickHandler: this.showAllNotice.bind(this),
-    });
-    new Button(btnArea, {
-      actionType: 'button',
-      viewType: ButtonType.OUTLINE,
-      innerText: 'Удалить все',
-      clickHandler: ws.clearAll.bind(ws),
-    });
-
     return bell;
-  }
-
-  private showAllNotice() {
-    const backNotices = store.getState().backNotice as PayloadBackNotice[];
-    backNotices.forEach((backNotice) => {
-      notice(backNotice.message, 'info');
-    });
   }
 
   update(hasNewNotices: boolean): void {

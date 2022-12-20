@@ -1,0 +1,28 @@
+@require '@style/const.styl'
+@require '@style/mixin.styl'
+
++b(sub-menu)
+  display: none
+  flex-direction: column
+  align-items: stretch
+  gap: 5px
+  &:hover
+    display: flex
+  +m(active)
+    display: flex
+  +e(back)
+    padding: 10px
+    position: fixed
+    bottom: 60px
+    left: 0
+    width: 20vw
+    max-width: 300px
+
+@media  (max-width: mobile-size)
+  +b(sub-menu)
+    +e(back)
+      bottom: auto
+      left: auto
+      top: 60px
+      right: 0
+      width: 200px

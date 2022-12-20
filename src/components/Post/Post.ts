@@ -289,7 +289,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
             getComments(this.options.postID);
           }
         } else {
-          notice('Нет доступа к коментариям', 'info');
+          notice('Нет доступа к комментариям', 'info');
         }
       },
     });
@@ -363,6 +363,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
       name: 'tier',
       options: dropboxOptions,
       selected: this.options.tier.toString(),
+      title: 'Ограничение видимости поста по подписке',
     });
     tierBtn.addClassNames('post-edit-form__tier');
     // form.appendChild(tierField);
@@ -371,6 +372,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
       actionType: 'button',
       viewType: ButtonType.ICON,
       innerIcon: headerIcon,
+      title: 'Добавить заголовок в начало поста',
       clickHandler: () => {
         const h1 = document.createElement('h1');
         h1.innerHTML = 'Заголовок';
@@ -384,6 +386,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
       actionType: 'button',
       viewType: ButtonType.IMAGE_LOADING,
       innerIcon: loadImageIcon,
+      title: 'Загрузить изображение в конец поста',
       clickHandler: (e) => {
         const image = (e.target as HTMLInputElement);
         if (image.files && image.files.length !== 0) {

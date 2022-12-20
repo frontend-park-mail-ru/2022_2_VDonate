@@ -22,6 +22,7 @@ const logInInputs: InputOptions[] = [
     placeholder: 'Введите свой псеводим',
     name: 'username',
     displayError: false,
+    title: 'Псевдоним должен содержать не менее 3 символов',
   },
   {
     kind: InputType.PASSWORD,
@@ -29,6 +30,7 @@ const logInInputs: InputOptions[] = [
     placeholder: 'Введите свой пароль',
     name: 'password',
     displayError: false,
+    title: 'Пароль должен содержать не менее 5 символов',
   },
 ];
 

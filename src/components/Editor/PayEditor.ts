@@ -43,7 +43,7 @@ class PayEditor extends ComponentBase<'div'> {
         new Button(btnArea, {
           actionType: 'button',
           viewType: ButtonType.PRIMARY,
-          innerText: 'Задонатить',
+          innerText: 'Да, оплатить',
           clickHandler: () => {
             subscribe(this.options.authorID, this.options.authorSubscriptionID);
           },

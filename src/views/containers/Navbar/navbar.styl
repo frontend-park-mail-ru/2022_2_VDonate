@@ -40,18 +40,18 @@ navbar-indent-mobile = 10px
     gap: 5px
   +e(sub-menu-btn)
     min-width: auto
+  +e(menu-btn)
+    height: 100%
+    padding: 0 5px
+  +e(notice-bell)
+    padding-right: 5px
 
-+b(sub-menu)
-  +e(sub-menu)
-    position: fixed
-    bottom: 80px
-    left: 0
-    flex-direction: column
-    align-items: stretch
-    padding: 10px
-    gap: 5px
-    width: 20vw
-    max-width: 300px
++b(menu-btn)
+  display: flex
+  align-items: center
+  +e(icon)
+    height: 24px
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(298deg) brightness(102%) contrast(102%)
 
 +b(navbar-hr)
   border: none
@@ -59,19 +59,24 @@ navbar-indent-mobile = 10px
   margin: 0
   margin-left: - navbar-indent
 
+.bottom-area__menu-btn
+  &:hover
+    & .sub-menu
+        display: flex
+
 @media  (max-width: mobile-size)
   +b(navbar)
-    z-index: 10
+    z-index: 2
     +e(back)
       border-radius: 0
-      height: 50px
+      height: 60px
       width: calc(100vw + 4px)
       max-width: calc(100vw + 4px)
       display: flex
       flex-direction: row
       flex-wrap: nowrap
-      align-items: stretch
-      padding: navbar-indent-mobile
+      align-items: center
+      padding: 0 10px
       &:before
         border-radius: 0
     +e(logo)
@@ -80,11 +85,10 @@ navbar-indent-mobile = 10px
       flex-wrap: nowrap
       word-break: normal
       margin-right: 6px
-      align-self: flex-start
     +e(link)
-      padding: navbar-indent-mobile 5px 10px 5px
-      margin-left: 0
-      margin-top: - navbar-indent-mobile
+      padding: 20px 5px 5px 5px;
+      margin-left: 0;
+      margin-top: -15px;
     +e(sub)
       padding: 0px
     +e(subs-list)
@@ -97,14 +101,9 @@ navbar-indent-mobile = 10px
     +e(profile-mini)
       display: none !important
 
-  +b(sub-menu)
-    +e(sub-menu)
-      position: fixed
-      bottom: auto
-      left: auto
-      top: 50px
-      right: 0
-      width: 110px
+  +b(menu-btn)
+    +e(icon)
+      height: icon-size-mobile
       
   +b(navbar-hr)
     display: none

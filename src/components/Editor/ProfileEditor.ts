@@ -79,6 +79,7 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
           placeholder: 'Введите почту',
           value: this.options.email,
           displayError: false,
+          title: 'Почта должна быть в корректном формате',
         }))
         .set('username', new InputField(inputsArea, {
           kind: InputType.USERNAME,
@@ -87,6 +88,7 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
           placeholder: 'Введите псевдоним',
           value: this.options.username,
           displayError: false,
+          title: 'Псевдоним должен содержать не менее 3 символов',
         }));
     this.inputs
         .set('password', new InputField(inputsArea, {
@@ -95,6 +97,7 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
           name: 'password',
           placeholder: 'Введите пароль',
           displayError: false,
+          title: 'Пароль должен содержать не менее 5 символов',
         }))
         .set('repeatPassword', new InputField(inputsArea, {
           kind: InputType.PASSWORD,
@@ -102,12 +105,14 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
           name: 'repeatPassword',
           placeholder: 'Точно также',
           displayError: false,
+          title: 'Пароли должны совпадать',
         }))
         .set('avatar', new InputField(inputsArea, {
           kind: InputType.IMAGE,
           label: 'Загрузите аватарку',
           name: 'avatar',
           displayError: false,
+          title: 'Загрузите аватарку',
         }));
   }
 

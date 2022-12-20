@@ -12,7 +12,7 @@ abstract class ComponentBase
     this.domElement.classList.add(...classNames);
   }
 
-  removeClassName(...classNames: string[]) {
+  removeClassNames(...classNames: string[]) {
     this.domElement.classList.remove(...classNames);
   }
 
