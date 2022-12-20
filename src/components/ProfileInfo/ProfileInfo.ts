@@ -56,16 +56,12 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
       this.username.innerText = this.options.username;
     }
 
-    if (this.options.countSubscriptions !== data.countSubscriptions) {
-      this.options.countSubscriptions = data.countSubscriptions;
-      this.countSubscriptions.innerText = data.countSubscriptions.toString();
-    }
-
     if (!this.options.isAuthor && data.isAuthor) {
       this.options.isAuthor = data.isAuthor;
-      const info =
-        querySelectorWithThrow(this.domElement, '.mini-statistic');
-      this.renderStatistic(info);
+      this.countSubscriptions.parentElement?.remove();
+      this.renderAuthorStatistic(
+          querySelectorWithThrow(this.domElement, '.mini-statistic'),
+      );
       if (this.options.changeable) {
         querySelectorWithThrow(this.domElement, '.profile-info__become-author')
             .remove();
@@ -73,6 +69,24 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
     } else if (this.options.isAuthor && !data.isAuthor) {
       this.options.isAuthor = false;
       this.countDonaters.parentElement?.remove();
+      this.countPosts.parentElement?.remove();
+      this.countProfitMounth.parentElement?.remove();
+      this.countSubscribersMounth.parentElement?.remove();
+      this.renderDonaterStatistic(
+          querySelectorWithThrow(this.domElement, '.mini-statistic'),
+      );
+      if (this.options.changeable) {
+        new Button(
+            querySelectorWithThrow(this.domElement, '.profile-info'),
+            {
+              viewType: ButtonType.PRIMARY,
+              actionType: 'button',
+              innerText: 'Стать автором',
+              clickHandler: () => {
+                becomeAuthor(this.options.id);
+              },
+            }).addClassNames('profile-info__become-author');
+      }
     }
 
     if (this.options.isAuthor) {
@@ -95,6 +109,11 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
         this.options.countSubscribersMounth = data.countSubscribersMounth;
         this.countSubscribersMounth.innerText =
           data.countSubscribersMounth.toString();
+      }
+    } else {
+      if (this.options.countSubscriptions !== data.countSubscriptions) {
+        this.options.countSubscriptions = data.countSubscriptions;
+        this.countSubscriptions.innerText = data.countSubscriptions.toString();
       }
     }
   }
@@ -123,37 +142,23 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
     const miniStatistic = document.createElement('div');
     miniStatistic.classList.add('mini-statistic');
     info.appendChild(miniStatistic);
-
-    const subsContainer = document.createElement('div');
-    subsContainer.classList.add('mini-statistic__container');
-
-    const subscriptionsTitle = document.createElement('span');
-    subscriptionsTitle.classList.add('mini-statistic__text', 'font_regular');
-    subscriptionsTitle.innerText = 'Подписок';
-
-    this.countSubscriptions = document.createElement('span');
-    this.countSubscriptions.classList
-        .add('mini-statistic__text', 'font_regular');
-    this.countSubscriptions.innerText =
-      this.options.countSubscriptions.toString();
-
-    subsContainer.append(subscriptionsTitle, this.countSubscriptions);
-    miniStatistic.appendChild(subsContainer);
-
     back.append(this.username, info);
 
     if (this.options.isAuthor) {
-      this.renderStatistic(miniStatistic);
-    } else if (this.options.changeable) {
-      const becomeAuthorBtn = new Button(back, {
-        viewType: ButtonType.PRIMARY,
-        actionType: 'button',
-        innerText: 'Стать автором',
-        clickHandler: () => {
-          becomeAuthor(this.options.id);
-        },
-      });
-      becomeAuthorBtn.addClassNames('profile-info__become-author');
+      this.renderAuthorStatistic(miniStatistic);
+    } else {
+      this.renderDonaterStatistic(miniStatistic);
+      if (this.options.changeable) {
+        const becomeAuthorBtn = new Button(back, {
+          viewType: ButtonType.PRIMARY,
+          actionType: 'button',
+          innerText: 'Стать автором',
+          clickHandler: () => {
+            becomeAuthor(this.options.id);
+          },
+        });
+        becomeAuthorBtn.addClassNames('profile-info__become-author');
+      }
     }
 
     if (this.options.changeable) {
@@ -171,7 +176,25 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
     return profileInfo;
   }
 
-  private renderStatistic(miniStatistic: HTMLElement) {
+  private renderDonaterStatistic(miniStatistic: HTMLElement) {
+    const subsContainer = document.createElement('div');
+    subsContainer.classList.add('mini-statistic__container');
+
+    const subscriptionsTitle = document.createElement('span');
+    subscriptionsTitle.classList.add('mini-statistic__text', 'font_regular');
+    subscriptionsTitle.innerText = 'Подписок';
+
+    this.countSubscriptions = document.createElement('span');
+    this.countSubscriptions.classList
+        .add('mini-statistic__text', 'font_regular');
+    this.countSubscriptions.innerText =
+      this.options.countSubscriptions.toString();
+
+    subsContainer.append(subscriptionsTitle, this.countSubscriptions);
+    miniStatistic.appendChild(subsContainer);
+  }
+
+  private renderAuthorStatistic(miniStatistic: HTMLElement) {
     const donatersContainer = document.createElement('div');
     donatersContainer.classList
         .add('mini-statistic__container');
