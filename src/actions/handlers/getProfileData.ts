@@ -20,7 +20,7 @@ const getAuthorData = async (user: PayloadProfileUser) => {
     getPostsRes.body as PayloadPost[] : undefined;
 
   store.dispatch({
-    type: ActionType.GETPROFILEDATA,
+    type: ActionType.GET_PROFILEDATA,
     payload: {
       user,
       authorSubscriptions,
@@ -110,7 +110,7 @@ const getDonaterData = async (user: PayloadProfileUser) => {
     undefined;
 
   store.dispatch({
-    type: ActionType.GETPROFILEDATA,
+    type: ActionType.GET_PROFILEDATA,
     payload: {
       user,
       userSubscriptions: subscriptions,

@@ -2,7 +2,7 @@ import {ResponseData, saveCSRF} from '@api/ajax';
 import {ActionType} from '@actions/types/action';
 import {
   PayloadEditUser,
-  PayloadEditUserSucces,
+  PayloadEditUserSuccess,
   PayloadUser} from '@actions/types/user';
 import router from '@app/Router';
 import store from '@app/Store';
@@ -416,7 +416,7 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
         userData.repeatPassword ?? '') : null;
   if (emailErr || usernameErr || passwordErr || repeatPasswordErr) {
     store.dispatch({
-      type: ActionType.CHANGEUSERDATA_FAIL,
+      type: ActionType.CHANGE_USERDATA_FAIL,
       payload: {
         type: FormErrorType.EDIT_USER,
         email: emailErr,
@@ -431,7 +431,7 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
   api.putUserData(userData)
       .then((res: ResponseData) => {
         if (res.ok) {
-          const user: PayloadEditUserSucces = {
+          const user: PayloadEditUserSuccess = {
             id: userData.id,
           };
           if (res.body.imgPath && res.body.imgPath !== '') {
@@ -444,7 +444,7 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
             user.email = userData.email;
           }
           store.dispatch({
-            type: ActionType.CHANGEUSERDATA_SUCCESS,
+            type: ActionType.CHANGE_USERDATA_SUCCESS,
             payload: {
               user,
               formErrors: {
@@ -477,7 +477,7 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
               break;
             default:
               store.dispatch({
-                type: ActionType.CHANGEUSERDATA_FAIL,
+                type: ActionType.CHANGE_USERDATA_FAIL,
                 payload: {
                   type: FormErrorType.EDIT_USER,
                   email: 'Неверная почта',
@@ -501,11 +501,20 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
 };
 
 export const editAbout = (id: number, about: string): void => {
+  about = about.trim();
   if (about.length > 1024) {
     store.dispatch({
       type: ActionType.NOTICE,
       payload: {
         message: 'Поле \'Обо мне\' должно содержать меньше 1024 символов',
+      },
+    });
+  }
+  if (about.length == 0) {
+    store.dispatch({
+      type: ActionType.NOTICE,
+      payload: {
+        message: 'Поле \'Обо мне\' должно содержать 1 или больше символов',
       },
     });
   }

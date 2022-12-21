@@ -5,7 +5,7 @@ import {ActionType} from './action';
 
 export enum EditorType {
   PROFILE,
-  SUBSCRIBTION,
+  SUBSCRIPTION,
   PAY,
   POST,
   CLOSE_POST,
@@ -15,8 +15,8 @@ interface PayloadProfileEditor {
   type: EditorType.PROFILE
 }
 
-interface PayloadSubscribtionEditor {
-  type: EditorType.SUBSCRIBTION
+interface PayloadSubscriptionEditor {
+  type: EditorType.SUBSCRIPTION
   id?: number
 }
 
@@ -24,7 +24,7 @@ interface PayloadPostEditor {
   type: EditorType.POST
   id: number
 }
-interface PayloadclosePostEditor {
+interface PayloadClosePostEditor {
   type: EditorType.CLOSE_POST
   id: number
 }
@@ -37,12 +37,12 @@ interface PayloadPayEditor {
 
 type PayloadOpenEditor =
   | PayloadProfileEditor
-  | PayloadSubscribtionEditor
+  | PayloadSubscriptionEditor
   | PayloadPayEditor
   | PayloadPostEditor;
 
 type PayloadCloseEditor = Record<string, never>
-  | PayloadclosePostEditor;
+  | PayloadClosePostEditor;
 
 export type PayloadEditor =
   | PayloadCloseEditor

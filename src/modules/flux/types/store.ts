@@ -5,7 +5,7 @@ import {IObservable} from './observer';
  *
  * *Value* может быть любым, даже другим *State*, поэтому необходимо
  * использовать именно *any*. Строгая типизация состояния хранилища при
- * необходимоти должна быть выполнена все модуля **flux**
+ * необходимости должна быть выполнена все модуля **flux**
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type PropTree = Record<string, any>;

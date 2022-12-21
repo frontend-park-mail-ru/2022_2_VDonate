@@ -99,13 +99,13 @@ export const addBackNotice =
               type = 'error';
               break;
             default:
-              message = 'Error: неизветный тип статуса оплаты';
+              message = 'Error: неизвестный тип статуса оплаты';
               type = 'error';
               break;
           }
           break;
         default:
-          message = 'Error: неизветный тип уведомления';
+          message = 'Error: неизвестный тип уведомления';
           type = 'error';
           break;
       }

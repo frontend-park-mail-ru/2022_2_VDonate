@@ -4,7 +4,7 @@ import {Pages, routes} from '@configs/router';
 
 /** Роутинг урлов */
 class Router {
-  /** Добавляется события роутрера */
+  /** Добавляется события роутера */
   constructor() {
     window.addEventListener('click', (e) => {
       const target = (e.target as Element).closest('a[data-link]');
@@ -21,7 +21,7 @@ class Router {
   }
 
   /**
-   * Вызывает рендер страницы по переданому пути
+   * Вызывает рендер страницы по переданному пути
    * @param {string} loc путь страницы
    * @param {RouteType} type тип перехода
    * @returns TODO

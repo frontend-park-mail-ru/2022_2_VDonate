@@ -13,15 +13,15 @@ export default class Store<A extends IAction> implements IStore<A> {
   /**
    * Конструктор
    * @param reducer - внешний распределитель действий
-   * @param initinalState - начальное состояние хранилища
+   * @param initialState - начальное состояние хранилища
    */
-  constructor(reducer: Reducer<A>, initinalState: PropTree = {}) {
-    this.state = initinalState;
+  constructor(reducer: Reducer<A>, initialState: PropTree = {}) {
+    this.state = initialState;
     this.reducer = reducer;
     this.observers = new Set();
   }
   /**
-   * Чтение текущего состояни хранилища
+   * Чтение текущего состояния хранилища
    * @returns Текущее состояние дерева хранилища
    */
   getState(): PropTree {

@@ -37,7 +37,7 @@ export interface PayloadEditUser {
   file?: File
 }
 
-export interface PayloadEditUserSucces {
+export interface PayloadEditUserSuccess {
   id: number
   avatar?: string
   username?: string
@@ -52,7 +52,7 @@ export interface PayloadEditUserErrors {
   repeatPassword: null | string
   avatar: null | string
 }
-/** Интерфейс действия аутификации */
+/** Интерфейс действия аутентификации */
 export interface ActionAuth extends IAction {
   type: ActionType.AUTH
   payload: {
@@ -105,15 +105,15 @@ export interface ActionLogOutFail extends IAction {
 }
 /** Интерфейс действия успешной регистрации */
 export interface ActionEditUseDataSuccess extends IAction {
-  type: ActionType.CHANGEUSERDATA_SUCCESS
+  type: ActionType.CHANGE_USERDATA_SUCCESS
   payload: {
-    user: PayloadEditUserSucces
+    user: PayloadEditUserSuccess
     formErrors: PayloadEditUserErrors
   }
 }
 /** Интерфейс действия провальной регистрации */
 export interface ActionEditUserFail extends IAction {
-  type: ActionType.CHANGEUSERDATA_FAIL
+  type: ActionType.CHANGE_USERDATA_FAIL
   payload: PayloadEditUserErrors
 }
 

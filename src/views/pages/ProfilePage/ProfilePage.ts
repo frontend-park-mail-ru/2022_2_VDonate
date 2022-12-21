@@ -44,7 +44,6 @@ export default class ProfilePage extends UpgradeViewBase {
       return;
     }
 
-    // TODO Переделать на 2 отдельные функции рендера в один компонент
     if (profileNew.user.isAuthor !== this.isAuthor ||
       typeof this.isAuthor == 'undefined') {
       this.isAuthor = profileNew.user.isAuthor;

@@ -1,5 +1,5 @@
 import Button, {ButtonType} from '@components/Button/Button';
-import {openPayEditor, openSubscribtionEditor} from '@actions/handlers/editor';
+import {openPayEditor, openSubscriptionEditor} from '@actions/handlers/editor';
 import './subscription-card.styl';
 import template from './subscription-card.hbs';
 import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
@@ -173,7 +173,7 @@ class SubscriptionCard
           actionType: 'button',
           innerText: 'Изменить',
           clickHandler: () => {
-            openSubscribtionEditor(this.options.subscriptionID);
+            openSubscriptionEditor(this.options.subscriptionID);
           },
         });
         break;

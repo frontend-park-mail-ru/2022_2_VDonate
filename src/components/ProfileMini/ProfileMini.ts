@@ -23,7 +23,7 @@ interface ProfileMiniUpdateContext {
 
 
 export default
-class ProfielMini extends ComponentBase<'a', ProfileMiniUpdateContext> {
+class ProfileMini extends ComponentBase<'a', ProfileMiniUpdateContext> {
   private avatar!: Avatar;
   private username: HTMLSpanElement = document.createElement('span');
 

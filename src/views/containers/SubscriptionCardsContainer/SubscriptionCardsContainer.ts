@@ -4,7 +4,7 @@ import './subscription-cards-container.styl';
 import plusIcon from '@icon/plus.svg';
 import store from '@app/Store';
 import {PayloadSubscription} from '@actions/types/subscribe';
-import {openSubscribtionEditor} from '@actions/handlers/editor';
+import {openSubscriptionEditor} from '@actions/handlers/editor';
 import Button, {ButtonType} from '@components/Button/Button';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
 import UpgradeViewBase from '@app/UpgradeView';
@@ -46,7 +46,7 @@ export default class SubscriptionCardsContainer
         innerIcon: plusIcon,
         actionType: 'button',
         clickHandler: () => {
-          openSubscribtionEditor();
+          openSubscriptionEditor();
         },
       });
     }
@@ -94,7 +94,7 @@ export default class SubscriptionCardsContainer
     }) !== -1) {
       this.onErase();
       newSubscriptionsState.forEach((sub) => {
-        this.addSubcriptionCard(sub);
+        this.addSubscriptionCard(sub);
       });
     }
 
@@ -140,7 +140,7 @@ export default class SubscriptionCardsContainer
               description: subscription.text,
             });
           } else {
-            this.addSubcriptionCard(subscription);
+            this.addSubscriptionCard(subscription);
           }
         },
     );
@@ -154,7 +154,7 @@ export default class SubscriptionCardsContainer
     this.subscriptionsState.clear();
   }
 
-  addSubcriptionCard(sub: PayloadSubscription) {
+  addSubscriptionCard(sub: PayloadSubscription) {
     let status: SubscriptionCardStatus;
     if (this.options.changeable) status = SubscriptionCardStatus.AUTHOR;
     else {

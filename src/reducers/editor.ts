@@ -15,17 +15,15 @@ const editorReducer: Reducer<Action> =
           type: EditorType.CLOSE_POST,
           id: action.payload.postID,
         };
-      case ActionType.ROUTING:
-        return {};
       case ActionType.DELETE_POST:
-      case ActionType.CHANGEUSERDATA_SUCCESS:
-      case ActionType.DELETEAUTHORSUBSCRIPTION:
+      case ActionType.CHANGE_USERDATA_SUCCESS:
+      case ActionType.DELETE_AUTHOR_SUBSCRIPTION:
       case ActionType.SUBSCRIBE:
       case ActionType.UNSUBSCRIBE:
       case ActionType.SWITCH_SUBSCRIPTION:
         return {};
-      case ActionType.CREATEAUTHORSUBSRIPTION:
-      case ActionType.EDITAUTHORSUBSRIPTION: {
+      case ActionType.CREATE_AUTHOR_SUBSCRIPTION:
+      case ActionType.EDIT_AUTHOR_SUBSCRIPTION: {
         let errorFounded = false;
         Object.entries(action.payload.formErrors).forEach(
             ([, value]) => {
@@ -37,9 +35,8 @@ const editorReducer: Reducer<Action> =
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         return errorFounded ? state : {};
       }
-      // TODO решить что делать при роутинге (закрывать попап или другое)
-      // case ActionType.ROUTING:
-      //   return {};
+      case ActionType.ROUTING:
+        return {};
       default:
         return state;
     }

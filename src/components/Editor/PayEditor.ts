@@ -48,7 +48,7 @@ class PayEditor extends ComponentBase<'div'> {
             subscribe(this.options.authorID, this.options.authorSubscriptionID);
           },
         }).addClassNames('btn-area__btn');
-        text.innerText = 'Вы действительно собиратесь задонатить?';
+        text.innerText = 'Вы действительно собираетесь задонатить?';
         break;
       case SubscriptionCardStatus.ALREADY_DONATED:
         new Button(btnArea, {
@@ -62,7 +62,7 @@ class PayEditor extends ComponentBase<'div'> {
             );
           },
         }).addClassNames('btn-area__btn');
-        text.innerText = 'Вы действительно собиратесь отписаться?';
+        text.innerText = 'Вы действительно собираетесь отписаться?';
         break;
       default:
         text.innerText = 'Ошибка';

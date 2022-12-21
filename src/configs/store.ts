@@ -6,7 +6,7 @@ import {PayloadLocation} from '@actions/types/routing';
 import {PayloadSubscription} from '@actions/types/subscribe';
 import {Pages} from './router';
 
-const initinalState: {
+const initialState: {
   location: PayloadLocation,
   notice: PayloadNotice,
   posts: Map<number, PayloadPost>,
@@ -53,4 +53,4 @@ const initinalState: {
   backNotice: [],
 };
 
-export default initinalState;
+export default initialState;

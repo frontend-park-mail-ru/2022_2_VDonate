@@ -50,7 +50,7 @@ export default class Api {
   }
 
   /**
-     * Интерфейс аутенфикации пользователя
+     * Интерфейс аутентификации пользователя
      * @return объект ответа с полями {ok,status,body}
      */
   authUser(): Promise<ResponseData> {
@@ -131,7 +131,7 @@ export default class Api {
 
   /**
      * Интерфейс изменения данных пользователя
-     * @param data Обьект
+     * @param data Объект
      * @return объект ответа с полями {ok,status,body}
      */
   putUserData(data: {
@@ -226,7 +226,7 @@ export default class Api {
     return this.request(`/posts/${id}/likes`, Method.DELETE, ContentType.json);
   }
   /**
-   * @param data -Обьект
+   * @param data -Объект
    * @return объект ответа с полями {ok,status,body}
    */
   editAuthorSubscription(data: {
@@ -245,7 +245,7 @@ export default class Api {
   }
 
   /**
-   * @param data -Обьект
+   * @param data -Объект
    * @return объект ответа с полями {ok,status,body}
    */
   createAuthorSubscription(data: {

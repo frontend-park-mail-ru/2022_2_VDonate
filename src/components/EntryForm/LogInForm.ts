@@ -10,16 +10,16 @@ import './entry-form.styl';
 /** Контекст для шаблона */
 const logInContext = {
   title: 'Вход',
-  greeting: 'Мы ждали тебя!',
+  greeting: 'Мы ждали вас!',
   link: '/signup',
-  textLink: 'Ещё не с нами? Зарегистрируйся!',
+  textLink: 'Ещё не с нами? Зарегистрируйтесь!',
 };
 /** Контекст для полей ввода */
 const logInInputs: InputOptions[] = [
   {
     kind: InputType.USERNAME,
     label: 'Псевдоним',
-    placeholder: 'Введите свой псеводим',
+    placeholder: 'Введите свой псевдоним',
     name: 'username',
     displayError: false,
     title: 'Псевдоним должен содержать не менее 3 символов',

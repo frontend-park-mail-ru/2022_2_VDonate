@@ -10,7 +10,7 @@ const userReducer: Reducer<Action> =
       case ActionType.LOGIN_SUCCESS:
       case ActionType.SIGNUP_SUCCESS:
         return action.payload.user;
-      case ActionType.CHANGEUSERDATA_SUCCESS:
+      case ActionType.CHANGE_USERDATA_SUCCESS:
         if (action.payload.user.avatar) {
           (state as PayloadUser).avatar =
           action.payload.user.avatar;

@@ -30,9 +30,7 @@ import {
 import {PayloadComment} from '@actions/types/comments';
 import Comment from '@components/Comment/Comment';
 import {notice} from '@actions/handlers/notice';
-import {
-  commentSize,
-  deleteEnterAndSpacebarsInEndOfString} from '@validation/validation';
+import {commentSize} from '@validation/validation';
 
 export enum ContextType {
   RUNTIME_POST_UPDATE,
@@ -42,7 +40,7 @@ export enum ContextType {
 }
 
 type PostOptions = PayloadPost & {
-  changable: boolean
+  changeable: boolean
   inEditState: boolean
   commentsOpened: boolean
 };
@@ -113,13 +111,13 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
         }
         this.options.inEditState = data.NewEditState;
         break;
-      case ContextType.EDIT_POST_UPDATE:
-        // eslint-disable-next-line no-case-declarations
+      case ContextType.EDIT_POST_UPDATE: {
         const image = document.createElement('img');
         image.src = data.url;
         image.classList.add('post-content__image');
         this.content.appendChild(image);
         break;
+      }
       case ContextType.RUNTIME_POST_UPDATE:
         this.options.isLiked = data.isLiked;
         this.options.likesNum = data.likesNum;
@@ -215,7 +213,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     } else {
       this.renderActions(post);
 
-      if (this.options.changable) {
+      if (this.options.changeable) {
         const header = querySelectorWithThrow(post, '.post__header');
         const editBtn = new Button(header, {
           actionType: 'button',
@@ -247,15 +245,14 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     }).addClassNames('new-comment__submit');
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      let commentText = input.innerText;
-      commentText = deleteEnterAndSpacebarsInEndOfString(commentText);
-      if (commentText.length == 0) {
-        notice('Вы ввели пустой коментарий', 'error');
-      } else if (commentText.length > commentSize) {
+      input.innerText = input.innerText.trim();
+      if (input.innerText.length == 0) {
+        notice('Вы ввели пустой комментарий', 'error');
+      } else if (input.innerText.length > commentSize) {
         notice(
-            `Коментарий должен быть меньше ${commentSize} символов`, 'error');
+            `Комментарий должен быть меньше ${commentSize} символов`, 'error');
       } else {
-        addComment(this.options.postID, commentText);
+        addComment(this.options.postID, input.innerText);
       }
     });
     newComment.appendChild(form);
@@ -370,7 +367,6 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
       title: 'Ограничение видимости поста по подписке',
     });
     tierBtn.addClassNames('post-edit-form__tier');
-    // form.appendChild(tierField);
 
     const headerBtn = new Button(form, {
       actionType: 'button',
@@ -408,7 +404,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     const saveBtn = new Button(formBtns, {
       actionType: 'submit',
       viewType: ButtonType.PRIMARY,
-      innerText: 'Сохранить',
+      innerText: this.options.postID == -1 ? 'Создать' : 'Сохранить',
     });
     saveBtn.addClassNames('btn-area__btn');
 

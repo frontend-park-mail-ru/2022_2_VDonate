@@ -9,7 +9,7 @@ import Button, {ButtonType} from '@components/Button/Button';
 import {PayloadUser} from '@actions/types/user';
 import UpgradeViewBase from '@app/UpgradeView';
 import {EditorType, PayloadEditor} from '@actions/types/editor';
-import {createNewPost} from '@actions/handlers/editor';
+import {closeEditor, createNewPost} from '@actions/handlers/editor';
 import {PayloadComment} from '@actions/types/comments';
 
 interface PostsContainerOptions {
@@ -31,7 +31,6 @@ class PostsContainer
   private posts = new Map<number, Post>();
   private imageState: PayloadPutImage;
   private commentState!: CommentState;
-  private newPost!: Post;
   editorState!: PayloadEditor;
 
   constructor(el: HTMLElement, private options: PostsContainerOptions) {
@@ -52,7 +51,13 @@ class PostsContainer
             viewType: ButtonType.ICON,
             actionType: 'button',
             innerIcon: plusIcon,
-            clickHandler: createNewPost,
+            clickHandler: () => {
+              if (this.posts.get(-1)) {
+                closeEditor(-1);
+              } else {
+                createNewPost();
+              }
+            },
           });
     }
     querySelectorWithThrow(container, '.posts-container__empty')
@@ -173,7 +178,7 @@ class PostsContainer
     );
     this.posts.set(postPayload.postID, new Post(postsArea, {
       ...postPayload,
-      changable: postPayload.author.userID ===
+      changeable: postPayload.author.userID ===
         (store.getState().user as PayloadUser).id,
       inEditState: false,
       commentsOpened: false,
@@ -202,7 +207,7 @@ class PostsContainer
       tier: 0,
       commentsNum: 0,
       inEditState: true,
-      changable: true,
+      changeable: true,
       commentsOpened: false,
     }));
   }

@@ -1,6 +1,6 @@
 import {closeEditor} from '@actions/handlers/editor';
 import {
-  AuthorSubscrptionForm,
+  AuthorSubscriptionForm,
   createAuthorSubscription,
   deleteAuthorSubscription,
   editAuthorSubscription} from '@actions/handlers/subscribe';
@@ -72,10 +72,10 @@ class SubscriptionEditor
           if (this.options) {
             editAuthorSubscription(
                 this.options.id,
-              (e.target as HTMLFormElement).elements as AuthorSubscrptionForm);
+              (e.target as HTMLFormElement).elements as AuthorSubscriptionForm);
           } else {
             createAuthorSubscription(
-              (e.target as HTMLFormElement).elements as AuthorSubscrptionForm);
+              (e.target as HTMLFormElement).elements as AuthorSubscriptionForm);
           }
           return false;
         },

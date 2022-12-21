@@ -49,10 +49,10 @@ const dataToQuery = (data: RequestData): string => {
       });
   return queryString;
 };
-/** Поле для CSFR токена */
+/** Поле для CSRF токена */
 // const csrfField = 'csrf_token';
 /**
- *  Сохрание CSRF токена в локальное хранилище
+ *  Сохранение CSRF токена в локальное хранилище
  * @returns успешное сохранение CSRF токена
  */
 export const saveCSRF = (): boolean => {

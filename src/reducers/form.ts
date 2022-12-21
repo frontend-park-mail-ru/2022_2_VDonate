@@ -7,13 +7,13 @@ const formErrorsReducer: Reducer<Action> =
     switch (action.type) {
       case ActionType.LOGIN_SUCCESS:
       case ActionType.SIGNUP_SUCCESS:
-      case ActionType.CHANGEUSERDATA_SUCCESS:
-      case ActionType.CREATEAUTHORSUBSRIPTION:
-      case ActionType.EDITAUTHORSUBSRIPTION:
+      case ActionType.CHANGE_USERDATA_SUCCESS:
+      case ActionType.CREATE_AUTHOR_SUBSCRIPTION:
+      case ActionType.EDIT_AUTHOR_SUBSCRIPTION:
         return action.payload.formErrors;
       case ActionType.LOGIN_FAIL:
       case ActionType.SIGNUP_FAIL:
-      case ActionType.CHANGEUSERDATA_FAIL:
+      case ActionType.CHANGE_USERDATA_FAIL:
         return action.payload;
       case ActionType.ROUTING:
         return {};

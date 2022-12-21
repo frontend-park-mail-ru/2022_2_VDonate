@@ -42,7 +42,7 @@ export interface ActionSwitchSubscription extends IAction {
 }
 
 export interface ActionGetSubscriptions extends IAction {
-  type: ActionType.GETSUBSCRIPTIONS
+  type: ActionType.GET_SUBSCRIPTIONS
   payload: PayloadSubscription[]
 }
 
@@ -56,7 +56,7 @@ export interface PayloadAuthorSubscriptionErrors {
 }
 
 export interface ActionEditAuthorSubscription extends IAction {
-  type: ActionType.EDITAUTHORSUBSRIPTION
+  type: ActionType.EDIT_AUTHOR_SUBSCRIPTION
   payload: {
     subscription?: PayloadSubscription
     formErrors: PayloadAuthorSubscriptionErrors
@@ -64,7 +64,7 @@ export interface ActionEditAuthorSubscription extends IAction {
 }
 
 export interface ActionCreateAuthorSubscription extends IAction {
-  type: ActionType.CREATEAUTHORSUBSRIPTION
+  type: ActionType.CREATE_AUTHOR_SUBSCRIPTION
   payload: {
     subscription?: PayloadSubscription
     formErrors: PayloadAuthorSubscriptionErrors
@@ -72,7 +72,7 @@ export interface ActionCreateAuthorSubscription extends IAction {
 }
 
 export interface ActionDeleteAuthorSubscription extends IAction {
-  type: ActionType.DELETEAUTHORSUBSCRIPTION
+  type: ActionType.DELETE_AUTHOR_SUBSCRIPTION
   payload: {
     id: number,
   }

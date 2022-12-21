@@ -21,15 +21,10 @@ class EditorContainer
     | PayEditor;
   private editorType!: EditorType;
 
-  private imageState: {
-    url: string,
-  };
-
   constructor(el: HTMLElement) {
     super();
     this.editorState = store.getState().editor as PayloadEditor;
     this.formErrorsState = store.getState().formErrors as PayloadFormError;
-    this.imageState = store.getState().image as { url: string };
     this.renderTo(el);
     this.displayEditor(this.editorState);
   }
@@ -84,8 +79,8 @@ class EditorContainer
             });
         break;
       }
-      case EditorType.SUBSCRIBTION: {
-        this.editorType = EditorType.SUBSCRIBTION;
+      case EditorType.SUBSCRIPTION: {
+        this.editorType = EditorType.SUBSCRIPTION;
         if (typeof newEditor.id !== 'number') {
           this.currentEditor = new SubscriptionEditor(this.domElement);
           break;

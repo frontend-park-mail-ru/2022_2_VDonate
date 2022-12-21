@@ -86,7 +86,7 @@ class About extends ComponentBase<'div', string> {
     form.classList.add('about__form');
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      this.options.aboutTextHtml = this.content.innerText;
+      this.options.aboutTextHtml = this.content.innerText.trim();
       editAbout(this.options.id, this.options.aboutTextHtml);
       this.closeEditor();
     });

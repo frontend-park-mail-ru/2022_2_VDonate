@@ -7,7 +7,7 @@
  * Ограничения длин полей
  * @namespace
  * @property {number} localMax максимальная длина локальной части почты
- * @property {number} domainLableMax максимальная длина одного уровня доменной
+ * @property {number} domainLabel максимальная длина одного уровня доменной
  * части почты
  * @property {object} username значения длин псевдонима
  * @property {number} username.max значение максимальной длины псевдонима
@@ -21,7 +21,7 @@ const sizes = {
     min: 1,
     max: 64,
   },
-  domainLable: {
+  domainLabel: {
     min: 1,
     max: 63,
   },
@@ -47,7 +47,7 @@ const sizes = {
   },
   price: {
     min: 1,
-    max: 1000000000, // 1mlrd
+    max: 1000000000, // 1 миллиард
   },
 };
 
@@ -73,19 +73,19 @@ export const emailCheck = (email: string): string | null => {
   }
 
   const domain = emailSplit[1];
-  const domainLables = domain.split('.');
-  if (domainLables.length < 2) {
+  const domainLabels = domain.split('.');
+  if (domainLabels.length < 2) {
     return 'Неверная почта. После @ должно быть минимум 2 подуровня';
   }
-  if (domainLables.reduce((prev, current) => prev ||
-    current.length < sizes.domainLable.min, false)) {
+  if (domainLabels.reduce((prev, current) => prev ||
+    current.length < sizes.domainLabel.min, false)) {
     return `Неверная почта. 
-    Символов после @ в одном подуровне меньше ${sizes.domainLable.min}`;
+    Символов после @ в одном подуровне меньше ${sizes.domainLabel.min}`;
   }
-  if (domainLables.reduce((prev, current) => prev ||
-    current.length > sizes.domainLable.max, false)) {
+  if (domainLabels.reduce((prev, current) => prev ||
+    current.length > sizes.domainLabel.max, false)) {
     return `Неверная почта. 
-    Символов после @ в одном подуровне больше ${sizes.domainLable.max}`;
+    Символов после @ в одном подуровне больше ${sizes.domainLabel.max}`;
   }
 
   const localReg =
@@ -150,7 +150,7 @@ export const passwordCheck = (password: string): null | string => {
 };
 
 /**
- * Проверка строки повторного ввода пароля совподение с полем ввода пароля
+ * Проверка строки повторного ввода пароля совпадение с полем ввода пароля
  * @param {Element} origin строка для валидации пароля
  * @param {Element} repeat элемент повторного ввода пароля
  * @return null или сообщение об ошибке
@@ -162,29 +162,11 @@ export const repeatPasswordCheck = (
     return 'Поле повторного пароля не может быть пустым';
   }
   if (origin !== repeat) {
-    return 'Поле повторного пароля должно совпадать полем пароля';
+    return 'Поле повторного пароля должно совпадать с полем пароля';
   }
 
   return null;
 };
-
-// /**
-//  * @param tier строка для валидации
-//  * @returns null или сообщение об ошибке
-//  */
-// export const tierCheck = (tier: string): null | string => {
-//   const tierReg = /^[0-9]+$/;
-//   if (!tierReg.test(tier)) {
-//     return 'Укажите уровень используя только цифры';
-//   }
-//   if (Number(tier) < sizes.tier.min) {
-//     return `Уровень меьше ${sizes.tier.min}`;
-//   }
-//   if (Number(tier) > sizes.tier.max) {
-//     return `Уровень больше ${sizes.tier.max}`;
-//   }
-//   return null;
-// };
 
 /**
  * @param price строка для валидации
@@ -238,13 +220,3 @@ export const textCheck = (text: string): null | string => {
   }
   return null;
 };
-
-export const deleteEnterAndSpacebarsInEndOfString = (text: string): string => {
-  while (text.endsWith(' ') ||
-         text.endsWith('\n') &&
-         text.length !== 0) {
-    text = text.slice(0, -1);
-  }
-  return text;
-};
-

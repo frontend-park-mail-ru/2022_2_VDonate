@@ -1,4 +1,3 @@
-/* eslint-disable no-case-declarations */
 import {Action, ActionType} from '@actions/types/action';
 import {
   PayloadGetProfileData} from '@actions/types/getProfileData';
@@ -9,9 +8,9 @@ import {PropTree} from '@flux/types/store';
 const profileReducer: Reducer<Action> =
   (state: PropTree, action: Action): PropTree => {
     switch (action.type) {
-      case ActionType.GETPROFILEDATA:
+      case ActionType.GET_PROFILEDATA:
         return action.payload;
-      case ActionType.CREATEAUTHORSUBSRIPTION: {
+      case ActionType.CREATE_AUTHOR_SUBSCRIPTION: {
         if (!action.payload.subscription) {
           return state;
         }
@@ -27,7 +26,7 @@ const profileReducer: Reducer<Action> =
         }
         return state;
       }
-      case ActionType.EDITAUTHORSUBSRIPTION: {
+      case ActionType.EDIT_AUTHOR_SUBSCRIPTION: {
         const authorSubscriptions = (state as PayloadGetProfileData)
             .authorSubscriptions;
         if (!authorSubscriptions) return state;
@@ -48,7 +47,7 @@ const profileReducer: Reducer<Action> =
         }
         return state;
       }
-      case ActionType.DELETEAUTHORSUBSCRIPTION: {
+      case ActionType.DELETE_AUTHOR_SUBSCRIPTION: {
         const authorSubscriptions = (state as PayloadGetProfileData)
             .authorSubscriptions;
         if (!authorSubscriptions) return state;
@@ -69,7 +68,7 @@ const profileReducer: Reducer<Action> =
         }
         return state;
       }
-      case ActionType.CHANGEUSERDATA_SUCCESS:
+      case ActionType.CHANGE_USERDATA_SUCCESS:
         if ((state as PayloadGetProfileData).user.id !==
             action.payload.user.id) {
           return state;
