@@ -36,6 +36,7 @@ export default class BackNoticeContainer extends UpgradeViewBase {
       text.innerText = 'Новых уведомлений нет.';
       this.domElement.appendChild(text);
     } else if (backNoticesNew.length > this.backNoticeState.length) {
+      this.domElement.querySelector('.back-notice-container__empty')?.remove();
       for (
         let idx = this.backNoticeState.length;
         idx < backNoticesNew.length;
