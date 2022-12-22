@@ -34,32 +34,25 @@ self.addEventListener('activate', (event) => {
  *               static files from cache.
  * @param event - fetch request
  */
-self.addEventListener('fetch', (request) => {
-  if (request.method !== 'GET') {
+self.addEventListener('fetch', (e) => {
+  if (e.request.method !== 'GET') {
     return false;
   }
-  request.respondWith(
-      cacheFirst({
-        request: request.request,
-        preloadResponseProm: request.preloadResponse,
-      }),
+  e.respondWith(
+      cacheFirst(e.request),
   );
   return true;
 });
 
-const apiRegex = /^(.*)\/api\/(.*)/;
 
 /**
  * @description: Cache first strategy
  * @param request - request to cache
  * @returns {Promise<Response>} - cached response or network response
  */
-const cacheFirst = async ({request}) => {
+const cacheFirst = async (request) => {
   // Firstly trying to get the response from cache
-  const cachedResponse = await caches.match(request);
-  if ((!apiRegex.test(request.url) || !navigator.onLine) && cachedResponse) {
-    return cachedResponse;
-  }
+  const cache = await caches.open(CACHE_NAME);
 
   // Trying to get the response from preload
   // const preloadResponse = await preloadResponseProm;
@@ -72,9 +65,16 @@ const cacheFirst = async ({request}) => {
   // then we are trying to get it from network
   try {
     const networkResponse = await fetch(request);
-    void putInCache(request, networkResponse.clone());
+    if (networkResponse.ok) {
+      await cache.put(request, networkResponse.clone());
+    }
+    // void putInCache(request, networkResponse.clone());
     return networkResponse;
   } catch (err) {
+    const cachedResponse = await cache.match(request);
+    if (cachedResponse) {
+      return cachedResponse;
+    }
     return new Response('No internet connection', {
       status: 408,
       statusText: 'No internet connection',
@@ -82,10 +82,6 @@ const cacheFirst = async ({request}) => {
   }
 };
 
-const putInCache = async (request, response) => {
-  const cache = await caches.open(CACHE_NAME);
-  await cache.put(request, response);
-};
 
 const enableNavigationPreload = async () => {
   if (self.registration.navigationPreload) {
