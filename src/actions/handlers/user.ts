@@ -507,13 +507,14 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
 
 export const editAbout = (id: number, about: string): void => {
   about = about.trim();
-  if (about.length > 1024) {
+  if (about.length > 1000) {
     store.dispatch({
       type: ActionType.NOTICE,
       payload: {
-        message: 'Поле \'Обо мне\' должно содержать меньше 1024 символов',
+        message: 'Поле \'Обо мне\' должно содержать меньше 1000 символов',
       },
     });
+    return;
   }
   if (about.length == 0) {
     store.dispatch({
@@ -522,6 +523,7 @@ export const editAbout = (id: number, about: string): void => {
         message: 'Поле \'Обо мне\' должно содержать 1 или больше символов',
       },
     });
+    return;
   }
   api.putUserData({
     id,
