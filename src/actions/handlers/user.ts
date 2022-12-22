@@ -78,6 +78,14 @@ const getUser = (id: number, dispatch: (user: PayloadUser) => void) => {
               break;
             case 401:
               return auth();
+            case 408:
+              store.dispatch({
+                type: ActionType.NOTICE,
+                payload: {
+                  message: 'Сервер не отвечает',
+                },
+              });
+              break;
             default:
               store.dispatch({
                 type: ActionType.NOTICE,
