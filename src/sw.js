@@ -75,7 +75,7 @@ const cacheFirst = async (request) => {
     if (cachedResponse) {
       return cachedResponse;
     }
-    return new Response('No internet connection', {
+    return new Response({message: 'Нет соединения с интернето.'}, {
       status: 408,
       statusText: 'No internet connection',
     });
