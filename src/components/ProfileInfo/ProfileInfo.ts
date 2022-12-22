@@ -204,9 +204,9 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
       actionType: 'button',
       innerText: 'Вывести деньги',
       clickHandler: () => {
-        openWithdrawEditor();
+        // openWithdrawEditor();
         if (this.options.balance) {
-          // openWithdrawEditor();
+          openWithdrawEditor();
         } else {
           notice('Ваш баланс равен нулю', 'info');
         }
