@@ -2,15 +2,24 @@ import SmallSizeInfo from '@components/SmallSizeInfo/SmallSizeInfo';
 import '@style/index.styl';
 import Root from '@views/Root';
 
+// if ('serviceWorker' in navigator) {
+//   window.addEventListener('load', () => {
+//     navigator.serviceWorker.register('/sw.js')
+//         .then((registration) => {
+//           console.log('ServiceWorker registration: ', registration.scope);
+//         }).catch((err) => {
+//           console.log('ServiceWorker registration failed: ', err);
+//         });
+//   });
+// }
+
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-        .then((registration) => {
-          console.log('ServiceWorker registration: ', registration.scope);
-        }).catch((err) => {
-          console.log('ServiceWorker registration failed: ', err);
-        });
-  });
+  void navigator.serviceWorker.getRegistrations()
+      .then(function(registrations) {
+        for (const registration of registrations) {
+          void registration.unregister();
+        }
+      });
 }
 
 new SmallSizeInfo(document.body);
