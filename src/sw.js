@@ -47,24 +47,26 @@ self.addEventListener('fetch', (request) => {
   return true;
 });
 
+const apiRegex = /^(.*)\/api\/(.*)/;
+
 /**
  * @description: Cache first strategy
  * @param request - request to cache
  * @returns {Promise<Response>} - cached response or network response
  */
-const cacheFirst = async ({request, preloadResponseProm}) => {
+const cacheFirst = async ({request}) => {
   // Firstly trying to get the response from cache
   const cachedResponse = await caches.match(request);
-  if (cachedResponse && !navigator.onLine) {
+  if ((!apiRegex.test(request.url) || !navigator.onLine) && cachedResponse) {
     return cachedResponse;
   }
 
   // Trying to get the response from preload
-  const preloadResponse = await preloadResponseProm;
-  if (preloadResponse) {
-    void putInCache(request, preloadResponse.clone());
-    return preloadResponse;
-  }
+  // const preloadResponse = await preloadResponseProm;
+  // if (preloadResponse) {
+  //   void putInCache(request, preloadResponse.clone());
+  //   return preloadResponse;
+  // }
 
   // If there is no response in cache and preloaded response
   // then we are trying to get it from network
