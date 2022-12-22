@@ -35,8 +35,6 @@ class WebSocketNotice {
     this.ws?.send(JSON.stringify({
       cancel: true,
     }));
-    clearAllBackNotice();
-    notice('Уведомления очищены', 'info');
   }
 
   close() {
