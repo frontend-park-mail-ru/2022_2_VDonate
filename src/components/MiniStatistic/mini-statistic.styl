@@ -1,0 +1,26 @@
+@require '@style/const.styl'
+@require '@style/mixin.styl'
+  
++b(mini-statistic)
+  display: flex
+  flex-direction: column
+  flex-wrap: wrap
+  justify-content: center
+  align-items: stretch
+  gap: 15px
+  // border-right: 2px rgba(0, 16, 61, 0.06)
+  +e(container)
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    gap: 15px
+    color: color-font-secondary
+  +e(text)
+    color: color-font-secondary
+    word-break: initial
+      
+@media  (max-width: mobile-size)
+  +b(mini-statistic)
+    align-items: center
+    +e(container)
+      justify-content: space-evenly
