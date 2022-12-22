@@ -54,6 +54,14 @@ export const openPayEditor = (
   });
 };
 
+export const openWithdrawEditor = () =>
+  store.dispatch({
+    type: ActionType.EDITOR_OPEN,
+    payload: {
+      type: EditorType.WITHDRAW,
+    },
+  });
+
 export const closeEditor = (id?: number) =>
   store.dispatch({
     type: ActionType.EDITOR_CLOSE,

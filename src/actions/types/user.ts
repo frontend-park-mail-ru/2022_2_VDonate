@@ -130,3 +130,8 @@ export interface ActionBecomeAuthor extends IAction {
     success: boolean
   }
 }
+
+export interface ActionWithdraw extends IAction {
+  type: ActionType.WITHDRAW
+  payload: Record<string, never>
+}

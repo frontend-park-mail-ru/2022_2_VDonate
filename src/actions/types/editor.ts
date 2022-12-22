@@ -8,6 +8,7 @@ export enum EditorType {
   SUBSCRIPTION,
   PAY,
   POST,
+  WITHDRAW,
   CLOSE_POST,
 }
 
@@ -35,11 +36,16 @@ interface PayloadPayEditor {
   currentCardStatus: SubscriptionCardStatus,
 }
 
+interface PayloadWithdrawEditor {
+  type: EditorType.WITHDRAW
+}
+
 type PayloadOpenEditor =
   | PayloadProfileEditor
   | PayloadSubscriptionEditor
   | PayloadPayEditor
-  | PayloadPostEditor;
+  | PayloadPostEditor
+  | PayloadWithdrawEditor;
 
 type PayloadCloseEditor = Record<string, never>
   | PayloadClosePostEditor;

@@ -173,6 +173,7 @@ export default (id: number): void => {
             user.countProfitMounth = res.body.countProfitMounth as number;
             user.countSubscribersMounth =
               res.body.countSubscribersMounth as number;
+            user.balance = res.body.balance as number;
             return getAuthorData(user);
           } else {
             return getDonaterData(user);

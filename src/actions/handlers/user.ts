@@ -40,6 +40,11 @@ export interface EditUserFormElements extends HTMLCollection {
   avatar?: HTMLInputElement
 }
 
+export interface WithdrawFormElements extends HTMLCollection {
+  phone?: HTMLInputElement
+  card?: HTMLInputElement
+}
+
 const getUser = (id: number, dispatch: (user: PayloadUser) => void) => {
   return api.getUser(id)
       .then((res: ResponseData) => {
@@ -567,6 +572,68 @@ export const becomeAuthor = (id: number): void => {
             type: ActionType.NOTICE,
             payload: {
               message: 'Ошибка при становлении автором',
+            },
+          });
+        }
+      })
+      .catch((err) => {
+        store.dispatch({
+          type: ActionType.NOTICE,
+          payload: {
+            message: err as Error,
+          },
+        });
+      });
+};
+
+export const withdraw = (data: WithdrawFormElements): void => {
+  let isPhone: boolean;
+  let text: string;
+  if (data.card) {
+    isPhone = false;
+    text = data.card.value;
+    if (text.length !== 16) {
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Некорректная длина номера карты',
+        },
+      });
+      return;
+    }
+  } else if (data.phone) {
+    isPhone = true;
+    text = data.phone.value;
+    if (text.length !== 11) {
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Некорректная длина номера телефона',
+        },
+      });
+      return;
+    }
+  } else {
+    store.dispatch({
+      type: ActionType.NOTICE,
+      payload: {
+        message: 'Ошибка при отправке формы, повторите попытку',
+      },
+    });
+    return;
+  }
+  api.withdraw((store.getState().user as PayloadUser).id, isPhone, text)
+      .then((res) => {
+        if (res.ok) {
+          store.dispatch({
+            type: ActionType.WITHDRAW,
+            payload: {},
+          });
+        } else {
+          store.dispatch({
+            type: ActionType.NOTICE,
+            payload: {
+              message: res.body.message as string,
             },
           });
         }

@@ -59,6 +59,7 @@ export default class ProfilePage extends UpgradeViewBase {
       countPosts: profileNew.user.countPosts ?? 0,
       countProfitMounth: profileNew.user.countProfitMounth ?? 0,
       countSubscribersMounth: profileNew.user.countSubscribersMounth ?? 0,
+      balance: profileNew.user.balance ?? 0,
     });
     if (!this.isAuthor) {
       if (!profileNew.userSubscriptions ||

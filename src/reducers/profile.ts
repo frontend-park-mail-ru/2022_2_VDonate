@@ -8,6 +8,11 @@ import {PropTree} from '@flux/types/store';
 const profileReducer: Reducer<Action> =
   (state: PropTree, action: Action): PropTree => {
     switch (action.type) {
+      case ActionType.WITHDRAW:
+        // так как может вызваться только в своем профиле,
+        // то нет смысла проверять
+        (state as PayloadGetProfileData).user.balance = 0;
+        return state;
       case ActionType.GET_PROFILEDATA:
         return action.payload;
       case ActionType.CREATE_AUTHOR_SUBSCRIPTION: {

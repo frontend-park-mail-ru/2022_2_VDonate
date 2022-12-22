@@ -4,7 +4,8 @@ import editIcon from '@icon/edit.svg';
 import './profile-info.styl';
 import Button, {ButtonType} from '@components/Button/Button';
 import {becomeAuthor} from '@actions/handlers/user';
-import {openProfileEditor} from '@actions/handlers/editor';
+import {openProfileEditor, openWithdrawEditor} from '@actions/handlers/editor';
+import {notice} from '@actions/handlers/notice';
 
 interface ProfileInfoOptions {
   isAuthor: boolean
@@ -15,6 +16,7 @@ interface ProfileInfoOptions {
   countPosts?: number
   countProfitMounth?: number
   countSubscribersMounth?: number
+  balance?: number
   id: number
   changeable: boolean
 }
@@ -28,6 +30,7 @@ interface ProfileInfoUpdateContext {
   countPosts: number
   countProfitMounth: number
   countSubscribersMounth: number
+  balance: number
 }
 
 /**
@@ -65,6 +68,9 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
       if (this.options.changeable) {
         querySelectorWithThrow(this.domElement, '.profile-info__become-author')
             .remove();
+        this.renderBalance(
+            querySelectorWithThrow(this.domElement, '.profile-info__back'),
+        );
       }
     } else if (this.options.isAuthor && !data.isAuthor) {
       this.options.isAuthor = false;
@@ -86,6 +92,7 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
                 becomeAuthor(this.options.id);
               },
             }).addClassNames('profile-info__become-author');
+        querySelectorWithThrow(this.domElement, '.balance-area').remove();
       }
     }
 
@@ -109,6 +116,12 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
         this.options.countSubscribersMounth = data.countSubscribersMounth;
         this.countSubscribersMounth.innerText =
           data.countSubscribersMounth.toString();
+      }
+      if (this.options.changeable &&
+        this.options.balance !== data.balance) {
+        this.options.balance = data.balance;
+        querySelectorWithThrow(this.domElement, '.balance-area__balance-span')
+            .innerHTML = `Баланс ${this.options.balance}&#8381;`;
       }
     } else {
       if (this.options.countSubscriptions !== data.countSubscriptions) {
@@ -146,6 +159,9 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
 
     if (this.options.isAuthor) {
       this.renderAuthorStatistic(miniStatistic);
+      if (this.options.changeable) {
+        this.renderBalance(back);
+      }
     } else {
       this.renderDonaterStatistic(miniStatistic);
       if (this.options.changeable) {
@@ -176,6 +192,28 @@ class ProfileInfo extends ComponentBase<'div', ProfileInfoUpdateContext> {
     return profileInfo;
   }
 
+  private renderBalance(div: HTMLElement) {
+    const balanceArea = document.createElement('div');
+    balanceArea.classList.add('profile-info__balance-area', 'balance-area');
+    const balance = document.createElement('span');
+    balance.classList.add('balance-area__balance-span', 'font_regular');
+    balance.innerHTML = `Баланс ${this.options.balance ?? 0}&#8381;`;
+    balanceArea.appendChild(balance);
+    new Button(balanceArea, {
+      viewType: ButtonType.PRIMARY,
+      actionType: 'button',
+      innerText: 'Вывести деньги',
+      clickHandler: () => {
+        // openWithdrawEditor();
+        if (this.options.balance) {
+          openWithdrawEditor();
+        } else {
+          notice('Ваш баланс равен нулю', 'info');
+        }
+      },
+    }).addClassNames('balance-area__withdraw');
+    div.appendChild(balanceArea);
+  }
   private renderDonaterStatistic(miniStatistic: HTMLElement) {
     const subsContainer = document.createElement('div');
     subsContainer.classList.add('mini-statistic__container');
