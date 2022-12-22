@@ -13,14 +13,14 @@ import Root from '@views/Root';
 //   });
 // }
 
-if ('serviceWorker' in navigator) {
-  void navigator.serviceWorker.getRegistrations()
-      .then(function(registrations) {
-        for (const registration of registrations) {
-          void registration.unregister();
-        }
-      });
-}
+// if ('serviceWorker' in navigator) {
+//   void navigator.serviceWorker.getRegistrations()
+//       .then(function(registrations) {
+//         for (const registration of registrations) {
+//           void registration.unregister();
+//         }
+//       });
+// }
 
 new SmallSizeInfo(document.body);
 new Root(document.body);

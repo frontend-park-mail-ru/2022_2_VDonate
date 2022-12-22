@@ -150,7 +150,7 @@ export default class Navbar extends UpgradeViewBase {
       },
     });
     this.noticeBell.addClassNames('bottom-area__notice-bell');
-    if (this.backNoticeCount) {
+    if (this.backNoticeCount > 0) {
       this.noticeBell.update(true);
     }
 
@@ -190,9 +190,7 @@ export default class Navbar extends UpgradeViewBase {
 
     const backNoticeCountNew =
       (store.getState().backNotice as PayloadBackNotice[]).length;
-    if (
-      backNoticeCountNew === 0 ||
-      backNoticeCountNew === this.backNoticeCount) {
+    if (backNoticeCountNew === 0) {
       this.noticeBell.update(false);
     } else {
       this.noticeBell.update(true);
