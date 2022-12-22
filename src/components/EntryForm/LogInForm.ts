@@ -59,7 +59,7 @@ class LogInForm
 
   protected render(): HTMLFormElement {
     const form = document.createElement('form');
-    form.classList.add('entry-form', 'entry-form__back', 'bg_interaction');
+    form.classList.add('entry-form', 'entry-form__back', 'bg_main');
     form.innerHTML = template(logInContext);
     form.addEventListener('submit', (e) => {
       e.preventDefault();

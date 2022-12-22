@@ -118,7 +118,10 @@ export default class ProfilePage extends UpgradeViewBase {
       });
 
     this.about = new About(content, {
-      aboutTextHtml: 'Пользователь пока ничего о себе не написал',
+      aboutTextHtml: this.options.changeable ?
+        `Здесь будет информация о Вас. 
+        Скорее заполните ее, чтобы пользователи могли узнать о Вас больше.` :
+        'Автор пока ничего о себе не рассказал.',
       id: this.options.profileID,
       changeable: this.options.changeable,
       inEditState: false,
@@ -127,9 +130,8 @@ export default class ProfilePage extends UpgradeViewBase {
     this.childViews.postContainer = new PostsContainer(content, {
       withCreateBtn: this.options.changeable && user.isAuthor,
       textWhenEmpty: this.options.changeable && user.isAuthor ?
-      `Тут будут ваши посты\n
-        Начните радовать своих донатеров новым контентом уже сейчас` :
-        `Автор пока что не создал ни одного поста`,
+      'Создайте свой первый пост. Можете воспользоваться кнопкой выше.' :
+        'Лента данного автора пуста.',
     });
   }
 

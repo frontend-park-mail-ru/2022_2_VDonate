@@ -131,7 +131,8 @@ export default class ProfileContainer extends UpgradeViewBase {
 
     new Button(profileContainer, {
       viewType: ButtonType.ICON,
-      clickHandler: () => {
+      clickHandler: (e) => {
+        e.stopPropagation();
         this.profileSubMenu.update('toggle');
         this.noticeSubMenu.update('disable');
       },

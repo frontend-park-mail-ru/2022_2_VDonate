@@ -17,6 +17,7 @@ interface AboutOptions {
 export default
 class About extends ComponentBase<'div', string> {
   private content!: HTMLDivElement;
+  private empty = true;
 
   constructor(el: HTMLElement, private options: AboutOptions) {
     super();
@@ -69,9 +70,14 @@ class About extends ComponentBase<'div', string> {
 
   private aboutTextHtml(about?: HTMLDivElement): string {
     if (this.options.aboutTextHtml.length === 0) {
+      this.empty = true;
       (about ?? this.domElement).classList.add('about__empty');
-      return 'Автор пока о себе ничего не рассказал';
+      return this.options.changeable ?
+        `Здесь будет информация о Вас. 
+        Скорее заполните ее, чтобы пользователи могли узнать о Вас больше.` :
+        'Автор пока ничего о себе не рассказал.';
     } else {
+      this.empty = false;
       (about ?? this.domElement).classList.remove('about__empty');
       return this.options.aboutTextHtml;
     }
@@ -79,7 +85,7 @@ class About extends ComponentBase<'div', string> {
 
   private openEditor(): void {
     this.content.setAttribute('contenteditable', 'true');
-    if (this.content.innerText == 'Автор пока о себе ничего не рассказал') {
+    if (this.empty) {
       this.content.innerText = '';
     }
     const form = document.createElement('form');
