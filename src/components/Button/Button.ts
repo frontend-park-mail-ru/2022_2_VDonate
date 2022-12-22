@@ -2,7 +2,7 @@ import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 import './button.styl';
 
 /**
- * Перчисление типов кнопок
+ * Перечисление типов кнопок
  */
 export enum ButtonType {
   PRIMARY,

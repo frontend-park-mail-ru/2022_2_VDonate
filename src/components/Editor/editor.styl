@@ -37,6 +37,8 @@
     position: absolute
     right: 16px
     top: 21px
+  +e(span)
+    text-align: center
 
 +b(row-inputs)
   display: flex
@@ -45,6 +47,18 @@
   gap: 10px
   +e(input)
     flex-grow: 1
+
++b(choose-area)
+  display: flex
+  flex-direction: row
+  justify-content: space-evenly
+  align-items: center
+  +e(btn)
+    zoom: 2
+  +e(vertical-border)
+    height: 80px
+    width: 3px
+    border-radius: 10px
 
 @media (max-width: mobile-size)
   +b(editor)

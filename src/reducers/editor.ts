@@ -21,6 +21,7 @@ const editorReducer: Reducer<Action> =
       case ActionType.SUBSCRIBE:
       case ActionType.UNSUBSCRIBE:
       case ActionType.SWITCH_SUBSCRIPTION:
+      case ActionType.WITHDRAW:
         return {};
       case ActionType.CREATE_AUTHOR_SUBSCRIPTION:
       case ActionType.EDIT_AUTHOR_SUBSCRIPTION: {

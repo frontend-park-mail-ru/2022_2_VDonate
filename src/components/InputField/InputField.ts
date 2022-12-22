@@ -5,6 +5,8 @@ import userIcon from '@icon/user.svg';
 import emailIcon from '@icon/email.svg';
 import passwordIcon from '@icon/password.svg';
 import rubleIcon from '@icon/ruble.svg';
+import cardIcon from '@icon/cardIcon.svg';
+import phoneIcon from '@icon/phoneIcon.svg';
 
 import ComponentBase, {querySelectorWithThrow} from '@flux/types/component';
 
@@ -16,6 +18,8 @@ export enum InputType {
   TEXTAREA,
   IMAGE,
   PRICE,
+  PHONE,
+  CARD,
 }
 
 export interface InputOptions {
@@ -94,6 +98,14 @@ class InputField extends ComponentBase<'label', boolean> {
         templateContext.type = 'number';
         templateContext.icon = rubleIcon;
         break;
+      case InputType.PHONE:
+        templateContext.type = 'number';
+        templateContext.icon = phoneIcon;
+        break;
+      case InputType.CARD:
+        templateContext.type = 'number';
+        templateContext.icon = cardIcon;
+        break;
       default: {
         const _exhaustiveCheck: never = this.options.kind;
         return _exhaustiveCheck;
@@ -115,7 +127,9 @@ class InputField extends ComponentBase<'label', boolean> {
         inputEl.accept = 'image/*';
         break;
       }
-      case InputType.PRICE: {
+      case InputType.PRICE:
+      case InputType.CARD:
+      case InputType.PHONE: {
         const inputEl =
           querySelectorWithThrow(
               input, '.input-field__input',

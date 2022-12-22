@@ -8,6 +8,12 @@ const noticeReducer: Reducer<Action> =
       case ActionType.NOTICE:
         action.payload.timestamp = performance.now();
         return action.payload;
+      case ActionType.WITHDRAW:
+        return {
+          timestamp: performance.now(),
+          message: `Вывод средств произведен успешно`,
+          type: 'info',
+        };
       case ActionType.LOGIN_FAIL:
       case ActionType.SIGNUP_FAIL:
       case ActionType.CHANGE_USERDATA_FAIL:

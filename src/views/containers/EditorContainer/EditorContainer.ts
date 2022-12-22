@@ -8,6 +8,7 @@ import SubscriptionEditor from '@components/Editor/SubscriptionEditor';
 import PayEditor from '@components/Editor/PayEditor';
 import UpgradeViewBase from '@app/UpgradeView';
 import './editor-container.styl';
+import WithdrawEditor from '@components/Editor/withdrawEditor';
 
 /** */
 export default
@@ -18,7 +19,8 @@ class EditorContainer
   private currentEditor?:
     | ProfileEditor
     | SubscriptionEditor
-    | PayEditor;
+    | PayEditor
+    | WithdrawEditor;
   private editorType!: EditorType;
 
   constructor(el: HTMLElement) {
@@ -110,6 +112,10 @@ class EditorContainer
           authorSubscriptionID: newEditor.authorSubscriptionID,
           currentCardStatus: newEditor.currentCardStatus,
         });
+        break;
+      case EditorType.WITHDRAW:
+        this.editorType = EditorType.WITHDRAW;
+        this.currentEditor = new WithdrawEditor(this.domElement);
         break;
       case EditorType.POST:
       case EditorType.CLOSE_POST:

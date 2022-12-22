@@ -338,4 +338,23 @@ export default class Api {
         ContentType.json,
     );
   }
+
+  withdraw(
+      userID: number,
+      isPhone: boolean,
+      text: string,
+  ): Promise<ResponseData> {
+    return this.request(
+        '/withdraw',
+        Method.POST,
+        ContentType.json,
+        isPhone ? {
+          userID,
+          phone: text,
+        } : {
+          userID,
+          card: text,
+        },
+    );
+  }
 }
