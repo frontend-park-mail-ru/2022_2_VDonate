@@ -88,14 +88,16 @@ class Comment extends ComponentBase<'div', string> {
       viewType: ButtonType.PRIMARY,
       innerText: 'Сохранить',
       clickHandler: () => {
+        // let commentText = text.innerText;
+        text.innerText = text.innerText.trim();
         if (text.innerText.length > commentSize) {
           notice(
-              `Коментарий должен быть меньше ${commentSize} символов`, 'error');
+              `Комментарий должен быть меньше ${commentSize} символов`, 'error',
+          );
         } else if (text.innerText.length == 0) {
           deleteComment(this.options.postID, this.options.id);
         } else {
           updateComment(this.options.postID, this.options.id, text.innerText);
-          // this.options.content = text.innerText;
           this.closeEditor();
         }
       },

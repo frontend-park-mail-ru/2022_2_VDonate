@@ -1,4 +1,3 @@
-/* eslint-disable no-case-declarations */
 import {Action, ActionType} from '@actions/types/action';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
 import {PayloadSubscription} from '@actions/types/subscribe';
@@ -21,9 +20,9 @@ const createSubscriptionsMap =
 const userSubscriptionsReducer: Reducer<Action> =
   (state: PropTree, action: Action): PropTree => {
     switch (action.type) {
-      case ActionType.GETSUBSCRIPTIONS:
+      case ActionType.GET_SUBSCRIPTIONS:
         return createSubscriptionsMap(action.payload);
-      case ActionType.SUBSCRIBE:
+      case ActionType.SUBSCRIBE: {
         const profile =
           store.getState().profile as PayloadGetProfileData;
         if (!profile.authorSubscriptions) return state;
@@ -46,6 +45,7 @@ const userSubscriptionsReducer: Reducer<Action> =
               .set(subscription.id, subscription);
         }
         return state;
+      }
       case ActionType.UNSUBSCRIBE:
         (state as Map<number, PayloadSubscription>)
             .delete(action.payload.authorSubscriptionID);

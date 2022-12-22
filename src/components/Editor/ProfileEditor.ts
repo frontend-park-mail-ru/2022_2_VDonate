@@ -83,7 +83,7 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
         }))
         .set('username', new InputField(inputsArea, {
           kind: InputType.USERNAME,
-          label: 'Псевдноним',
+          label: 'Псевдоним',
           name: 'username',
           placeholder: 'Введите псевдоним',
           value: this.options.username,

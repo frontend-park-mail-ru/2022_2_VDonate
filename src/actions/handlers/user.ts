@@ -2,7 +2,7 @@ import {ResponseData, saveCSRF} from '@api/ajax';
 import {ActionType} from '@actions/types/action';
 import {
   PayloadEditUser,
-  PayloadEditUserSucces,
+  PayloadEditUserSuccess,
   PayloadUser} from '@actions/types/user';
 import router from '@app/Router';
 import store from '@app/Store';
@@ -38,6 +38,11 @@ export interface EditUserFormElements extends HTMLCollection {
   isAuthor?: HTMLInputElement
   about?: HTMLTextAreaElement
   avatar?: HTMLInputElement
+}
+
+export interface WithdrawFormElements extends HTMLCollection {
+  phone?: HTMLInputElement
+  card?: HTMLInputElement
 }
 
 const getUser = (id: number, dispatch: (user: PayloadUser) => void) => {
@@ -416,7 +421,7 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
         userData.repeatPassword ?? '') : null;
   if (emailErr || usernameErr || passwordErr || repeatPasswordErr) {
     store.dispatch({
-      type: ActionType.CHANGEUSERDATA_FAIL,
+      type: ActionType.CHANGE_USERDATA_FAIL,
       payload: {
         type: FormErrorType.EDIT_USER,
         email: emailErr,
@@ -431,7 +436,7 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
   api.putUserData(userData)
       .then((res: ResponseData) => {
         if (res.ok) {
-          const user: PayloadEditUserSucces = {
+          const user: PayloadEditUserSuccess = {
             id: userData.id,
           };
           if (res.body.imgPath && res.body.imgPath !== '') {
@@ -444,7 +449,7 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
             user.email = userData.email;
           }
           store.dispatch({
-            type: ActionType.CHANGEUSERDATA_SUCCESS,
+            type: ActionType.CHANGE_USERDATA_SUCCESS,
             payload: {
               user,
               formErrors: {
@@ -477,7 +482,7 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
               break;
             default:
               store.dispatch({
-                type: ActionType.CHANGEUSERDATA_FAIL,
+                type: ActionType.CHANGE_USERDATA_FAIL,
                 payload: {
                   type: FormErrorType.EDIT_USER,
                   email: 'Неверная почта',
@@ -501,11 +506,20 @@ export const editUser = (id: number, form: EditUserFormElements): void => {
 };
 
 export const editAbout = (id: number, about: string): void => {
+  about = about.trim();
   if (about.length > 1024) {
     store.dispatch({
       type: ActionType.NOTICE,
       payload: {
         message: 'Поле \'Обо мне\' должно содержать меньше 1024 символов',
+      },
+    });
+  }
+  if (about.length == 0) {
+    store.dispatch({
+      type: ActionType.NOTICE,
+      payload: {
+        message: 'Поле \'Обо мне\' должно содержать 1 или больше символов',
       },
     });
   }
@@ -525,7 +539,7 @@ export const editAbout = (id: number, about: string): void => {
           store.dispatch({
             type: ActionType.NOTICE,
             payload: {
-              message: 'Ошибка при изменении поля о Вас',
+              message: 'Ошибка при изменении поля о вас',
             },
           });
         }
@@ -558,6 +572,68 @@ export const becomeAuthor = (id: number): void => {
             type: ActionType.NOTICE,
             payload: {
               message: 'Ошибка при становлении автором',
+            },
+          });
+        }
+      })
+      .catch((err) => {
+        store.dispatch({
+          type: ActionType.NOTICE,
+          payload: {
+            message: err as Error,
+          },
+        });
+      });
+};
+
+export const withdraw = (data: WithdrawFormElements): void => {
+  let isPhone: boolean;
+  let text: string;
+  if (data.card) {
+    isPhone = false;
+    text = data.card.value;
+    if (text.length !== 16) {
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Некорректная длина номера карты',
+        },
+      });
+      return;
+    }
+  } else if (data.phone) {
+    isPhone = true;
+    text = data.phone.value;
+    if (text.length !== 11) {
+      store.dispatch({
+        type: ActionType.NOTICE,
+        payload: {
+          message: 'Некорректная длина номера телефона',
+        },
+      });
+      return;
+    }
+  } else {
+    store.dispatch({
+      type: ActionType.NOTICE,
+      payload: {
+        message: 'Ошибка при отправке формы, повторите попытку',
+      },
+    });
+    return;
+  }
+  api.withdraw((store.getState().user as PayloadUser).id, isPhone, text)
+      .then((res) => {
+        if (res.ok) {
+          store.dispatch({
+            type: ActionType.WITHDRAW,
+            payload: {},
+          });
+        } else {
+          store.dispatch({
+            type: ActionType.NOTICE,
+            payload: {
+              message: res.body.message as string,
             },
           });
         }

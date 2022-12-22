@@ -12,11 +12,11 @@ export const openProfileEditor = () =>
     },
   });
 
-export const openSubscribtionEditor = (id?: number) =>
+export const openSubscriptionEditor = (id?: number) =>
   store.dispatch({
     type: ActionType.EDITOR_OPEN,
     payload: {
-      type: EditorType.SUBSCRIBTION,
+      type: EditorType.SUBSCRIPTION,
       id,
     },
   });
@@ -53,6 +53,14 @@ export const openPayEditor = (
     },
   });
 };
+
+export const openWithdrawEditor = () =>
+  store.dispatch({
+    type: ActionType.EDITOR_OPEN,
+    payload: {
+      type: EditorType.WITHDRAW,
+    },
+  });
 
 export const closeEditor = (id?: number) =>
   store.dispatch({

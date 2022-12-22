@@ -25,8 +25,9 @@ class About extends ComponentBase<'div', string> {
 
   protected render(): HTMLDivElement {
     const about = document.createElement('div');
-    about.classList.add('about', 'about__about', 'bg_main');
-
+    about.classList.add('about');
+    const aboutBack = document.createElement('div');
+    aboutBack.classList.add('about__about', 'bg_main');
     const head = document.createElement('div');
     head.classList.add('about__header');
 
@@ -49,14 +50,13 @@ class About extends ComponentBase<'div', string> {
             this.openEditor();
           }
         },
-      }).addClassNames('about__header-btn');
+      });
     }
-    about.appendChild(head);
-
+    about.append(head, aboutBack);
     this.content = document.createElement('div');
     this.content.classList.add('about__text', 'font_regular');
-    this.content.innerHTML = this.aboutTextHtml;
-    about.appendChild(this.content);
+    this.content.innerHTML = this.aboutTextHtml(aboutBack);
+    aboutBack.appendChild(this.content);
 
     return about;
   }
@@ -64,12 +64,17 @@ class About extends ComponentBase<'div', string> {
   update(htmlString: string): void {
     if (this.options.aboutTextHtml === htmlString) return;
     this.options.aboutTextHtml = htmlString;
-    this.content.innerHTML = this.aboutTextHtml;
+    this.content.innerHTML = this.aboutTextHtml();
   }
 
-  private get aboutTextHtml(): string {
-    return this.options.aboutTextHtml.length === 0 ?
-      'Автор пока о себе ничего не рассказал' : this.options.aboutTextHtml;
+  private aboutTextHtml(about?: HTMLDivElement): string {
+    if (this.options.aboutTextHtml.length === 0) {
+      (about ?? this.domElement).classList.add('about__empty');
+      return 'Автор пока о себе ничего не рассказал';
+    } else {
+      (about ?? this.domElement).classList.remove('about__empty');
+      return this.options.aboutTextHtml;
+    }
   }
 
   private openEditor(): void {
@@ -81,7 +86,7 @@ class About extends ComponentBase<'div', string> {
     form.classList.add('about__form');
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      this.options.aboutTextHtml = this.content.innerText;
+      this.options.aboutTextHtml = this.content.innerText.trim();
       editAbout(this.options.id, this.options.aboutTextHtml);
       this.closeEditor();
     });
@@ -101,12 +106,12 @@ class About extends ComponentBase<'div', string> {
       },
     });
     cancelBtn.addClassNames('about__form-btn');
-    this.domElement.appendChild(form);
+    querySelectorWithThrow(this.domElement, '.about__about').appendChild(form);
   }
 
   private closeEditor(): void {
     this.options.inEditState = false;
-    this.content.innerHTML = this.aboutTextHtml;
+    this.content.innerHTML = this.aboutTextHtml();
     this.content.setAttribute('contenteditable', 'false');
     querySelectorWithThrow(this.domElement, '.about__form').remove();
   }

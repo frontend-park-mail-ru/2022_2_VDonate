@@ -1,12 +1,13 @@
 import {PayloadEditor} from '@actions/types/editor';
 import {PayloadProfileUser} from '@actions/types/getProfileData';
-import {PayloadBackNotice, PayloadNotice} from '@actions/types/notice';
+import {PayloadNotice} from '@actions/types/notice';
 import {PayloadPost} from '@actions/types/posts';
 import {PayloadLocation} from '@actions/types/routing';
 import {PayloadSubscription} from '@actions/types/subscribe';
 import {Pages} from './router';
+import {PayloadBackNotice} from '@actions/types/backNotice';
 
-const initinalState: {
+const initialState: {
   location: PayloadLocation,
   notice: PayloadNotice,
   posts: Map<number, PayloadPost>,
@@ -53,4 +54,4 @@ const initinalState: {
   backNotice: [],
 };
 
-export default initinalState;
+export default initialState;

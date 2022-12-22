@@ -6,6 +6,7 @@ import api from '@app/Api';
 import store from '@app/Store';
 
 export const createPost = (content: string, tier: number) => {
+  console.log(content);
   if (tier < 0 || tier > 10000) {
     store.dispatch({
       type: ActionType.NOTICE,

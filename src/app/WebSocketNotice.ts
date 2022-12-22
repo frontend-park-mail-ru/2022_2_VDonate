@@ -1,8 +1,5 @@
-import {
-  addBackNotice,
-  clearAllBackNotice,
-  notice,
-} from '@actions/handlers/notice';
+import {addBackNotice, clearAllBackNotice} from '@actions/handlers/backNotice';
+import {notice} from '@actions/handlers/notice';
 
 class WebSocketNotice {
   private ws?: WebSocket;

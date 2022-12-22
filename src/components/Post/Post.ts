@@ -31,6 +31,7 @@ import {PayloadComment} from '@actions/types/comments';
 import Comment from '@components/Comment/Comment';
 import {notice} from '@actions/handlers/notice';
 import {commentSize} from '@validation/validation';
+import routing from '@actions/handlers/routing';
 
 export enum ContextType {
   RUNTIME_POST_UPDATE,
@@ -40,7 +41,7 @@ export enum ContextType {
 }
 
 type PostOptions = PayloadPost & {
-  changable: boolean
+  changeable: boolean
   inEditState: boolean
   commentsOpened: boolean
 };
@@ -111,13 +112,13 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
         }
         this.options.inEditState = data.NewEditState;
         break;
-      case ContextType.EDIT_POST_UPDATE:
-        // eslint-disable-next-line no-case-declarations
+      case ContextType.EDIT_POST_UPDATE: {
         const image = document.createElement('img');
         image.src = data.url;
         image.classList.add('post-content__image');
         this.content.appendChild(image);
         break;
+      }
       case ContextType.RUNTIME_POST_UPDATE:
         this.options.isLiked = data.isLiked;
         this.options.likesNum = data.likesNum;
@@ -153,6 +154,17 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
                 text: data.content,
                 subscriptionTitle,
               });
+          const returnBtn =
+            this.domElement.querySelector('.post__return-btn');
+          returnBtn?.addEventListener('click', () => {
+            if (location.pathname === '/feed') {
+              routing(`/profile?id=${this.options.author.userID}`);
+            } else {
+              document.querySelector('.subscription-cards-container')
+                  ?.scrollIntoView();
+            }
+          },
+          );
         }
         break;
       case ContextType.COMMENTS:
@@ -207,13 +219,27 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
       text: this.options.content,
       subscriptionTitle,
     });
+    const returnBtn =
+            contentArea.querySelector('.post__return-btn');
+    returnBtn?.addEventListener('click', () => {
+      if (location.pathname === '/feed') {
+        routing(`/profile?id=${this.options.author.userID}`);
+      } else {
+        document.querySelector('.subscription-cards-container')
+            ?.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center',
+            });
+      }
+    },
+    );
 
     if (this.options.inEditState) {
       this.openEditor(post);
     } else {
       this.renderActions(post);
 
-      if (this.options.changable) {
+      if (this.options.changeable) {
         const header = querySelectorWithThrow(post, '.post__header');
         const editBtn = new Button(header, {
           actionType: 'button',
@@ -245,11 +271,12 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     }).addClassNames('new-comment__submit');
     form.addEventListener('submit', (e) => {
       e.preventDefault();
+      input.innerText = input.innerText.trim();
       if (input.innerText.length == 0) {
-        notice('Вы ввели пустой коментарий', 'error');
+        notice('Вы ввели пустой комментарий', 'error');
       } else if (input.innerText.length > commentSize) {
         notice(
-            `Коментарий должен быть меньше ${commentSize} символов`, 'error');
+            `Комментарий должен быть меньше ${commentSize} символов`, 'error');
       } else {
         addComment(this.options.postID, input.innerText);
       }
@@ -349,24 +376,23 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     }
     const dropboxOptions = Array.from(subs, (sub) => {
       return {
-        text: sub.title,
+        text: `по подписке ${sub.title}`,
         value: sub.tier.toString(),
       };
     });
     dropboxOptions.unshift({
-      text: 'Без ограничения',
+      text: 'для всех',
       value: '0',
     });
 
     const tierBtn = new Dropbox(form, {
-      label: 'Ограничение:',
+      label: 'Доступно:',
       name: 'tier',
       options: dropboxOptions,
       selected: this.options.tier.toString(),
       title: 'Ограничение видимости поста по подписке',
     });
     tierBtn.addClassNames('post-edit-form__tier');
-    // form.appendChild(tierField);
 
     const headerBtn = new Button(form, {
       actionType: 'button',
@@ -404,7 +430,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     const saveBtn = new Button(formBtns, {
       actionType: 'submit',
       viewType: ButtonType.PRIMARY,
-      innerText: 'Сохранить',
+      innerText: this.options.postID == -1 ? 'Создать' : 'Сохранить',
     });
     saveBtn.addClassNames('btn-area__btn');
 

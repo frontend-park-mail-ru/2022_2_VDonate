@@ -1,13 +1,13 @@
 import {PayloadSubscription} from '@actions/types/subscribe';
 import store from '@app/Store';
-import ProfielMini, {ProfileMiniType}
+import ProfileMini, {ProfileMiniType}
   from '@components/ProfileMini/ProfileMini';
 import './subscriptions-list-container.styl';
 import UpgradeViewBase from '@app/UpgradeView';
 
 export default class SubscriptionsListContainer extends UpgradeViewBase {
   private userSubscriptionsState = new Map<number, PayloadSubscription>();
-  private profiles = new Map<number, ProfielMini>();
+  private profiles = new Map<number, ProfileMini>();
 
   constructor(el: HTMLElement) {
     super();
@@ -38,7 +38,7 @@ export default class SubscriptionsListContainer extends UpgradeViewBase {
           isAuthor: true,
         });
       } else {
-        this.profiles.set(subID, new ProfielMini(this.domElement, {
+        this.profiles.set(subID, new ProfileMini(this.domElement, {
           type: ProfileMiniType.OTHER_PROFILE,
           id: sub.authorID,
           avatar: sub.authorAvatar,

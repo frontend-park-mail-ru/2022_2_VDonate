@@ -63,14 +63,14 @@ export default class SearchPage extends UpgradeViewBase {
     const authors = store.getState().authors as PayloadUser[] | undefined;
     if (!authors) {
       this.listArea.innerText =
-      `Введите псевдоним интересующего Вас автора.\n
+      `Введите псевдоним интересующего вас автора.\n
        Или просто нажмите на кнопку "Найти",
-       чтобы уведеть всех доступных авторов.`;
+       чтобы увидеть всех доступных авторов.`;
       return;
     }
     if (authors.length === 0) {
       this.listArea.innerText =
-        'По Вашему запросу ничего не найдено (ｏ・_・)ノ”(ノ_<、)';
+        'По вашему запросу ничего не найдено (ｏ・_・)ノ”(ノ_<、)';
       return;
     }
     this.listArea.innerHTML = '';

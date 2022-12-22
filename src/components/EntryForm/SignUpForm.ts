@@ -10,9 +10,9 @@ import './entry-form.styl';
 /** Контекст для шаблона */
 const signUpContext = {
   title: 'Регистрация',
-  greeting: 'Скорее присоединяйся к нам!',
+  greeting: 'Скорее присоединяйтесь к нам!',
   link: '/login',
-  textLink: 'Мне кажется, или мы знакомы? Входи!',
+  textLink: 'Мне кажется, или мы знакомы? Войти!',
 };
 /** Контекст для полей ввода */
 const signUpInputs: InputOptions[] = [

@@ -44,7 +44,6 @@ export default class ProfilePage extends UpgradeViewBase {
       return;
     }
 
-    // TODO Переделать на 2 отдельные функции рендера в один компонент
     if (profileNew.user.isAuthor !== this.isAuthor ||
       typeof this.isAuthor == 'undefined') {
       this.isAuthor = profileNew.user.isAuthor;
@@ -60,13 +59,14 @@ export default class ProfilePage extends UpgradeViewBase {
       countPosts: profileNew.user.countPosts ?? 0,
       countProfitMounth: profileNew.user.countProfitMounth ?? 0,
       countSubscribersMounth: profileNew.user.countSubscribersMounth ?? 0,
+      balance: profileNew.user.balance ?? 0,
     });
     if (!this.isAuthor) {
       if (!profileNew.userSubscriptions ||
         profileNew.userSubscriptions.length === 0) {
         this.subscriptions.innerHTML = this.options.changeable ?
           `Вы пока никого не поддерживаете<br> <br>
-          Попробуйте найти интересующих Вас авторов на странице поиска` :
+          Попробуйте найти интересующих вас авторов на странице поиска` :
           'Донатер пока никого не поддерживает';
       } else {
         this.subscriptions.innerHTML = '';
@@ -127,7 +127,7 @@ export default class ProfilePage extends UpgradeViewBase {
     this.childViews.postContainer = new PostsContainer(content, {
       withCreateBtn: this.options.changeable && user.isAuthor,
       textWhenEmpty: this.options.changeable && user.isAuthor ?
-      `Тут будут Ваши посты\n
+      `Тут будут ваши посты\n
         Начните радовать своих донатеров новым контентом уже сейчас` :
         `Автор пока что не создал ни одного поста`,
     });

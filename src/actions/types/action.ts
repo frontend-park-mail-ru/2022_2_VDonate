@@ -8,10 +8,12 @@ import {
   ActionSwitchSubscription,
   ActionUnsubscribe} from './subscribe';
 import {
-  ActionAddBackNotice,
-  ActionClearBackNotice,
   ActionNotice,
 } from './notice';
+import {
+  ActionAddBackNotice,
+  ActionClearBackNotice,
+} from './backNotice';
 import {
   ActionCreatePost,
   ActionDeletePost,
@@ -32,6 +34,7 @@ import {
   ActionEditUserFail,
   ActionEditAbout,
   ActionBecomeAuthor,
+  ActionWithdraw,
 } from './user';
 import {ActionEditorClose, ActionEditorOpen} from './editor';
 import {ActionSearch} from './searchAuthor';
@@ -48,15 +51,15 @@ export enum ActionType {
   SIGNUP_SUCCESS,
   SIGNUP_FAIL,
   AUTH,
-  GETPROFILEDATA,
-  CHANGEUSERDATA_SUCCESS,
-  CHANGEUSERDATA_FAIL,
+  GET_PROFILEDATA,
+  CHANGE_USERDATA_SUCCESS,
+  CHANGE_USERDATA_FAIL,
   SUBSCRIBE,
   UNSUBSCRIBE,
-  GETSUBSCRIPTIONS,
-  EDITAUTHORSUBSRIPTION,
-  CREATEAUTHORSUBSRIPTION,
-  DELETEAUTHORSUBSCRIPTION,
+  GET_SUBSCRIPTIONS,
+  EDIT_AUTHOR_SUBSCRIPTION,
+  CREATE_AUTHOR_SUBSCRIPTION,
+  DELETE_AUTHOR_SUBSCRIPTION,
   NOTICE,
   ROUTING,
   GET_POSTS,
@@ -79,6 +82,7 @@ export enum ActionType {
   UPDATE_COMMENT,
   DELETE_COMMENT,
   CLOSE_COMMENTS,
+  WITHDRAW,
 }
 /** Объединение действий */
 export type Action =
@@ -117,4 +121,5 @@ export type Action =
   | ActionAddComment
   | ActionUpdateComment
   | ActionDeleteComment
-  | ActionCloseComments;
+  | ActionCloseComments
+  | ActionWithdraw;

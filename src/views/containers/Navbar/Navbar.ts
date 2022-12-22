@@ -9,9 +9,9 @@ import {logout} from '@actions/handlers/user';
 import {openProfileEditor} from '@actions/handlers/editor';
 import Logo from '@components/Logo/Logo';
 import NavbarLink from '@components/NavbarLink/NavbarLink';
-import {ButtonType} from '@components/Button/Button';
+import Button, {ButtonType} from '@components/Button/Button';
 import {getSubscriptions} from '@actions/handlers/subscribe';
-import ProfielMini, {ProfileMiniType}
+import ProfileMini, {ProfileMiniType}
   from '@components/ProfileMini/ProfileMini';
 import SubscriptionsListContainer
   from '../SubscriptionsListContainer/SubscriptionsListContainer';
@@ -19,10 +19,9 @@ import UpgradeViewBase from '@app/UpgradeView';
 import {PayloadLocation} from '@actions/types/routing';
 import {Pages} from '@configs/router';
 import NoticeBell from '@components/NoticeBell/NoticeBell';
-import {PayloadBackNotice} from '@actions/types/notice';
-import SubMenu from '@components/SubMenu/SubmMenu';
-import {notice} from '@actions/handlers/notice';
+import SubMenu, {SubMenuType} from '@components/SubMenu/SubMenu';
 import ws from '@app/WebSocketNotice';
+import {PayloadBackNotice} from '@actions/types/backNotice';
 
 const links = [
   {
@@ -37,13 +36,6 @@ const links = [
   },
 ];
 
-export enum ChoosenLink {
-  FEED,
-  SEARCH,
-  SUBSCRIBTIONS,
-  OTHER,
-}
-
 /**
  * Модель левого навбара
  */
@@ -51,7 +43,7 @@ export default class Navbar extends UpgradeViewBase {
   private navbarLinks: NavbarLink[] = [];
   private profile!: HTMLElement;
   private locationState: PayloadLocation;
-  private profileMini!: ProfielMini;
+  private profileMini!: ProfileMini;
   private subscriptionsListContainer!: SubscriptionsListContainer;
   // private subMenu!: SubMenu;
   private noticeBell!: NoticeBell;
@@ -95,34 +87,23 @@ export default class Navbar extends UpgradeViewBase {
     back.appendChild(hr.cloneNode());
 
     const profileContainer = document.createElement('div');
-    profileContainer.classList.add('navbar__botton-area', 'botton-area');
+    profileContainer.classList.add('navbar__bottom-area', 'bottom-area');
 
     this.profile = document.createElement('div');
-    this.profile.classList.add('botton-area__profile');
+    this.profile.classList.add('bottom-area__profile');
 
-    this.profileMini = new ProfielMini(this.profile, {
+    this.profileMini = new ProfileMini(this.profile, {
       username: '',
       avatar: '',
       isAuthor: false,
       id: this.options,
       type: ProfileMiniType.SESSION_PROFILE,
     });
-    this.profileMini.addClassNames('botton-area__profile-mini');
+    this.profileMini.addClassNames('bottom-area__profile-mini');
 
     const noticeSubMenu = new SubMenu(navbar, {
+      type: SubMenuType.NOTICE,
       buttonsOptions: [
-        {
-          actionType: 'button',
-          viewType: ButtonType.OUTLINE,
-          innerText: 'Показать все',
-          clickHandler: () => {
-            const backNotices =
-              store.getState().backNotice as PayloadBackNotice[];
-            backNotices.forEach((backNotice) => {
-              notice(backNotice.message, 'info');
-            });
-          },
-        },
         {
           actionType: 'button',
           viewType: ButtonType.OUTLINE,
@@ -132,19 +113,8 @@ export default class Navbar extends UpgradeViewBase {
       ],
     });
 
-    this.noticeBell = new NoticeBell(this.profile, {
-      hasNewNotices: true,
-      onHover(isEnter) {
-        if (isEnter) {
-          noticeSubMenu.addClassNames('sub-menu_active');
-        } else {
-          noticeSubMenu.removeClassNames('sub-menu_active');
-        }
-      },
-    });
-    this.noticeBell.addClassNames('botton-area__notice-bell');
-
     const profileSubMenu = new SubMenu(navbar, {
+      type: SubMenuType.PROFILE,
       buttonsOptions: [
         {
           viewType: ButtonType.OUTLINE,
@@ -170,72 +140,26 @@ export default class Navbar extends UpgradeViewBase {
       ],
     });
 
-    // this.subMenu.classList.add('bg_sub-menu');
-    // this.subMenu.style.display = 'none';
-    // navbar.appendChild(this.subMenu);
-
-    // const menuBtn = new Button(this.profile, {
-    //   viewType: ButtonType.ICON,
-    //   actionType: 'button',
-    //   innerIcon: menuIcon,
-    //   clickHandler: () => {
-    //     this.switchMenu(this.subMenu.style.display == 'none');
-    //   },
-    // });
-    // menuBtn.addClassNames('botton-area__menu-btn');
-
-    const menuBtn = document.createElement('div');
-    menuBtn.classList.add('botton-area__menu-btn', 'menu-btn');
-
-    const menuImg = document.createElement('img');
-    menuImg.src = menuIcon;
-    menuImg.classList.add('menu-btn__icon');
-
-    menuBtn.appendChild(menuImg);
-    menuBtn.addEventListener('mouseenter', () => {
-      profileSubMenu.addClassNames('sub-menu_active');
-      // this.subMenu.classList.add('sub-menu__sub-menu_active');
+    this.noticeBell = new NoticeBell(this.profile, {
+      hasNewNotices: true,
+      onClick() {
+        noticeSubMenu.update('toggle');
+        profileSubMenu.update('disable');
+      },
     });
-    menuBtn.addEventListener('mouseleave', () => {
-      profileSubMenu.removeClassNames('sub-menu_active');
-      // this.subMenu.classList.remove('sub-menu__sub-menu_active');
+    this.noticeBell.addClassNames('bottom-area__notice-bell');
+
+
+    new Button(this.profile, {
+      viewType: ButtonType.ICON,
+      clickHandler: () => {
+        profileSubMenu.update('toggle');
+        noticeSubMenu.update('disable');
+      },
+      actionType: 'button',
+      innerIcon: menuIcon,
     });
-    this.profile.appendChild(menuBtn);
 
-
-    // this.subMenu.style.display = 'none';
-    // this.subMenu.classList.add('sub-menu', 'sub-menu__sub-menu');
-
-    // const profileLink = new Button(this.subMenu, {
-    //   viewType: ButtonType.OUTLINE,
-    //   actionType: 'button',
-    //   innerText: 'Профиль',
-    //   clickHandler: () => {
-    //     const user = store.getState().user as PayloadUser;
-    //     routing(`/profile?id=${user.id}`);
-    //   },
-    // });
-    // profileLink.addClassNames('botton-area__sub-menu-btn');
-
-    // const change = new Button(this.subMenu, {
-    //   viewType: ButtonType.OUTLINE,
-    //   actionType: 'button',
-    //   innerText: 'Изменить данные',
-    //   clickHandler: () => {
-    //     openProfileEditor();
-    //   },
-    // });
-    // change.addClassNames('botton-area__sub-menu-btn');
-
-    // const logoutBtn = new Button(this.subMenu, {
-    //   viewType: ButtonType.OUTLINE,
-    //   actionType: 'button',
-    //   innerText: 'Выйти',
-    //   clickHandler: () => {
-    //     logout();
-    //   },
-    // });
-    // logoutBtn.addClassNames('botton-area__sub-menu-btn');
 
     profileContainer.appendChild(this.profile);
     back.appendChild(profileContainer);
@@ -258,8 +182,6 @@ export default class Navbar extends UpgradeViewBase {
       this.locationState = locationNew;
       this.renderLocation(locationNew.type);
     }
-
-    // this.switchMenu(false);
 
     const backNoticeState = store.getState().backNotice as PayloadBackNotice[];
     if (backNoticeState.length === 0) {
@@ -307,12 +229,4 @@ export default class Navbar extends UpgradeViewBase {
   showNavbar() {
     this.domElement.removeAttribute('style');
   }
-
-  // private switchMenu(isClosed: boolean) {
-  //   if (isClosed) {
-  //     this.subMenu.style.display = 'flex';
-  //   } else {
-  //     this.subMenu.style.display = 'none';
-  //   }
-  // }
 }

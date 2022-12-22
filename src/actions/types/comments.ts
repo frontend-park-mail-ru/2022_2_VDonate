@@ -2,12 +2,12 @@ import {IAction} from '@flux/types/actions';
 import {ActionType} from './action';
 
 export interface PayloadComment {
-  id: number // id комента
+  id: number // id коммента
   authorID: number // id автора поста
-  userID: number // id автора комента
-  userImg: string // аватар автора комента
-  username: string // имя автора комента
-  content: string // комент
+  userID: number // id автора коммента
+  userImg: string // аватар автора коммента
+  username: string // имя автора коммента
+  content: string // коммент
 }
 
 export interface PayloadGetComments {

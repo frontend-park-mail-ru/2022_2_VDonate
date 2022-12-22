@@ -14,9 +14,10 @@ export interface PayloadProfileUser {
   countPosts?: number,
   countProfitMounth?: number,
   countSubscribersMounth?: number,
+  balance?: number,
 }
 
-/** Результат успешной аутификации */
+/** Результат успешной аутентификации */
 export interface PayloadGetProfileData {
   user: PayloadProfileUser,
   userSubscriptions?: PayloadSubscription[],
@@ -24,8 +25,8 @@ export interface PayloadGetProfileData {
   posts?: PayloadPost[],
 }
 
-/** Действие аутификации */
+/** Действие аутентификации */
 export interface ActionGetProfileData extends IAction {
-  type: ActionType.GETPROFILEDATA,
+  type: ActionType.GET_PROFILEDATA,
   payload: PayloadGetProfileData,
 }

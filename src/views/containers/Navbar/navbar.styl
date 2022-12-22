@@ -8,6 +8,7 @@ navbar-indent-mobile = 10px
   position: fixed
   top: 0
   left: 0
+  z-index: 1
   +e(back)
     border-radius: 0px radius-big radius-big 0px
     height: 100vh
@@ -26,12 +27,12 @@ navbar-indent-mobile = 10px
     flex-grow: 1
     overflow: auto
     customScrollbar()
-  +e(botton-area)
+  +e(bottom-area)
     gap: 10px;
     display: flex;
     flex-direction: column;
 
-+b(botton-area)
++b(bottom-area)
   +e(profile)
     display: flex
     flex-direction: row
@@ -59,14 +60,13 @@ navbar-indent-mobile = 10px
   margin: 0
   margin-left: - navbar-indent
 
-.bottom-area__menu-btn
-  &:hover
-    & .sub-menu
-        display: flex
+// .bottom-area__menu-btn
+//   &:hover
+//     & .sub-menu
+//         display: flex
 
 @media  (max-width: mobile-size)
   +b(navbar)
-    z-index: 2
     +e(back)
       border-radius: 0
       height: 60px
@@ -77,6 +77,7 @@ navbar-indent-mobile = 10px
       flex-wrap: nowrap
       align-items: center
       padding: 0 10px
+      background: color-bg-block-dark
       &:before
         border-radius: 0
     +e(logo)
@@ -97,7 +98,7 @@ navbar-indent-mobile = 10px
       overflow-x: auto
       customScrollbar(1px, 1px)
 
-  +b(botton-area)
+  +b(bottom-area)
     +e(profile-mini)
       display: none !important
 

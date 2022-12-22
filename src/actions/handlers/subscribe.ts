@@ -270,7 +270,7 @@ export const getSubscriptions = (id: number) => {
       .then((res: ResponseData) => {
         if (res.ok) {
           store.dispatch({
-            type: ActionType.GETSUBSCRIPTIONS,
+            type: ActionType.GET_SUBSCRIPTIONS,
             payload: res.body as PayloadSubscription[],
           });
         } else {
@@ -308,7 +308,7 @@ export const getSubscriptions = (id: number) => {
       });
 };
 
-export interface AuthorSubscrptionForm extends HTMLCollection {
+export interface AuthorSubscriptionForm extends HTMLCollection {
   title: HTMLInputElement
   price: HTMLInputElement
   text: HTMLInputElement
@@ -339,7 +339,7 @@ const updateSubscriptions =
 
 export const editAuthorSubscription = (
     subID: number,
-    form: AuthorSubscrptionForm) => {
+    form: AuthorSubscriptionForm) => {
   let priceErr = priceCheck(form.price.value);
   const textErr = textCheck(form.text.value);
   const titleErr = titleCheck(form.title.value);
@@ -368,7 +368,7 @@ export const editAuthorSubscription = (
 
   if (priceErr || textErr || titleErr) {
     store.dispatch({
-      type: ActionType.EDITAUTHORSUBSRIPTION,
+      type: ActionType.EDIT_AUTHOR_SUBSCRIPTION,
       payload: {
         formErrors: {
           type: FormErrorType.AUTHOR_SUBSCRIPTION,
@@ -435,7 +435,7 @@ export const editAuthorSubscription = (
       .then((res: ResponseData) => {
         if (res.ok) {
           store.dispatch({
-            type: ActionType.EDITAUTHORSUBSRIPTION,
+            type: ActionType.EDIT_AUTHOR_SUBSCRIPTION,
             payload: {
               subscription: {
                 authorID: res.body.authorID as number,
@@ -512,7 +512,7 @@ export const editAuthorSubscription = (
       });
 };
 
-export const createAuthorSubscription = (form: AuthorSubscrptionForm) => {
+export const createAuthorSubscription = (form: AuthorSubscriptionForm) => {
   let priceErr = priceCheck(form.price.value);
   const textErr = textCheck(form.text.value);
   const titleErr = titleCheck(form.title.value);
@@ -540,7 +540,7 @@ export const createAuthorSubscription = (form: AuthorSubscrptionForm) => {
 
   if (priceErr || textErr || titleErr) {
     store.dispatch({
-      type: ActionType.EDITAUTHORSUBSRIPTION,
+      type: ActionType.EDIT_AUTHOR_SUBSCRIPTION,
       payload: {
         formErrors: {
           type: FormErrorType.AUTHOR_SUBSCRIPTION,
@@ -596,7 +596,7 @@ export const createAuthorSubscription = (form: AuthorSubscrptionForm) => {
       .then((res: ResponseData) => {
         if (res.ok) {
           store.dispatch({
-            type: ActionType.CREATEAUTHORSUBSRIPTION,
+            type: ActionType.CREATE_AUTHOR_SUBSCRIPTION,
             payload: {
               subscription: {
                 authorID: res.body.authorID as number,
@@ -678,7 +678,7 @@ export const deleteAuthorSubscription = (id: number) => {
           )
               .then(() => {
                 store.dispatch({
-                  type: ActionType.DELETEAUTHORSUBSCRIPTION,
+                  type: ActionType.DELETE_AUTHOR_SUBSCRIPTION,
                   payload: {
                     id,
                   },

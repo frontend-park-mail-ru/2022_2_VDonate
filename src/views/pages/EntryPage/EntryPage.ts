@@ -17,7 +17,7 @@ interface LoginPageOptions {
 
 /** Реализация интерфейса *IView* для страницы входа */
 export default class EntryPage extends UpgradeViewBase {
-  /** Сосотояние ошибок в форме */
+  /** Состояние ошибок в форме */
   // private formErrorsState: PayloadFormError;
   private form!: LogInForm | SignUpForm;
 
@@ -66,9 +66,9 @@ export default class EntryPage extends UpgradeViewBase {
     );
     contentArea.innerText =
       `ВДонате - сервис для монетизации цифрового контента.
-      Поддержи любимого автора, покупая его контент
-      и подписывайся на его профиль.
-      Также ты можешь создать свой профиль
+      Поддержите любимого автора, покупая его контент
+      и подписывайтесь на его профиль.
+      Также можно создать свой профиль
       и начать зарабатывать на своем контенте! \n
       © GitHub, Copilot`;
 
@@ -79,7 +79,6 @@ export default class EntryPage extends UpgradeViewBase {
     page.appendChild(formArea);
 
     const content = document.createElement('span');
-    // content.innerHTML = '<i>Тут Нужен Kонтент!</i>';
     contentArea.appendChild(content);
 
     switch (this.options.type) {

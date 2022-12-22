@@ -20,7 +20,7 @@ const getAuthorData = async (user: PayloadProfileUser) => {
     getPostsRes.body as PayloadPost[] : undefined;
 
   store.dispatch({
-    type: ActionType.GETPROFILEDATA,
+    type: ActionType.GET_PROFILEDATA,
     payload: {
       user,
       authorSubscriptions,
@@ -110,7 +110,7 @@ const getDonaterData = async (user: PayloadProfileUser) => {
     undefined;
 
   store.dispatch({
-    type: ActionType.GETPROFILEDATA,
+    type: ActionType.GET_PROFILEDATA,
     payload: {
       user,
       userSubscriptions: subscriptions,
@@ -173,6 +173,7 @@ export default (id: number): void => {
             user.countProfitMounth = res.body.countProfitMounth as number;
             user.countSubscribersMounth =
               res.body.countSubscribersMounth as number;
+            user.balance = res.body.balance as number;
             return getAuthorData(user);
           } else {
             return getDonaterData(user);
