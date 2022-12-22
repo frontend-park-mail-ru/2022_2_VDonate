@@ -12,7 +12,12 @@
     min-width: max-content
     padding: 5px
   +e(icon)
-    width: 20px
+    width: 24px
     filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(298deg) brightness(102%) contrast(102%)
   +e(input)
     display: none
+
+@media  (max-width: mobile-size)
+  +b(button)
+    +e(icon)
+      width: 30px

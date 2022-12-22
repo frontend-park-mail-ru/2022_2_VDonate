@@ -5,15 +5,16 @@
   display: none
   flex-direction: column
   align-items: stretch
-  gap: 5px
+  gap: 10px
+  max-height: 50%
   &:hover
     display: flex
-  +m(active)
+  +m(enable)
     display: flex
   +e(back)
     padding: 10px
     position: fixed
-    bottom: 60px
+    bottom: 80px
     left: 0
     width: 20vw
     max-width: 300px
@@ -25,10 +26,11 @@
       left: auto
       top: 60px
       right: 0
-      width: 200px
+      width: 100%
+      max-width: 100%
 
-@media (hover: hover) and (pointer: fine) and (max-width: mobile-size)
-  +b(sub-menu)
-    +e(back)
-      top: 45px 
-      border-radius: 15px 0 0 15px
+// @media (hover: hover) and (pointer: fine) and (max-width: mobile-size)
+//   +b(sub-menu)
+//     +e(back)
+//       top: 60px 
+//       border-radius: 15px 0 0 15px

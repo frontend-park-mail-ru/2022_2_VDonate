@@ -1,5 +1,5 @@
 import {Action, ActionType} from '@actions/types/action';
-import {PayloadBackNotice} from '@actions/types/notice';
+import {PayloadBackNotice} from '@actions/types/backNotice';
 import {Reducer} from '@flux/types/reducer';
 import {PropTree} from '@flux/types/store';
 

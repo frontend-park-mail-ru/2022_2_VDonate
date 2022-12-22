@@ -11,6 +11,8 @@ bg-edge = inset 0px -4px 2px rgba(0, 0, 0, 0.2), inset 0px 4px 2px rgba(255, 255
     -webkit-backdrop-filter: blur(20px)
   +m(sub-menu)
     background-color: color-bg-block
+    backdrop-filter: blur(20px)
+    -webkit-backdrop-filter: blur(20px)
   +m(interaction)
     border-radius: radius-big
     position relative
@@ -111,6 +113,7 @@ bg-edge = inset 0px -4px 2px rgba(0, 0, 0, 0.2), inset 0px 4px 2px rgba(255, 255
         padding: 2px
         background:linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)    
       &:hover
+        outline: 2px solid rgba(0, 0, 0, 0.3)
         &:before
           background: none
     +m(icon)
@@ -168,9 +171,7 @@ bg-edge = inset 0px -4px 2px rgba(0, 0, 0, 0.2), inset 0px 4px 2px rgba(255, 255
 @media (max-width: mobile-size)
   +b(bg)
     +m(sub-menu)
-      border-radius: 0 0 0 radius-small
-      backdrop-filter: blur(20px)
-      -webkit-backdrop-filter: blur(20px)
+      background: color-bg-block-dark
     +m(navbar-link)
       +m(enable)
         border-radius: 0px 0px radius-small radius-small

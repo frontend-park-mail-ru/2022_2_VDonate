@@ -8,10 +8,12 @@ import {
   ActionSwitchSubscription,
   ActionUnsubscribe} from './subscribe';
 import {
-  ActionAddBackNotice,
-  ActionClearBackNotice,
   ActionNotice,
 } from './notice';
+import {
+  ActionAddBackNotice,
+  ActionClearBackNotice,
+} from './backNotice';
 import {
   ActionCreatePost,
   ActionDeletePost,

@@ -1,0 +1,32 @@
+@require '@style/const.styl'
+@require '@style/mixin.styl'
+
++b(back-notice-container)
+  display: flex
+  flex-direction: column
+  gap: 5px
+  align-items: stretch
+  overflow: auto
+  customScrollbar()
+  +e(notice)
+    display: flex
+    flex-direction: row
+    align-items: stretch
+    gap: 5px
+  +e(text)
+    text-align: left
+  +e(empty)
+    text-align: center
+  +e(color)
+    min-width: 2px
+    max-width: 2px
+    +m(error)
+      background-color: color-error
+    +m(info)
+      background-color: color-secondary
+    +m(success)
+      background-color: color-primary
+  +e(separator)
+    margin: 0
+    border: none
+    min-height: 2px

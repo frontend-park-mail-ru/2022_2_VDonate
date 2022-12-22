@@ -4,7 +4,7 @@ import './notice-bell.styl';
 
 interface NoticeBellOptions {
   hasNewNotices: boolean;
-  onHover: (isEnter: boolean) => void;
+  onClick: () => void;
 }
 
 export default class NoticeBell extends ComponentBase<'div', boolean> {
@@ -16,8 +16,7 @@ export default class NoticeBell extends ComponentBase<'div', boolean> {
   protected render(): HTMLDivElement {
     const bell = document.createElement('div');
     bell.className = 'notice-bell';
-    bell.addEventListener('mouseenter', this.options.onHover.bind(this, true));
-    bell.addEventListener('mouseleave', this.options.onHover.bind(this, false));
+    bell.addEventListener('click', this.options.onClick.bind(this));
 
     const icon = document.createElement('img');
     icon.src = alertIcon;

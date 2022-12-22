@@ -31,6 +31,7 @@ import {PayloadComment} from '@actions/types/comments';
 import Comment from '@components/Comment/Comment';
 import {notice} from '@actions/handlers/notice';
 import {commentSize} from '@validation/validation';
+import routing from '@actions/handlers/routing';
 
 export enum ContextType {
   RUNTIME_POST_UPDATE,
@@ -153,6 +154,17 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
                 text: data.content,
                 subscriptionTitle,
               });
+          const returnBtn =
+            this.domElement.querySelector('.post__return-btn');
+          returnBtn?.addEventListener('click', () => {
+            if (location.pathname === '/feed') {
+              routing(`/profile?id=${this.options.author.userID}`);
+            } else {
+              document.querySelector('.subscription-cards-container')
+                  ?.scrollIntoView();
+            }
+          },
+          );
         }
         break;
       case ContextType.COMMENTS:
@@ -207,6 +219,20 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
       text: this.options.content,
       subscriptionTitle,
     });
+    const returnBtn =
+            contentArea.querySelector('.post__return-btn');
+    returnBtn?.addEventListener('click', () => {
+      if (location.pathname === '/feed') {
+        routing(`/profile?id=${this.options.author.userID}`);
+      } else {
+        document.querySelector('.subscription-cards-container')
+            ?.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center',
+            });
+      }
+    },
+    );
 
     if (this.options.inEditState) {
       this.openEditor(post);

@@ -8,6 +8,7 @@ navbar-indent-mobile = 10px
   position: fixed
   top: 0
   left: 0
+  z-index: 1
   +e(back)
     border-radius: 0px radius-big radius-big 0px
     height: 100vh
@@ -17,6 +18,7 @@ navbar-indent-mobile = 10px
     flex-direction: column
     gap: 10px
     padding: 15px 10px 15px navbar-indent
+    background: color-bg-block-dark
     &:before
       border-radius: 0px radius-big radius-big 0px
   +e(link)
@@ -59,14 +61,13 @@ navbar-indent-mobile = 10px
   margin: 0
   margin-left: - navbar-indent
 
-.bottom-area__menu-btn
-  &:hover
-    & .sub-menu
-        display: flex
+// .bottom-area__menu-btn
+//   &:hover
+//     & .sub-menu
+//         display: flex
 
 @media  (max-width: mobile-size)
   +b(navbar)
-    z-index: 2
     +e(back)
       border-radius: 0
       height: 60px

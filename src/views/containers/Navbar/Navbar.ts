@@ -9,7 +9,7 @@ import {logout} from '@actions/handlers/user';
 import {openProfileEditor} from '@actions/handlers/editor';
 import Logo from '@components/Logo/Logo';
 import NavbarLink from '@components/NavbarLink/NavbarLink';
-import {ButtonType} from '@components/Button/Button';
+import Button, {ButtonType} from '@components/Button/Button';
 import {getSubscriptions} from '@actions/handlers/subscribe';
 import ProfileMini, {ProfileMiniType}
   from '@components/ProfileMini/ProfileMini';
@@ -19,10 +19,9 @@ import UpgradeViewBase from '@app/UpgradeView';
 import {PayloadLocation} from '@actions/types/routing';
 import {Pages} from '@configs/router';
 import NoticeBell from '@components/NoticeBell/NoticeBell';
-import {PayloadBackNotice} from '@actions/types/notice';
-import SubMenu from '@components/SubMenu/SubMenu';
-import {notice} from '@actions/handlers/notice';
+import SubMenu, {SubMenuType} from '@components/SubMenu/SubMenu';
 import ws from '@app/WebSocketNotice';
+import {PayloadBackNotice} from '@actions/types/backNotice';
 
 const links = [
   {
@@ -103,19 +102,8 @@ export default class Navbar extends UpgradeViewBase {
     this.profileMini.addClassNames('bottom-area__profile-mini');
 
     const noticeSubMenu = new SubMenu(navbar, {
+      type: SubMenuType.NOTICE,
       buttonsOptions: [
-        {
-          actionType: 'button',
-          viewType: ButtonType.OUTLINE,
-          innerText: 'Показать все',
-          clickHandler: () => {
-            const backNotices =
-              store.getState().backNotice as PayloadBackNotice[];
-            backNotices.forEach((backNotice) => {
-              notice(backNotice.message, 'info');
-            });
-          },
-        },
         {
           actionType: 'button',
           viewType: ButtonType.OUTLINE,
@@ -125,19 +113,8 @@ export default class Navbar extends UpgradeViewBase {
       ],
     });
 
-    this.noticeBell = new NoticeBell(this.profile, {
-      hasNewNotices: true,
-      onHover(isEnter) {
-        if (isEnter) {
-          noticeSubMenu.addClassNames('sub-menu_active');
-        } else {
-          noticeSubMenu.removeClassNames('sub-menu_active');
-        }
-      },
-    });
-    this.noticeBell.addClassNames('bottom-area__notice-bell');
-
     const profileSubMenu = new SubMenu(navbar, {
+      type: SubMenuType.PROFILE,
       buttonsOptions: [
         {
           viewType: ButtonType.OUTLINE,
@@ -163,21 +140,26 @@ export default class Navbar extends UpgradeViewBase {
       ],
     });
 
-    const menuBtn = document.createElement('div');
-    menuBtn.classList.add('bottom-area__menu-btn', 'menu-btn');
-
-    const menuImg = document.createElement('img');
-    menuImg.src = menuIcon;
-    menuImg.classList.add('menu-btn__icon');
-
-    menuBtn.appendChild(menuImg);
-    menuBtn.addEventListener('mouseenter', () => {
-      profileSubMenu.addClassNames('sub-menu_active');
+    this.noticeBell = new NoticeBell(this.profile, {
+      hasNewNotices: true,
+      onClick() {
+        noticeSubMenu.update('toggle');
+        profileSubMenu.update('disable');
+      },
     });
-    menuBtn.addEventListener('mouseleave', () => {
-      profileSubMenu.removeClassNames('sub-menu_active');
+    this.noticeBell.addClassNames('bottom-area__notice-bell');
+
+
+    new Button(this.profile, {
+      viewType: ButtonType.ICON,
+      clickHandler: () => {
+        profileSubMenu.update('toggle');
+        noticeSubMenu.update('disable');
+      },
+      actionType: 'button',
+      innerIcon: menuIcon,
     });
-    this.profile.appendChild(menuBtn);
+
 
     profileContainer.appendChild(this.profile);
     back.appendChild(profileContainer);

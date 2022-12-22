@@ -6,6 +6,7 @@
   flex-direction: column
   gap: 5px
   padding: 30px
+  position: relative
   +e(header)
     display: grid
     grid-template-areas: "avatar username edit"\
@@ -37,7 +38,15 @@
   +e(author-avatar)
     grid-area: avatar
   +e(not-allowed)
-    text-align: center
+    position: absolute
+    display: flex
+    flex-direction: column
+    align-items: center
+    gap: 10px
+    top: 40%
+    width: 100%
+  +e(return-btn)
+    padding: 5px 20px
   +e(edit-form)
     flex-grow: 1
   +e(comment-area)
@@ -74,7 +83,7 @@
 
 .post-content
   +m(blurred)
-    filter: blur(10px)
+    filter: blur(5px) brightness(0.35)
   +e(image)
     max-width: 20vw 
     padding: 2px

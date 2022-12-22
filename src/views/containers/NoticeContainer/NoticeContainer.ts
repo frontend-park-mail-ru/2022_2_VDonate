@@ -1,4 +1,4 @@
-import {PayloadBackNotice, PayloadNotice} from '@actions/types/notice';
+import {PayloadNotice} from '@actions/types/notice';
 import store from '@app/Store';
 import Notice, {NoticeType} from '@components/Notice/Notice';
 import './notice-container.styl';
@@ -8,12 +8,10 @@ import UpgradeViewBase from '@app/UpgradeView';
 export default class NoticeContainer extends UpgradeViewBase {
   private notices = new Map<Notice, NodeJS.Timeout>();
   private noticeState: PayloadNotice;
-  private backNoticeState: PayloadBackNotice[];
 
   constructor(el: HTMLElement) {
     super();
     this.noticeState = store.getState().notice as PayloadNotice;
-    this.backNoticeState = [];
     this.renderTo(el);
     this.notify();
   }
@@ -61,16 +59,6 @@ export default class NoticeContainer extends UpgradeViewBase {
         this.addNewNotice('Ошибка! Всё идет не по плану ☆(＃××)');
         console.error(this.noticeState.message);
       }
-    }
-
-    const backNoticeNew = store.getState().backNotice as PayloadBackNotice[];
-    if (backNoticeNew.length !== this.backNoticeState.length) {
-      backNoticeNew.forEach((notice, idx) => {
-        if (idx >= this.backNoticeState.length) {
-          this.addNewNotice(notice.message, 'info');
-          this.backNoticeState.push(Object.assign({}, notice));
-        }
-      });
     }
   }
 

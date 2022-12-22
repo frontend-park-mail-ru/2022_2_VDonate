@@ -7,23 +7,7 @@ export interface PayloadNotice {
   type?: 'error' | 'info'
 }
 
-export interface PayloadBackNotice {
-  timestamp: Date
-  message: string
-  type?: 'error' | 'info'
-}
-
 export interface ActionNotice extends IAction {
   type: ActionType.NOTICE
   payload: PayloadNotice
-}
-
-export interface ActionAddBackNotice extends IAction {
-  type: ActionType.ADD_BACK_NOTICE
-  payload: PayloadBackNotice[]
-}
-
-export interface ActionClearBackNotice extends IAction {
-  type: ActionType.CLEAR_BACK_NOTICE
-  payload: Record<string, never>
 }
