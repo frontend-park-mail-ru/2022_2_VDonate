@@ -55,7 +55,7 @@ class About extends ComponentBase<'div', string> {
     about.append(head, aboutBack);
     this.content = document.createElement('div');
     this.content.classList.add('about__text', 'font_regular');
-    this.content.innerHTML = this.aboutTextHtml(aboutBack);
+    this.content.innerText = this.aboutTextHtml(aboutBack);
     aboutBack.appendChild(this.content);
 
     return about;
@@ -64,7 +64,7 @@ class About extends ComponentBase<'div', string> {
   update(htmlString: string): void {
     if (this.options.aboutTextHtml === htmlString) return;
     this.options.aboutTextHtml = htmlString;
-    this.content.innerHTML = this.aboutTextHtml();
+    this.content.innerText = this.aboutTextHtml();
   }
 
   private aboutTextHtml(about?: HTMLDivElement): string {
@@ -111,7 +111,7 @@ class About extends ComponentBase<'div', string> {
 
   private closeEditor(): void {
     this.options.inEditState = false;
-    this.content.innerHTML = this.aboutTextHtml();
+    this.content.innerText = this.aboutTextHtml();
     this.content.setAttribute('contenteditable', 'false');
     querySelectorWithThrow(this.domElement, '.about__form').remove();
   }

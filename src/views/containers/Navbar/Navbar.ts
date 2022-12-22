@@ -45,12 +45,14 @@ export default class Navbar extends UpgradeViewBase {
   private locationState: PayloadLocation;
   private profileMini!: ProfileMini;
   private subscriptionsListContainer!: SubscriptionsListContainer;
-  // private subMenu!: SubMenu;
   private noticeBell!: NoticeBell;
+  private backNoticeCount: number;
 
   constructor(el: HTMLElement, private options: number) {
     super();
     this.locationState = store.getState().location as PayloadLocation;
+    this.backNoticeCount =
+      (store.getState().backNotice as PayloadBackNotice[]).length;
     this.renderTo(el);
     getSubscriptions(options);
   }
@@ -148,6 +150,9 @@ export default class Navbar extends UpgradeViewBase {
       },
     });
     this.noticeBell.addClassNames('bottom-area__notice-bell');
+    if (this.backNoticeCount) {
+      this.noticeBell.update(true);
+    }
 
 
     new Button(this.profile, {
@@ -183,8 +188,11 @@ export default class Navbar extends UpgradeViewBase {
       this.renderLocation(locationNew.type);
     }
 
-    const backNoticeState = store.getState().backNotice as PayloadBackNotice[];
-    if (backNoticeState.length === 0) {
+    const backNoticeCountNew =
+      (store.getState().backNotice as PayloadBackNotice[]).length;
+    if (
+      backNoticeCountNew === 0 ||
+      backNoticeCountNew === this.backNoticeCount) {
       this.noticeBell.update(false);
     } else {
       this.noticeBell.update(true);

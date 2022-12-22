@@ -16,7 +16,10 @@ export default class NoticeBell extends ComponentBase<'div', boolean> {
   protected render(): HTMLDivElement {
     const bell = document.createElement('div');
     bell.className = 'notice-bell';
-    bell.addEventListener('click', this.options.onClick.bind(this));
+    bell.addEventListener('click', () => {
+      this.options.onClick();
+      this.update(false);
+    });
 
     const icon = document.createElement('img');
     icon.src = alertIcon;
