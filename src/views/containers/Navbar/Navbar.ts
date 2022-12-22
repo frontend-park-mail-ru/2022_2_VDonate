@@ -23,6 +23,7 @@ import {PayloadBackNotice} from '@actions/types/notice';
 import SubMenu from '@components/SubMenu/SubMenu';
 import {notice} from '@actions/handlers/notice';
 import ws from '@app/WebSocketNotice';
+import {querySelectorWithThrow} from '@flux/types/component';
 
 const links = [
   {
@@ -129,8 +130,12 @@ export default class Navbar extends UpgradeViewBase {
       hasNewNotices: true,
       onHover(isEnter) {
         if (isEnter) {
+          querySelectorWithThrow(document.body, '.navbar__subs-list')
+              .classList.add('navbar__subs-list_notice-opened');
           noticeSubMenu.addClassNames('sub-menu_active');
         } else {
+          querySelectorWithThrow(document.body, '.navbar__subs-list')
+              .classList.remove('navbar__subs-list_notice-opened');
           noticeSubMenu.removeClassNames('sub-menu_active');
         }
       },
@@ -172,9 +177,13 @@ export default class Navbar extends UpgradeViewBase {
 
     menuBtn.appendChild(menuImg);
     menuBtn.addEventListener('mouseenter', () => {
+      this.subscriptionsListContainer
+          .addClassNames('navbar__subs-list_burger-opened');
       profileSubMenu.addClassNames('sub-menu_active');
     });
     menuBtn.addEventListener('mouseleave', () => {
+      this.subscriptionsListContainer
+          .removeClassNames('navbar__subs-list_burger-opened');
       profileSubMenu.removeClassNames('sub-menu_active');
     });
     this.profile.appendChild(menuBtn);

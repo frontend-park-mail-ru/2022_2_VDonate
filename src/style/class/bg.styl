@@ -10,7 +10,9 @@ bg-edge = inset 0px -4px 2px rgba(0, 0, 0, 0.2), inset 0px 4px 2px rgba(255, 255
     backdrop-filter: blur(20px)
     -webkit-backdrop-filter: blur(20px)
   +m(sub-menu)
-    background-color: color-bg-block
+    // background-color: color-bg-block
+    background: none
+    padding-bottom: 20px !important
   +m(interaction)
     border-radius: radius-big
     position relative
@@ -32,109 +34,121 @@ bg-edge = inset 0px -4px 2px rgba(0, 0, 0, 0.2), inset 0px 4px 2px rgba(255, 255
       position: relative
       border-radius: radius-small
       background: color-primary
-      &:before
-        content: ""
-        position: absolute
-        inset: 0
-        border-radius: radius-small
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
-        -webkit-mask-composite: xor
-        mask-composite: exclude
-        padding: 2px
-        background:linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)    
       &:hover
-        &:before
-          background: none
+        filter: brightness(120%)
+      // &:before
+      //   background: none
+      // &:hover
+      //   &:before
+      //     content: ""
+      //     position: absolute
+      //     inset: 0
+      //     border-radius: radius-small
+      //     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
+      //     -webkit-mask-composite: xor
+      //     mask-composite: exclude
+      //     padding: 2px
+      //     background:linear-gradient(0deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)
     +m(error)
       position: relative
       border-radius: radius-small
       background: color-error
-      &:before
-        content: ""
-        position: absolute
-        inset: 0
-        border-radius: radius-small
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
-        -webkit-mask-composite: xor
-        mask-composite: exclude
-        padding: 2px
-        background:linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)    
       &:hover
-        &:before
-          background: none
+        filter: brightness(120%)
+      // &:before
+      //   background: none
+      // &:hover
+      //   &:before
+      //     content: ""
+      //     position: absolute
+      //     inset: 0
+      //     border-radius: radius-small
+      //     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
+      //     -webkit-mask-composite: xor
+      //     mask-composite: exclude
+      //     padding: 2px
+      //     background:linear-gradient(0deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)    
     +m(sub-1)
       position: relative
       border-radius: radius-small
       background: color-sub-1
-      &:before
-        content: ""
-        position: absolute
-        inset: 0
-        border-radius: radius-small
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
-        -webkit-mask-composite: xor
-        mask-composite: exclude
-        padding: 2px
-        background:linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)    
       &:hover
-        &:before
-          background: none
+        filter: brightness(120%)
+      // &:before  
+      //   background: none
+      // &:hover
+      //   &:before
+      //     content: ""
+      //     position: absolute
+      //     inset: 0
+      //     border-radius: radius-small
+      //     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
+      //     -webkit-mask-composite: xor
+      //     mask-composite: exclude
+      //     padding: 2px
+      //     background:linear-gradient(0deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)  
     +m(sub-2)
       position: relative
       border-radius: radius-small
       background: color-sub-2
-      &:before
-        content: ""
-        position: absolute
-        inset: 0
-        border-radius: radius-small
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
-        -webkit-mask-composite: xor
-        mask-composite: exclude
-        padding: 2px
-        background:linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)    
       &:hover
-        &:before
-          background: none
+        filter: brightness(120%)
+      // &:before   
+      //   background: none
+      // &:hover
+      //   &:before
+      //     content: ""
+      //     position: absolute
+      //     inset: 0
+      //     border-radius: radius-small
+      //     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
+      //     -webkit-mask-composite: xor
+      //     mask-composite: exclude
+      //     padding: 2px
+      //     background:linear-gradient(0deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%) 
     +m(outline)
       position: relative
       border-radius: radius-small
-      background: none
-      &:before
-        content: ""
-        position: absolute
-        inset: 0
-        border-radius: radius-small
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
-        -webkit-mask-composite: xor
-        mask-composite: exclude
-        padding: 2px
-        background:linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)    
+      background: rgba(122, 122, 122, 0.37)
       &:hover
-        &:before
-          background: none
+        filter: brightness(120%)
+      // &:before
+      //   background: none
+      // &:hover
+      //   &:before
+      //     content: ""
+      //     position: absolute
+      //     inset: 0
+      //     border-radius: radius-small
+      //     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
+      //     -webkit-mask-composite: xor
+      //     mask-composite: exclude
+      //     padding: 2px
+      //     background:linear-gradient(0deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%) 
     +m(icon)
       background: none
       &:hover
         transform: scale(1.1)
     +m(action)
       position: relative
-      background: none
-      border-radius: radius-small
+      background: rgba(160, 160, 160, 0.3)
+      border-radius: radius-medium
       border: none
-      &:before
-        content: ""
-        position: absolute
-        inset: 0
-        border-radius: radius-small
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
-        -webkit-mask-composite: xor
-        mask-composite: exclude
-        padding: 2px
-        background:linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)
       &:hover
-        &:before
-          background: none
+        filter: brightness(115%)
+      // &:before
+      //   background: none
+      // &:hover
+      //   &:before
+      //     content: ""
+      //     position: absolute
+      //     inset: 0
+      //     border-radius: radius-small
+      //     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
+      //     -webkit-mask-composite: xor
+      //     mask-composite: exclude
+      //     padding: 2px
+      //     background:linear-gradient(0deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%)
   +m(notice-error)
     backdrop-filter: blur(20px)
     border-radius: radius-medium
@@ -168,6 +182,7 @@ bg-edge = inset 0px -4px 2px rgba(0, 0, 0, 0.2), inset 0px 4px 2px rgba(255, 255
 @media (max-width: mobile-size)
   +b(bg)
     +m(sub-menu)
+      background-color: color-bg-block
       border-radius: 0 0 0 radius-small
       backdrop-filter: blur(20px)
       -webkit-backdrop-filter: blur(20px)

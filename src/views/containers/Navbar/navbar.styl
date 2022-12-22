@@ -25,11 +25,16 @@ navbar-indent-mobile = 10px
   +e(subs-list)
     flex-grow: 1
     overflow: auto
+    margin-bottom: auto
     customScrollbar()
+    +m(notice-opened)
+      max-height: calc(100vh - 315px)
+    +m(burger-opened)
+      max-height: calc(100vh - 350px)
   +e(bottom-area)
-    gap: 10px;
-    display: flex;
-    flex-direction: column;
+    gap: 10px
+    display: flex
+    flex-direction: column
 
 +b(bottom-area)
   +e(profile)
@@ -95,6 +100,7 @@ navbar-indent-mobile = 10px
       flex-grow: 1
       overflow-y: hidden
       overflow-x: auto
+      margin-bottom: 0
       customScrollbar(1px, 1px)
 
   +b(bottom-area)
