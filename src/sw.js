@@ -6,6 +6,7 @@
 const CACHE_NAME = 'vdonate-static-cache-v1';
 const CACHE_URLS = [];
 
+console.log('Service worker is running');
 /**
  * @description: There we are want to cache all the static files.
  * @param event - install event
@@ -34,12 +35,16 @@ self.addEventListener('activate', (event) => {
  * @param event - fetch request
  */
 self.addEventListener('fetch', (request) => {
+  if (request.method !== 'GET') {
+    return false;
+  }
   request.respondWith(
       cacheFirst({
         request: request.request,
         preloadResponseProm: request.preloadResponse,
       }),
   );
+  return true;
 });
 
 /**
@@ -50,7 +55,7 @@ self.addEventListener('fetch', (request) => {
 const cacheFirst = async ({request, preloadResponseProm}) => {
   // Firstly trying to get the response from cache
   const cachedResponse = await caches.match(request);
-  if (cachedResponse) {
+  if (cachedResponse && !navigator.onLine) {
     return cachedResponse;
   }
 

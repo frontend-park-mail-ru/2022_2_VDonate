@@ -13,6 +13,7 @@ import ProfilePage from './pages/ProfilePage/ProfilePage';
 import {PayloadUser} from '@actions/types/user';
 import FeedPage from './pages/FeedPage/FeedPage';
 import UpgradeViewBase from '@app/UpgradeView';
+import notice from '@actions/handlers/notice';
 
 interface RootChildViews {
   navbar?: Navbar
@@ -40,6 +41,13 @@ export default class Root extends UpgradeViewBase {
     this.renderTo(el);
     this.update(this.locationState);
     auth();
+    window.addEventListener('offline', () => {
+      notice('Проверьте подключение к интернету');
+    });
+
+    window.addEventListener('online', () => {
+      notice('Подключение восстановлено');
+    });
   }
 
   /** Оповещение об изменением хранилища */
