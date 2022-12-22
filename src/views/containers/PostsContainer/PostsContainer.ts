@@ -152,10 +152,10 @@ class PostsContainer
     }
     if (newPostsState.size == 0 && !this.posts.get(-1)) {
       querySelectorWithThrow(this.domElement, '.posts-container__empty')
-          .hidden = false;
+          .classList.remove('posts-container__empty_hidden');
     } else {
       querySelectorWithThrow(this.domElement, '.posts-container__empty')
-          .hidden = true;
+          .classList.add('posts-container__empty_hidden');
     }
   }
 
