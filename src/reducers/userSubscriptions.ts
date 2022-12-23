@@ -17,10 +17,18 @@ const createSubscriptionsMap =
     return subscriptionsMap;
   };
 
+const checkZeroSubscriptions = (subscriptions: PayloadSubscription[]) => {
+  subscriptions.forEach((subscription) => {
+    subscription.id = subscription.id === 0 ?
+      -subscription.authorID : subscription.id;
+  });
+};
+
 const userSubscriptionsReducer: Reducer<Action> =
   (state: PropTree, action: Action): PropTree => {
     switch (action.type) {
       case ActionType.GET_SUBSCRIPTIONS:
+        checkZeroSubscriptions(action.payload);
         return createSubscriptionsMap(action.payload);
       case ActionType.SUBSCRIBE: {
         const profile =
@@ -41,6 +49,7 @@ const userSubscriptionsReducer: Reducer<Action> =
             tier: authorSub.tier,
             title: authorSub.title,
           };
+          checkZeroSubscriptions([subscription]);
           (state as Map<number, PayloadSubscription>)
               .set(subscription.id, subscription);
         }
@@ -73,6 +82,7 @@ const userSubscriptionsReducer: Reducer<Action> =
             tier: authorSub.tier,
             title: authorSub.title,
           };
+          checkZeroSubscriptions([subscription]);
           (state as Map<number, PayloadSubscription>)
               .set(subscription.id, subscription);
         }

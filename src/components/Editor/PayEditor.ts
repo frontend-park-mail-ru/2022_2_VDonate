@@ -9,7 +9,9 @@ import closeIcon from '@icon/close.svg';
 
 interface PayEditorOptions {
   authorID: number,
-  authorSubscriptionID: number,
+  subscriptionID: number,
+  subscriptionTitle: string,
+  subscriptionPrice: number,
   currentCardStatus: SubscriptionCardStatus,
 }
 
@@ -45,10 +47,13 @@ class PayEditor extends ComponentBase<'div'> {
           viewType: ButtonType.PRIMARY,
           innerText: 'Да, оплатить',
           clickHandler: () => {
-            subscribe(this.options.authorID, this.options.authorSubscriptionID);
+            subscribe(this.options.authorID, this.options.subscriptionID);
           },
         }).addClassNames('btn-area__btn');
-        text.innerText = 'Вы действительно собираетесь задонатить?';
+        text.innerText =
+          `Вы собираетесь задонатить на подписку 
+          "${this.options.subscriptionTitle}" 
+          за ${this.options.subscriptionPrice} рублей.`;
         break;
       case SubscriptionCardStatus.ALREADY_DONATED:
         new Button(btnArea, {
@@ -58,11 +63,14 @@ class PayEditor extends ComponentBase<'div'> {
           clickHandler: () => {
             unsubscribe(
                 this.options.authorID,
-                this.options.authorSubscriptionID,
+                this.options.subscriptionID,
             );
           },
         }).addClassNames('btn-area__btn');
-        text.innerText = 'Вы действительно собираетесь отписаться?';
+        text.innerText =
+          `Вы собираетесь отписаться от подписки 
+          "${this.options.subscriptionTitle}" 
+          за ${ this.options.subscriptionPrice } рублей.`;
         break;
       default:
         text.innerText = 'Ошибка';

@@ -92,54 +92,70 @@ class MiniStatistic
   private renderAuthorStatistic(miniStatistic: HTMLDivElement) {
     const donatersContainer = document.createElement('div');
     donatersContainer.classList
-        .add('mini-statistic__container');
+        .add('mini-statistic__container', 'statistic');
+
     const donaters = document.createElement('span');
-    donaters.classList.add('mini-statistic__text', 'font_regular');
+    donaters.classList.add('statistic__text', 'font_regular');
     donaters.innerText = 'Донатеров';
+
     this.countDonaters = document.createElement('span');
-    this.countDonaters.classList.add('mini-statistic__text', 'font_regular');
+    this.countDonaters.classList.add('statistic__text', 'font_regular');
     this.countDonaters.innerText =
       this.options.countDonaters?.toString() ?? '0';
     donatersContainer.append(donaters, this.countDonaters);
     miniStatistic.appendChild(donatersContainer);
+
     const postsContainer = document.createElement('div');
     postsContainer.classList
-        .add('mini-statistic__container');
+        .add('mini-statistic__container', 'statistic');
+
     const posts = document.createElement('span');
-    posts.classList.add('mini-statistic__text', 'font_regular');
+    posts.classList.add('statistic__text', 'font_regular');
     posts.innerText = 'Постов';
+
     this.countPosts = document.createElement('span');
-    this.countPosts.classList.add('mini-statistic__text', 'font_regular');
+    this.countPosts.classList.add('statistic__text', 'font_regular');
     this.countPosts.innerText =
       this.options.countPosts?.toString() ?? '0';
     postsContainer.append(posts, this.countPosts);
     miniStatistic.appendChild(postsContainer);
+
     if (this.options.changeable) {
       const profitContainer = document.createElement('div');
       profitContainer.classList
-          .add('mini-statistic__container');
+          .add('mini-statistic__container', 'statistic');
+
       const profit = document.createElement('span');
-      profit.classList.add('mini-statistic__text', 'font_regular');
+      profit.classList.add('statistic__text', 'font_regular');
       profit.innerText = 'Заработок за месяц';
+
       this.countProfitMounth = document.createElement('span');
       this.countProfitMounth
-          .classList.add('mini-statistic__text', 'font_regular');
+          .classList.add('statistic__text', 'font_regular');
+
       this.countProfitMounth.innerText =
-      this.options.countProfitMounth?.toString() ?? '0';
+        this.options.countProfitMounth?.toString() ?? '0';
+
       this.countProfitMounth.innerHTML += '&#8381;';
       profitContainer.append(profit, this.countProfitMounth);
       miniStatistic.appendChild(profitContainer);
+
       const subPerMounthContainer = document.createElement('div');
       subPerMounthContainer.classList
-          .add('mini-statistic__container');
+          .add('mini-statistic__container', 'statistic');
+
       const subPerMounth = document.createElement('span');
-      subPerMounth.classList.add('mini-statistic__text', 'font_regular');
+      subPerMounth.classList.add('statistic__text', 'font_regular');
+
       subPerMounth.innerText = 'Донатеров за месяц';
+
       this.countSubscribersMounth = document.createElement('span');
       this.countSubscribersMounth
-          .classList.add('mini-statistic__text', 'font_regular');
+          .classList.add('statistic__text', 'font_regular');
+
       this.countSubscribersMounth.innerText =
-          this.options.countSubscribersMounth?.toString() ?? '0';
+        this.options.countSubscribersMounth?.toString() ?? '0';
+
       subPerMounthContainer.append(subPerMounth, this.countSubscribersMounth);
       miniStatistic.appendChild(subPerMounthContainer);
     }
@@ -147,15 +163,15 @@ class MiniStatistic
 
   private renderDonaterStatistic(miniStatistic: HTMLDivElement) {
     const subsContainer = document.createElement('div');
-    subsContainer.classList.add('mini-statistic__container');
+    subsContainer.classList.add('mini-statistic__container', 'statistic');
 
     const subscriptionsTitle = document.createElement('span');
-    subscriptionsTitle.classList.add('mini-statistic__text', 'font_regular');
+    subscriptionsTitle.classList.add('statistic__text', 'font_regular');
     subscriptionsTitle.innerText = 'Подписок';
 
     this.countSubscriptions = document.createElement('span');
     this.countSubscriptions.classList
-        .add('mini-statistic__text', 'font_regular');
+        .add('statistic__text', 'font_regular');
     this.countSubscriptions.innerText =
       this.options.countSubscriptions?.toString() ?? '0';
 
