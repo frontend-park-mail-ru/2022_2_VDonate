@@ -42,6 +42,9 @@ class ProfileInfo extends UpgradeViewBase {
     this.avatar.update(profileNew.user.isAuthor ?
       AvatarType.AUTHOR : AvatarType.DONATER);
 
+    if (this.profileState.user.id !== profileNew.user.id) {
+      this.profileState.user.id = profileNew.user.id;
+    }
     if (this.profileState.user.username !== profileNew.user.username) {
       this.profileState.user.username = profileNew.user.username;
       this.username.innerText = this.profileState.user.username;
@@ -174,6 +177,7 @@ class ProfileInfo extends UpgradeViewBase {
           actionType: 'button',
           innerText: 'Стать автором',
           clickHandler: () => {
+            console.log(this.profileState);
             becomeAuthor(this.profileState.user.id);
           },
         });

@@ -12,6 +12,8 @@ import SubscriptionCardsContainer
   '@views/containers/SubscriptionCardsContainer/SubscriptionCardsContainer';
 import UpgradeViewBase from '@app/UpgradeView';
 import {querySelectorWithThrow} from '@flux/types/component';
+import Button, {ButtonType} from '@components/Button/Button';
+import routing from '@actions/handlers/routing';
 
 interface ProfileEditorOptions {
   profileID: number
@@ -64,10 +66,25 @@ export default class ProfilePage extends UpgradeViewBase {
     if (!this.isAuthor) {
       if (!profileNew.userSubscriptions ||
         profileNew.userSubscriptions.length === 0) {
-        this.subscriptions.innerHTML = this.options.changeable ?
-          `Вы пока никого не поддерживаете<br> <br>
-          Попробуйте найти интересующих вас авторов на странице поиска` :
-          'Донатер пока никого не поддерживает';
+        this.subscriptions.innerHTML = '';
+        const empty = document.createElement('div');
+        empty.classList.add('profile-page__empty');
+        const emptyText = document.createElement('div');
+        emptyText.classList.add('profile-page__empty-text', 'font_regular');
+        emptyText.innerHTML = this.options.changeable ?
+        `Предлагаем вам перейти в поиск и найти своего первого автора.` :
+        'Донатер пока никого не поддерживает.';
+        empty.appendChild(emptyText);
+        this.subscriptions.appendChild(empty);
+
+        if (this.options.changeable) {
+          new Button(empty, {
+            actionType: 'button',
+            viewType: ButtonType.OUTLINE,
+            innerText: 'Перейти в поиск',
+            clickHandler: () => routing('/search'),
+          }).addClassNames('profile-page__search-btn');
+        }
       } else {
         this.subscriptions.innerHTML = '';
         profileNew.userSubscriptions.forEach((sub) => {
