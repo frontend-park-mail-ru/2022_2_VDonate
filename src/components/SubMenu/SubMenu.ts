@@ -45,18 +45,28 @@ class SubMenu extends ComponentBase<'div', SubMenuUpdateContext> {
       case 'toggle':
         if (this.domElement.classList.contains('sub-menu_enable')) {
           this.domElement.classList.remove('sub-menu_enable');
+          document.body.removeEventListener('click', this.overClick.bind(this));
         } else {
           this.domElement.classList.add('sub-menu_enable');
+          document.body.addEventListener('click', this.overClick.bind(this));
         }
         break;
       case 'enable':
         this.domElement.classList.add('sub-menu_enable');
+        document.body.addEventListener('click', this.overClick.bind(this));
         break;
       case 'disable':
         this.domElement.classList.remove('sub-menu_enable');
+        document.body.removeEventListener('click', this.overClick.bind(this));
         break;
       default:
         break;
+    }
+  }
+
+  private overClick(e: MouseEvent) {
+    if (!(e.target as Element).closest('.sub-menu')) {
+      this.update('disable');
     }
   }
 

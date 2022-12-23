@@ -47,6 +47,12 @@ const noticeReducer: Reducer<Action> =
           message: msgArr,
         };
       }
+      case ActionType.CLEAR_BACK_NOTICE:
+        return {
+          timestamp: performance.now(),
+          message: 'Уведомления очищены.',
+          type: 'info',
+        };
       case ActionType.CHANGE_USERDATA_SUCCESS:
       case ActionType.LOGIN_SUCCESS:
       case ActionType.SIGNUP_SUCCESS:

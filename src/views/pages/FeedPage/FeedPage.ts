@@ -4,6 +4,9 @@ import {PayloadUser} from '@actions/types/user';
 import store from '@app/Store';
 import PostsContainer from '@views/containers/PostsContainer/PostsContainer';
 import UpgradeViewBase from '@app/UpgradeView';
+import {querySelectorWithThrow} from '@flux/types/component';
+import Button, {ButtonType} from '@components/Button/Button';
+import routing from '@actions/handlers/routing';
 
 export default class FeedPage extends UpgradeViewBase {
   private postsContainer!: PostsContainer;
@@ -22,11 +25,17 @@ export default class FeedPage extends UpgradeViewBase {
     this.postsContainer = new PostsContainer(page, {
       withCreateBtn: user.isAuthor,
       textWhenEmpty:
-      `Тут будут посты интересующих вас авторов\n
-        Перейдите на страницу поиска и начните 
-        поддерживать авторов уже сейчас.`,
+      'Предлагаем вам перейти в поиск и найти своего первого автора.',
     });
     this.postsContainer.addClassNames('feed-page__content-area');
+    const goToSearchArea =
+      querySelectorWithThrow(page, '.posts-container__empty');
+    new Button(goToSearchArea, {
+      actionType: 'button',
+      viewType: ButtonType.OUTLINE,
+      innerText: 'Перейти в поиск',
+      clickHandler: () => routing('/search'),
+    }).addClassNames('feed-page__search-btn');
 
     getFeed();
     return page;

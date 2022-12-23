@@ -3,7 +3,7 @@ import {PayloadUser} from '@actions/types/user';
 import getProfile from '@actions/handlers/getProfileData';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
 import About from '@components/About/About';
-import ProfileInfo from '@components/ProfileInfo/ProfileInfo';
+import ProfileInfo from '@views/containers/ProfileInfo/ProfileInfo';
 import PostsContainer from '@views/containers/PostsContainer/PostsContainer';
 import SubscriptionLink from '@components/SubscriptionLink/SubscriptionLink';
 import './profile-page.styl';
@@ -21,11 +21,11 @@ interface ProfileEditorOptions {
 interface ProfilePageChildViews {
   postContainer?: PostsContainer
   subscriptionCardsContainer?: SubscriptionCardsContainer
+  profileInfo?: ProfileInfo
 }
 
 export default class ProfilePage extends UpgradeViewBase {
   private isAuthor: boolean | undefined;
-  private profileInfo!: ProfileInfo;
   private subscriptions: HTMLDivElement = document.createElement('div');
   private childViews: ProfilePageChildViews = {};
   private about!: About;
@@ -50,17 +50,17 @@ export default class ProfilePage extends UpgradeViewBase {
       this.isAuthor ? this.renderAuthorContent() :
         this.renderDonaterContent();
     }
-    this.profileInfo.update({
-      isAuthor: profileNew.user.isAuthor,
-      avatar: profileNew.user.avatar,
-      username: profileNew.user.username,
-      countSubscriptions: profileNew.user.countSubscriptions,
-      countDonaters: profileNew.user.countDonaters ?? 0,
-      countPosts: profileNew.user.countPosts ?? 0,
-      countProfitMounth: profileNew.user.countProfitMounth ?? 0,
-      countSubscribersMounth: profileNew.user.countSubscribersMounth ?? 0,
-      balance: profileNew.user.balance ?? 0,
-    });
+    // this.profileInfo.update({
+    //   isAuthor: profileNew.user.isAuthor,
+    //   avatar: profileNew.user.avatar,
+    //   username: profileNew.user.username,
+    //   countSubscriptions: profileNew.user.countSubscriptions,
+    //   countDonaters: profileNew.user.countDonaters ?? 0,
+    //   countPosts: profileNew.user.countPosts ?? 0,
+    //   countProfitMounth: profileNew.user.countProfitMounth ?? 0,
+    //   countSubscribersMounth: profileNew.user.countSubscribersMounth ?? 0,
+    //   balance: profileNew.user.balance ?? 0,
+    // });
     if (!this.isAuthor) {
       if (!profileNew.userSubscriptions ||
         profileNew.userSubscriptions.length === 0) {
@@ -87,14 +87,8 @@ export default class ProfilePage extends UpgradeViewBase {
   protected render(): HTMLDivElement {
     const page = document.createElement('div');
     page.classList.add('profile-page');
-    const profileState = store.getState().profile as PayloadGetProfileData;
-    this.profileInfo = new ProfileInfo(page, {
-      avatar: profileState.user.avatar,
-      countSubscriptions: profileState.user.countSubscriptions,
-      isAuthor: profileState.user.isAuthor,
-      username: profileState.user.username,
-      countDonaters: profileState.user.countDonaters,
-      id: this.options.profileID,
+    // const profileState = store.getState().profile as PayloadGetProfileData;
+    this.childViews.profileInfo = new ProfileInfo(page, {
       changeable: this.options.changeable,
     });
     const content = document.createElement('div');
@@ -106,6 +100,7 @@ export default class ProfilePage extends UpgradeViewBase {
   protected onErase(): void {
     this.childViews.postContainer?.erase();
     this.childViews.subscriptionCardsContainer?.erase();
+    this.childViews.profileInfo?.erase();
   }
 
   private renderAuthorContent() {
@@ -118,7 +113,10 @@ export default class ProfilePage extends UpgradeViewBase {
       });
 
     this.about = new About(content, {
-      aboutTextHtml: 'Пользователь пока ничего о себе не написал',
+      aboutTextHtml: this.options.changeable ?
+        `Здесь будет информация о Вас. 
+        Скорее заполните ее, чтобы пользователи могли узнать о Вас больше.` :
+        'Автор пока ничего о себе не рассказал.',
       id: this.options.profileID,
       changeable: this.options.changeable,
       inEditState: false,
@@ -127,9 +125,8 @@ export default class ProfilePage extends UpgradeViewBase {
     this.childViews.postContainer = new PostsContainer(content, {
       withCreateBtn: this.options.changeable && user.isAuthor,
       textWhenEmpty: this.options.changeable && user.isAuthor ?
-      `Тут будут ваши посты\n
-        Начните радовать своих донатеров новым контентом уже сейчас` :
-        `Автор пока что не создал ни одного поста`,
+      'Создайте свой первый пост. Можете воспользоваться кнопкой выше.' :
+        'Лента данного автора пуста.',
     });
   }
 

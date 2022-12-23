@@ -18,6 +18,8 @@ export default
 class About extends ComponentBase<'div', string> {
   private content!: HTMLDivElement;
   private saveBtn?: Button;
+  private empty = true;
+
   constructor(el: HTMLElement, private options: AboutOptions) {
     super();
     this.renderTo(el);
@@ -71,9 +73,14 @@ class About extends ComponentBase<'div', string> {
 
   private aboutTextHtml(about?: HTMLDivElement): string {
     if (this.options.aboutTextHtml.length === 0) {
+      this.empty = true;
       (about ?? this.domElement).classList.add('about__empty');
-      return 'Автор пока о себе ничего не рассказал';
+      return this.options.changeable ?
+        `Здесь будет информация о Вас. 
+        Скорее заполните ее, чтобы пользователи могли узнать о Вас больше.` :
+        'Автор пока ничего о себе не рассказал.';
     } else {
+      this.empty = false;
       (about ?? this.domElement).classList.remove('about__empty');
       return this.options.aboutTextHtml;
     }
@@ -81,8 +88,7 @@ class About extends ComponentBase<'div', string> {
 
   private openEditor(): void {
     this.content.setAttribute('contenteditable', 'true');
-    (this.domElement).classList.remove('about__empty');
-    if (this.content.innerText == 'Автор пока о себе ничего не рассказал') {
+    if (this.empty) {
       this.content.innerText = '';
     }
     const form = document.createElement('form');

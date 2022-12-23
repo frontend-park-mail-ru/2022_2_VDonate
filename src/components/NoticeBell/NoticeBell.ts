@@ -16,7 +16,8 @@ export default class NoticeBell extends ComponentBase<'div', boolean> {
   protected render(): HTMLDivElement {
     const bell = document.createElement('div');
     bell.className = 'notice-bell';
-    bell.addEventListener('click', () => {
+    bell.addEventListener('click', (e) => {
+      e.stopPropagation();
       this.options.onClick();
       this.update(false);
     });

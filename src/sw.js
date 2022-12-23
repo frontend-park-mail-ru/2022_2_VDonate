@@ -54,13 +54,6 @@ const cacheFirst = async (request) => {
   // Firstly trying to get the response from cache
   const cache = await caches.open(CACHE_NAME);
 
-  // Trying to get the response from preload
-  // const preloadResponse = await preloadResponseProm;
-  // if (preloadResponse) {
-  //   void putInCache(request, preloadResponse.clone());
-  //   return preloadResponse;
-  // }
-
   // If there is no response in cache and preloaded response
   // then we are trying to get it from network
   try {

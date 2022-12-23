@@ -107,14 +107,23 @@ class EditorContainer
         }
         break;
       }
-      case EditorType.PAY:
+      case EditorType.PAY: {
         this.editorType = EditorType.PAY;
+        const sub =
+          (store.getState().profile as PayloadGetProfileData)
+              .authorSubscriptions?.find(
+                  (sub) => sub.id === newEditor.authorSubscriptionID,
+              );
+        if (!sub) break;
         this.currentEditor = new PayEditor(this.domElement, {
           authorID: newEditor.authorID,
-          authorSubscriptionID: newEditor.authorSubscriptionID,
+          subscriptionID: newEditor.authorSubscriptionID,
           currentCardStatus: newEditor.currentCardStatus,
+          subscriptionPrice: sub.price,
+          subscriptionTitle: sub.title,
         });
         break;
+      }
       case EditorType.WITHDRAW:
         this.editorType = EditorType.WITHDRAW;
         this.currentEditor = new WithdrawEditor(this.domElement);

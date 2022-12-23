@@ -35,7 +35,7 @@ const signUpInputs: InputOptions[] = [
   {
     kind: InputType.PASSWORD,
     label: 'Пароль',
-    placeholder: 'Мы обещаем не продавать его',
+    placeholder: '********',
     name: 'password',
     displayError: false,
     title: 'Пароль должен содержать не менее 5 символов',
@@ -43,7 +43,7 @@ const signUpInputs: InputOptions[] = [
   {
     kind: InputType.PASSWORD,
     label: 'Повторите пароль',
-    placeholder: 'Чтобы точно',
+    placeholder: '********',
     name: 'repeatPassword',
     displayError: false,
     title: 'Пароли должны совпадать',
@@ -79,7 +79,7 @@ class SignUpForm
 
   protected render(): HTMLFormElement {
     const form = document.createElement('form');
-    form.classList.add('entry-form', 'entry-form__back', 'bg_interaction');
+    form.classList.add('entry-form', 'entry-form__back', 'bg_main');
     form.innerHTML = template(signUpContext);
 
     const inputsArea = querySelectorWithThrow(form, '.entry-form__inputs');
