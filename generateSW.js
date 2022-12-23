@@ -14,7 +14,6 @@ const cachedUrl = [
       url.replace('/sw.js', '/').replace('./dist', ''),
 );
 
-console.log(cachedUrl);
 const sw = fs.readFileSync('./src/sw.js');
 let swString = sw.toString();
 swString = swString.replace('[]', `['${cachedUrl.join('\',\'')}']`);
