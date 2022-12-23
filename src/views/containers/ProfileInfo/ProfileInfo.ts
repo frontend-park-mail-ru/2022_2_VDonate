@@ -114,7 +114,7 @@ class ProfileInfo extends UpgradeViewBase {
         this.profileState.user.balance !== profileNew.user.balance) {
       this.profileState.user.balance = profileNew.user.balance;
       querySelectorWithThrow(this.domElement, '.balance-area__count')
-          .innerHTML = `${this.profileState.user.balance ?? 0}&#8381;`;
+          .innerHTML = `${this.profileState.user.balance ?? 0} &#8381;`;
     }
   }
 
@@ -185,7 +185,6 @@ class ProfileInfo extends UpgradeViewBase {
           actionType: 'button',
           innerText: 'Стать автором',
           clickHandler: () => {
-            console.log(this.profileState);
             becomeAuthor(this.profileState.user.id);
           },
         });
@@ -225,7 +224,7 @@ class ProfileInfo extends UpgradeViewBase {
     const balance = document.createElement('span');
     balance.classList
         .add('balance-area__count', 'statistic__text', 'font_regular');
-    balance.innerHTML = `${this.profileState.user.balance ?? 0}&#8381;`;
+    balance.innerHTML = `${this.profileState.user.balance ?? 0} &#8381;`;
     balanceDiv.appendChild(balance);
 
     new Button(balanceArea, {

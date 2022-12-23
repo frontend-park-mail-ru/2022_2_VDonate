@@ -60,7 +60,7 @@ class MiniStatistic
         this.options.countProfitMounth = data.countProfitMounth;
         this.countProfitMounth.innerText =
           this.options.countProfitMounth?.toString() ?? '0';
-        this.countProfitMounth.innerHTML += '&#8381;';
+        this.countProfitMounth.innerHTML += ' &#8381;';
       }
       if (this.options.changeable &&
         this.options.countSubscribersMounth !== data.countSubscribersMounth) {
@@ -136,7 +136,7 @@ class MiniStatistic
       this.countProfitMounth.innerText =
         this.options.countProfitMounth?.toString() ?? '0';
 
-      this.countProfitMounth.innerHTML += '&#8381;';
+      this.countProfitMounth.innerHTML += ' &#8381;';
       profitContainer.append(profit, this.countProfitMounth);
       miniStatistic.appendChild(profitContainer);
 

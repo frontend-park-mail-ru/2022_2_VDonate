@@ -49,6 +49,10 @@ const sizes = {
     min: 1,
     max: 1000000000, // 1 миллиард
   },
+  postContent: {
+    min: 1,
+    max: 10000, // 10k
+  },
 };
 
 export const commentSize = 100;
@@ -236,4 +240,11 @@ export const deleteSpacebarsAndEnters = (text: string): string => {
         .replace(/&nbsp;$/, '');
   }
   return text;
+};
+
+export const postValidation = (content: string): string | undefined => {
+  return (content.length < sizes.postContent.min ||
+          content.length > sizes.postContent.max) ?
+  `Длина поста должна быть в пределах
+    от ${sizes.postContent.min} до ${sizes.postContent.max}` : undefined;
 };

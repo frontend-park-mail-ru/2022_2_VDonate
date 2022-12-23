@@ -4,15 +4,16 @@ import {PayloadPost} from '@actions/types/posts';
 import {PayloadUser} from '@actions/types/user';
 import api from '@app/Api';
 import store from '@app/Store';
-import {deleteSpacebarsAndEnters} from '@validation/validation';
+import {deleteSpacebarsAndEnters, postValidation} from '@validation/validation';
 
 export const createPost = (content: string, tier: number) => {
   content = deleteSpacebarsAndEnters(content);
-  if (content.length == 0 || content.length > 1000) {
+  const err = postValidation(content);
+  if (err) {
     store.dispatch({
       type: ActionType.NOTICE,
       payload: {
-        message: 'Длинна поста должна быть в пределах от 0 до 1000',
+        message: err,
       },
     });
     return;
@@ -95,11 +96,12 @@ export const createPost = (content: string, tier: number) => {
 export const updatePost =
   (id: number, content: string, tier: number) => {
     content = deleteSpacebarsAndEnters(content);
-    if (content.length == 0 || content.length > 1000) {
+    const err = postValidation(content);
+    if (err) {
       store.dispatch({
         type: ActionType.NOTICE,
         payload: {
-          message: 'Длинна поста должна быть в пределах от 0 до 1000',
+          message: err,
         },
       });
       return;

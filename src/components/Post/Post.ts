@@ -100,7 +100,6 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
   }
 
   update(data: PostUpdateContext): void {
-    if (this.options.postID == 117) console.log(data);
     switch (data.contextType) {
       case ContextType.CHANGE_EDIT_STATE:
         if (data.NewEditState) {
@@ -275,15 +274,19 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
       count: this.options.likesNum,
       isActive: this.options.isLiked,
       clickCallback: () => {
-        this.likeBtn.update({
-          likesNum: this.options.likesNum,
-          isActive: this.options.isLiked,
-          blocked: true,
-        });
-        if (this.options.isLiked) {
-          unlikePost(this.options.postID);
+        if (this.options.isAllowed) {
+          this.likeBtn.update({
+            likesNum: this.options.likesNum,
+            isActive: this.options.isLiked,
+            blocked: true,
+          });
+          if (this.options.isLiked) {
+            unlikePost(this.options.postID);
+          } else {
+            likePost(this.options.postID);
+          }
         } else {
-          likePost(this.options.postID);
+          notice('Нет доступа к посту', 'info');
         }
       },
     });
@@ -326,6 +329,11 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     this.content =
       querySelectorWithThrow(domElement ?? this.domElement, '.post-content');
     this.content.setAttribute('contenteditable', 'true');
+    this.content.addEventListener('paste', (e) => {
+      e.preventDefault();
+      notice('Вставка запрещена', 'info');
+    });
+
     this.content.addEventListener('input', this.onContentInput.bind(this));
     this.content.querySelectorAll('h1').forEach((el) => {
       this.htmlTextElementsInContent.add(el);
