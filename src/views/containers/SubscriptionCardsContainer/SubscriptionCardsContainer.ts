@@ -74,6 +74,11 @@ export default class SubscriptionCardsContainer
           this.domElement,
           '.subscription-cards-container__empty',
       ).hidden = false;
+      this.subscriptionCards.forEach((_, subID) => {
+        this.deleteSubscriptionCard(subID);
+      });
+      this.subscriptionsState = new Map<number, PayloadSubscription>();
+      this.subscriptionCards = new Map<number, SubscriptionCard>();
       return;
     }
     querySelectorWithThrow(
