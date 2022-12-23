@@ -86,8 +86,14 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
     }
     if (typeof data.blocked == 'boolean') {
       if (data.blocked) {
+        this.domElement.children.item(0)?.removeAttribute('style');
+        this.domElement.children.item(1)
+            ?.setAttribute('style', 'display: none;');
         this.domElement.disabled = true;
       } else {
+        this.domElement.children.item(1)?.removeAttribute('style');
+        this.domElement.children.item(0)
+            ?.setAttribute('style', 'display: none;');
         this.domElement.disabled = false;
       }
     }
@@ -104,6 +110,11 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
     if (this.options.actionType === 'button') {
       button.addEventListener('click', this.options.clickHandler);
     }
+
+    const loading = document.createElement('div');
+    loading.classList.add('button__loading');
+    loading.style.display = 'none';
+    button.appendChild(loading);
 
     // Add title
     if (this.options.title) {

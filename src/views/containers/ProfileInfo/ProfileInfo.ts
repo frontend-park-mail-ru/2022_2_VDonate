@@ -108,6 +108,13 @@ class ProfileInfo extends UpgradeViewBase {
         this.followButton?.remove();
       }
     }
+
+    if (this.profileState.user.isAuthor &&
+      this.profileState.user.balance !== profileNew.user.balance) {
+      this.profileState.user.balance = profileNew.user.balance;
+      querySelectorWithThrow(this.domElement, '.balance-area__count')
+          .innerHTML = `${this.profileState.user.balance ?? 0}&#8381;`;
+    }
   }
 
   protected render(): HTMLDivElement {
@@ -216,7 +223,7 @@ class ProfileInfo extends UpgradeViewBase {
 
     const balance = document.createElement('span');
     balance.classList
-        .add('balance-area__text', 'statistic__text', 'font_regular');
+        .add('balance-area__count', 'statistic__text', 'font_regular');
     balance.innerHTML = `${this.profileState.user.balance ?? 0}&#8381;`;
     balanceDiv.appendChild(balance);
 
