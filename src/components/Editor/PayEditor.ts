@@ -49,7 +49,7 @@ class PayEditor extends ComponentBase<'div', null> {
           innerText: 'Да, оплатить',
           clickHandler: () => {
             this.submitBtn.update({blocked: true});
-            subscribe(this.options.authorID, this.options.authorSubscriptionID);
+            subscribe(this.options.authorID, this.options.subscriptionID);
           },
         });
         this.submitBtn.addClassNames('btn-area__btn');
