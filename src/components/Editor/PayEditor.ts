@@ -19,7 +19,8 @@ interface PayEditorOptions {
  * Модель окна подтверждения подписки
  */
 export default
-class PayEditor extends ComponentBase<'div'> {
+class PayEditor extends ComponentBase<'div', null> {
+  private submitBtn!: Button;
   constructor(el: HTMLElement, private options: PayEditorOptions) {
     super();
     this.renderTo(el);
@@ -42,31 +43,35 @@ class PayEditor extends ComponentBase<'div'> {
 
     switch (this.options.currentCardStatus) {
       case SubscriptionCardStatus.CAN_DONATE:
-        new Button(btnArea, {
+        this.submitBtn = new Button(btnArea, {
           actionType: 'button',
           viewType: ButtonType.PRIMARY,
           innerText: 'Да, оплатить',
           clickHandler: () => {
-            subscribe(this.options.authorID, this.options.subscriptionID);
+            this.submitBtn.update({blocked: true});
+            subscribe(this.options.authorID, this.options.authorSubscriptionID);
           },
-        }).addClassNames('btn-area__btn');
+        });
+        this.submitBtn.addClassNames('btn-area__btn');
         text.innerText =
           `Вы собираетесь задонатить на подписку 
           "${this.options.subscriptionTitle}" 
           за ${this.options.subscriptionPrice} рублей.`;
         break;
       case SubscriptionCardStatus.ALREADY_DONATED:
-        new Button(btnArea, {
+        this.submitBtn = new Button(btnArea, {
           actionType: 'button',
           viewType: ButtonType.PRIMARY,
           innerText: 'Отписаться',
           clickHandler: () => {
+            this.submitBtn.update({blocked: true});
             unsubscribe(
                 this.options.authorID,
                 this.options.subscriptionID,
             );
           },
-        }).addClassNames('btn-area__btn');
+        });
+        this.submitBtn.addClassNames('btn-area__btn');
         text.innerText =
           `Вы собираетесь отписаться от подписки 
           "${this.options.subscriptionTitle}" 
@@ -100,7 +105,11 @@ class PayEditor extends ComponentBase<'div'> {
     return editor;
   }
 
-  update(data: never): void {
-    return data;
+  update(): void {
+    //
+  }
+
+  updateDisabled(): void {
+    this.submitBtn.update({blocked: false});
   }
 }

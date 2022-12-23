@@ -45,6 +45,7 @@ class LogInForm
   extends ComponentBase<'form', LogInFormUpdateContent> {
   /** Список компонентов ввода, используемых в текущем контейнере */
   private inputs = new Map<string, InputField>();
+  private submitBtn!: Button;
 
   constructor(el: HTMLElement) {
     super();
@@ -52,6 +53,7 @@ class LogInForm
   }
 
   update(errors: LogInFormUpdateContent): void {
+    this.submitBtn.update({blocked: false});
     Object.entries(errors).forEach(([name, value]) => {
       this.inputs.get(name)?.update(value as boolean);
     });
@@ -61,10 +63,6 @@ class LogInForm
     const form = document.createElement('form');
     form.classList.add('entry-form', 'entry-form__back', 'bg_main');
     form.innerHTML = template(logInContext);
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      login((e.target as HTMLFormElement).elements as LogInFormElements);
-    });
 
     const inputsArea = querySelectorWithThrow(form, '.entry-form__inputs');
     logInInputs.forEach((options) =>
@@ -73,10 +71,16 @@ class LogInForm
     querySelectorWithThrow(form, 'input[name="username"]')
         .setAttribute('autofocus', 'true');
 
-    new Button(querySelectorWithThrow(form, '.entry-form__submit'), {
-      actionType: 'submit',
-      innerText: 'Войти',
-      viewType: ButtonType.PRIMARY,
+    this.submitBtn =
+     new Button(querySelectorWithThrow(form, '.entry-form__submit'), {
+       actionType: 'submit',
+       innerText: 'Войти',
+       viewType: ButtonType.PRIMARY,
+     });
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      this.submitBtn.update({blocked: true});
+      login((e.target as HTMLFormElement).elements as LogInFormElements);
     });
 
     return form;

@@ -86,6 +86,10 @@ class PostsContainer
               isAllowed: postPayload.isAllowed,
               tier: postPayload.tier,
             });
+            this.posts.get(postID)?.update({
+              contextType: ContextType.COMMENTS,
+              blocked: false,
+            });
           } else {
             this.deletePost(-1);
             this.addPost(postPayload);

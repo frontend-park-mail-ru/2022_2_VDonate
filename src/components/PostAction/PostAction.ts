@@ -21,6 +21,7 @@ interface PostActionOptions {
 interface PostActionUpdateContent {
   isActive: boolean
   likesNum: number
+  blocked: boolean
 }
 /**
  * Компонент кнопка
@@ -33,6 +34,12 @@ class PostAction extends ComponentBase<'button', PostActionUpdateContent> {
   }
 
   update(data: PostActionUpdateContent): void {
+    if (data.blocked) {
+      this.domElement.disabled = true;
+      return;
+    } else {
+      this.domElement.disabled = false;
+    }
     if (this.options.isActive !== data.isActive) {
       this.options.isActive = data.isActive;
       if (this.options.isActive) {

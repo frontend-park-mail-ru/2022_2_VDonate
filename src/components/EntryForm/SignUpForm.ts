@@ -63,6 +63,7 @@ class SignUpForm
   extends ComponentBase<'form', SignUpFormUpdateErrors> {
   /** Список компонентов ввода, используемых в текущем контейнере */
   private inputs = new Map<string, InputField>();
+  private submitBtn!: Button;
 
   constructor(el: HTMLElement) {
     super();
@@ -70,6 +71,7 @@ class SignUpForm
   }
 
   update(errors: SignUpFormUpdateErrors): void {
+    this.submitBtn.update({blocked: false});
     Object.entries(errors).forEach(([name, value]) => {
       this.inputs.get(name)?.update(value as boolean);
     });
@@ -79,10 +81,6 @@ class SignUpForm
     const form = document.createElement('form');
     form.classList.add('entry-form', 'entry-form__back', 'bg_main');
     form.innerHTML = template(signUpContext);
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      signup((e.target as HTMLFormElement).elements as SignUpFormElements);
-    });
 
     const inputsArea = querySelectorWithThrow(form, '.entry-form__inputs');
     signUpInputs.forEach((options) =>
@@ -91,10 +89,17 @@ class SignUpForm
     querySelectorWithThrow(form, 'input[name="email"]')
         .setAttribute('autofocus', 'true');
 
-    new Button(querySelectorWithThrow(form, '.entry-form__submit'), {
-      actionType: 'submit',
-      innerText: 'Зарегистрироваться',
-      viewType: ButtonType.PRIMARY,
+    this.submitBtn =
+      new Button(querySelectorWithThrow(form, '.entry-form__submit'), {
+        actionType: 'submit',
+        innerText: 'Зарегистрироваться',
+        viewType: ButtonType.PRIMARY,
+      });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      this.submitBtn.update({blocked: true});
+      signup((e.target as HTMLFormElement).elements as SignUpFormElements);
     });
 
     return form;

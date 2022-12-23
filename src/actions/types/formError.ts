@@ -3,6 +3,7 @@ import {
   PayloadEditUserErrors,
   PayloadLogInErrors,
   PayloadSignUpErrors,
+  PayloadWithdrawErrors,
 } from './user';
 
 export enum FormErrorType {
@@ -10,6 +11,7 @@ export enum FormErrorType {
   SIGNUP,
   EDIT_USER,
   AUTHOR_SUBSCRIPTION,
+  WITHDRAW,
 }
 
 export type PayloadFormError =
@@ -17,4 +19,4 @@ export type PayloadFormError =
   | PayloadSignUpErrors
   | PayloadEditUserErrors
   | PayloadAuthorSubscriptionErrors
-  | undefined
+  | PayloadWithdrawErrors;

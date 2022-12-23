@@ -25,6 +25,7 @@ interface PostEditorInputsErrors {
 export default
 class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
   private inputs = new Map<string, InputField>();
+  private submitBtn!: Button;
 
   constructor(el: HTMLElement, private options: ProfileEditorOptions) {
     super();
@@ -41,6 +42,17 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
     this.addInputs(form);
     this.addButtons(form);
 
+    form.addEventListener('submit',
+        (e) => {
+          e.preventDefault();
+          this.submitBtn.update({blocked: true});
+          editUser(
+              this.options.id,
+            (e.target as HTMLFormElement).elements as EditUserFormElements,
+          );
+        },
+    );
+
     return editor;
   }
 
@@ -50,21 +62,16 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
     });
   }
 
+  updateDisabled(): void {
+    this.submitBtn.update({blocked: false});
+  }
+
   private createForm(): HTMLFormElement {
     const form = document.createElement('form');
     form.classList.add('editor__form', 'bg_main');
     form.insertAdjacentHTML(
         'afterbegin',
         template({title: 'Редактирование профиля'}),
-    );
-    form.addEventListener('submit',
-        (e) => {
-          e.preventDefault();
-          editUser(
-              this.options.id,
-            (e.target as HTMLFormElement).elements as EditUserFormElements,
-          );
-        },
     );
     return form;
   }
@@ -119,11 +126,12 @@ class ProfileEditor extends ComponentBase <'div', PostEditorInputsErrors> {
   private addButtons(form: HTMLFormElement) {
     const btnArea = querySelectorWithThrow(form, '.editor__btn-area');
 
-    new Button(btnArea, {
+    this.submitBtn = new Button(btnArea, {
       viewType: ButtonType.PRIMARY,
       innerText: 'Изменить',
       actionType: 'submit',
-    }).addClassNames('btn-area__btn');
+    });
+    this.submitBtn.addClassNames('btn-area__btn');
     new Button(btnArea, {
       viewType: ButtonType.OUTLINE,
       innerText: 'Отменить',

@@ -52,6 +52,11 @@ export interface PayloadEditUserErrors {
   repeatPassword: null | string
   avatar: null | string
 }
+
+export interface PayloadWithdrawErrors {
+  type: FormErrorType.WITHDRAW
+  message: string
+}
 /** Интерфейс действия аутентификации */
 export interface ActionAuth extends IAction {
   type: ActionType.AUTH
@@ -134,4 +139,9 @@ export interface ActionBecomeAuthor extends IAction {
 export interface ActionWithdraw extends IAction {
   type: ActionType.WITHDRAW
   payload: Record<string, never>
+}
+
+export interface ActionWithdrawError extends IAction {
+  type: ActionType.WITHDRAW_ERROR
+  payload: PayloadWithdrawErrors
 }

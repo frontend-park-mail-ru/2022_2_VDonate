@@ -35,6 +35,7 @@ import {
   ActionEditAbout,
   ActionBecomeAuthor,
   ActionWithdraw,
+  ActionWithdrawError,
 } from './user';
 import {ActionEditorClose, ActionEditorOpen} from './editor';
 import {ActionSearch} from './searchAuthor';
@@ -83,6 +84,7 @@ export enum ActionType {
   DELETE_COMMENT,
   CLOSE_COMMENTS,
   WITHDRAW,
+  WITHDRAW_ERROR,
 }
 /** Объединение действий */
 export type Action =
@@ -122,4 +124,5 @@ export type Action =
   | ActionUpdateComment
   | ActionDeleteComment
   | ActionCloseComments
-  | ActionWithdraw;
+  | ActionWithdraw
+  | ActionWithdrawError;
