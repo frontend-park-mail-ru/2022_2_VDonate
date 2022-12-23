@@ -154,7 +154,7 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
         const input = document.createElement('input');
         input.classList.add('button__input');
         input.setAttribute('type', 'file');
-        input.setAttribute('accept', 'image/*');
+        input.setAttribute('accept', '.jpg, .jpeg, .png');
 
         button.append(innerIcon, input);
         if (this.options.actionType === 'button') {
