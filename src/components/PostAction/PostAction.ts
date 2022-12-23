@@ -35,9 +35,15 @@ class PostAction extends ComponentBase<'button', PostActionUpdateContent> {
 
   update(data: PostActionUpdateContent): void {
     if (data.blocked) {
+      this.domElement.children.item(0)?.removeAttribute('style');
+      this.domElement.children.item(1)
+          ?.setAttribute('style', 'display: none;');
       this.domElement.disabled = true;
       return;
     } else {
+      this.domElement.children.item(1)?.removeAttribute('style');
+      this.domElement.children.item(0)
+          ?.setAttribute('style', 'display: none;');
       this.domElement.disabled = false;
     }
     if (this.options.isActive !== data.isActive) {
@@ -64,6 +70,12 @@ class PostAction extends ComponentBase<'button', PostActionUpdateContent> {
         'post-action__back',
         'bg_button_action');
     button.addEventListener('click', this.options.clickCallback);
+
+    const loading = document.createElement('div');
+    loading.classList.add('post-action__loading');
+    loading.style.display = 'none';
+    button.appendChild(loading);
+
     const innerIcon = document.createElement('img');
     innerIcon.className = 'post-action__icon';
     const innerText = document.createElement('span');
