@@ -27,7 +27,8 @@ export default class EntryPage extends UpgradeViewBase {
   }
 
   notify(): void {
-    const formErrors = store.getState().formErrors as PayloadFormError;
+    const formErrors =
+      store.getState().formErrors as PayloadFormError | undefined;
     switch (formErrors?.type) {
       case FormErrorType.LOGIN:
         if (this.form instanceof LogInForm) {

@@ -24,14 +24,12 @@ import {closeEditor, openPostEditor} from '@actions/handlers/editor';
 import Dropbox from '@components/Dropbox/Dropbox';
 import {PayloadGetProfileData} from '@actions/types/getProfileData';
 import {
-  addComment,
   closeComments,
   getComments} from '@actions/handlers/comments';
 import {PayloadComment} from '@actions/types/comments';
-import Comment from '@components/Comment/Comment';
 import {notice} from '@actions/handlers/notice';
-import {commentSize} from '@validation/validation';
 import routing from '@actions/handlers/routing';
+import CommentArea from '@components/CommentArea/CommentArea';
 
 export enum ContextType {
   RUNTIME_POST_UPDATE,
@@ -48,7 +46,7 @@ type PostOptions = PayloadPost & {
 
 interface RuntimePostUpdateContext {
   contextType: ContextType.RUNTIME_POST_UPDATE
-  inEditState: false
+  inEditState?: boolean
   content: string
   isLiked: boolean
   likesNum: number
@@ -72,6 +70,7 @@ interface CommentsContext {
   commentMap?: Map<number, PayloadComment>
   commentID?: number
   comment?: PayloadComment
+  blocked?: boolean
 }
 export type PostUpdateContext =
   | RuntimePostUpdateContext
@@ -92,15 +91,16 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
   private commentBtn!: PostAction;
   private content!: HTMLElement;
   private htmlTextElementsInContent = new Set<HTMLElement>();
-  private commentsState = new Map<number, PayloadComment>();
-  private comments = new Map<number, Comment>();
-
+  private imgBtn?: Button;
+  private submitBtn?: Button;
+  private comments!: CommentArea;
   constructor(el: HTMLElement, private options: PostOptions) {
     super();
     this.renderTo(el);
   }
 
   update(data: PostUpdateContext): void {
+    if (this.options.postID == 117) console.log(data);
     switch (data.contextType) {
       case ContextType.CHANGE_EDIT_STATE:
         if (data.NewEditState) {
@@ -126,10 +126,12 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
         this.likeBtn.update({
           isActive: data.isLiked,
           likesNum: data.likesNum,
+          blocked: false,
         });
         this.commentBtn.update({
           isActive: false,
           likesNum: data.commentsNum,
+          blocked: false,
         });
 
         if (
@@ -147,13 +149,20 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
           const subscriptionTitle =
             (store.getState().profile as PayloadGetProfileData)
                 .authorSubscriptions?.at(data.tier - 1)?.title;
-
+          if (querySelectorWithThrow(this.domElement, '.post-content')
+              .contentEditable) {
+            data.inEditState = true;
+          }
           querySelectorWithThrow(this.domElement, '.post__content-area')
               .innerHTML = templateContent({
                 isAllowed: data.isAllowed,
                 text: data.content,
                 subscriptionTitle,
               });
+          if (data.inEditState) {
+            querySelectorWithThrow(this.domElement, '.post-content')
+                .setAttribute('contenteditable', 'true');
+          }
           const returnBtn =
             this.domElement.querySelector('.post__return-btn');
           returnBtn?.addEventListener('click', () => {
@@ -168,33 +177,21 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
         }
         break;
       case ContextType.COMMENTS:
-        if (data.commentMap) {
-          this.commentsState = data.commentMap;
-          this.openComments(data.commentMap);
-        } else if (data.comment) {
-          if (data.commentID) {
-            this.comments.get(data.commentID)?.update(data.comment.content);
-          } else {
-            querySelectorWithThrow(this.domElement, '.new-comment__input')
-                .innerText = '';
-            this.addComment(data.comment);
-          }
-        } else if (data.commentID) {
-          this.deleteComment(data.commentID);
-        } else {
-          this.closeComments();
-        }
+        this.comments.update(data);
         break;
       default: {
         const _: never = data;
         return _;
       }
     }
+    this.imgBtn?.update({blocked: false});
+    this.submitBtn?.update({blocked: false});
   }
 
   protected render(): HTMLDivElement {
     const post = document.createElement('div');
     post.classList.add('post', 'post__back', 'bg_main');
+    // render шапки поста
     post.innerHTML = templatePost({
       username: this.options.author.username,
       date: (typeof this.options.dateCreated == 'undefined' ||
@@ -208,6 +205,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     });
     avatar.addClassNames('post__img');
 
+    // render контента поста
     const contentArea = querySelectorWithThrow(post, '.post__content-area');
 
     const subscriptionTitle =
@@ -234,6 +232,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     },
     );
 
+    // render остального
     if (this.options.inEditState) {
       this.openEditor(post);
     } else {
@@ -256,33 +255,12 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
         editBtn.addClassNames('post__header-btn');
       }
     }
-    const newComment =
-    querySelectorWithThrow(post, '.new-comment');
-    const form = document.createElement('form');
-    form.classList.add('new-comment__form');
-    const input = document.createElement('div');
-    input.setAttribute('contenteditable', 'true');
-    input.classList.add('new-comment__input', 'bg_input', 'font_regular');
-    form.appendChild(input);
-    new Button(form, {
-      actionType: 'submit',
-      viewType: ButtonType.PRIMARY,
-      innerText: 'Отправить',
-    }).addClassNames('new-comment__submit');
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      input.innerText = input.innerText.trim();
-      if (input.innerText.length == 0) {
-        notice('Вы ввели пустой комментарий', 'error');
-      } else if (input.innerText.length > commentSize) {
-        notice(
-            `Комментарий должен быть меньше ${commentSize} символов`, 'error');
-      } else {
-        addComment(this.options.postID, input.innerText);
-      }
+    this. comments = new CommentArea(post, {
+      authorID: this.options.author.userID,
+      PostID: this.options.postID,
+      commentMap: new Map<number, PayloadComment>(),
+      commentsOpened: false,
     });
-    newComment.appendChild(form);
-    newComment.hidden = true;
     return post;
   }
 
@@ -297,6 +275,11 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
       count: this.options.likesNum,
       isActive: this.options.isLiked,
       clickCallback: () => {
+        this.likeBtn.update({
+          likesNum: this.options.likesNum,
+          isActive: this.options.isLiked,
+          blocked: true,
+        });
         if (this.options.isLiked) {
           unlikePost(this.options.postID);
         } else {
@@ -310,9 +293,16 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
       isActive: false,
       clickCallback: () => {
         if (this.options.isAllowed) {
+          this.commentBtn.update({
+            likesNum: this.options.commentsNum,
+            isActive: false,
+            blocked: true,
+          });
           if (this.options.commentsOpened) {
+            this.options.commentsOpened = false;
             closeComments(this.options.postID);
           } else {
+            this.options.commentsOpened = true;
             getComments(this.options.postID);
           }
         } else {
@@ -394,6 +384,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     });
     tierBtn.addClassNames('post-edit-form__tier');
 
+    // TODO блокировку сделать или удалить все таки
     const headerBtn = new Button(form, {
       actionType: 'button',
       viewType: ButtonType.ICON,
@@ -408,31 +399,33 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     });
     headerBtn.addClassNames('post-edit-form__h1');
 
-    const imgBtn = new Button(form, {
+    const formBtns = document.createElement('div');
+    formBtns.classList.add('post-edit-form__btn', 'btn-area');
+
+    this.submitBtn = new Button(formBtns, {
+      actionType: 'submit',
+      viewType: ButtonType.PRIMARY,
+      innerText: this.options.postID == -1 ? 'Создать' : 'Сохранить',
+    });
+
+    this.submitBtn.addClassNames('btn-area__btn');
+    this.imgBtn = new Button(form, {
       actionType: 'button',
       viewType: ButtonType.IMAGE_LOADING,
       innerIcon: loadImageIcon,
       title: 'Загрузить изображение в конец поста',
       clickHandler: (e) => {
+        this.submitBtn?.update({blocked: true});
+        this.imgBtn?.update({blocked: true});
         const image = (e.target as HTMLInputElement);
         if (image.files && image.files.length !== 0) {
           putImage(this.options.postID, image.files[0]);
         }
       },
     });
-    imgBtn.addClassNames('post-edit-form__img');
+    this.imgBtn.addClassNames('post-edit-form__img');
 
-
-    const formBtns = document.createElement('div');
-    formBtns.classList.add('post-edit-form__btn', 'btn-area');
     form.appendChild(formBtns);
-
-    const saveBtn = new Button(formBtns, {
-      actionType: 'submit',
-      viewType: ButtonType.PRIMARY,
-      innerText: this.options.postID == -1 ? 'Создать' : 'Сохранить',
-    });
-    saveBtn.addClassNames('btn-area__btn');
 
     const cancelBtn = new Button(formBtns, {
       actionType: 'button',
@@ -471,58 +464,6 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
       this.renderActions();
     }
     this.htmlTextElementsInContent.clear();
-  }
-
-  private openComments(comments: Map<number, PayloadComment>) {
-    this.commentsState = comments;
-    this.options.commentsOpened = true;
-    const commentArea =
-      querySelectorWithThrow(this.domElement, '.post__comment-area');
-    const hr = document.createElement('hr');
-    hr.classList.add('post-hr', 'bg_hr');
-    commentArea.appendChild(hr);
-    comments.forEach((comment) => {
-      this.comments.set(comment.id,
-          new Comment(commentArea, {
-            ...comment,
-            authorID: this.options.author.userID,
-            inEditState: false,
-            postID: this.options.postID,
-          }),
-      );
-    });
-    querySelectorWithThrow(this.domElement, '.new-comment').hidden = false;
-  }
-
-  private addComment(comment: PayloadComment) {
-    this.commentsState.set(comment.id, comment);
-    this.comments.set(
-        comment.id,
-        new Comment(
-            querySelectorWithThrow(this.domElement, '.post__comment-area'),
-            {
-              ...comment,
-              inEditState: false,
-              postID: this.options.postID,
-            },
-        ),
-    );
-  }
-
-  private deleteComment(commentID: number) {
-    this.comments.get(commentID)?.remove();
-    this.comments.delete(commentID);
-    this.commentsState.delete(commentID);
-  }
-
-  private closeComments() {
-    this.commentsState = new Map<number, PayloadComment>();
-    this.comments.forEach((o) => o.remove());
-    this.comments = new Map<number, Comment>();
-    this.options.commentsOpened = false;
-    querySelectorWithThrow(this.domElement, '.post__comment-area')
-        .innerHTML = '';
-    querySelectorWithThrow(this.domElement, '.new-comment').hidden = true;
   }
 }
 

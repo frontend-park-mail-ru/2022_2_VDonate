@@ -608,8 +608,9 @@ export const withdraw = (data: WithdrawFormElements): void => {
     text = data.phone.value;
     if (text.length !== 11) {
       store.dispatch({
-        type: ActionType.NOTICE,
+        type: ActionType.WITHDRAW_ERROR,
         payload: {
+          type: FormErrorType.WITHDRAW,
           message: 'Некорректная длина номера телефона',
         },
       });
@@ -617,9 +618,10 @@ export const withdraw = (data: WithdrawFormElements): void => {
     }
   } else {
     store.dispatch({
-      type: ActionType.NOTICE,
+      type: ActionType.WITHDRAW_ERROR,
       payload: {
-        message: 'Ошибка при отправке формы, повторите попытку',
+        type: FormErrorType.WITHDRAW,
+        message: 'Ошибка при отправке формы, повторите попытку позже',
       },
     });
     return;

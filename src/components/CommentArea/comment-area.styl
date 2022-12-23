@@ -1,0 +1,35 @@
+@require '@style/const.styl'
+@require '@style/mixin.styl'
+
++b(comment-area)
+  width: 100%
+  display: flex
+  flex-direction: column
+  gap: 10px
+  +e(comment-area)
+    width: 100%
+    display: flex
+    flex-direction: column
+    gap: 10px
+  +e(new-comment)
+    width: 100%
+    margin-top: 12px
+  +e(form)
+    display: flex
+    flex-direction: row
+    flex-wrap: nowrap
+    align-items: center
+    gap: 10px
+  +e(input)
+    width: 100%
+    min-height: auto
+    padding: 5px
+    white-space: pre-wrap
+    background: rgba(255, 255, 255, 0.2)
+  +e(submit)
+    //
+
+.comment-hr
+  border: none
+  height: 3px
+  width: 100%

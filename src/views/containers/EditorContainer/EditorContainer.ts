@@ -9,6 +9,7 @@ import PayEditor from '@components/Editor/PayEditor';
 import UpgradeViewBase from '@app/UpgradeView';
 import './editor-container.styl';
 import WithdrawEditor from '@components/Editor/withdrawEditor';
+import {notice} from '@actions/handlers/notice';
 
 /** */
 export default
@@ -54,6 +55,7 @@ class EditorContainer
       this.formErrorsState = formErrorsNew;
       this.displayErrors(this.formErrorsState);
     }
+    this.currentEditor?.updateDisabled();
   }
 
   protected onErase(): void {
@@ -130,7 +132,7 @@ class EditorContainer
   }
 
   private displayErrors(errors: PayloadFormError) {
-    switch (errors?.type) {
+    switch (errors.type) {
       case FormErrorType.EDIT_USER:
         if (this.currentEditor instanceof ProfileEditor) {
           this.currentEditor.update({
@@ -150,6 +152,9 @@ class EditorContainer
             // tier: Boolean(errors.tier),
           });
         }
+        break;
+      case FormErrorType.WITHDRAW:
+        notice(errors.message);
         break;
       default:
         break;

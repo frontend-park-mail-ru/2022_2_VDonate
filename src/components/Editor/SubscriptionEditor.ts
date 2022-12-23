@@ -30,7 +30,7 @@ export default
 class SubscriptionEditor
   extends ComponentBase <'div', SubscriptionEditorInputsErrors> {
   private inputs = new Map<string, InputField>();
-
+  private submitBtn!: Button;
   constructor(el: HTMLElement, private options?: SubscriptionEditorOptions) {
     super();
     this.renderTo(el);
@@ -46,29 +46,10 @@ class SubscriptionEditor
     this.addInputs(form);
     this.addButtons(form);
 
-    return editor;
-  }
-
-  update(errors: SubscriptionEditorInputsErrors): void {
-    Object.entries(errors).forEach(([name, value]) => {
-      this.inputs.get(name)?.update(value as boolean);
-    });
-  }
-
-  private createForm(): HTMLFormElement {
-    const form = document.createElement('form');
-    form.classList.add('editor__form', 'bg_main');
-    form.noValidate = true;
-    form.insertAdjacentHTML(
-        'afterbegin',
-        template({
-          title: this.options ?
-          'Редактирование подписки' : 'Создание подписки',
-        }),
-    );
     form.addEventListener('submit',
         (e) => {
           e.preventDefault();
+          this.submitBtn.update({blocked: true});
           if (this.options) {
             editAuthorSubscription(
                 this.options.id,
@@ -79,6 +60,30 @@ class SubscriptionEditor
           }
           return false;
         },
+    );
+
+    return editor;
+  }
+
+  update(errors: SubscriptionEditorInputsErrors): void {
+    Object.entries(errors).forEach(([name, value]) => {
+      this.inputs.get(name)?.update(value as boolean);
+    });
+  }
+
+  updateDisabled(): void {
+    this.submitBtn.update({blocked: false});
+  }
+  private createForm(): HTMLFormElement {
+    const form = document.createElement('form');
+    form.classList.add('editor__form', 'bg_main');
+    form.noValidate = true;
+    form.insertAdjacentHTML(
+        'afterbegin',
+        template({
+          title: this.options ?
+          'Редактирование подписки' : 'Создание подписки',
+        }),
     );
     return form;
   }
@@ -134,11 +139,12 @@ class SubscriptionEditor
   private addButtons(form: HTMLFormElement) {
     const btnArea = querySelectorWithThrow(form, '.editor__btn-area');
 
-    new Button(btnArea, {
+    this.submitBtn = new Button(btnArea, {
       viewType: ButtonType.PRIMARY,
       innerText: this.options ? 'Изменить' : 'Создать',
       actionType: 'submit',
-    }).addClassNames('btn-area__btn');
+    });
+    this.submitBtn.addClassNames('btn-area__btn');
     new Button(btnArea, {
       viewType: ButtonType.OUTLINE,
       innerText: 'Отменить',

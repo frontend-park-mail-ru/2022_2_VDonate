@@ -41,12 +41,15 @@ interface IconButtonOptions {
 }
 
 export type ButtonOptions =
-  & {title?: string}
+  & {
+      title?: string
+    }
   & (TextButtonOptions | IconButtonOptions)
   & (SubmitButtonOptions | SimpleButtonOptions);
 
 interface ButtonUpdateContext {
-  inner: string
+  inner?: string
+  blocked?: boolean
 }
 
 /**
@@ -61,23 +64,32 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
   }
 
   update(data: ButtonUpdateContext): void {
-    switch (this.options.viewType) {
-      case ButtonType.ICON:
-      case ButtonType.IMAGE_LOADING:
-        if (this.options.innerIcon === data.inner) return;
-        this.options.innerIcon = data.inner;
-        (querySelectorWithThrow(this.domElement, 'img') as HTMLImageElement)
-            .src = this.options.innerIcon;
-        break;
-      case ButtonType.PRIMARY:
-      case ButtonType.OUTLINE:
-        if (this.options.innerText === data.inner) return;
-        this.options.innerText = data.inner;
-        querySelectorWithThrow(this.domElement, '.button__text').textContent =
-          data.inner;
-        break;
-      default:
-        break;
+    if (data.inner) {
+      switch (this.options.viewType) {
+        case ButtonType.ICON:
+        case ButtonType.IMAGE_LOADING:
+          if (this.options.innerIcon === data.inner) return;
+          this.options.innerIcon = data.inner;
+          (querySelectorWithThrow(this.domElement, 'img') as HTMLImageElement)
+              .src = this.options.innerIcon;
+          break;
+        case ButtonType.PRIMARY:
+        case ButtonType.OUTLINE:
+          if (this.options.innerText === data.inner) return;
+          this.options.innerText = data.inner;
+          querySelectorWithThrow(this.domElement, '.button__text').textContent =
+            data.inner;
+          break;
+        default:
+          break;
+      }
+    }
+    if (typeof data.blocked == 'boolean') {
+      if (data.blocked) {
+        this.domElement.disabled = true;
+      } else {
+        this.domElement.disabled = false;
+      }
     }
   }
 

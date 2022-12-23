@@ -17,7 +17,7 @@ interface AboutOptions {
 export default
 class About extends ComponentBase<'div', string> {
   private content!: HTMLDivElement;
-
+  private saveBtn?: Button;
   constructor(el: HTMLElement, private options: AboutOptions) {
     super();
     this.renderTo(el);
@@ -62,6 +62,7 @@ class About extends ComponentBase<'div', string> {
   }
 
   update(htmlString: string): void {
+    this.saveBtn?.update({blocked: false});
     if (this.options.aboutTextHtml === htmlString) return;
     this.options.aboutTextHtml = htmlString;
     this.content.innerText = this.aboutTextHtml();
@@ -86,16 +87,21 @@ class About extends ComponentBase<'div', string> {
     }
     const form = document.createElement('form');
     form.classList.add('about__form');
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      editAbout(this.options.id, this.content.innerText.trim());
-    });
-    const saveBtn = new Button(form, {
+    this.saveBtn = new Button(form, {
       actionType: 'submit',
       viewType: ButtonType.PRIMARY,
       innerText: 'Сохранить',
     });
-    saveBtn.addClassNames('about__form-btn');
+    this.saveBtn.addClassNames('about__form-btn');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      this.saveBtn?.update({blocked: true});
+      if (this.content.innerText.trim() !== this.options.aboutTextHtml.trim()) {
+        editAbout(this.options.id, this.content.innerText.trim());
+      } else {
+        this.closeEditor();
+      }
+    });
 
     const cancelBtn = new Button(form, {
       actionType: 'button',
