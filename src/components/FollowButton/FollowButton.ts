@@ -26,7 +26,7 @@ class FollowButton extends ComponentBase<'div', FollowButtonUpdateContext> {
 
   constructor(el: HTMLElement, private options: FollowButtonOptions) {
     super();
-    this.renderTo(el);
+    // this.renderTo(el);
   }
 
   protected render(): HTMLDivElement {
