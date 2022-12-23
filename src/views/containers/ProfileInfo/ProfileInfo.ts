@@ -110,7 +110,8 @@ class ProfileInfo extends UpgradeViewBase {
     }
 
     if (this.profileState.user.isAuthor &&
-      this.profileState.user.balance !== profileNew.user.balance) {
+        this.options.changeable &&
+        this.profileState.user.balance !== profileNew.user.balance) {
       this.profileState.user.balance = profileNew.user.balance;
       querySelectorWithThrow(this.domElement, '.balance-area__count')
           .innerHTML = `${this.profileState.user.balance ?? 0}&#8381;`;

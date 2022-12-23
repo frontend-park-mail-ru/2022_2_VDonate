@@ -40,6 +40,22 @@ export default class CommentArea
     const input = document.createElement('div');
     input.setAttribute('contenteditable', 'true');
     input.classList.add('comment-area__input', 'bg_input', 'font_regular');
+    input.addEventListener('keypress', (evt) => {
+      if (evt.keyCode == 13 && evt.shiftKey) {
+        evt.preventDefault();
+        this.submitCommentBtn.update({blocked: true});
+        input.innerText = input.innerText.trim();
+        if (input.innerText.length == 0) {
+          notice('Вы ввели пустой комментарий', 'error');
+        } else if (input.innerText.length > commentSize) {
+          notice(
+              `Комментарий должен быть меньше ${commentSize} символов`,
+              'error');
+        } else {
+          addComment(this.options.PostID, input.innerText);
+        }
+      }
+    });
     form.appendChild(input);
     this.submitCommentBtn = new Button(form, {
       actionType: 'submit',
@@ -60,6 +76,7 @@ export default class CommentArea
         addComment(this.options.PostID, input.innerText);
       }
     });
+
     newComment.append(commentArea, form);
     newComment.style.display = 'none';
     return newComment;

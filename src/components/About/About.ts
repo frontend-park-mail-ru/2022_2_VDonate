@@ -91,6 +91,18 @@ class About extends ComponentBase<'div', string> {
     if (this.empty) {
       this.content.innerText = '';
     }
+    this.content.addEventListener('keypress', (e) => {
+      if (e.keyCode == 13 && e.shiftKey) {
+        e.preventDefault();
+        this.saveBtn?.update({blocked: true});
+        if (
+          this.content.innerText.trim() !== this.options.aboutTextHtml.trim()) {
+          editAbout(this.options.id, this.content.innerText.trim());
+        } else {
+          this.closeEditor();
+        }
+      }
+    });
     const form = document.createElement('form');
     form.classList.add('about__form');
     this.saveBtn = new Button(form, {
