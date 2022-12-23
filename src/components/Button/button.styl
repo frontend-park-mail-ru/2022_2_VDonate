@@ -9,8 +9,13 @@
   border: none
   cursor: pointer
   +e(loading)
+    position: absolute
+    left: calc(calc(50% - 8px))
+    top: 7px
     &:after
       content: " "
+      position: absolute
+      margin: 0
       display: block
       width: 10px
       height: 10px

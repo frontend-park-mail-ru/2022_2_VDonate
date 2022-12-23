@@ -37,13 +37,13 @@ class PostAction extends ComponentBase<'button', PostActionUpdateContent> {
     if (data.blocked) {
       this.domElement.children.item(0)?.removeAttribute('style');
       this.domElement.children.item(1)
-          ?.setAttribute('style', 'display: none;');
+          ?.setAttribute('style', 'visibility: hidden');
       this.domElement.disabled = true;
       return;
     } else {
       this.domElement.children.item(1)?.removeAttribute('style');
       this.domElement.children.item(0)
-          ?.setAttribute('style', 'display: none;');
+          ?.setAttribute('style', 'display: none');
       this.domElement.disabled = false;
     }
     if (this.options.isActive !== data.isActive) {

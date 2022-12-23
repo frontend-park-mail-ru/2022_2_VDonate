@@ -88,12 +88,12 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
       if (data.blocked) {
         this.domElement.children.item(0)?.removeAttribute('style');
         this.domElement.children.item(1)
-            ?.setAttribute('style', 'display: none;');
+            ?.setAttribute('style', 'visibility: hidden;');
         this.domElement.disabled = true;
       } else {
         this.domElement.children.item(1)?.removeAttribute('style');
         this.domElement.children.item(0)
-            ?.setAttribute('style', 'display: none;');
+            ?.setAttribute('style', 'display: none');
         this.domElement.disabled = false;
       }
     }
