@@ -124,7 +124,7 @@ class InputField extends ComponentBase<'label', boolean> {
           querySelectorWithThrow(
               input, '.input-field__input',
           ) as HTMLInputElement;
-        inputEl.accept = 'image/*';
+        inputEl.accept = '.jpg, .jpeg, .png';
         break;
       }
       case InputType.PRICE:
