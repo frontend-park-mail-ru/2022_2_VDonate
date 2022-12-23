@@ -9,6 +9,7 @@ import PayEditor from '@components/Editor/PayEditor';
 import UpgradeViewBase from '@app/UpgradeView';
 import './editor-container.styl';
 import WithdrawEditor from '@components/Editor/withdrawEditor';
+import {notice} from '@actions/handlers/notice';
 
 /** */
 export default
@@ -54,6 +55,7 @@ class EditorContainer
       this.formErrorsState = formErrorsNew;
       this.displayErrors(this.formErrorsState);
     }
+    this.currentEditor?.updateDisabled();
   }
 
   protected onErase(): void {
@@ -105,14 +107,23 @@ class EditorContainer
         }
         break;
       }
-      case EditorType.PAY:
+      case EditorType.PAY: {
         this.editorType = EditorType.PAY;
+        const sub =
+          (store.getState().profile as PayloadGetProfileData)
+              .authorSubscriptions?.find(
+                  (sub) => sub.id === newEditor.authorSubscriptionID,
+              );
+        if (!sub) break;
         this.currentEditor = new PayEditor(this.domElement, {
           authorID: newEditor.authorID,
-          authorSubscriptionID: newEditor.authorSubscriptionID,
+          subscriptionID: newEditor.authorSubscriptionID,
           currentCardStatus: newEditor.currentCardStatus,
+          subscriptionPrice: sub.price,
+          subscriptionTitle: sub.title,
         });
         break;
+      }
       case EditorType.WITHDRAW:
         this.editorType = EditorType.WITHDRAW;
         this.currentEditor = new WithdrawEditor(this.domElement);
@@ -130,7 +141,7 @@ class EditorContainer
   }
 
   private displayErrors(errors: PayloadFormError) {
-    switch (errors?.type) {
+    switch (errors.type) {
       case FormErrorType.EDIT_USER:
         if (this.currentEditor instanceof ProfileEditor) {
           this.currentEditor.update({
@@ -150,6 +161,9 @@ class EditorContainer
             // tier: Boolean(errors.tier),
           });
         }
+        break;
+      case FormErrorType.WITHDRAW:
+        notice(errors.message);
         break;
       default:
         break;

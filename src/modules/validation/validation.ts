@@ -220,3 +220,20 @@ export const textCheck = (text: string): null | string => {
   }
   return null;
 };
+
+export const deleteSpacebarsAndEnters = (text: string): string => {
+  while ((text.startsWith(' ') ||
+          text.endsWith(' ') ||
+          text.match(/^&nbsp;/) ||
+          text.match(/&nbsp;$/) ||
+          text.match(/<div>(<br>)?(&nbsp;){0,}( &nbsp;){0,}<\/div>$/) ||
+          text.match(/^<div>(<br>)?(&nbsp;){0,}( &nbsp;){0,}<\/div>/)) &&
+          text.length != 0) {
+    text = text.trim()
+        .replace(/^<div>(<br>)?(&nbsp;){0,}( &nbsp;){0,}<\/div>/, '')
+        .replace(/<div>(<br>)?(&nbsp;){0,}( &nbsp;){0,}<\/div>$/, '')
+        .replace(/^&nbsp;/, '')
+        .replace(/&nbsp;$/, '');
+  }
+  return text;
+};

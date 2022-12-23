@@ -74,7 +74,7 @@ export default class BackNoticeContainer extends UpgradeViewBase {
         оценил ваш пост.`;
         color.classList.add('back-notice-container__color_info');
         break;
-      case 'post':
+      case 'posts':
         text.innerText = `Пользователь ${noticeContext.data.author_name} 
         опубликовал пост.`;
         color.classList.add('back-notice-container__color_info');

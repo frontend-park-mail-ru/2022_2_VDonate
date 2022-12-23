@@ -1,0 +1,18 @@
+@require '@style/const.styl'
+@require '@style/mixin.styl'
+
++b(profile-container)
+  display: flex
+  flex-direction: row
+  align-items: stretch
+  justify-content: space-between
+  gap: 5px
+  +e(erase-btn)
+    +m(hide)
+      display: none !important
+
+@media  (max-width: mobile-size)
+  +b(profile-container)
+    +e(profile-mini)
+      display: none !important
+

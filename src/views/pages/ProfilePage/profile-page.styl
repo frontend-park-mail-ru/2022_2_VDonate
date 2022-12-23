@@ -24,6 +24,17 @@
     width: 100%
     max-width: 600px
     align-self: center
+  +e(empty)
+    padding: 10px 15px
+    display: flex
+    align-items: center
+    gap: 20px
+  +e(empty-text)
+    text-align: center
+    width: 100%
+  +e(search-btn)
+    padding: 10px 20px
+    height: min-content
 
 @media  (max-width: mobile-size)
   +b(profile-page)

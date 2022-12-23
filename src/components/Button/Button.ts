@@ -41,12 +41,15 @@ interface IconButtonOptions {
 }
 
 export type ButtonOptions =
-  & {title?: string}
+  & {
+      title?: string
+    }
   & (TextButtonOptions | IconButtonOptions)
   & (SubmitButtonOptions | SimpleButtonOptions);
 
 interface ButtonUpdateContext {
-  inner: string
+  inner?: string
+  blocked?: boolean
 }
 
 /**
@@ -61,23 +64,38 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
   }
 
   update(data: ButtonUpdateContext): void {
-    switch (this.options.viewType) {
-      case ButtonType.ICON:
-      case ButtonType.IMAGE_LOADING:
-        if (this.options.innerIcon === data.inner) return;
-        this.options.innerIcon = data.inner;
-        (querySelectorWithThrow(this.domElement, 'img') as HTMLImageElement)
-            .src = this.options.innerIcon;
-        break;
-      case ButtonType.PRIMARY:
-      case ButtonType.OUTLINE:
-        if (this.options.innerText === data.inner) return;
-        this.options.innerText = data.inner;
-        querySelectorWithThrow(this.domElement, '.button__text').textContent =
-          data.inner;
-        break;
-      default:
-        break;
+    if (data.inner) {
+      switch (this.options.viewType) {
+        case ButtonType.ICON:
+        case ButtonType.IMAGE_LOADING:
+          if (this.options.innerIcon === data.inner) return;
+          this.options.innerIcon = data.inner;
+          (querySelectorWithThrow(this.domElement, 'img') as HTMLImageElement)
+              .src = this.options.innerIcon;
+          break;
+        case ButtonType.PRIMARY:
+        case ButtonType.OUTLINE:
+          if (this.options.innerText === data.inner) return;
+          this.options.innerText = data.inner;
+          querySelectorWithThrow(this.domElement, '.button__text').textContent =
+            data.inner;
+          break;
+        default:
+          break;
+      }
+    }
+    if (typeof data.blocked == 'boolean') {
+      if (data.blocked) {
+        this.domElement.children.item(0)?.removeAttribute('style');
+        this.domElement.children.item(1)
+            ?.setAttribute('style', 'display: none;');
+        this.domElement.disabled = true;
+      } else {
+        this.domElement.children.item(1)?.removeAttribute('style');
+        this.domElement.children.item(0)
+            ?.setAttribute('style', 'display: none;');
+        this.domElement.disabled = false;
+      }
     }
   }
 
@@ -92,6 +110,11 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
     if (this.options.actionType === 'button') {
       button.addEventListener('click', this.options.clickHandler);
     }
+
+    const loading = document.createElement('div');
+    loading.classList.add('button__loading');
+    loading.style.display = 'none';
+    button.appendChild(loading);
 
     // Add title
     if (this.options.title) {
@@ -131,7 +154,7 @@ class Button extends ComponentBase<'button', ButtonUpdateContext> {
         const input = document.createElement('input');
         input.classList.add('button__input');
         input.setAttribute('type', 'file');
-        input.setAttribute('accept', 'image/*');
+        input.setAttribute('accept', '.jpg, .jpeg, .png');
 
         button.append(innerIcon, input);
         if (this.options.actionType === 'button') {

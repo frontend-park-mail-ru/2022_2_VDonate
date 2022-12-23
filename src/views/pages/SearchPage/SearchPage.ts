@@ -9,6 +9,7 @@ import UpgradeViewBase from '@app/UpgradeView';
 
 export default class SearchPage extends UpgradeViewBase {
   private listArea: HTMLDivElement = document.createElement('div');
+  private submitBtn!: Button;
 
   constructor(element: HTMLElement) {
     super();
@@ -36,16 +37,17 @@ export default class SearchPage extends UpgradeViewBase {
       title: 'Строка поиска. Для поиска введите псевдоним автора.',
     });
     input.addClassNames('search-page__input-field');
-    const btn = new Button(searchForm, {
+    this.submitBtn = new Button(searchForm, {
       viewType: ButtonType.PRIMARY,
       innerText: 'Найти',
       actionType: 'submit',
     });
-    btn.addClassNames('search-page__search-btn');
+    this.submitBtn.addClassNames('search-page__search-btn');
     page.appendChild(searchForm);
 
     searchForm.addEventListener('submit', (e) => {
       e.preventDefault();
+      this.submitBtn.update({blocked: true});
       searchAuthor((e.target as HTMLFormElement).elements as SearchAuthorForm);
     });
     this.listArea.classList.add(
@@ -60,6 +62,7 @@ export default class SearchPage extends UpgradeViewBase {
   }
 
   notify(): void {
+    this.submitBtn.update({blocked: false});
     const authors = store.getState().authors as PayloadUser[] | undefined;
     if (!authors) {
       this.listArea.innerText =

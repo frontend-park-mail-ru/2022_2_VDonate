@@ -17,6 +17,8 @@ interface AboutOptions {
 export default
 class About extends ComponentBase<'div', string> {
   private content!: HTMLDivElement;
+  private saveBtn?: Button;
+  private empty = true;
 
   constructor(el: HTMLElement, private options: AboutOptions) {
     super();
@@ -55,23 +57,30 @@ class About extends ComponentBase<'div', string> {
     about.append(head, aboutBack);
     this.content = document.createElement('div');
     this.content.classList.add('about__text', 'font_regular');
-    this.content.innerHTML = this.aboutTextHtml(aboutBack);
+    this.content.innerText = this.aboutTextHtml(aboutBack);
     aboutBack.appendChild(this.content);
 
     return about;
   }
 
   update(htmlString: string): void {
+    this.saveBtn?.update({blocked: false});
     if (this.options.aboutTextHtml === htmlString) return;
     this.options.aboutTextHtml = htmlString;
-    this.content.innerHTML = this.aboutTextHtml();
+    this.content.innerText = this.aboutTextHtml();
+    this.closeEditor();
   }
 
   private aboutTextHtml(about?: HTMLDivElement): string {
     if (this.options.aboutTextHtml.length === 0) {
+      this.empty = true;
       (about ?? this.domElement).classList.add('about__empty');
-      return 'Автор пока о себе ничего не рассказал';
+      return this.options.changeable ?
+        `Здесь будет информация о Вас. 
+        Скорее заполните ее, чтобы пользователи могли узнать о Вас больше.` :
+        'Автор пока ничего о себе не рассказал.';
     } else {
+      this.empty = false;
       (about ?? this.domElement).classList.remove('about__empty');
       return this.options.aboutTextHtml;
     }
@@ -79,23 +88,38 @@ class About extends ComponentBase<'div', string> {
 
   private openEditor(): void {
     this.content.setAttribute('contenteditable', 'true');
-    if (this.content.innerText == 'Автор пока о себе ничего не рассказал') {
+    if (this.empty) {
       this.content.innerText = '';
     }
+    this.content.addEventListener('keypress', (e) => {
+      if (e.keyCode == 13 && e.shiftKey) {
+        e.preventDefault();
+        this.saveBtn?.update({blocked: true});
+        if (
+          this.content.innerText.trim() !== this.options.aboutTextHtml.trim()) {
+          editAbout(this.options.id, this.content.innerText.trim());
+        } else {
+          this.closeEditor();
+        }
+      }
+    });
     const form = document.createElement('form');
     form.classList.add('about__form');
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      this.options.aboutTextHtml = this.content.innerText.trim();
-      editAbout(this.options.id, this.options.aboutTextHtml);
-      this.closeEditor();
-    });
-    const saveBtn = new Button(form, {
+    this.saveBtn = new Button(form, {
       actionType: 'submit',
       viewType: ButtonType.PRIMARY,
       innerText: 'Сохранить',
     });
-    saveBtn.addClassNames('about__form-btn');
+    this.saveBtn.addClassNames('about__form-btn');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      this.saveBtn?.update({blocked: true});
+      if (this.content.innerText.trim() !== this.options.aboutTextHtml.trim()) {
+        editAbout(this.options.id, this.content.innerText.trim());
+      } else {
+        this.closeEditor();
+      }
+    });
 
     const cancelBtn = new Button(form, {
       actionType: 'button',
@@ -111,8 +135,8 @@ class About extends ComponentBase<'div', string> {
 
   private closeEditor(): void {
     this.options.inEditState = false;
-    this.content.innerHTML = this.aboutTextHtml();
+    this.content.innerText = this.aboutTextHtml();
     this.content.setAttribute('contenteditable', 'false');
-    querySelectorWithThrow(this.domElement, '.about__form').remove();
+    this.domElement.querySelector('.about__form')?.remove();
   }
 }

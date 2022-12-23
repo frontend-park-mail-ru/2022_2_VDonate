@@ -13,10 +13,22 @@
     justify-content: center
     gap: 10px
   +e(empty)
-    text-align: center
     padding: 25px 30px
+    display: flex
+    align-items: center
+    gap: 20px
+    +m(hidden)
+      display: none
+  +e(empty-text)
+    text-align: center
+    width: 100%
   +e(posts-area)
     display: flex
     flex-direction: column-reverse
     gap: 15px
     width: 100%
+
+@media  (max-width: mobile-size)
+  +b(posts-container)
+    +e(empty)
+      flex-direction: column

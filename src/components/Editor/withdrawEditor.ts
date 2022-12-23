@@ -19,6 +19,7 @@ class WithdrawEditor
   extends ComponentBase <'div', null> {
   private input?: InputField;
   private withdrawType!: WithdrawType;
+  private submitBtn!: Button;
 
   constructor(el: HTMLElement, private options?: never) {
     super();
@@ -38,24 +39,31 @@ class WithdrawEditor
           title: 'Вывод средств',
         }),
     );
+
+    editor.append(form);
+    this.addInputs(form);
+    this.addButtons(form);
+
     form.addEventListener('submit',
         (e) => {
           e.preventDefault();
+          this.submitBtn.update({blocked: true});
           withdraw(
             (e.target as HTMLFormElement).elements as WithdrawFormElements,
           );
           return false;
         },
     );
-    editor.append(form);
-    this.addInputs(form);
-    this.addButtons(form);
 
     return editor;
   }
 
   update(): void {
     //
+  }
+
+  updateDisabled(): void {
+    this.submitBtn.update({blocked: false});
   }
 
   private addInputs(form: HTMLFormElement) {
@@ -120,11 +128,12 @@ class WithdrawEditor
   private addButtons(form: HTMLFormElement) {
     const btnArea = querySelectorWithThrow(form, '.editor__btn-area');
 
-    new Button(btnArea, {
+    this.submitBtn = new Button(btnArea, {
       viewType: ButtonType.PRIMARY,
       innerText: 'Вывести',
       actionType: 'submit',
-    }).addClassNames('btn-area__btn');
+    });
+    this.submitBtn.addClassNames('btn-area__btn');
     new Button(btnArea, {
       viewType: ButtonType.OUTLINE,
       innerText: 'Отменить',

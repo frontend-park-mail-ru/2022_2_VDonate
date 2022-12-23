@@ -43,7 +43,9 @@ class PostsContainer
   protected render(): HTMLDivElement {
     const container = document.createElement('div');
     container.className = 'posts-container';
-    container.innerHTML = template({});
+    container.innerHTML = template({
+      emptyText: this.options.textWhenEmpty,
+    });
     if (this.options.withCreateBtn) {
       new Button(
           querySelectorWithThrow(container, '.posts-container__title-area'),
@@ -60,8 +62,6 @@ class PostsContainer
             },
           });
     }
-    querySelectorWithThrow(container, '.posts-container__empty')
-        .innerText = this.options.textWhenEmpty;
     return container;
   }
 
@@ -86,6 +86,10 @@ class PostsContainer
               isAllowed: postPayload.isAllowed,
               tier: postPayload.tier,
             });
+            this.posts.get(postID)?.update({
+              contextType: ContextType.COMMENTS,
+              blocked: false,
+            });
           } else {
             this.deletePost(-1);
             this.addPost(postPayload);
@@ -98,7 +102,6 @@ class PostsContainer
     if (imageNew.url.length !== 0 &&
       imageNew.url !== this.imageState.url) {
       this.imageState = imageNew;
-      // TODO: add image to post
       if (imageNew.postID !== -1) {
         this.posts.get(imageNew.postID)?.update({
           contextType: ContextType.EDIT_POST_UPDATE,
@@ -153,10 +156,10 @@ class PostsContainer
     }
     if (newPostsState.size == 0 && !this.posts.get(-1)) {
       querySelectorWithThrow(this.domElement, '.posts-container__empty')
-          .hidden = false;
+          .classList.remove('posts-container__empty_hidden');
     } else {
       querySelectorWithThrow(this.domElement, '.posts-container__empty')
-          .hidden = true;
+          .classList.add('posts-container__empty_hidden');
     }
   }
 

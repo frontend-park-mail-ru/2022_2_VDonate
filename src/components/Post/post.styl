@@ -50,14 +50,6 @@
     padding: 5px 20px
   +e(edit-form)
     flex-grow: 1
-  +e(comment-area)
-    width: 100%
-    display: flex
-    flex-direction: column
-    gap: 10px
-  +e(new-comment)
-    width: 100%
-    margin-top: 12px
 
 .post-edit-form
   display: grid
@@ -90,27 +82,6 @@
     padding: 2px
   & h1
     font-size: inherit
-
-.post-hr
-  border: none
-  height: 3px
-  width: 100%
-
-.new-comment
-  +e(form)
-    display: flex
-    flex-direction: row
-    flex-wrap: nowrap
-    align-items: center
-    gap: 10px
-  +e(input)
-    width: 100%
-    min-height: auto
-    padding: 5px
-    white-space: pre-wrap
-    background: rgba(255, 255, 255, 0.2)
-  +e(submit)
-    //
 
 @media  (max-width: mobile-size)
   .post-content

@@ -55,9 +55,8 @@ export default class SubscriptionCardsContainer
     empty.classList
         .add('subscription-cards-container__empty', 'font_regular', 'bg_main');
     empty.innerText = this.options.changeable ?
-      `Пока что подписок нет,
-      но вы можете их создать` :
-      `Этот автор пока что не создал ни одной подписки`;
+      'У Вас нет платных подписок, но их можно создать по кнопке выше.' :
+      'У этого автора нет платных подписок.';
     const overflowContainer = document.createElement('div');
     overflowContainer.classList
         .add('subscription-cards-container__overflow-area');
@@ -75,6 +74,11 @@ export default class SubscriptionCardsContainer
           this.domElement,
           '.subscription-cards-container__empty',
       ).hidden = false;
+      this.subscriptionCards.forEach((_, subID) => {
+        this.deleteSubscriptionCard(subID);
+      });
+      this.subscriptionsState = new Map<number, PayloadSubscription>();
+      this.subscriptionCards = new Map<number, SubscriptionCard>();
       return;
     }
     querySelectorWithThrow(

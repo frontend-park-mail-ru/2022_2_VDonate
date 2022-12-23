@@ -8,6 +8,16 @@
   box-sizing: border-box
   border: none
   cursor: pointer
+  +e(loading)
+    &:after
+      content: " "
+      display: block
+      width: 10px
+      height: 10px
+      border-radius: 50%
+      border: 4px solid #fff
+      border-color: #fff transparent #fff transparent
+      animation: lds-dual-ring 1.2s linear infinite
   +e(back)
     min-width: max-content
     padding: 5px
@@ -16,6 +26,15 @@
     filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(298deg) brightness(102%) contrast(102%)
   +e(input)
     display: none
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg)
+  }
+  100% {
+    transform: rotate(360deg)
+  }
+}
 
 @media  (max-width: mobile-size)
   +b(button)

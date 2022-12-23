@@ -158,12 +158,10 @@ const loadNewPosts =
 export const subscribe = (
     authorID: number,
     authorSubscriptionID: number): void => {
-  api.subscribe(authorID, authorSubscriptionID)
+  api.subscribe(authorID, authorSubscriptionID < 0 ? 0 : authorSubscriptionID)
       .then((res: ResponseData) => {
         if (res.ok) {
           window.location.href = res.body.payUrl as string;
-          // window.open(res.body.payUrl as string, '_blank');
-          // TODO сделать в отдельной логике через уведомления обновление поста
         } else {
           switch (res.status) {
             case 400:
@@ -231,7 +229,7 @@ export const subscribe = (
 export const unsubscribe = (
     authorID: number,
     authorSubscriptionID: number): void => {
-  api.unsubscribe(authorID, authorSubscriptionID)
+  api.unsubscribe(authorID, authorSubscriptionID < 0 ? 0 : authorSubscriptionID)
       .then((res: ResponseData) => {
         if (res.ok) {
           return loadNewPosts(authorID, (posts: PayloadPost[]) => {

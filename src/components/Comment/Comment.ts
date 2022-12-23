@@ -18,6 +18,8 @@ type CommentOptions = PayloadComment & {
 
 export default
 class Comment extends ComponentBase<'div', string> {
+  private submitBtn!: Button;
+
   constructor(el: HTMLElement, private options: CommentOptions) {
     super();
     this.renderTo(el);
@@ -26,6 +28,7 @@ class Comment extends ComponentBase<'div', string> {
   update(data: string): void {
     querySelectorWithThrow(this.domElement, 'comment__text')
         .innerText = data;
+    this.submitBtn.update({blocked: false});
   }
 
   protected render(): HTMLDivElement {
@@ -33,8 +36,7 @@ class Comment extends ComponentBase<'div', string> {
     comment.classList.add('comment');
     new Avatar(comment, {
       imgPath: this.options.userImg,
-      viewType: this.options.authorID == this.options.userID ?
-          AvatarType.AUTHOR : AvatarType.DONATER,
+      viewType: AvatarType.DONATER,
     }).addClassNames('comment__avatar');
     const commentArea = document.createElement('div');
     commentArea.classList.add('comment__area');
@@ -83,12 +85,12 @@ class Comment extends ComponentBase<'div', string> {
     text.setAttribute('contenteditable', 'true');
     const editBtnArea = document.createElement('div');
     editBtnArea.classList.add('comment__edit-btn-area', 'btn-area');
-    new Button(editBtnArea, {
+    this.submitBtn = new Button(editBtnArea, {
       actionType: 'button',
       viewType: ButtonType.PRIMARY,
       innerText: 'Сохранить',
       clickHandler: () => {
-        // let commentText = text.innerText;
+        this.submitBtn.update({blocked: true});
         text.innerText = text.innerText.trim();
         if (text.innerText.length > commentSize) {
           notice(
@@ -101,7 +103,8 @@ class Comment extends ComponentBase<'div', string> {
           this.closeEditor();
         }
       },
-    }).addClassNames('btn-area__btn');
+    });
+    this.submitBtn.addClassNames('btn-area__btn');
     new Button(editBtnArea, {
       actionType: 'button',
       viewType: ButtonType.OUTLINE,

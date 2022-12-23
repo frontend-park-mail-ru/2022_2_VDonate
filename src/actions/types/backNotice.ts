@@ -10,7 +10,7 @@ interface LikeBackNoticeModel {
 }
 
 interface PostBackNoticeModel {
-  name: 'post'
+  name: 'posts'
   data: {
     author_id: number
     author_name: number
