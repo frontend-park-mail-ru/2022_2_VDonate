@@ -161,7 +161,16 @@ export const subscribe = (
   api.subscribe(authorID, authorSubscriptionID < 0 ? 0 : authorSubscriptionID)
       .then((res: ResponseData) => {
         if (res.ok) {
-          window.location.href = res.body.payUrl as string;
+          if (authorSubscriptionID > 0) {
+            window.location.href = res.body.payUrl as string;
+          }
+          store.dispatch({
+            type: ActionType.SUBSCRIBE,
+            payload: {
+              authorSubscriptionID,
+              posts: [],
+            },
+          });
         } else {
           switch (res.status) {
             case 400:
@@ -232,14 +241,23 @@ export const unsubscribe = (
   api.unsubscribe(authorID, authorSubscriptionID < 0 ? 0 : authorSubscriptionID)
       .then((res: ResponseData) => {
         if (res.ok) {
-          return loadNewPosts(authorID, (posts: PayloadPost[]) => {
-            store.dispatch({
-              type: ActionType.UNSUBSCRIBE,
-              payload: {
-                authorSubscriptionID,
-                posts,
-              },
+          if (authorSubscriptionID > 0) {
+            return loadNewPosts(authorID, (posts: PayloadPost[]) => {
+              store.dispatch({
+                type: ActionType.UNSUBSCRIBE,
+                payload: {
+                  authorSubscriptionID,
+                  posts,
+                },
+              });
             });
+          }
+          store.dispatch({
+            type: ActionType.UNSUBSCRIBE,
+            payload: {
+              authorSubscriptionID,
+              posts: [],
+            },
           });
         } else {
           store.dispatch({

@@ -116,6 +116,20 @@ class ProfileInfo extends UpgradeViewBase {
       querySelectorWithThrow(this.domElement, '.balance-area__count')
           .innerHTML = `${this.profileState.user.balance ?? 0} &#8381;`;
     }
+
+    const sub =
+    (store.getState()
+        .userSubscriptions as Map<number, PayloadSubscription>);
+    console.log(sub);
+    if (sub.get(-this.profileState.user.id)) {
+      console.log('отписаться');
+      this.followButton?.update({isFollowed: true,
+        subscriptionID: -this.profileState.user.id,
+      });
+    } else {
+      console.log('подписаться');
+      this.followButton?.update({isFollowed: false});
+    }
   }
 
   protected render(): HTMLDivElement {

@@ -33,26 +33,40 @@ const userSubscriptionsReducer: Reducer<Action> =
       case ActionType.SUBSCRIBE: {
         const profile =
           store.getState().profile as PayloadGetProfileData;
-        if (!profile.authorSubscriptions) return state;
-        const authorSub =
-          profile.authorSubscriptions.find((sub) =>
-            sub.id == action.payload.authorSubscriptionID);
-        if (authorSub) {
-          const subscription: PayloadSubscription = {
-            authorAvatar: profile.user.avatar,
-            authorID: authorSub.authorID,
-            authorName: profile.user.username,
-            id: authorSub.id,
-            img: authorSub.img,
-            price: authorSub.price,
-            text: authorSub.text,
-            tier: authorSub.tier,
-            title: authorSub.title,
-          };
-          checkZeroSubscriptions([subscription]);
-          (state as Map<number, PayloadSubscription>)
-              .set(subscription.id, subscription);
-        }
+        // if (!profile.authorSubscriptions) return state;
+        // const authorSub =
+        //   profile.authorSubscriptions.find((sub) =>
+        //     sub.id == action.payload.authorSubscriptionID);
+        // if (authorSub) {
+        //   const subscription: PayloadSubscription = {
+        //     authorAvatar: profile.user.avatar,
+        //     authorID: authorSub.authorID,
+        //     authorName: profile.user.username,
+        //     id: authorSub.id,
+        //     img: authorSub.img,
+        //     price: authorSub.price,
+        //     text: authorSub.text,
+        //     tier: authorSub.tier,
+        //     title: authorSub.title,
+        //   };
+        //   checkZeroSubscriptions([subscription]);
+        //   (state as Map<number, PayloadSubscription>)
+        //       .set(subscription.id, subscription);
+        // }
+        console.log(profile.authorSubscriptions);
+        console.log('usSub');
+        (state as Map<number, PayloadSubscription>)
+            .set(action.payload.authorSubscriptionID, {
+              authorAvatar: profile.user.avatar,
+              authorID: profile.user.id,
+              authorName: profile.user.username,
+              id: action.payload.authorSubscriptionID,
+              img: '',
+              price: 0,
+              text: '',
+              tier: 0,
+              title: '',
+            });
         return state;
       }
       case ActionType.UNSUBSCRIBE:
