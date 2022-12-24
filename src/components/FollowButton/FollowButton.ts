@@ -32,11 +32,6 @@ class FollowButton extends ComponentBase<'div', FollowButtonUpdateContext> {
     const followButton = document.createElement('div');
     followButton.classList.add('follow-button');
 
-    const loading = document.createElement('div');
-    loading.classList.add('button__loading');
-    loading.style.display = 'none';
-    followButton.appendChild(loading);
-
     if (this.options.isFollowed) {
       const subscriptionID = this.options.subscriptionID;
       this.curBtn = new Button(followButton, {
