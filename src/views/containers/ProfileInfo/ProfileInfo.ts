@@ -120,14 +120,11 @@ class ProfileInfo extends UpgradeViewBase {
     const sub =
     (store.getState()
         .userSubscriptions as Map<number, PayloadSubscription>);
-    console.log(sub);
     if (sub.get(-this.profileState.user.id)) {
-      console.log('отписаться');
       this.followButton?.update({isFollowed: true,
         subscriptionID: -this.profileState.user.id,
       });
     } else {
-      console.log('подписаться');
       this.followButton?.update({isFollowed: false});
     }
   }

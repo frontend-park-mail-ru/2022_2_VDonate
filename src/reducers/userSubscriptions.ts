@@ -53,8 +53,6 @@ const userSubscriptionsReducer: Reducer<Action> =
         //   (state as Map<number, PayloadSubscription>)
         //       .set(subscription.id, subscription);
         // }
-        console.log(profile.authorSubscriptions);
-        console.log('usSub');
         (state as Map<number, PayloadSubscription>)
             .set(action.payload.authorSubscriptionID, {
               authorAvatar: profile.user.avatar,
