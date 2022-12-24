@@ -34,10 +34,14 @@ class Comment extends ComponentBase<'div', string> {
   protected render(): HTMLDivElement {
     const comment = document.createElement('div');
     comment.classList.add('comment');
-    new Avatar(comment, {
+    const commentAvatar = document.createElement('a');
+    commentAvatar.setAttribute('data-link', '');
+    commentAvatar.setAttribute('href', `/profile?id=${this.options.userID}`);
+    new Avatar(commentAvatar, {
       imgPath: this.options.userImg,
       viewType: AvatarType.DONATER,
     }).addClassNames('comment__avatar');
+    comment.appendChild(commentAvatar);
     const commentArea = document.createElement('div');
     commentArea.classList.add('comment__area');
     const username = document.createElement('a');

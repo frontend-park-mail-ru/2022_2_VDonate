@@ -192,6 +192,7 @@ class Post extends ComponentBase<'div', PostUpdateContext> {
     post.classList.add('post', 'post__back', 'bg_main');
     // render шапки поста
     post.innerHTML = templatePost({
+      id: this.options.author.userID,
       username: this.options.author.username,
       date: (typeof this.options.dateCreated == 'undefined' ||
              this.options.dateCreated.length === 0) ?
